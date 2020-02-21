@@ -3,6 +3,7 @@ var entity = 'SupportEngineer';
 var apiurl = '/api/' + entity;
 
 $(document).ready(function () {
+    //alert(entity);
     var organizationId = $('#organizationId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
@@ -47,6 +48,8 @@ function SubmitAddEdit(form) {
     if ($(form).valid()) {
         var data = $(form).serializeJSON();
         data = JSON.stringify(data);
+        alert(data);
+        //return true;
         $.ajax({
             type: 'POST',
             url: apiurl,

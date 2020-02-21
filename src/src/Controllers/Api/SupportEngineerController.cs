@@ -45,75 +45,80 @@ namespace src.Controllers.Api
 
         // POST: api/SupportEngineer
         [HttpPost]
-        public async Task<IActionResult> PostSupportEngineer([FromBody] SupportEngineer supportEngineer)
+        public IActionResult PostPriceCommodity(PriceCommodity supportEngineer)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (supportEngineer.supportEngineerId == Guid.Empty)
-            {
-                
-                try
-                {
-                    var user = new ApplicationUser { UserName = supportEngineer.Email, Email = supportEngineer.Email, FullName = supportEngineer.supportEngineerName };
-
-                    user.IsSupportEngineer = true;
-                    var randomPassword = new Random().Next(0, 999999);
-                    var result = await _userManager.CreateAsync(user, randomPassword.ToString());
-                    if (result.Succeeded)
-                    {
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-
-                        await _emailSender.SendEmailAsync(supportEngineer.Email, "Confirm your email and Registration",
-                        $"Your email has been registered. With username: '{supportEngineer.Email}'  and temporary  password: '{randomPassword.ToString()}' .Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>");
-
-                        supportEngineer.applicationUser = user;
-                        Organization org = _context.Organization.Where(x => x.organizationId.Equals(supportEngineer.organizationId)).FirstOrDefault();
-                        supportEngineer.organization = org;
-
-                        supportEngineer.supportEngineerId = Guid.NewGuid();
-                        _context.SupportEngineer.Add(supportEngineer);
-
-                        await _context.SaveChangesAsync();
-
-                        return Json(new { success = true, message = "Add new data success." });
-                    }
-                    else
-                    {
-                        return Json(new { success = false, message = "UserManager CreateAsync Fail." });
-                    }
-                }
-                catch (Exception ex)
-                {
-
-                    return Json(new { success = false, message = ex.Message });
-                }
-                
-
-                
-            }
-            else
-            {
-                try
-                {
-                    _context.Update(supportEngineer);
-
-                    await _context.SaveChangesAsync();
-
-                    return Json(new { success = true, message = "Edit data success." });
-                }
-                catch (Exception ex)
-                {
-
-                    return Json(new { success = false, message = ex.Message });
-                }
-
-
-            }
+            var test = supportEngineer.commodity;
+            return Json(new { data = test });
         }
+        //public async Task<IActionResult> PostSupportEngineer([FromBody] SupportEngineer supportEngineer)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    if (supportEngineer.supportEngineerId == Guid.Empty)
+        //    {
+                
+        //        try
+        //        {
+        //            var user = new ApplicationUser { UserName = supportEngineer.Email, Email = supportEngineer.Email, FullName = supportEngineer.supportEngineerName };
+
+        //            user.IsSupportEngineer = true;
+        //            var randomPassword = new Random().Next(0, 999999);
+        //            var result = await _userManager.CreateAsync(user, randomPassword.ToString());
+        //            if (result.Succeeded)
+        //            {
+        //                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+
+        //                await _emailSender.SendEmailAsync(supportEngineer.Email, "Confirm your email and Registration",
+        //                $"Your email has been registered. With username: '{supportEngineer.Email}'  and temporary  password: '{randomPassword.ToString()}' .Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>");
+
+        //                supportEngineer.applicationUser = user;
+        //                Organization org = _context.Organization.Where(x => x.organizationId.Equals(supportEngineer.organizationId)).FirstOrDefault();
+        //                supportEngineer.organization = org;
+
+        //                supportEngineer.supportEngineerId = Guid.NewGuid();
+        //                _context.SupportEngineer.Add(supportEngineer);
+
+        //                await _context.SaveChangesAsync();
+
+        //                return Json(new { success = true, message = "Add new data success." });
+        //            }
+        //            else
+        //            {
+        //                return Json(new { success = false, message = "UserManager CreateAsync Fail." });
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //            return Json(new { success = false, message = ex.Message });
+        //        }
+                
+
+                
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            _context.Update(supportEngineer);
+
+        //            await _context.SaveChangesAsync();
+
+        //            return Json(new { success = true, message = "Edit data success." });
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //            return Json(new { success = false, message = ex.Message });
+        //        }
+
+
+        //    }
+        //}
 
         // DELETE: api/SupportEngineer/5
         [HttpDelete("{id}")]
