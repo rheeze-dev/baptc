@@ -1,0 +1,472 @@
+﻿@model IEnumerable<src.Models.Organization>
+@inject UserManager<ApplicationUser> UserManager
+@inject src.Data.ApplicationDbContext Context
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminlteWallpaper.cshtml";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
+    Guid cust = Guid.Empty;
+    if (appUser.IsCustomer)
+    {
+        Contact contact = Context.Contact.Where(x => x.applicationUserId.Equals(appUser.Id)).FirstOrDefault();
+        Customer customer = (contact != null) ? Context.Customer.Where(x => x.customerId.Equals(contact.customerId)).FirstOrDefault() : null;
+        cust = (customer != null) ? customer.customerId : Guid.Empty;
+    }
+}
+
+    <div class="content">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Ticketing</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("TicketingIn", "Ticketing", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Trading Inspector</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("TradersTruck", "TradingInspector", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Security</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("SecurityRepairCheck", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+            }
+        </div>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Repair</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("Repair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Human Resource</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Price Commodities</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("Price", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Accreditation</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("Accreditation", "Accreditation", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Trading And Inter-trading</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Governance And Policies</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+            }
+        </div>
+
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Linkages Communications</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("LinkagesCommunications", "LinkagesCommunications", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Research Development And Extension</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Finance</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+            }
+        </div>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Cash Clerk</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("CashClerk", "CashClerk", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Other Optional Accounting Functions</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("OtherOptionalAccountingFunctions", "OtherOptionalAccountingFunctions", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+
+            }
+        </div>
+        </div>
+
+
+
+
+
+
