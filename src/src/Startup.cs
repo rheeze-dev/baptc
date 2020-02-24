@@ -73,7 +73,7 @@ namespace src
             services.AddTransient<IDotnetdesk, Dotnetdesk>();
 
             // Get SendGrid configuration options
-            services.Configure<SendGridOptions>(Configuration.GetSection("SendGridOptions"));
+            //services.Configure<SendGridOptions>(Configuration.GetSection("SendGridOptions"));
 
             // Get SMTP configuration options
             services.Configure<SmtpOptions>(Configuration.GetSection("SmtpOptions"));
