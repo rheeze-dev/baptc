@@ -17,8 +17,12 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-10">Ticketing In</th>
-                                        <th class="col-md-2"></th>
+                                        <th class="col-md-2">Time In</th>
+                                        <th class="col-md-2">Time Out</th>
+                                        <th class="col-md-2">Plate Number</th>
+                                        <th class="col-md-2">Type Of Transaction</th>
+                                        <th class="col-md-2">Gate Pass Date</th>
+                                        <th class="col-md-2">Actions</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -52,6 +56,6 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/customer/index.js"></script>
+    <script src="~/js/views/ticketing/index.js"></script>
 }
 

@@ -8,43 +8,26 @@ namespace src.Models
 {
     public class Ticketing
     {
-        public Ticketing()
-        {
-            //this.ticketStatus = Enum.TicketStatus.Unassigned;
-            //this.ticketType = Enum.TicketType.Problem;
-            //this.ticketPriority = Enum.TicketPriority.Low;
-        }
-
+       
         public Guid ticketingId { get; set; }
-        [Required]
-        [StringLength(300)]
-        [Display(Name = "Ticketing Id")]
+        //[Required]
+        [Display(Name = "Time In")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         public DateTime timeIn { get; set; }
         //[Required]
-        [StringLength(300)]
-        [Display(Name = "Time In")]
 
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
+        [Display(Name = "Time Out")]
         public DateTime timeOut { get; set; }
 
         [Display(Name = "Plate Number")]
         public string plateNumber { get; set; }
 
-        [Display(Name = "Type of Transaction")]
+        [Display(Name = "Type Of Transaction")]
         public string typeOfTransaction { get; set; }
 
-        [StringLength(300)]
-        [Display(Name = "Date of Gate Pass")]
+        [Display(Name = "Gate Pass Date")]
         public string gatePassDate { get; set; }
-
-        //[Display(Name = "Ticket Type")]
-        //public Enum.TicketType ticketType { get; set; }
-        //[Display(Name = "Ticket Priority")]
-        //public Enum.TicketPriority ticketPriority { get; set; }
-        //[Display(Name = "Destination")]
-        //public Enum.TicketChannel ticketChannel { get; set; }
-
-        //public Guid organizationId { get; set; }
-        //public Organization organization { get; set; }
 
     }
 }

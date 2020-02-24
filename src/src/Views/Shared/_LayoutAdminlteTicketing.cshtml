@@ -132,12 +132,12 @@
                         @if (appUser.IsSuperAdmin)
                         {
                             <li class="header">MAIN NAVIGATION</li>
-                            <li class="@Html.IsSelected(controller: "Ticketing")">
+                            <li class="@Html.IsSelected(controller: "Ticketing",action:"TicketingIn")">
                                 <a href="@Url.Action("TicketingIn", "Ticketing", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Ticketing In</span>
                                 </a>
                             </li>
-                            <li class="@Html.IsSelected(controller: "Ticketing")">
+                            <li class="@Html.IsSelected(controller: "Ticketing",action:"TicketingOut")">
                                 <a href="@Url.Action("TicketingOut", "Ticketing", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Ticketing Out</span>
                                 </a>

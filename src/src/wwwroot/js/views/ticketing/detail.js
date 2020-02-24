@@ -1,22 +1,24 @@
 ﻿var popup, dataTable;
-var entity = 'SupportEngineer';
+var entity = 'Contact';
 var apiurl = '/api/' + entity;
 
 $(document).ready(function () {
-    var organizationId = $('#organizationId').val();
+    var customerId = $('#customerId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
-            "url": apiurl + '/' + organizationId,
+            "url": apiurl + '/' + customerId,
             "type": 'GET',
             "datatype": 'json'
         },
         "columns": [
-            { "data": "supportEngineerName" },
+            { "data": "contactName" },
             {
-                "data": "supportEngineerId",
+                "data": "contactId",
                 "render": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/"+entity+"/AddEdit/" + data + "')><i class='fa fa-pencil'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data + "')><i class='fa fa-trash'></i></a>";
+                  
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/" + entity + "/AddEdit/" + data + "')><i class='fa fa-pencil'></i></a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/" + entity + "/AddEditOut/" + data + "')><i class='fa fa-pencil'></i></a>";
+                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:2px' onclick=Delete('" + data + "')><i class='fa fa-trash'></i></a>";
                     return btnEdit + btnDelete;
                 }
             }
@@ -67,10 +69,35 @@ function SubmitAddEdit(form) {
     return false;
 }
 
+function SubmitAddEditOut(form) {
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        var data = $(form).serializeJSON();
+        data = JSON.stringify(data);
+        $.ajax({
+            type: 'POST',
+            url: apiurl,
+            data: data,
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.success) {
+                    popup.modal('hide');
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+
+    }
+    return false;
+}
+
 function Delete(id) {
     swal({
         title: "Are you sure want to Delete?",
-        text: "You will not be able to restore the file!",
+        text: "You will not be able to restore the data!",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#dd4b39",
@@ -93,7 +120,6 @@ function Delete(id) {
 
 
 }
-
 
 
 

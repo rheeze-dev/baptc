@@ -24,6 +24,7 @@ namespace src.Models
         //[Required]
 
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
+        [Display(Name = "Commodity Date")]
         public DateTime commodityDate { get; set; }
 
         [Display(Name = "Commodity")]

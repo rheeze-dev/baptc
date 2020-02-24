@@ -17,17 +17,6 @@ namespace src.Controllers
             _context = context;
         }
 
-        //public IActionResult Index(Guid org)
-        //{
-        //    if (org == Guid.Empty)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-        //    ViewData["org"] = org;
-        //    return View(organization);
-        //}
-
         public IActionResult TicketingOut(Guid org)
         {
             if (org == Guid.Empty)
@@ -54,13 +43,13 @@ namespace src.Controllers
         {
             if (id == Guid.Empty)
             {
-                Customer customer = new Customer();
-                customer.organizationId = org;
-                return View(customer);
+                Ticketing ticketing = new Ticketing();
+                //ticketing.ticketingId = org;
+                return View(ticketing);
             }
             else
             {
-                return View(_context.Customer.Where(x => x.customerId.Equals(id)).FirstOrDefault());
+                return View(_context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
 
         }
@@ -69,13 +58,13 @@ namespace src.Controllers
         {
             if (id == Guid.Empty)
             {
-                Customer_TicketingOut customer = new Customer_TicketingOut();
-                customer.organizationId = org;
-                return View(customer);
+                Ticketing ticketing = new Ticketing();
+                //customer.organizationId = org;
+                return View(ticketing);
             }
             else
             {
-                return View(_context.Customer.Where(x => x.customerId.Equals(id)).FirstOrDefault());
+                return View(_context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
 
         }

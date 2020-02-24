@@ -132,17 +132,17 @@
                         @if (appUser.IsSuperAdmin)
                         {
                             <li class="header">MAIN NAVIGATION</li>
-                            <li class="@Html.IsSelected(controller: "TradingInspector")">
+                            <li class="@Html.IsSelected(controller: "TradingInspector",action:"TradersTruck")">
                                 <a href="@Url.Action("TradersTruck", "TradingInspector", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Traders Truck</span>
                                 </a>
                             </li>
-                            <li class="@Html.IsSelected(controller: "TradingInspector")">
+                            <li class="@Html.IsSelected(controller: "TradingInspector",action:"FarmersTruck")">
                                 <a href="@Url.Action("FarmersTruck", "TradingInspector", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Farmers Truck</span>
                                 </a>
                             </li>
-                            <li class="@Html.IsSelected(controller: "TradingInspector")">
+                            <li class="@Html.IsSelected(controller: "TradingInspector",action:"ShortTrip")">
                                 <a href="@Url.Action("ShortTrip", "TradingInspector", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Short Trip</span>
                                 </a>
