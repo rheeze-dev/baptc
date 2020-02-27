@@ -40,8 +40,7 @@
         <link rel="stylesheet" href="~/lib/sweetalert/sweetalert.css" />
         <!--fontawesome-->
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
-        <!-- DateTimePicker -->
-        <link rel="stylesheet" href="~/lib/DateTimePicker/bootstrap-datetimepicker.min.css" />
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -133,31 +132,31 @@
                         @if (appUser.IsSuperAdmin)
                         {
                             <li class="header">MAIN NAVIGATION</li>
-                            <li class="@Html.IsSelected(controller: "Ticketing",action:"TicketingIn")">
-                                <a href="@Url.Action("TicketingIn", "Ticketing", new { org = org })">
-                                    <i class="fa fa-th"></i> <span>Ticketing In</span>
+                            <li class="@Html.IsSelected(controller: "Settings",action:"Roles")">
+                                <a href="@Url.Action("Roles", "Settings", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Roles</span>
                                 </a>
                             </li>
-                            <li class="@Html.IsSelected(controller: "Ticketing",action:"TicketingOut")">
+                            @*<li class="@Html.IsSelected(controller: "Ticketing",action:"TicketingOut")">
                                 <a href="@Url.Action("TicketingOut", "Ticketing", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Ticketing Out</span>
                                 </a>
-                            </li>
+                            </li>*@
                             @*<li class="@Html.IsSelected(controller: "SupportAgent")">
-                                    <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
-                                        <i class="fa fa-th"></i> <span>Support Agents</span>
-                                    </a>
-                                </li>
-                                <li class="@Html.IsSelected(controller: "SupportEngineer")">
-                                    <a href="@Url.Action("Index", "SupportEngineer", new { org = org })">
-                                        <i class="fa fa-th"></i> <span>Support Engineers</span>
-                                    </a>
-                                </li>
-                                <li class="@Html.IsSelected(controller: "Ticket")">
-                                    <a href="@Url.Action("Index", "Ticket", new { org = org })">
-                                        <i class="fa fa-th"></i> <span>Ticket</span>
-                                    </a>
-                                </li>*@
+                                <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Support Agents</span>
+                                </a>
+                            </li>
+                            <li class="@Html.IsSelected(controller: "SupportEngineer")">
+                                <a href="@Url.Action("Index", "SupportEngineer", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Support Engineers</span>
+                                </a>
+                            </li>
+                            <li class="@Html.IsSelected(controller: "Ticket")">
+                                <a href="@Url.Action("Index", "Ticket", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Ticket</span>
+                                </a>
+                            </li>*@
                         }
                         @if (appUser.IsCustomer)
                         {
@@ -258,8 +257,7 @@
     <script src="~/lib/fastclick/lib/fastclick.js"></script>
     <!-- AdminLTE App -->
     <script src="~/adminlte/js/adminlte.min.js"></script>
-    <!-- DateTimePicker -->
-    <script src="~/lib/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('.sidebar-menu').tree()

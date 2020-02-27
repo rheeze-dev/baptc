@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-src-05F51860-4E08-4FE5-8D25-1615250B538C</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200226104400_Roles.cs" />
+    <Compile Remove="Migrations\20200226104400_Roles.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,21 +27,5 @@ namespace src.Models
         public bool IsSupportEngineer { get; set; } = false;
 
         public int UserId { get; set; }
-    }
-    public class Roles 
-    {
-        public int Id { get; set; }
-        public string FullName { get; set; }
-        public string ShortName { get; set; }
-        public DateTime DateAdded { get; set; }
-        public string Remarks { get; set; }
-    }
-    public class UserRole
-    {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public int RoleId { get; set; }
-        public DateTime DateAdded { get; set; }
-        public string Remarks { get; set; }
     }
 }

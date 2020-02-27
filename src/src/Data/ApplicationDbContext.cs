@@ -69,6 +69,10 @@ namespace src.Data
 
         public DbSet<src.Models.Traders> Traders { get; set; }
 
+        public DbSet<src.Models.UserRole> UserRole { get; set; }
+
+        public DbSet<src.Models.Roles> Role { get; set; }
+
         public DbSet<src.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }
