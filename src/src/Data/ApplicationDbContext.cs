@@ -73,6 +73,8 @@ namespace src.Data
 
         public DbSet<src.Models.Roles> Role { get; set; }
 
+        public DbSet<src.Models.Module> Modules { get; set; }
+
         public DbSet<src.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

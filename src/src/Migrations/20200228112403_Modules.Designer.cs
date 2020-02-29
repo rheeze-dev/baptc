@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200228112403_Modules")]
+    partial class Modules
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -537,8 +538,6 @@ namespace src.Migrations
                     b.Property<string>("Description");
 
                     b.Property<string>("Name");
-
-                    b.Property<bool>("Selected");
 
                     b.HasKey("Id");
 

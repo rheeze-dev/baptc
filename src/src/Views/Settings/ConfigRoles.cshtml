@@ -2,305 +2,138 @@
 @{
     Layout = null;
 }
-<script src="~/lib/jquery/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Config / Edit Data</h4>
+</div>
+<form>
+    <div class="box-body">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="FullName" class="control-label"></label>
+            <label class="text-warning"> : @Model.FullName</label>
+        </div>
+        <div class="form-group">
+            <label asp-for="Remarks" class="control-label"></label>
+            <label class="text-warning"> : @Model.Remarks</label>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="ShortName" class="control-label"></label>
+                    <label class="text-warning"> : @Model.ShortName</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="demo form-group">
+                    <label asp-for="Module" class="control-label"></label>
+                    <select style="display:none" name="" multiple>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-footer">
+        <button type="button" id="SaveRoleConfig" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
 <script>
-    $(document).ready(function () {
-        var fromMODULEID = false;
-        var disabledBox = "";
+    Ladda.bind('.btn', { timeout: 1000 });
 
-        $MODULEID = $('#_MODULEID');
+    jQuery(function ($) {
+        //alert("test");
+        //$(".demo").dropdown();
 
-        $MODULEID.autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '@Url.Action("GetModules", "UserRights")',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: { module_name: $MODULEID.val() },
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return ((!MOD_PERMISSION (item.MODULEID,$('.ul_tag_data').attr('id')))? {
-                                label: item.CODE,
-                                value: item.NAME,
-                                id: item.MODULEID
-                            } : null);
-                        }))
+        //var json1 = {
+        //    data: {
+        //        test: "asdf",
+        //        test2:"qwerty"
+        //    }
+        //}
+        //alert(JSON.stringify(json1));
+
+        var json2 = {
+            data: [{
+                "id": 1,
+                "disabled": false,
+                "selected": true,
+                "name": "Laura Melissa Robinson"
+            }, {
+                "id": 2,
+                "disabled": false,
+                "selected": false,
+                "name": "Test"
+            }, {
+                "id": 3,
+                "disabled": false,
+                "selected": false,
+                "name": "sample"
+            }
+            ]
+        }
+        //alert(JSON.stringify(json1));
+        $("#SaveRoleConfig").on("click", function () {
+            var selectedRole = [];
+            $('.dropdown-selected').each(function () {
+                var currentElement = $(this);
+                $(currentElement).find('i').remove();
+                var value = currentElement.html(); 
+                //console.log(value);
+                selectedRole.push(value);
+                // TODO: do something with the value
+            });
+            //console.log(selectedRole.join(", "));
+            var roleModules = selectedRole.join(",");
+            $.ajax({
+            type: 'POST',
+            url: "/api/ModuleConfig/UpdateRoleModules",
+            data: {roleId:@Model.Id, selectedModule: roleModules},
+            success: function (d) {
+               if (d.success) {
+                    popup.modal('hide');
+                    ShowMessage(d.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(d.message);
+                }
+            }
+        });
+        })
+        //console.log(json2);
+        $.ajax({
+            type: 'POST',
+            url: "/api/ModuleConfig/GetModules",
+            data: {roleId:@Model.Id},
+            success: function (d) {
+                $('.demo').dropdown({
+                    data: d.data,
+                    limitCount: 40,
+                    multipleMode: 'label',
+                    choice: function () {
+                        // console.log(arguments,this);
                     }
                 });
-            },
-            select: function (event, ui) {
-                $('#select-modal').addClass("md-show").fadeIn("fast");
-                $('#HIDDEN_MODID_PERM').val(ui.item.id);
-                $('#SEL_PERM_TEXT').val(ui.item.value);
-                $('#u_rights-btn-p_update').hide();
-                $('#u_rights-btn-select').show();
-                if (IfCanShowPriceAndAmount(ui.item.value)) {$('#ShowPriceAndAmount').show();$CHECKBOXEZ = $('.controlz');} else { $('#ShowPriceAndAmount').hide(); $CHECKBOXEZ = $(".controlz:not(#SHOWPRICEAMOUNT)");}
-                fromMODULEID = true;
             }
-        }).data("ui-autocomplete")._renderItem = function (ul, item) {
-            return $("<li>").append("<a>" + item.value + "</a>").appendTo(ul);
-        };
-
-        $('#_MODULEID').keyup(resizeInput).focusout(function() {
-                $(this).removeClass('focus-red');
-                $(this).val('');
         });
-        $('#_MODULEID').attr('size', 3);
-
-        function resizeInput() {
-            if ($(this).val().length == 0) {
-                $(this).attr('size', 3);
-            }
-            else {
-                $(this).attr('size', $(this).val().length);
-            }
-            $MODULEID.removeClass('focus-red');
-        }
-
-        $('.select-modal').click(function (e) {
-            e.preventDefault();
-            $('#select-modal').addClass("md-show").fadeIn("fast");
-        });
-
-        $('.md-cancel').click(function (e) {
-            e.preventDefault();
-            $('#cb' + disabledBox).prop('disabled',true).prop('checked',true);
-            $('#select-modal').removeClass("md-show").fadeOut("fast");
-            $('.md2-overlay').removeClass("md-show").fadeOut("fast");
-            $('.incheck input:checkbox').not('#cb' + disabledBox).prop('disabled',false).prop("checked", false).removeClass("focus-red").css("box-shadow","0 0 5px 2px transparent");
-            if(fromMODULEID)$MODULEID.focus().select().addClass('focus-red')
-        });
-
-        $('#u_rights-btn-select').click(function (e) {
-            e.preventDefault();
-            var permission = [];
-            permission.push($('#cbFC').prop("checked"));
-            permission.push($('#cbC').prop("checked"));
-            permission.push($('#cbR').prop("checked"));
-            permission.push($('#SHOWPRICEAMOUNT').prop("checked"));
-            var checkedBOX = $('.incheck input:checkbox:checked').not('#cb' + disabledBox);
-            if(checkedBOX.length <= 0)
-            {
-                $('.incheck input:checkbox').not('#cb' + disabledBox).addClass("focus-red").css("box-shadow","0 0 5px 2px red");
-                return;
-            }
-            var id = $('#HIDDEN_MODID_PERM').val();
-            if(id == '1')
-            {
-                if(permission[0]){$('ul#ul-new.ul_tag_data').empty()}
-
-                disabledBox =(permission[0]) ? "" :(permission[1])? 'C': 'R';
-
-                $('.ul_tag_data li a').each(function() {
-                    var str = $(this).attr('rel').split(',');
-                    str[1] = (permission[1])? 'true': str[1];
-                    str[2] = (permission[2])? 'true': str[2];
-                    str[0] = (str[1] == "true")? (str[2] == "true")? (IfCanShowPriceAndAmount($(this).text()))? (str[3] == "true")?"true":"false":"true":"false":"false";
-                    if((str.join(',').match(/true/g)||[]).length < 2){$(this).parent().remove()}
-                    else {$(this).attr('rel',str.join(','))}
-                });
-            }
-            var set_p = permission.join(',');
-            $('.module_list .ul_tag_data').append('<li><a id="' + id + '" rel="' + set_p + '" class="tag_data">' + $('#SEL_PERM_TEXT').val() + '</a><span class="td-close"></span></li>')
-            //$('.module_list ul li.li_tagger').before('<li><a id="' + set_p + '" class="tag_data">' + $('#SEL_PERM_TEXT').val() + '<span onclick="tagDataRemove(this)">x</span></a></li>');
-            $('#_MODULEID').val("");
-            $('#_MODULEID').focus();
-            fromMODULEID = false;
-            $('.md-cancel').click();
-        });
-
-        $('#u_rights-btn-p_update').click(function (e) {
-            e.preventDefault();
-            var permission = [];
-            permission.push($('#cbFC').prop("checked"));
-            permission.push($('#cbC').prop("checked"));
-            permission.push($('#cbR').prop("checked"));
-            permission.push($('#SHOWPRICEAMOUNT').prop("checked"));
-            var checkedBOX = $('.incheck input:checkbox:checked').not('#cb' + disabledBox);
-            if(checkedBOX.length <= 0)
-            {
-                $('.incheck input:checkbox').not('#cb' + disabledBox).addClass("focus-red").css("box-shadow","0 0 5px 2px red");
-                return;
-            }
-            var set_p = permission.join(',');
-            var id = $('#HIDDEN_MODID_PERM').val();
-            /** DO THE CHANGES OF ALL MODULES PERMISSIONS **/
-            if(id == '1')
-            {
-                if(permission[0]){$('ul#ul-new.ul_tag_data li a').not('#'+id).parent().remove()}
-
-                disabledBox =(permission[0]) ? "" :(permission[1])? 'C': 'R';
-
-
-                $('.ul_tag_data li a').not('#'+id).each(function() {
-                    var str = $(this).attr('rel').split(',');
-                    str[1] = (permission[1])? 'true': str[1];
-                    str[2] = (permission[2])? 'true': str[2];
-                    str[0] = (str[1] == "true")? (str[2] == "true")? (IfCanShowPriceAndAmount($(this).text()))? (str[3] == "true")?"true":"false":"true":"false":"false";
-                    $(this).attr('rel',str.join(','));
-                });
-            }
-            $('.ul_tag_data li a#' + id).attr('rel', set_p);
-            $('#_MODULEID').val("");
-            $('#_MODULEID').focus();
-            $('.md-cancel').click();
-        });
-
-        $('#u_rights-btn-p_update').hide();
-
-        $('.ul_tag_data').delegate('li a', 'click', function () {
-            $MODULEID.val('');
-            fromMODULEID = false;
-            $('#u_rights-btn-p_update').show();
-            $('#u_rights-btn-select').hide();
-            $('#select-modal').addClass("md-show").fadeIn("fast");
-            var str = $(this).attr('rel').split(',');
-            $('#HIDDEN_MODID_PERM').val($(this).attr('id'));
-            $('#cbFC').prop("checked",((str[0] == "true") ?  true : false));
-            $('#cbC').prop("checked",((str[1] == "true") ? true : false));
-            $('#cbR').prop("checked",(str[2] == "true") ? true : false);
-            $('#SHOWPRICEAMOUNT').prop("checked",((str[3] == "true") ? true : false));
-            //$('#cb'+ disabledBox).prop("disabled",true);
-            if($(this).attr('id') == '1'){$('.incheck input:checkbox').prop("disabled", false)}
-
-            if (IfCanShowPriceAndAmount($(this).text())) {$('#ShowPriceAndAmount').show();$CHECKBOXEZ = $('.controlz');} else { $('#ShowPriceAndAmount').hide(); $CHECKBOXEZ = $(".controlz:not(#SHOWPRICEAMOUNT)");}
-        });
-
-        $('.ul_tag_data').delegate('span.td-close', 'click', function (event) {
-            event.preventDefault();
-            if($(this).prev().attr('id') == '1'){ disabledBox = "" ;$('#cbC').prop('disabled',false).prop('checked',false); $('#cbR').prop('disabled',false).prop('checked',false); }
-            $(this).parent().remove();
-        });
-
-        // $("input.group1").prop("disabled", true);
-        /* SET PERMISSION CHECK BOXES*/
-        $FC_CHECKALL = $('#cbFC');
-        $CHECKBOXEZ = $('.controlz');
-        /* FULL CONTROL INPUT CHECKBOXES  By Ruel Matitu*/
-            $FC_CHECKALL.on('click', function () {
-                $CHECKBOXEZ.not(":disabled").prop("checked",$(this).prop("checked"));
-            });
-
-        /* UNCHECK FULL CONTROL CHECKBOX WHEN NOT ALL CHECKBOX IS CHECKED */
-            $('.controlz').on('click', function () {
-                var checked = $(this).prop("checked");
-                if(checked){
-                    $CHECKBOXEZ.each(function () {
-                        if(!checked){return;}
-                        checked = $(this).prop("checked");
-                    });
-                }
-                $FC_CHECKALL.prop("checked",checked);
-            });
-        $('.incheck input:checkbox').click(function () {
-            $('.incheck input:checkbox').removeClass("focus-red").css("box-shadow","0 0 5px 2px transparent");
-        });
-    });
-
+        //$('.demo').dropdown({
+        //    data: json2.data,
+        //    limitCount: 40,
+        //    multipleMode: 'label',
+        //    choice: function () {
+        //        // console.log(arguments,this);
+        //    }
+        //});
+    })
 </script>
 
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.Id);
-    <div style="display: inline-block; vertical-align: top;">
-
-        @*<div style="padding: 5px 10px;">
-                <div class="font-a">USER</div>
-                <div style="position: relative;">
-                    @Html.Hidden("duserid", null, new { id = "userid_hidden" })
-                    @Html.TextBox("USER", null,
-                    new { @class = "frm-cust-txt font-b", id = "_USER" })
-                    <div class="_autocomplete md-shadow">
-                        <ul class="AC_LIST">
-                        </ul>
-                    </div>
-                </div>
-            </div>*@
-
-        <div style="padding: 5px 10px;">
-            <div class="font-a">ROLE</div>
-            @*<div>@Html.DropDownList("ROLEID", null, null, new { @class = "frm-cust-txt font-b" })</div>*@
-        </div>
-
-        <div style="padding: 5px 10px;">
-            <div class="font-a">CODE</div>
-            @Html.TextBoxFor(model => model.FullName,
-                new { @class = "frm-cust-txt font-b" })
-            <div style="color: red;" class="font-b">@Html.ValidationMessageFor(model => model.FullName)</div>
-        </div>
-
-        <div style="padding: 5px 10px;" id="UNAME">
-            <div class="font-a">NAME</div>
-            @Html.TextBoxFor(model => model.Remarks,
-                new { @class = "frm-cust-txt font-b" })
-            <div style="color: red;" class="font-b">@Html.ValidationMessageFor(model => model.Remarks)</div>
-        </div>
-
-        <div style="padding: 5px 10px;">
-            <div class="font-a">DESCRIPTION</div>
-            @Html.TextAreaFor(model => model.ShortName,
-                new { @class = "frm-cust-txt font-b mLineCls" })
-        </div>
-
-        <div style="padding: 5px 10px;">
-            <div class="font-a">MODULES</div>
-            <div>
-                <div class="module_list">
-                    <ul id="ul-new" class="ul_tag_data">
-                    </ul>
-                    <div class="li_tagger">
-                        @Html.Hidden("dmoduleid", null, new { id = "moduleid_hidden" })
-                        @Html.TextBox("MODULE", null, new { @class = "frm-cust-txt font-b txtTagger", id = "_MODULEID", autocomplete = "off" })
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr style="border-color: red; opacity: 0.2;" />
-
-    <div class="md-modal md-effect-1" id="select-modal" style="width: 320px;">
-        <div class="md-content">
-            <h3 class="md-sel">SET PERMISSION</h3>
-            <div>
-                @Html.Hidden("ID PERMISSION", null, new { id = "HIDDEN_MODID_PERM" })
-                @Html.Hidden("SELECTED PERMISSION", null, new { id = "SEL_PERM_TEXT" })
-                <div style="padding: 20px; -webkit-user-select: none;" class="incheck">
-                    <div>
-                        <div style="display: inline-block; vertical-align: middle; margin-top: -2px;">
-                            @Html.CheckBox("FULL CONTROL", false, new { id = "cbFC" })
-                        </div>
-                        <div style="display: inline-block; vertical-align: top;">FULL CONTROL</div>
-                    </div>
-                    <div>
-                        <div style="display: inline-block; vertical-align: middle; margin-top: -2px;">
-                            @Html.CheckBox("CHANGE", false, new { id = "cbC", @class = "controlz" })
-                        </div>
-                        <div style="display: inline-block; vertical-align: top;">CHANGE</div>
-                    </div>
-                    <div>
-                        <div style="display: inline-block; vertical-align: middle; margin-top: -2px;">
-                            @Html.CheckBox("READ", false, new { id = "cbR", @class = "controlz" })
-                        </div>
-                        <div style="display: inline-block; vertical-align: top;">READ</div>
-                    </div>
-                    <div id="ShowPriceAndAmount">
-                        <div style="display: inline-block; vertical-align: middle; margin-top: -2px;">
-                            @Html.CheckBox("SHOW PRICE AND AMOUNT", false, new { id = "SHOWPRICEAMOUNT", @class = "controlz" })
-                        </div>
-                        <div style="display: inline-block; vertical-align: top;">SHOW PRICE AND AMOUNT</div>
-                    </div>
-                </div>
-                <button class="md-cancel btn-close grid-btn">CANCEL</button>
-                <button id="u_rights-btn-select" class="btn-crud grid-btn btn-success">SET</button>
-                <button id="u_rights-btn-p_update" class="btn-crud grid-btn btn-success">UPDATE</button>
-                <div style="clear: both;"></div>
-            </div>
-        </div>
-    </div>
-    <div class="md2-overlay"></div>
-}
 
