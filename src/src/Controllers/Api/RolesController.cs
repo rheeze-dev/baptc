@@ -80,5 +80,27 @@ namespace src.Controllers.Api
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
+
+        // POST: api/ModuleConfig/GetModules
+        [HttpGet("GetUsers")]
+        public IActionResult GetUsers()
+        {
+            List<ApplicationUser> currentUser = _context.ApplicationUser.ToList();
+            var userModules = currentUser;
+            List<ApplicationUser> listUser = _context.ApplicationUser.ToList();
+
+            //if (userModules != null)
+            //{
+            //    var query = from val in userModules.Split(',')
+            //                select (val);
+            //    foreach (var item in listUser)
+            //    {
+            //        bool containsItem = query.Any(x => x == item.FullName);
+            //        if (containsItem)
+            //            item.Selected = true;
+            //    }
+            //}
+            return Json(new { data = listUser });
+        }
     }
 }
