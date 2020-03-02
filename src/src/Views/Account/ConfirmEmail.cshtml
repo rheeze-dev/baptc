@@ -3,11 +3,24 @@
     Layout = "~/Views/Shared/_LayoutAdminlteBlank.cshtml";
 }
 
-<div class="register-box-body bg-white">
-    <h2>Confirmed successfully!</h2>
-    <h3>Thank you for confirming your email address.</h3>
-    <h3>
-        <a href="@Url.Action("Index", "Config")" class="small-box-footer"><i class="fa fa-gear"></i> Let's Get Started</a>
-    </h3>
-</div>
+<style>
+    #test {
+        border-radius: 50px;
+        background: lightblue;
+        padding: 30px;
+        width: 420px;
+        height: 250px;
+    }
+</style>
+<center>
+    <font size="6">
+        <p id="test">
+            <b> Registered successfully!</b>
+            Thank you for confirming your email address.
+        </p>
+    </font>
+    <br>
+    <br>
+    <a href="@Url.Action("Index", "Config")" class="small-box-footer"><font size="5" color="black"><i class="fa fa-gear"></i>Let's Get Started</font></a>
+</center>
 

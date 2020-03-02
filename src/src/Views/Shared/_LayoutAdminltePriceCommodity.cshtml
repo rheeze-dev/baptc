@@ -57,6 +57,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
         <!--fontawesome-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <!-- DateTimePicker -->
+        <link rel="stylesheet" href="~/lib/DateTimePicker/bootstrap-datetimepicker.min.css" />
     </environment>
 
     <!-- Ladda style -->
@@ -143,20 +145,20 @@
                                 </a>
                             </li>
                             @*<li class="@Html.IsSelected(controller: "SupportAgent")">
-                                <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
-                                    <i class="fa fa-th"></i> <span>Support Agents</span>
-                                </a>
-                            </li>
-                            <li class="@Html.IsSelected(controller: "SupportEngineer")">
-                                <a href="@Url.Action("Index", "SupportEngineer", new { org = org })">
-                                    <i class="fa fa-th"></i> <span>Support Engineers</span>
-                                </a>
-                            </li>
-                            <li class="@Html.IsSelected(controller: "Ticket")">
-                                <a href="@Url.Action("Index", "Ticket", new { org = org })">
-                                    <i class="fa fa-th"></i> <span>Ticket</span>
-                                </a>
-                            </li>*@
+                                    <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
+                                        <i class="fa fa-th"></i> <span>Support Agents</span>
+                                    </a>
+                                </li>
+                                <li class="@Html.IsSelected(controller: "SupportEngineer")">
+                                    <a href="@Url.Action("Index", "SupportEngineer", new { org = org })">
+                                        <i class="fa fa-th"></i> <span>Support Engineers</span>
+                                    </a>
+                                </li>
+                                <li class="@Html.IsSelected(controller: "Ticket")">
+                                    <a href="@Url.Action("Index", "Ticket", new { org = org })">
+                                        <i class="fa fa-th"></i> <span>Ticket</span>
+                                    </a>
+                                </li>*@
                         }
                         @if (appUser.IsCustomer)
                         {
@@ -257,7 +259,8 @@
     <script src="~/lib/fastclick/lib/fastclick.js"></script>
     <!-- AdminLTE App -->
     <script src="~/adminlte/js/adminlte.min.js"></script>
-
+    <!-- DateTimePicker -->
+    <script src="~/lib/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.sidebar-menu').tree()

@@ -43,6 +43,17 @@ namespace src.Controllers
 
         }
 
+        public IActionResult UserRoles(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public IActionResult ConfigRoles(Guid org, int id)
         {
             if (id == 0)

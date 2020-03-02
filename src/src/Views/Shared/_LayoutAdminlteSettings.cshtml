@@ -139,11 +139,11 @@
                                     <i class="fa fa-th"></i> <span>Roles</span>
                                 </a>
                             </li>
-                            @*<li class="@Html.IsSelected(controller: "Ticketing",action:"TicketingOut")">
-                                    <a href="@Url.Action("TicketingOut", "Ticketing", new { org = org })">
-                                        <i class="fa fa-th"></i> <span>Ticketing Out</span>
+                            <li class="@Html.IsSelected(controller: "Settings",action:"UserRoles")">
+                                    <a href="@Url.Action("UserRoles", "Settings", new { org = org })">
+                                        <i class="fa fa-th"></i> <span>User Roles</span>
                                     </a>
-                                </li>*@
+                                </li>
                             @*<li class="@Html.IsSelected(controller: "SupportAgent")">
                                     <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
                                         <i class="fa fa-th"></i> <span>Support Agents</span>

@@ -15,15 +15,23 @@
         <input type="hidden" asp-for="priceCommodityId" />
         @*<input type="hidden" asp-for="organizationId" />*@
         <div class="form-group">
-            <label asp-for="time" class="control-label"></label>
-            <input asp-for="time" class="form-control" />
-            <span asp-validation-for="time" class="text-danger"></span>
+            <label asp-for="time" class="control-label">Time</label>
+            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="time">
+                <input asp-for="time" class="form-control" size="16" type="text" value="" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="" />
         </div>
 
         <div class="form-group">
-            <label asp-for="commodityDate" class="control-label"></label>
-            <input asp-for="commodityDate" class="form-control" value="@DateTime.Now"/>
-            <span asp-validation-for="commodityDate" class="text-danger"></span>
+            <label asp-for="commodityDate" class="control-label">Commodity Date</label>
+            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="commodityDate">
+                <input asp-for="commodityDate" class="form-control" size="16" type="text" value="" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="" />
         </div>
 
         <div class="form-group">
@@ -60,6 +68,15 @@
 
 <script>
     Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
 </script>
 
 
