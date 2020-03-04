@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200303091444_ApplicationUserUpdate")]
+    partial class ApplicationUserUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,6 +223,8 @@ namespace src.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("Module");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -667,11 +670,7 @@ namespace src.Migrations
 
                     b.Property<string>("Module");
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("Remarks");
-
-                    b.Property<bool>("Selected");
 
                     b.Property<string>("ShortName");
 
@@ -854,11 +853,9 @@ namespace src.Migrations
 
                     b.Property<DateTime>("DateAdded");
 
-                    b.Property<string>("Modules");
-
                     b.Property<string>("Remarks");
 
-                    b.Property<string>("RoleId");
+                    b.Property<int>("RoleId");
 
                     b.Property<int>("UserId");
 

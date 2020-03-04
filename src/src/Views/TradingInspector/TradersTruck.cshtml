@@ -6,6 +6,7 @@
 
 <!-- Content Header (Page header) -->
 <!-- Main content -->
+<link rel="stylesheet" href="~/lib/DateTimePicker/bootstrap-datetimepicker.min.css" />
 <section class="content">
     <div class="row">
         <div class="col-lg-10">
@@ -17,8 +18,12 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-11">Traders Truck</th>
-                                        <th class="col-md-1"></th>
+                                        <th class="col-md-2">Date</th>
+                                        <th class="col-md-2">Plate Number</th>
+                                        <th class="col-md-2">Trader Name</th>
+                                        <th class="col-md-2">Estimated Volume (kgs)</th>
+                                        <th class="col-md-2">Destination</th>
+                                        <th class="col-md-2">Actions</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -53,5 +58,6 @@
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script src="~/js/views/ticket/index.js"></script>
+    <script src="~/lib/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
 }
 

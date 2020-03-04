@@ -102,5 +102,64 @@ namespace src.Controllers.Api
             //}
             return Json(new { data = listUser });
         }
+        //[HttpPost("ConfigUserRoles")]
+        public IActionResult ConfigUserRole(int userId)
+        {
+            ApplicationUser applicationUser = _context.ApplicationUser.Where(user => user.UserId == userId).FirstOrDefault();
+
+            return Json(new { data = applicationUser });
+
+        }
+
+        // POST: api/Roles/PostUserRole
+        [HttpPost("PostUserRole")]
+        public async Task<IActionResult> PostUserRole(UserRole userRole)
+        {
+            int id = userRole.Id;
+            if (id == 0)
+            {
+                UserRole newUserRole = new UserRole
+                {
+                    Remarks = userRole.Remarks,
+                    RoleId = userRole.RoleId,
+                    UserId = userRole.UserId,
+                    Modules = userRole.Modules,
+                    DateAdded = DateTime.UtcNow
+                };
+                _context.UserRole.Add(newUserRole);
+            }
+            else
+            {
+                UserRole updateUserRole = _context.UserRole.Where(x => x.Id == id && x.UserId == userRole.UserId).FirstOrDefault();
+                updateUserRole.Remarks = userRole.Remarks;
+                updateUserRole.RoleId = userRole.RoleId;
+                updateUserRole.Modules = userRole.Modules;
+                _context.UserRole.Update(updateUserRole);
+            }
+            
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+        // POST: api/Roles/GetUserRoleByUserID
+        [HttpPost("GetUserRoleByUserID")]
+        public IActionResult GetUserRoleByUserID(int userId)
+        {
+            UserRole userRole = _context.UserRole.Where(x => x.UserId == userId).FirstOrDefault();
+            var userSelectedRoles = userRole.RoleId;
+            List<Roles> listRole = _context.Role.ToList();
+            if (userSelectedRoles != null)
+            {
+                var query = from val in userSelectedRoles.Split(',')
+                            select (val);
+                foreach (var item in listRole)
+                {
+                    bool containsItem = query.Any(x => x == item.Name);
+                    if (containsItem)
+                        item.Selected = true;
+                }
+            }
+            return Json(new { data = listRole });
+        }
+
     }
 }

@@ -1,0 +1,198 @@
+﻿@*@model src.Models.ApplicationUser*@
+@model Tuple<src.Models.ApplicationUser,src.Models.UserRole>
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Config / Edit Data</h4>
+</div>
+<form>
+    <div class="box-body">
+        <input type="hidden" asp-for="@Model.Item1.UserId" />
+        <input type="hidden" id="UserRoleId" asp-for="@Model.Item2.Id" />
+
+        <div class="form-group">
+            <label asp-for="@Model.Item1.UserId" class="control-label">User Id: </label>
+            <label class="text-warning">@Model.Item1.UserId</label>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Item1.FullName" class="control-label">Full name: </label>
+            <label class="text-warning">@Model.Item1.FullName</label>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="@Model.Item1.Email" class="control-label">Email: </label>
+                    <label class="text-warning">@Model.Item1.Email</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="@Model.Item2.Remarks" class="control-label">Remarks: </label>
+                    <input asp-for="Item2.Remarks" class="form-control" />
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="roles form-group">
+                    <label asp-for="Item2.RoleId" class="control-label">Role</label>
+                    <select style="display:none" name="" multiple>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modules form-group">
+                    <label asp-for="Item2.Modules" class="control-label"></label>
+                    <select style="display:none" name="" multiple>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-footer">
+        <button type="button" id="SaveUserRoleConfig" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    jQuery(function ($) {
+        $.ajax({
+            type: 'POST',
+            url: "/api/Roles/GetUserRoleByUserID",
+            data: {userId:@Model.Item1.UserId},
+            success: function (d) {
+                $('.roles').dropdown({
+                    data: d.data,
+                    limitCount: 40,
+                    multipleMode: 'label',
+                    choice: function () {
+                        // console.log(arguments,this);
+                    }
+                });
+            }
+        });
+        $("#SaveUserRoleConfig").on("click", function (e) {
+            //alert(@Model.Item2.Remarks);@Model.Item2.Id
+            var selectedRole = [];
+            $('.roles .dropdown-selected').each(function () {
+                var currentElement = $(this);
+                $(currentElement).find('i').remove();
+                var value = currentElement.html(); 
+                //console.log(value);
+                selectedRole.push(value);
+                // TODO: do something with the value
+            });
+            //console.log(selectedRole.join(", "));
+            var rolesSelected = selectedRole.join(",");
+            var param = {
+                Id:@Model.Item2.Id,
+                UserId:@Model.Item1.UserId,
+                Remarks: $("#Item2_Remarks").val(),
+                RoleId: rolesSelected
+            };
+            $.ajax({
+                type: 'POST',
+                url: "/api/Roles/PostUserRole",
+                data: param,
+                success: function (d) {
+                    if (d.success) {
+                        popup.modal('hide');
+                        ShowMessage(d.message);
+                        dataTable.ajax.reload();
+                    } else {
+                        ShowMessageError(d.message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+@*<script>
+        Ladda.bind('.btn', { timeout: 1000 });
+
+        jQuery(function ($) {
+            //alert("test");
+            //$(".demo").dropdown();
+
+            //var json1 = {
+            //    data: {
+            //        test: "asdf",
+            //        test2:"qwerty"
+            //    }
+            //}
+            //alert(JSON.stringify(json1));
+
+            var json2 = {
+                data: [{
+                    "id": 1,
+                    "disabled": false,
+                    "selected": true,
+                    "name": "Laura Melissa Robinson"
+                }, {
+                    "id": 2,
+                    "disabled": false,
+                    "selected": false,
+                    "name": "Test"
+                }, {
+                    "id": 3,
+                    "disabled": false,
+                    "selected": false,
+                    "name": "sample"
+                }
+                ]
+            }
+            //alert(JSON.stringify(json1));
+            $("#SaveUserRoleConfig").on("click", function () {
+                var selectedRole = [];
+                $('.dropdown-selected').each(function () {
+                    var currentElement = $(this);
+                    $(currentElement).find('i').remove();
+                    var value = currentElement.html();
+                    //console.log(value);
+                    selectedRole.push(value);
+                    // TODO: do something with the value
+                });
+                //console.log(selectedRole.join(", "));
+                var roleModules = selectedRole.join(",");
+                $.ajax({
+                    type: 'POST',
+                    url: "/api/Roles/ConfigUserRole",
+                    data: { userId:@Model.UserId},
+                    success: function (d) {
+                        alert(JSON.stringify(d));
+                        return false;
+                   //if (d.success) {
+                   //     popup.modal('hide');
+                   //     ShowMessage(d.message);
+                   //     dataTable.ajax.reload();
+                   // } else {
+                   //     ShowMessageError(d.message);
+                   // }
+                }
+            });
+            })
+            //console.log(json2);
+            //$('.demo').dropdown({
+            //    data: json2.data,
+            //    limitCount: 40,
+            //    multipleMode: 'label',
+            //    choice: function () {
+            //        // console.log(arguments,this);
+            //    }
+            //});
+        })
+    </script>*@

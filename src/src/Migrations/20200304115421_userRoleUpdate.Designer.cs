@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200304115421_userRoleUpdate")]
+    partial class userRoleUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -667,11 +668,7 @@ namespace src.Migrations
 
                     b.Property<string>("Module");
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("Remarks");
-
-                    b.Property<bool>("Selected");
 
                     b.Property<string>("ShortName");
 

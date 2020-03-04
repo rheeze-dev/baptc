@@ -10,5 +10,7 @@ namespace src.Models
         public DateTime DateAdded { get; set; }
         public string Remarks { get; set; }
         public string Module { get; set; }
+        public bool Selected { get; set; }
+        public string Name { get; set; }
     }
 }

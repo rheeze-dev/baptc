@@ -15,9 +15,10 @@ $(document).ready(function () {
             { "data": "userId" },
             { "data": "fullName" },
             { "data": "email" },
+            { "data": "emailConfirmed" },
             {
                 "data": function (data) {
-                    var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigRoles?id=" + data["id"] + "')><i class='fa fa-cog' title='Config'></i></a>";
+                    var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
                     var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     return btnConfig + btnDelete;
                 }

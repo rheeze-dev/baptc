@@ -81,5 +81,38 @@ namespace src.Controllers
             }
 
         }
+
+        public IActionResult ConfigUserRoles(Guid org, int userId)
+        {
+            if (userId == 0)
+            {
+                ApplicationUser userRoles = new ApplicationUser();
+                //ticketing.ticketingId = org;
+                return View(userRoles);
+            }
+            else
+            {
+                ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+                //UserRole userRole = new UserRole();
+                UserRole userRole = _context.UserRole.Where(x => x.UserId == userId).FirstOrDefault();
+                if (userRole == null)
+                {
+                    userRole = new UserRole();
+                }
+                var TubleList = new Tuple<ApplicationUser, UserRole>(applicationUser, userRole);
+                return View(TubleList);
+            }
+
+        }
+
+        //public IActionResult ConfigUserRoles(int userId)
+        //{
+        //    //ApplicationUser appUser = await _userManager.GetUserAsync(User);
+        //    //Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+        //    //ViewData["org"] = org;
+        //    //ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId == userId).FirstOrDefault();
+        //    return View(_context.ApplicationUser.Where(x => x.UserId == userId).FirstOrDefault());
+        //}
+
     }
 }
