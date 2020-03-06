@@ -69,6 +69,29 @@ namespace src.Controllers.Api
             return Json(new { data = listModule });
         }
 
+        // POST: api/ModuleConfig/GetUserModuleByUserID
+        [HttpPost("GetUserModuleByUserID")]
+        public IActionResult GetUserModuleByUserID(int userId)
+        {
+            UserRole userRole = _context.UserRole.Where(x => x.UserId == userId).FirstOrDefault();
+            var userSelectedModules = userRole.Modules;
+            List<Module> listRole = _context.Modules.ToList();
+
+            if (userSelectedModules != null)
+            {
+                var query = from val in userSelectedModules.Split(',')
+                            select (val);
+                foreach (var item in listRole)
+                {
+                    bool containsItem = query.Any(x => x == item.Name);
+                    if (containsItem)
+                        item.Selected = true;
+                }
+            }
+
+            return Json(new { data = listRole });
+        }
+
         [HttpPost("UpdateRoleModules")]
         public async Task<IActionResult> UpdateRoleModules(int roleId,string selectedModule)
         {

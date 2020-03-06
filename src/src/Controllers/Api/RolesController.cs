@@ -57,6 +57,7 @@ namespace src.Controllers.Api
                 FullName = model["FullName"].ToString(),
                 Remarks = model["Remarks"].ToString(),
                 ShortName = model["ShortName"].ToString(),
+                Name = model["ShortName"].ToString(),
             };
             if (id == 0)
             {

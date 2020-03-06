@@ -69,6 +69,8 @@
     </div>
 </form>
 <script>
+    Ladda.bind('.btn', { timeout: 1000 });
+
     jQuery(function ($) {
         $.ajax({
             type: 'POST',
@@ -88,6 +90,7 @@
         $("#SaveUserRoleConfig").on("click", function (e) {
             //alert(@Model.Item2.Remarks);@Model.Item2.Id
             var selectedRole = [];
+            var selectedModule = [];
             $('.roles .dropdown-selected').each(function () {
                 var currentElement = $(this);
                 $(currentElement).find('i').remove();
@@ -96,13 +99,22 @@
                 selectedRole.push(value);
                 // TODO: do something with the value
             });
+
+            $('.modules .dropdown-selected').each(function () {
+                var currentElement = $(this);
+                $(currentElement).find('i').remove();
+                var value = currentElement.html();
+                selectedModule.push(value);
+            });
             //console.log(selectedRole.join(", "));
             var rolesSelected = selectedRole.join(",");
+            var modulesSelected = selectedModule.join(",");
             var param = {
                 Id:@Model.Item2.Id,
                 UserId:@Model.Item1.UserId,
                 Remarks: $("#Item2_Remarks").val(),
-                RoleId: rolesSelected
+                RoleId: rolesSelected,
+                Modules: modulesSelected
             };
             $.ajax({
                 type: 'POST',
@@ -118,6 +130,21 @@
                     }
                 }
             });
+        });
+        $.ajax({
+            type: 'POST',
+            url: "/api/ModuleConfig/GetUserModuleByUserID",
+            data: { userId: @Model.Item1.UserId},
+            success: function (d) {
+                $('.modules').dropdown({
+                    data: d.data,
+                    limitCount: 40,
+                    multipleMode: 'label',
+                    choice: function () {
+
+                    }
+                });
+            }
         });
     });
 </script>
