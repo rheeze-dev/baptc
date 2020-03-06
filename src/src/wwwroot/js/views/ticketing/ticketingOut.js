@@ -13,22 +13,22 @@ $(document).ready(function () {
         },
         "columns": [
             //{ "data": "commodityDate" },
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["timeIn"]);
-            //        var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
-            //        return output;
-            //    }
-            //},
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["timeOut"]);
-            //        var output = setClockTime(d);
-            //        return output;
-            //    }
-            //},
-            //{ "data": "plateNumber" },
-            //{ "data": "typeOfTransaction" },
+            {
+                "data": function (data) {
+                    var d = new Date(data["timeOut"]);
+                    var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+                    return output;
+                }
+            },
+            {
+                "data": function (data) {
+                    var d = new Date(data["timeOut"]);
+                    var output = setClockTime(d);
+                    return output;
+                }
+            },
+            { "data": "plateNumber" },
+            { "data": "typeOfTransaction" },
             { "data": "gatePassDate" },
             //{ "data": "priceRange" },
             //{ "data": "time" },

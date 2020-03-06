@@ -34,8 +34,8 @@ $(document).ready(function () {
             //{ "data": "time" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-pencil'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["priceCommodityId"] + "')><i class='fa fa-trash'></i></a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["priceCommodityId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     return btnEdit + btnDelete;
                 }
             }

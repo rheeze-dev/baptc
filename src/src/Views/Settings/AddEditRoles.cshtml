@@ -14,25 +14,29 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
         @*<input type="hidden" asp-for="organizationId" />*@
-    <div class="form-group">
-        <label asp-for="DateAdded" class="control-label"></label>
-        <input asp-for="DateAdded" class="form-control" />
-        <span asp-validation-for="DateAdded" class="text-danger"></span>
-    </div>
         <div class="form-group">
-            <label asp-for="FullName" class="control-label"></label>
+            <label asp-for="DateAdded" class="control-label">Date added</label>
+            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="DateAdded">
+                <input asp-for="DateAdded" class="form-control" size="16" type="text" value="" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="" />
+        </div>
+        <div class="form-group">
+            <label asp-for="FullName" class="control-label">Full name</label>
             <input asp-for="FullName" class="form-control" />
             <span asp-validation-for="FullName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Remarks" class="control-label"></label>
+            <label asp-for="Remarks" class="control-label">Remarks</label>
             <input asp-for="Remarks" class="form-control" />
             <span asp-validation-for="Remarks" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label asp-for="ShortName" class="control-label"></label>
+                    <label asp-for="ShortName" class="control-label">Short name</label>
                     <input asp-for="ShortName" class="form-control" />
                     <span asp-validation-for="ShortName" class="text-danger"></span>
                 </div>
@@ -77,6 +81,15 @@
 </form>
 <script>
     Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
 </script>
 
 
