@@ -4,10 +4,10 @@ var apiurl = '/api/' + entity;
 
 $(document).ready(function () {
     //alert(entity);
-    var organizationId = $('#organizationId').val();
+    //var organizationId = $('#organizationId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
-            "url": apiurl + '/' + organizationId,
+            "url": apiurl + '/GetFarmersTruck',
             "type": 'GET',
             "datatype": 'json'
         },
@@ -28,14 +28,17 @@ $(document).ready(function () {
                 }
             },
             { "data": "plateNumber" },
-            { "data": "traderName" },
-            { "data": "estimatedVolume" },
-            { "data": "destination" },
-            //{ "data": "priceRange" },
-            //{ "data": "time" },
+            { "data": "stallNumber" },
+            { "data": "farmersName" },
+            { "data": "organization" },
+            { "data": "commodity" },
+            { "data": "volume" },
+            { "data": "barangay" },
+            { "data": "province" },
+            { "data": "facilitatorsName" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditTradersTruck?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditFarmersTruck?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     return btnEdit + btnDelete;
                 }
@@ -87,7 +90,7 @@ function SubmitAddEdit(form) {
         //return true;
         $.ajax({
             type: 'POST',
-            url: apiurl,
+            url: "/api/Inspector/PostFarmersTruck",
             //url: '/PriceCommodity/PostPriceCommodity',
             data: data,
             contentType: 'application/json',
@@ -118,7 +121,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/' + id,
+            url: apiurl + '/Farmers/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

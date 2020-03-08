@@ -47,6 +47,12 @@ namespace src.Data
 
         public DbSet<src.Models.Module> Modules { get; set; }
 
+        public DbSet<src.Models.TradersTruck> TradersTruck { get; set; }
+
+        public DbSet<src.Models.FarmersTruck> FarmersTruck { get; set; }
+
+        public DbSet<src.Models.ShortTrip> ShortTrip { get; set; }
+
         public DbSet<src.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

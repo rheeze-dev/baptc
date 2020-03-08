@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace src.Migrations
 {
-    public partial class initialdb : Migration
+    public partial class ResetDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,12 +47,50 @@ namespace src.Migrations
                     ProfilePictureUrl = table.Column<string>(maxLength: 250, nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     WallpaperPictureUrl = table.Column<string>(maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FarmersTruck",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Barangay = table.Column<string>(nullable: true),
+                    Commodity = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    FacilitatorsName = table.Column<string>(nullable: true),
+                    FarmersName = table.Column<string>(nullable: true),
+                    Organization = table.Column<string>(nullable: true),
+                    PlateNumber = table.Column<string>(nullable: true),
+                    Province = table.Column<string>(nullable: true),
+                    StallNumber = table.Column<string>(nullable: true),
+                    Volume = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FarmersTruck", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Modules",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Selected = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Modules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,6 +108,109 @@ namespace src.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Organization", x => x.organizationId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceCommodity",
+                columns: table => new
+                {
+                    priceCommodityId = table.Column<Guid>(nullable: false),
+                    classVariety = table.Column<string>(nullable: true),
+                    commodity = table.Column<string>(nullable: true),
+                    commodityDate = table.Column<DateTime>(nullable: false),
+                    commodityRemarks = table.Column<string>(nullable: true),
+                    priceRange = table.Column<double>(nullable: false),
+                    time = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceCommodity", x => x.priceCommodityId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateAdded = table.Column<DateTime>(nullable: false),
+                    FullName = table.Column<string>(nullable: true),
+                    Module = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Remarks = table.Column<string>(nullable: true),
+                    Selected = table.Column<bool>(nullable: false),
+                    ShortName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShortTrip",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Commodity = table.Column<string>(nullable: true),
+                    EstimatedVolume = table.Column<int>(nullable: false),
+                    PlateNumber = table.Column<string>(nullable: true),
+                    TimeIn = table.Column<DateTime>(nullable: false),
+                    TimeOut = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShortTrip", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ticketing",
+                columns: table => new
+                {
+                    ticketingId = table.Column<Guid>(nullable: false),
+                    gatePassDate = table.Column<string>(nullable: true),
+                    plateNumber = table.Column<string>(nullable: true),
+                    timeIn = table.Column<DateTime>(nullable: false),
+                    timeOut = table.Column<DateTime>(nullable: false),
+                    typeOfTransaction = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ticketing", x => x.ticketingId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TradersTruck",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Destination = table.Column<string>(nullable: true),
+                    EstimatedVolume = table.Column<int>(nullable: false),
+                    PlateNumber = table.Column<string>(nullable: true),
+                    TraderName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TradersTruck", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateAdded = table.Column<DateTime>(nullable: false),
+                    Modules = table.Column<string>(nullable: true),
+                    Remarks = table.Column<string>(nullable: true),
+                    RoleId = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -296,7 +437,7 @@ namespace src.Migrations
                     CreateBy = table.Column<string>(nullable: true),
                     contactId = table.Column<Guid>(nullable: false),
                     customerId = table.Column<Guid>(nullable: false),
-                    description = table.Column<string>(maxLength: 200, nullable: false),
+                    description = table.Column<string>(maxLength: 200, nullable: true),
                     email = table.Column<string>(maxLength: 100, nullable: true),
                     organizationId = table.Column<Guid>(nullable: false),
                     phone = table.Column<string>(maxLength: 20, nullable: true),
@@ -461,7 +602,22 @@ namespace src.Migrations
                 name: "Contact");
 
             migrationBuilder.DropTable(
+                name: "FarmersTruck");
+
+            migrationBuilder.DropTable(
+                name: "Modules");
+
+            migrationBuilder.DropTable(
+                name: "PriceCommodity");
+
+            migrationBuilder.DropTable(
                 name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "ShortTrip");
 
             migrationBuilder.DropTable(
                 name: "SupportAgent");
@@ -471,6 +627,15 @@ namespace src.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ticket");
+
+            migrationBuilder.DropTable(
+                name: "Ticketing");
+
+            migrationBuilder.DropTable(
+                name: "TradersTruck");
+
+            migrationBuilder.DropTable(
+                name: "UserRole");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

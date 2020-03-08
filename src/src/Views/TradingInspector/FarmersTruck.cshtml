@@ -6,6 +6,7 @@
 
 <!-- Content Header (Page header) -->
 <!-- Main content -->
+<link rel="stylesheet" href="~/lib/DateTimePicker/bootstrap-datetimepicker.min.css" />
 <section class="content">
     <div class="row">
         <div class="col-lg-10">
@@ -17,8 +18,18 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-11">Farmers Truck</th>
-                                        <th class="col-md-1"></th>
+                                        <th class="col-md-1">Date</th>
+                                        <th class="col-md-1">Time</th>
+                                        <th class="col-md-1">Plate number</th>
+                                        <th class="col-md-1">Stall number</th>
+                                        <th class="col-md-1">Farmers name</th>
+                                        <th class="col-md-1">Organization</th>
+                                        <th class="col-md-1">Commodity</th>
+                                        <th class="col-md-1">Volume</th>
+                                        <th class="col-md-1">Barangay</th>
+                                        <th class="col-md-1">Province</th>
+                                        <th class="col-md-1">Facilitators name</th>
+                                        <th class="col-md-1">Actions</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -31,7 +42,7 @@
         <div class="col-lg-2">
             <div class="row">
                 <div class="col-md-12">
-                    <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditFarmersTruck","TradingInspector", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> Add New Farmer Truck</a>
+                    <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditFarmersTruck","TradingInspector", new { org=Model.organizationId })')"><i class="fa fa-plus"></i> Add New Farmers Truck</a>
                 </div>
             </div>
         </div>
@@ -52,7 +63,7 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/tradingInspector/tradersTruck.js"></script>
-    <script src="~/lib/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
+<script src="~/js/views/tradingInspector/farmersTruck.js"></script>
+<script src="~/lib/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
 }
 

@@ -12,8 +12,8 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200304144938_Role-Add-Name")]
-    partial class RoleAddName
+    [Migration("20200308144153_ResetDb")]
+    partial class ResetDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -130,70 +130,6 @@ namespace src.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("src.Models.AbsenceRequest", b =>
-                {
-                    b.Property<Guid>("absenceRequestId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("absenceType")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.Property<string>("approvalStatus")
-                        .HasMaxLength(300);
-
-                    b.Property<DateTime>("fillingDate")
-                        .HasMaxLength(300);
-
-                    b.Property<DateTime>("inclusiveDates")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("reasons");
-
-                    b.Property<string>("remarks");
-
-                    b.Property<string>("supervisor");
-
-                    b.Property<int>("totalNumberOfDays");
-
-                    b.HasKey("absenceRequestId");
-
-                    b.ToTable("AbsenceRequest");
-                });
-
-            modelBuilder.Entity("src.Models.Accreditation", b =>
-                {
-                    b.Property<Guid>("accreditationId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("address");
-
-                    b.Property<string>("areaPlanted")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("crops")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("farmerName")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("monthHarvested");
-
-                    b.Property<string>("monthPlanted");
-
-                    b.Property<string>("municipality");
-
-                    b.Property<string>("plateNumber")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.Property<string>("totalLandArea");
-
-                    b.HasKey("accreditationId");
-
-                    b.ToTable("Accreditation");
-                });
-
             modelBuilder.Entity("src.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -262,55 +198,6 @@ namespace src.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("src.Models.Clerk", b =>
-                {
-                    b.Property<Guid>("clerkId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("classification");
-
-                    b.Property<DateTime>("clerkDate")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("monthPaid")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("orNumber")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("payor");
-
-                    b.Property<double>("totalAmount")
-                        .HasMaxLength(300);
-
-                    b.HasKey("clerkId");
-
-                    b.ToTable("Clerk");
-                });
-
-            modelBuilder.Entity("src.Models.Compensatory", b =>
-                {
-                    b.Property<Guid>("compensatoryId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("applicationDate")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("approvalStatus");
-
-                    b.Property<string>("daysAvailable");
-
-                    b.Property<DateTime>("requestDate")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("supervisor")
-                        .HasMaxLength(300);
-
-                    b.HasKey("compensatoryId");
-
-                    b.ToTable("Compensatory");
                 });
 
             modelBuilder.Entity("src.Models.Contact", b =>
@@ -406,128 +293,34 @@ namespace src.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("src.Models.DayOffAuthorization", b =>
+            modelBuilder.Entity("src.Models.FarmersTruck", b =>
                 {
-                    b.Property<Guid>("dayOffAuthorizationId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("absenceId");
+                    b.Property<string>("Barangay");
 
-                    b.Property<string>("approveStatus")
-                        .HasMaxLength(300);
+                    b.Property<string>("Commodity");
 
-                    b.Property<string>("expectedOutput")
-                        .HasMaxLength(300);
+                    b.Property<DateTime>("Date");
 
-                    b.Property<string>("remarks")
-                        .HasMaxLength(300);
+                    b.Property<string>("FacilitatorsName");
 
-                    b.Property<string>("supervisor");
+                    b.Property<string>("FarmersName");
 
-                    b.Property<string>("tasks")
-                        .IsRequired()
-                        .HasMaxLength(300);
+                    b.Property<string>("Organization");
 
-                    b.HasKey("dayOffAuthorizationId");
+                    b.Property<string>("PlateNumber");
 
-                    b.ToTable("DayOffAuthorization");
-                });
+                    b.Property<string>("Province");
 
-            modelBuilder.Entity("src.Models.Employee", b =>
-                {
-                    b.Property<Guid>("employeeId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("StallNumber");
 
-                    b.Property<string>("designationOffice")
-                        .HasMaxLength(300);
+                    b.Property<int>("Volume");
 
-                    b.Property<string>("employeeName")
-                        .IsRequired()
-                        .HasMaxLength(300);
+                    b.HasKey("Id");
 
-                    b.Property<DateTime>("employmentDate");
-
-                    b.Property<string>("position");
-
-                    b.Property<string>("totalAttendance")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("userPassword")
-                        .HasMaxLength(300);
-
-                    b.HasKey("employeeId");
-
-                    b.ToTable("Employee");
-                });
-
-            modelBuilder.Entity("src.Models.Finance", b =>
-                {
-                    b.Property<Guid>("financeId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("financeName")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.HasKey("financeId");
-
-                    b.ToTable("Finance");
-                });
-
-            modelBuilder.Entity("src.Models.Hr", b =>
-                {
-                    b.Property<Guid>("hrId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("hrName")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.HasKey("hrId");
-
-                    b.ToTable("Hr");
-                });
-
-            modelBuilder.Entity("src.Models.HrForm", b =>
-                {
-                    b.Property<Guid>("HrFormId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("absence")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("compensatory")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.Property<string>("dayOffReport");
-
-                    b.Property<DateTime>("requestDate");
-
-                    b.HasKey("HrFormId");
-
-                    b.ToTable("HrForm");
-                });
-
-            modelBuilder.Entity("src.Models.Inspector", b =>
-                {
-                    b.Property<Guid>("inspectorId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("controlId");
-
-                    b.Property<DateTime>("dateChecked")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("inspectorName")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.Property<string>("typeOfTransaction");
-
-                    b.HasKey("inspectorId");
-
-                    b.ToTable("Inspector");
+                    b.ToTable("FarmersTruck");
                 });
 
             modelBuilder.Entity("src.Models.Module", b =>
@@ -624,39 +417,6 @@ namespace src.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("src.Models.Repair", b =>
-                {
-                    b.Property<Guid>("repairId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("contactNumber");
-
-                    b.Property<string>("destination")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("driverName");
-
-                    b.Property<string>("ownerName")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("remarks");
-
-                    b.Property<string>("repairDetails")
-                        .HasMaxLength(300);
-
-                    b.Property<DateTime>("repairTime");
-
-                    b.Property<string>("requestedName");
-
-                    b.Property<string>("sideMarkings")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.HasKey("repairId");
-
-                    b.ToTable("Repair");
-                });
-
             modelBuilder.Entity("src.Models.Roles", b =>
                 {
                     b.Property<int>("Id")
@@ -681,25 +441,24 @@ namespace src.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("src.Models.Stalls", b =>
+            modelBuilder.Entity("src.Models.ShortTrip", b =>
                 {
-                    b.Property<Guid>("stallsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("payment")
-                        .HasMaxLength(300);
+                    b.Property<string>("Commodity");
 
-                    b.Property<string>("remarks");
+                    b.Property<int>("EstimatedVolume");
 
-                    b.Property<string>("stallOwner")
-                        .IsRequired()
-                        .HasMaxLength(300);
+                    b.Property<string>("PlateNumber");
 
-                    b.Property<string>("transferRequest");
+                    b.Property<DateTime>("TimeIn");
 
-                    b.HasKey("stallsId");
+                    b.Property<DateTime>("TimeOut");
 
-                    b.ToTable("Stalls");
+                    b.HasKey("Id");
+
+                    b.ToTable("ShortTrip");
                 });
 
             modelBuilder.Entity("src.Models.SupportAgent", b =>
@@ -827,25 +586,24 @@ namespace src.Migrations
                     b.ToTable("Ticketing");
                 });
 
-            modelBuilder.Entity("src.Models.Traders", b =>
+            modelBuilder.Entity("src.Models.TradersTruck", b =>
                 {
-                    b.Property<Guid>("tradersId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("address")
-                        .HasMaxLength(300);
+                    b.Property<DateTime>("Date");
 
-                    b.Property<string>("contactNumber");
+                    b.Property<string>("Destination");
 
-                    b.Property<int>("stallId");
+                    b.Property<int>("EstimatedVolume");
 
-                    b.Property<string>("traderName")
-                        .IsRequired()
-                        .HasMaxLength(300);
+                    b.Property<string>("PlateNumber");
 
-                    b.HasKey("tradersId");
+                    b.Property<string>("TraderName");
 
-                    b.ToTable("Traders");
+                    b.HasKey("Id");
+
+                    b.ToTable("TradersTruck");
                 });
 
             modelBuilder.Entity("src.Models.UserRole", b =>
@@ -866,25 +624,6 @@ namespace src.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserRole");
-                });
-
-            modelBuilder.Entity("src.Models.Watchmen", b =>
-                {
-                    b.Property<Guid>("watchmenId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("otherReports");
-
-                    b.Property<string>("repairCheck")
-                        .HasMaxLength(300);
-
-                    b.Property<string>("watchmenName")
-                        .IsRequired()
-                        .HasMaxLength(300);
-
-                    b.HasKey("watchmenId");
-
-                    b.ToTable("Watchmen");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

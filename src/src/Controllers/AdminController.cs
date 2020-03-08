@@ -8,17 +8,17 @@ using src.Models;
 
 namespace src.Controllers
 {
-    public class LinkagesCommunicationsController : Controller
+    public class AdminController : Controller
     {
 
         private readonly ApplicationDbContext _context;
 
-        public LinkagesCommunicationsController(ApplicationDbContext context)
+        public AdminController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult LinkagesCommunications(Guid org)
+        public IActionResult Admin(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -28,6 +28,5 @@ namespace src.Controllers
             ViewData["org"] = org;
             return View(organization);
         }
-
     }
 }

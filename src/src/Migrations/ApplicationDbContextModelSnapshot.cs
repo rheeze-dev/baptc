@@ -292,6 +292,36 @@ namespace src.Migrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("src.Models.FarmersTruck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Barangay");
+
+                    b.Property<string>("Commodity");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("FacilitatorsName");
+
+                    b.Property<string>("FarmersName");
+
+                    b.Property<string>("Organization");
+
+                    b.Property<string>("PlateNumber");
+
+                    b.Property<string>("Province");
+
+                    b.Property<string>("StallNumber");
+
+                    b.Property<int>("Volume");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FarmersTruck");
+                });
+
             modelBuilder.Entity("src.Models.Module", b =>
                 {
                     b.Property<int>("Id")
@@ -408,6 +438,26 @@ namespace src.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("src.Models.ShortTrip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Commodity");
+
+                    b.Property<int>("EstimatedVolume");
+
+                    b.Property<string>("PlateNumber");
+
+                    b.Property<DateTime>("TimeIn");
+
+                    b.Property<DateTime>("TimeOut");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShortTrip");
                 });
 
             modelBuilder.Entity("src.Models.SupportAgent", b =>
@@ -533,6 +583,26 @@ namespace src.Migrations
                     b.HasKey("ticketingId");
 
                     b.ToTable("Ticketing");
+                });
+
+            modelBuilder.Entity("src.Models.TradersTruck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Destination");
+
+                    b.Property<int>("EstimatedVolume");
+
+                    b.Property<string>("PlateNumber");
+
+                    b.Property<string>("TraderName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TradersTruck");
                 });
 
             modelBuilder.Entity("src.Models.UserRole", b =>

@@ -8,17 +8,17 @@ using src.Models;
 
 namespace src.Controllers
 {
-    public class CashClerkController : Controller
+    public class InstitutionalDevelopmentExtensionServicesUnitController : Controller
     {
 
         private readonly ApplicationDbContext _context;
 
-        public CashClerkController(ApplicationDbContext context)
+        public InstitutionalDevelopmentExtensionServicesUnitController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult CashClerk(Guid org)
+        public IActionResult InstitutionalDevelopmentExtensionServicesUnit(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -28,5 +28,6 @@ namespace src.Controllers
             ViewData["org"] = org;
             return View(organization);
         }
+
     }
 }

@@ -8,17 +8,17 @@ using src.Models;
 
 namespace src.Controllers
 {
-    public class OtherOptionalAccountingFunctionsController : Controller
+    public class AssetsAmenitiesManagementUnitController : Controller
     {
 
         private readonly ApplicationDbContext _context;
 
-        public OtherOptionalAccountingFunctionsController(ApplicationDbContext context)
+        public AssetsAmenitiesManagementUnitController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult OtherOptionalAccountingFunctions(Guid org)
+        public IActionResult AssetsAmenitiesManagementUnit(Guid org)
         {
             if (org == Guid.Empty)
             {

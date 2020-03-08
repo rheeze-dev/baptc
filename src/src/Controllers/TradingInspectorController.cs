@@ -55,5 +55,50 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public IActionResult AddEditTradersTruck(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                TradersTruck tradersTruck = new TradersTruck();
+                //ticketing.ticketingId = org;
+                return View(tradersTruck);
+            }
+            else
+            {
+                return View(_context.TradersTruck.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult AddEditFarmersTruck(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                FarmersTruck farmersTruck = new FarmersTruck();
+                //ticketing.ticketingId = org;
+                return View(farmersTruck);
+            }
+            else
+            {
+                return View(_context.FarmersTruck.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult AddEditShortTrip(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                ShortTrip shortTrip = new ShortTrip();
+                //ticketing.ticketingId = org;
+                return View(shortTrip);
+            }
+            else
+            {
+                return View(_context.ShortTrip.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
     }
 }
