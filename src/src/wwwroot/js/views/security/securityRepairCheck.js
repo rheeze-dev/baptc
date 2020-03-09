@@ -1,5 +1,5 @@
 ﻿var popup, dataTable;
-var entity = 'Roles';
+var entity = 'Security';
 var apiurl = '/api/' + entity;
 
 $(document).ready(function () {
@@ -7,20 +7,37 @@ $(document).ready(function () {
     var organizationId = $('#organizationId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
-            "url": apiurl + '/GetUsers' ,
+            "url": apiurl + '/' + organizationId,
             "type": 'GET',
             "datatype": 'json'
         },
         "columns": [
-            { "data": "userId" },
-            { "data": "fullName" },
-            { "data": "email" },
-            { "data": "emailConfirmed" },
+            //{ "data": "commodityDate" },
             {
                 "data": function (data) {
-                    var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
+                    var d = new Date(data["date"]);
+                    var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+                    return output;
+                }
+            },
+            {
+                "data": function (data) {
+                    var d = new Date(data["date"]);
+                    var output = setClockTime(d);
+                    return output;
+                }
+            },
+            { "data": "plateNumber" },
+            { "data": "name" },
+            { "data": "repairDetails" },
+            { "data": "remarks" },
+            //{ "data": "priceRange" },
+            //{ "data": "time" },
+            {
+                "data": function (data) {
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Security/AddEditSecurityRepairCheck?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnConfig + btnDelete;
+                    return btnEdit + btnDelete;
                 }
             }
         ],
@@ -101,7 +118,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/UserRoles/' + id,
+            url: apiurl + '/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

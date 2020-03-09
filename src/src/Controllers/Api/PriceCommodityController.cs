@@ -53,7 +53,7 @@ namespace src.Controllers.Api
             objGuid = Guid.Parse(model["priceCommodityId"].ToString());
             PriceCommodity priceCommodity = new PriceCommodity
             {
-                time = Convert.ToDateTime(model["time"].ToString()),
+                //time = Convert.ToDateTime(model["time"].ToString()),
                 commodityDate = Convert.ToDateTime(model["commodityDate"].ToString()),
                 commodity = model["commodity"].ToString(),
                 commodityRemarks = model["commodityRemarks"].ToString(),

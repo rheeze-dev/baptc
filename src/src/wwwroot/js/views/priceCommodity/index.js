@@ -12,8 +12,6 @@ $(document).ready(function () {
             "datatype": 'json'
         },
         "columns": [
-            { "data": "classVariety" },
-            { "data": "commodity" },
             //{ "data": "commodityDate" },
             {
                 "data": function (data) {
@@ -29,6 +27,8 @@ $(document).ready(function () {
                     return output;
                 }
             },
+            { "data": "classVariety" },
+            { "data": "commodity" },
             { "data": "commodityRemarks" },
             { "data": "priceRange" },
             //{ "data": "time" },

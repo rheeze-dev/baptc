@@ -74,10 +74,20 @@ namespace src.Controllers.Api
 
         // DELETE: api/Roles
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTicketing([FromRoute] int id)
+        public async Task<IActionResult> DeleteRoles([FromRoute] int id)
         {
             Roles roles = _context.Role.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(roles);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete success." });
+        }
+
+        // DELETE: api/Roles
+        [HttpDelete("UserRoles/{id}")]
+        public async Task<IActionResult> DeleteUserRoles([FromRoute] int id)
+        {
+            UserRole userRole = _context.UserRole.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(userRole);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

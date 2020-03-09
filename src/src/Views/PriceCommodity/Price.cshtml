@@ -18,13 +18,13 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-1">Class Variety</th>
-                                        <th class="col-md-2">Commodity</th>
-                                        <th class="col-md-2">Commodity Date</th>
+                                        <th class="col-md-2">Date</th>
                                         <th class="col-md-2">Time</th>
-                                        <th class="col-md-2">Commodity Remarks</th>
-                                        <th class="col-md-2">Price Range</th>
-                                        <th class="col-md-2">Action</th>
+                                        <th class="col-md-1">Class variety</th>
+                                        <th class="col-md-2">Commodity</th>
+                                        <th class="col-md-2">Commodity remarks</th>
+                                        <th class="col-md-2">Price range</th>
+                                        <th class="col-md-1">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -37,7 +37,7 @@
         <div class="col-lg-2">
             <div class="row">
                 <div class="col-md-12">
-                    <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditPrice","PriceCommodity", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> Add New Price</a>
+                    <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditPrice","PriceCommodity", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New price</a>
                 </div>
             </div>
         </div>

@@ -15,17 +15,7 @@
         <input type="hidden" asp-for="priceCommodityId" />
         @*<input type="hidden" asp-for="organizationId" />*@
         <div class="form-group">
-            <label asp-for="time" class="control-label">Time</label>
-            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="time">
-                <input asp-for="time" class="form-control" size="16" type="text" value="" readonly>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            <input type="hidden" id="dtp_input1" value="" />
-        </div>
-
-        <div class="form-group">
-            <label asp-for="commodityDate" class="control-label">Commodity Date</label>
+            <label asp-for="commodityDate" class="control-label">Date</label>
             <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="commodityDate">
                 <input asp-for="commodityDate" class="form-control" size="16" type="text" value="" readonly>
                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
@@ -35,25 +25,25 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="commodity" class="control-label"></label>
+            <label asp-for="commodity" class="control-label">Commodity</label>
             <input asp-for="commodity" class="form-control" />
             <span asp-validation-for="commodity" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="classVariety" class="control-label"></label>
+            <label asp-for="classVariety" class="control-label">Class variety</label>
             <input asp-for="classVariety" class="form-control" />
             <span asp-validation-for="classVariety" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="priceRange" class="control-label"></label>
+            <label asp-for="priceRange" class="control-label">Price range</label>
             <input asp-for="priceRange" class="form-control" />
             <span asp-validation-for="priceRange" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="commodityRemarks" class="control-label"></label>
+            <label asp-for="commodityRemarks" class="control-label">Commodity remarks</label>
             <input asp-for="commodityRemarks" class="form-control" />
             <span asp-validation-for="commodityRemarks" class="text-danger"></span>
         </div>

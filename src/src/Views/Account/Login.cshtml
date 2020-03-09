@@ -12,13 +12,13 @@
 
 @if (ViewData["error"] != null)
 {
-    <input type="hidden" id="error" value="@ViewData["error"].ToString()"/>
+    <input type="hidden" id="error" value="@ViewData["error"].ToString()" />
 }
 
 <div class="login-box-body">
     <p class="login-box-msg"><b>Benguet Agri-Pinoy Trading Center</b></p>
     <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-        
+
         <div class="form-group has-feedback">
             <label asp-for="Email"></label>
             <input asp-for="Email" class="form-control" />
@@ -60,12 +60,12 @@
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
-        $(document).ready(function () { 
+        $(document).ready(function () {
             var error = $('#error').val();
             if (error) {
                 ShowMessageError(error);
             }
-            
+
         });
     </script>
 }
