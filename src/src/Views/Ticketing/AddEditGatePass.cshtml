@@ -1,0 +1,111 @@
+﻿@model src.Models.GatePass
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Add / Edit Data</h4>
+</div>
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        @*<input type="hidden" asp-for="organizationId" />*@
+        <div class="form-group">
+            <label asp-for="Date" class="control-label">Date</label>
+            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="Date">
+                <input asp-for="Date" class="form-control" size="16" type="text" />
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="" />
+        </div>
+        @* <input type="hidden" asp-for="timeIn" />*@
+        @*<div class="form-group">
+            <label asp-for="timeOut" class="control-label">Time Out</label>
+            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="timeOut">
+                <input asp-for="timeOut" class="form-control" size="16" type="text" value="" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            <input type="hidden" id="dtp_input1" value="" />
+        </div>*@
+        @*<div class="form-group">
+            <label asp-for="timeIn" class="control-label"></label>
+            <input asp-for="timeIn" class="form-control" />
+            <span asp-validation-for="timeIn" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="timeOut" class="control-label"></label>
+            <input asp-for="timeOut" class="form-control" />
+            <span asp-validation-for="timeOut" class="text-danger"></span>
+        </div>*@
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="PlateNumber1" class="control-label"></label>
+                    <input asp-for="PlateNumber1" class="form-control" />
+                    <span asp-validation-for="PlateNumber1" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="PlateNumber2" class="control-label"></label>
+                    <input asp-for="PlateNumber2" class="form-control" />
+                    <span asp-validation-for="PlateNumber2" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        @*<div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="website" class="control-label"></label>
+                    <input asp-for="website" class="form-control" />
+                    <span asp-validation-for="website" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="linkedin" class="control-label"></label>
+                    <input asp-for="linkedin" class="form-control" />
+                    <span asp-validation-for="linkedin" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="customerType" class="control-label"></label>
+            <select asp-for="customerType" class="form-control" asp-items="Html.GetEnumSelectList<src.Enum.CustomerType>()"></select>
+            <span asp-validation-for="customerType" class="text-danger"></span>
+        </div>*@
+
+    </div>
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+
+
+

@@ -39,6 +39,17 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public IActionResult GatePass(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public IActionResult AddEditIn(Guid org, Guid id)
         {
             if (id == Guid.Empty)
@@ -69,17 +80,20 @@ namespace src.Controllers
 
         }
 
-        public IActionResult Detail(Guid customerId)
+        public IActionResult AddEditGatePass(Guid org, int id)
         {
-            if (customerId == Guid.Empty)
+            if (id == 0)
             {
-                return NotFound();
+                GatePass gatePass = new GatePass();
+                //customer.organizationId = org;
+                return View(gatePass);
+            }
+            else
+            {
+                return View(_context.GatePass.Where(x => x.Id.Equals(id)).FirstOrDefault());
             }
 
-            Customer customer = _context.Customer.Where(x => x.customerId.Equals(customerId)).FirstOrDefault();
-            ViewData["org"] = customer.organizationId;
-            return View(customer);
         }
-        
+
     }
 }

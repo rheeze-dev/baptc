@@ -44,6 +44,14 @@ namespace src.Controllers.Api
             return Json(new { data = ticketing });
         }
 
+        // GET: api/Ticketing/GetGatePass
+        [HttpGet("GetGatePass")]
+        public IActionResult GetGatePass([FromRoute]Guid organizationId)
+        {
+            var gatePass = _context.GatePass.ToList();
+            return Json(new { data = gatePass });
+        }
+
 
         // POST: api/Ticketing
         [HttpPost]
@@ -73,12 +81,49 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
+        // POST: api/Ticketing/PostGatePass
+        [HttpPost("PostGatePass")]
+        public async Task<IActionResult> PostGatePass([FromBody] JObject model)
+        {
+            int id = 0;
+            id = Convert.ToInt32(model["Id"].ToString());
+            GatePass gatePass = new GatePass
+            {
+                Date = Convert.ToDateTime(model["Date"].ToString()),
+                Name = model["Name"].ToString(),
+                PlateNumber1 = model["PlateNumber1"].ToString(),
+                PlateNumber2 = model["PlateNumber2"].ToString()
+            };
+            if (id == 0)
+            {
+                //gatePass.Id = id();
+                _context.GatePass.Add(gatePass);
+            }
+            else
+            {
+                gatePass.Id = id;
+                _context.GatePass.Update(gatePass);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
         // DELETE: api/Ticketing/
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicketing([FromRoute] Guid id)
         {
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(ticketing);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete success." });
+        }
+
+        // DELETE: api/Ticketing/DeleteGatePass
+        [HttpDelete("DeleteGatePass/{id}")]
+        public async Task<IActionResult> DeleteGatePass([FromRoute] int id)
+        {
+            GatePass gatePass = _context.GatePass.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(gatePass);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
