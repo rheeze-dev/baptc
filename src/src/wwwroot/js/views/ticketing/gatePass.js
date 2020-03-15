@@ -15,21 +15,28 @@ $(document).ready(function () {
             //{ "data": "commodityDate" },
             {
                 "data": function (data) {
-                    var d = new Date(data["date"]);
+                    var d = new Date(data["startDate"]);
                     var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
                     return output;
                 }
             },
             {
                 "data": function (data) {
-                    var d = new Date(data["date"]);
+                    var d = new Date(data["endDate"]);
                     var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
                     return output;
                 }
             },
-            { "data": "name" },
+            { "data": "firstName" },
+            { "data": "lastName" },
+            { "data": "birthDate" },
+            { "data": "contactNumber" },
             { "data": "plateNumber1" },
             { "data": "plateNumber2" },
+            { "data": "status" },
+            { "data": "idType" },
+            { "data": "idNumber" },
+            { "data": "remarks" },
            
             {
                 "data": function (data) {

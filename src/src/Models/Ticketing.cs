@@ -18,7 +18,7 @@ namespace src.Models
 
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         [Display(Name = "Time Out")]
-        public DateTime timeOut { get; set; }
+        public DateTime? timeOut { get; set; }
 
         [Display(Name = "Plate Number")]
         public string plateNumber { get; set; }
@@ -26,8 +26,8 @@ namespace src.Models
         [Display(Name = "Type Of Transaction")]
         public string typeOfTransaction { get; set; }
 
-        [Display(Name = "Gate Pass Date")]
-        public string gatePassDate { get; set; }
+        [Display(Name = "Type of car")]
+        public string typeOfCar { get; set; }
 
     }
 }

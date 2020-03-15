@@ -74,10 +74,14 @@ namespace src.Controllers.Api
         public IActionResult GetUserModuleByUserID(int userId)
         {
             UserRole userRole = _context.UserRole.Where(x => x.UserId == userId).FirstOrDefault();
-            var userSelectedModules = userRole.Modules;
+            var userSelectedModules = "";
+            if (userRole != null && userRole.Modules != null)
+            {
+                userSelectedModules = userRole.Modules;
+            }
             List<Module> listRole = _context.Modules.ToList();
 
-            if (userSelectedModules != null)
+            if (userSelectedModules != "")
             {
                 var query = from val in userSelectedModules.Split(',')
                             select (val);

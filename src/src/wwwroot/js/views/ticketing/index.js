@@ -11,13 +11,15 @@ $(document).ready(function () {
             "type": 'GET',
             "datatype": 'json'
         },
+        "order": [[0, 'desc']],
         "columns": [
             //{ "data": "commodityDate" },
             {
                 "data": function (data) {
                     var d = new Date(data["timeIn"]);
-                    var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
-                    return output;
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
+                    return spanData + output;
                 }
             },
             {
@@ -29,14 +31,28 @@ $(document).ready(function () {
             },
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
-            { "data": "gatePassDate" },
+            { "data": "typeOfCar" },
+            //{ "data": "gatePassDate" },
             //{ "data": "priceRange" },
             //{ "data": "time" },
             {
                 "data": function (data) {
+                    var status = "<span class='txt-success'>Completed</span>";
+                    if (data["timeOut"] == null) {
+                        status = "<label class='txt-info'>Active</label>";
+                    }
+                    return status;
+                }
+            },
+            {
+                "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit + btnDelete;
+                    var outPut = btnEdit + btnDelete;
+                    if (data["timeOut"] != null) {
+                        outPut = "";
+                    }
+                    return outPut;
                 }
             }
         ],
@@ -46,6 +62,9 @@ $(document).ready(function () {
         "lengthChange": false,
     });
 });
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();

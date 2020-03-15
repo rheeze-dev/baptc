@@ -10,24 +10,18 @@ namespace src.Models
     {
        
         public int Id { get; set; }
-        //[Required]
-        //[Display(Name = "Time In")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
-        public DateTime Date { get; set; }
-        //[Required]
-
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
-        //[Display(Name = "Time Out")]
-        public string Name { get; set; }
-
-        //[Display(Name = "Plate Number")]
+        public DateTime BirthDate { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string PlateNumber1 { get; set; }
-
-        //[Display(Name = "Type Of Transaction")]
         public string PlateNumber2 { get; set; }
-
-        //[Display(Name = "Gate Pass Date")]
-        //public string gatePassDate { get; set; }
+        public int Status { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string ContactNumber { get; set; }
+        public string IdType { get; set; }
+        public int IdNumber { get; set; }
+        public string Remarks { get; set; }
 
     }
 }

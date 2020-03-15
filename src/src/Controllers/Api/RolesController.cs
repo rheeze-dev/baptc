@@ -156,9 +156,14 @@ namespace src.Controllers.Api
         public IActionResult GetUserRoleByUserID(int userId)
         {
             UserRole userRole = _context.UserRole.Where(x => x.UserId == userId).FirstOrDefault();
-            var userSelectedRoles = userRole.RoleId;
+            var userSelectedRoles = "";
+            if (userRole != null && userRole.RoleId != null)
+            {
+                userSelectedRoles = userRole.RoleId;
+            }
             List<Roles> listRole = _context.Role.ToList();
-            if (userSelectedRoles != null)
+
+            if (userSelectedRoles != "")
             {
                 var query = from val in userSelectedRoles.Split(',')
                             select (val);

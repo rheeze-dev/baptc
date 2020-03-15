@@ -53,21 +53,32 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="typeOfTransaction" class="control-label"></label>
-                        <select asp-for="typeOfTransaction" class="form-control">
-                            <option value="Trader truck">Trader Truck</option>
-                            <option value="Farmer truck">Farmer truck</option>
-                            <option value="Short trip">Short trip</option>
-                            <option value="Pay parking">Pay parking</option>
-                        </select> 
+                    <select asp-for="typeOfTransaction" class="form-control">
+                        <option value="Trader truck">Trader Truck</option>
+                        <option value="Farmer truck">Farmer truck</option>
+                        <option value="Short trip">Short trip</option>
+                        <option value="Pay parking">Pay parking</option>
+                    </select>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label asp-for="gatePassDate" class="control-label"></label>
-                    <input asp-for="gatePassDate" class="form-control" />
-                    <span asp-validation-for="gatePassDate" class="text-danger"></span>
+                    <label asp-for="typeOfCar" class="control-label"></label>
+                    <select asp-for="typeOfCar" class="form-control">
+                        <option value="Single tire">Single tire</option>
+                        <option value="Double tire">Double tire</option>
+                        <option value="Forward">Forward</option>
+                        <option value="10 wheeler">10 wheeler</option>
+                    </select>
                 </div>
             </div>
+            @*<div class="col-lg-6">
+            <div class="form-group">
+                <label asp-for="gatePassDate" class="control-label"></label>
+                <input asp-for="gatePassDate" class="form-control" />
+                <span asp-validation-for="gatePassDate" class="text-danger"></span>
+            </div>
+        </div>*@
         </div>
         @*<div class="row">
             <div class="col-lg-6">

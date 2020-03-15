@@ -40,10 +40,15 @@ namespace src.Controllers.Api
         [HttpGet("{organizationId}")]
         public IActionResult GetTicketing([FromRoute]Guid organizationId)
         {
-            var ticketing = _context.Ticketing.ToList();
+            var ticketing = _context.Ticketing.OrderBy(x => x.timeIn).ToList();
             return Json(new { data = ticketing });
         }
-
+        [HttpGet("GetTicketOut")]
+        public IActionResult GetTicketOut([FromRoute]Guid organizationId)
+        {
+            var ticketing = _context.Ticketing.Where(x => x.timeOut == null).OrderBy(x => x.timeIn).ToList();
+            return Json(new { data = ticketing });
+        }
         // GET: api/Ticketing/GetGatePass
         [HttpGet("GetGatePass")]
         public IActionResult GetGatePass([FromRoute]Guid organizationId)
@@ -62,10 +67,10 @@ namespace src.Controllers.Api
             Ticketing ticketing = new Ticketing
             {
                 timeIn = Convert.ToDateTime(model["timeIn"].ToString()),
-                timeOut = Convert.ToDateTime(model["timeOut"].ToString()),
+                //timeOut = Convert.ToDateTime(model["timeOut"].ToString()),
                 plateNumber = model["plateNumber"].ToString(),
                 typeOfTransaction = model["typeOfTransaction"].ToString(),
-                gatePassDate = model["gatePassDate"].ToString()
+                typeOfCar = model["typeOfCar"].ToString()
             };
             if (objGuid == Guid.Empty)
             {
@@ -80,7 +85,16 @@ namespace src.Controllers.Api
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
-
+        // POST: api/Ticketing/UpdateTicketOut
+        [HttpPost("UpdateTicketOut")]
+        public async Task<IActionResult> UpdateTicketOut(Guid id)
+        {
+            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
+            ticketing.timeOut = DateTime.Now;
+            _context.Ticketing.Update(ticketing);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
         // POST: api/Ticketing/PostGatePass
         [HttpPost("PostGatePass")]
         public async Task<IActionResult> PostGatePass([FromBody] JObject model)
@@ -89,10 +103,18 @@ namespace src.Controllers.Api
             id = Convert.ToInt32(model["Id"].ToString());
             GatePass gatePass = new GatePass
             {
-                Date = Convert.ToDateTime(model["Date"].ToString()),
-                Name = model["Name"].ToString(),
+                BirthDate = Convert.ToDateTime(model["BirthDate"].ToString()),
+                FirstName = model["FirstName"].ToString(),
+                LastName = model["LastName"].ToString(),
                 PlateNumber1 = model["PlateNumber1"].ToString(),
-                PlateNumber2 = model["PlateNumber2"].ToString()
+                PlateNumber2 = model["PlateNumber2"].ToString(),
+                Status = Convert.ToInt32(model["Status"].ToString()),
+                StartDate = Convert.ToDateTime(model["StartDate"].ToString()),
+                EndDate = Convert.ToDateTime(model["EndDate"].ToString()),
+                ContactNumber = model["ContactNumber"].ToString(),
+                IdType = model["IdType"].ToString(),
+                IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
+                Remarks = model["Remarks"].ToString()
             };
             if (id == 0)
             {

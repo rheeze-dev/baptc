@@ -16,7 +16,11 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var d = new Date(data["timeOut"]);
-                    var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var output = dateOut;
+                    if (data["timeOut"] == null) {
+                        output = "";
+                    }
                     return output;
                 }
             },
@@ -24,17 +28,32 @@ $(document).ready(function () {
                 "data": function (data) {
                     var d = new Date(data["timeOut"]);
                     var output = setClockTime(d);
+                    if (data["timeOut"] == null) {
+                        output = "";
+                    }
                     return output;
                 }
             },
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
-            { "data": "gatePassDate" },
+            {
+                "data": function (data) {
+                    var status = "Completed";
+                    if (data["timeOut"] == null) {
+                        status = "Active";
+                    }
+                    return status;
+                }
+            },
             //{ "data": "priceRange" },
             //{ "data": "time" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-hourglass-end' title='Time out'></i></a>";
+                    //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-hourglass-end' title='Completed'></i></a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] +"'>Complete</a>";
+                    if (data["timeOut"] != null) {
+                        btnEdit = "";
+                    }
                     return btnEdit;
                 }
             }
@@ -45,6 +64,37 @@ $(document).ready(function () {
         "lengthChange": false,
     });
 });
+$("#grid").on("click", ".btnComplete", function (e) {
+    e.preventDefault();
+    var ticketId = $(this).attr("data-id");
+    var param = { id: ticketId };
+    swal({
+        title: "Are you sure want to complete this transaction?",
+        text: "You will not be able to restore the file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dd4b39",
+        confirmButtonText: "Yes, update it!",
+        closeOnConfirm: true
+    }, function () {
+        $.ajax({
+            type: 'POST',
+            url: apiurl + '/UpdateTicketOut',
+            data: param,
+            success: function (data) {
+                if (data.success) {
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+    });
+});
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();
