@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200320125410_TradersTruckRemove")]
+    partial class TradersTruckRemove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,7 +318,11 @@ namespace src.Migrations
 
                     b.Property<int>("Volume");
 
+                    b.Property<Guid?>("ticketingId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ticketingId");
 
                     b.ToTable("FarmersTruck");
                 });
@@ -525,7 +530,11 @@ namespace src.Migrations
 
                     b.Property<DateTime>("TimeOut");
 
+                    b.Property<Guid?>("ticketingId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ticketingId");
 
                     b.ToTable("ShortTrip");
                 });
@@ -657,10 +666,8 @@ namespace src.Migrations
 
             modelBuilder.Entity("src.Models.TradersTruck", b =>
                 {
-                    b.Property<Guid>("ticketingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
 
                     b.Property<string>("Destination");
 
@@ -668,11 +675,13 @@ namespace src.Migrations
 
                     b.Property<string>("PlateNumber");
 
+                    b.Property<Guid>("Ticketing");
+
                     b.Property<DateTime>("TimeIn");
 
                     b.Property<string>("TraderName");
 
-                    b.HasKey("ticketingId");
+                    b.HasKey("Id");
 
                     b.ToTable("TradersTruck");
                 });
@@ -762,12 +771,26 @@ namespace src.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("src.Models.FarmersTruck", b =>
+                {
+                    b.HasOne("src.Models.Ticketing", "Ticketing")
+                        .WithMany()
+                        .HasForeignKey("ticketingId");
+                });
+
             modelBuilder.Entity("src.Models.Product", b =>
                 {
                     b.HasOne("src.Models.Organization", "organization")
                         .WithMany("products")
                         .HasForeignKey("organizationId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("src.Models.ShortTrip", b =>
+                {
+                    b.HasOne("src.Models.Ticketing", "Ticketing")
+                        .WithMany()
+                        .HasForeignKey("ticketingId");
                 });
 
             modelBuilder.Entity("src.Models.SupportAgent", b =>

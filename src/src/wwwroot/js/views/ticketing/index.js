@@ -29,6 +29,27 @@ $(document).ready(function () {
                     return output;
                 }
             },
+            {
+                "data": function (data) {
+                    var d = new Date(data["timeOut"]);
+                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var output = dateOut;
+                    if (data["timeOut"] == null) {
+                        output = "";
+                    }
+                    return output;
+                }
+            },
+            {
+                "data": function (data) {
+                    var d = new Date(data["timeOut"]);
+                    var output = setClockTime(d);
+                    if (data["timeOut"] == null) {
+                        output = "";
+                    }
+                    return output;
+                }
+            },
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
             { "data": "typeOfCar" },
@@ -101,7 +122,7 @@ function SubmitAddEdit(form) {
         //var data = {
         //    priceCommodity: "petsay"
         //};
-        alert(data);
+        //alert(data);
         //return true;
         $.ajax({
             type: 'POST',
@@ -111,7 +132,7 @@ function SubmitAddEdit(form) {
             contentType: 'application/json',
             success: function (data) {
                 if (data.success) {
-                    popup.modal('hide');
+                    //popup.modal('hide');
                     ShowMessage(data.message);
                     dataTable.ajax.reload();
                 } else {

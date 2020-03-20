@@ -9,14 +9,13 @@ namespace src.Models
     public class TradersTruck
     {
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
+        [Key]
+        public Guid ticketingId { get; set; }
         //[Required]
         [Display(Name = "Date and time")]
         public DateTime Date { get; set; }
         //[Required]
-        [Display(Name = "Plate number")]
-        public string PlateNumber { get; set; }
-
         [Display(Name = "Traders name")]
         public string TraderName { get; set; }
 
@@ -26,5 +25,8 @@ namespace src.Models
         [Display(Name = "Destination")]
         public string Destination { get; set; }
 
+        public DateTime TimeIn { get; set; }
+
+        public string PlateNumber { get; set; }
     }
 }

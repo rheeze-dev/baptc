@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200320132010_TradersTruckModel")]
+    partial class TradersTruckModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -657,7 +658,7 @@ namespace src.Migrations
 
             modelBuilder.Entity("src.Models.TradersTruck", b =>
                 {
-                    b.Property<Guid>("ticketingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date");
@@ -668,11 +669,13 @@ namespace src.Migrations
 
                     b.Property<string>("PlateNumber");
 
+                    b.Property<Guid>("Ticket");
+
                     b.Property<DateTime>("TimeIn");
 
                     b.Property<string>("TraderName");
 
-                    b.HasKey("ticketingId");
+                    b.HasKey("Id");
 
                     b.ToTable("TradersTruck");
                 });

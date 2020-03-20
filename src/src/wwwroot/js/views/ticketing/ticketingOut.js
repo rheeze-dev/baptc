@@ -11,8 +11,24 @@ $(document).ready(function () {
             "type": 'GET',
             "datatype": 'json'
         },
+        "order": [[0, 'desc']],
         "columns": [
             //{ "data": "commodityDate" },
+            {
+                "data": function (data) {
+                    var d = new Date(data["timeIn"]);
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
+                    return spanData + output;
+                }
+            },
+            {
+                "data": function (data) {
+                    var d = new Date(data["timeIn"]);
+                    var output = setClockTime(d);
+                    return output;
+                }
+            },
             {
                 "data": function (data) {
                     var d = new Date(data["timeOut"]);
@@ -119,39 +135,6 @@ function ShowPopup(url) {
                 backdrop: 'static'
             });
         });
-}
-
-
-function SubmitAddEdit(form) {
-    $.validator.unobtrusive.parse(form);
-    if ($(form).valid()) {
-        var data = $(form).serializeJSON();
-        //data = { priceCommodity: data };
-        data = JSON.stringify(data);
-        //var data = {
-        //    priceCommodity: "petsay"
-        //};
-        alert(data);
-        //return true;
-        $.ajax({
-            type: 'POST',
-            url: apiurl,
-            //url: '/PriceCommodity/PostPriceCommodity',
-            data: data,
-            contentType: 'application/json',
-            success: function (data) {
-                if (data.success) {
-                    popup.modal('hide');
-                    ShowMessage(data.message);
-                    dataTable.ajax.reload();
-                } else {
-                    ShowMessageError(data.message);
-                }
-            }
-        });
-
-    }
-    return false;
 }
 
 function Delete(id) {

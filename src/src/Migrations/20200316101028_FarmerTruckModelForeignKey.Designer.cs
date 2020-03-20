@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200316101028_FarmerTruckModelForeignKey")]
+    partial class FarmerTruckModelForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,7 +318,11 @@ namespace src.Migrations
 
                     b.Property<int>("Volume");
 
+                    b.Property<Guid?>("ticketingId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ticketingId");
 
                     b.ToTable("FarmersTruck");
                 });
@@ -657,7 +662,7 @@ namespace src.Migrations
 
             modelBuilder.Entity("src.Models.TradersTruck", b =>
                 {
-                    b.Property<Guid>("ticketingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Date");
@@ -668,11 +673,9 @@ namespace src.Migrations
 
                     b.Property<string>("PlateNumber");
 
-                    b.Property<DateTime>("TimeIn");
-
                     b.Property<string>("TraderName");
 
-                    b.HasKey("ticketingId");
+                    b.HasKey("Id");
 
                     b.ToTable("TradersTruck");
                 });
@@ -760,6 +763,13 @@ namespace src.Migrations
                         .WithMany("customers")
                         .HasForeignKey("organizationId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("src.Models.FarmersTruck", b =>
+                {
+                    b.HasOne("src.Models.Ticketing", "Ticketing")
+                        .WithMany()
+                        .HasForeignKey("ticketingId");
                 });
 
             modelBuilder.Entity("src.Models.Product", b =>

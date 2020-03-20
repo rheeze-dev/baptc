@@ -40,6 +40,5 @@ namespace src.Models
 
         [Display(Name = "FacilitatorsName")]
         public string FacilitatorsName { get; set; }
-
     }
 }

@@ -36,8 +36,8 @@ namespace src.Controllers.Api
             _emailSender = emailSender;
         }
 
-        // GET: api/Inspector
-        [HttpGet("{organizationId}")]
+        // GET: api/Inspector/GetTradersTruck
+        [HttpGet("GetTradersTruck")]
         public IActionResult GetTradersTruck([FromRoute]Guid organizationId)
         {
             var tradersTruck = _context.TradersTruck.ToList();
@@ -64,23 +64,26 @@ namespace src.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> PostTradersTruck([FromBody] JObject model)
         {
-            int id = 0;
-            id = Convert.ToInt32(model["Id"].ToString());
+            //Guid id = Guid.Parse;
+            Guid id = Guid.Empty;
+            id = Guid.Parse(model["ticketingId"].ToString());
+            //id = Convert.ToInt32(model["Id"].ToString());
             TradersTruck tradersTruck = new TradersTruck
             {
-                Date = Convert.ToDateTime(model["Date"].ToString()),
+                Date = DateTime.Now,
+                TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 TraderName = model["TraderName"].ToString(),
                 PlateNumber = model["PlateNumber"].ToString(),
                 EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString()),
                 Destination = model["Destination"].ToString()
             };
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 _context.TradersTruck.Add(tradersTruck);
             }
             else
             {
-                tradersTruck.Id = id;
+                tradersTruck.ticketingId = id;
                 _context.TradersTruck.Update(tradersTruck);
             }
             await _context.SaveChangesAsync();
@@ -147,9 +150,9 @@ namespace src.Controllers.Api
 
         // DELETE: api/Inspector/
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTradersTruck([FromRoute] int id)
+        public async Task<IActionResult> DeleteTradersTruck([FromRoute] Guid id)
         {
-            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.Id == id).FirstOrDefault();
+            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(tradersTruck);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
@@ -174,5 +177,15 @@ namespace src.Controllers.Api
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
+
+
+        //// POST: api/Inspector/GetVehicles
+        //[HttpGet("GetVehicles")]
+        //public IActionResult GetVehicles()
+        //{
+        //    List<Ticketing> currentVehicles = _context.Ticketing.OrderBy(x => x.timeIn).ToList();
+        //    return Json(new { data = currentVehicles });
+        //}
+
     }
 }

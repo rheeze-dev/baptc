@@ -43,12 +43,13 @@ namespace src.Controllers.Api
             var ticketing = _context.Ticketing.OrderBy(x => x.timeIn).ToList();
             return Json(new { data = ticketing });
         }
-        [HttpGet("GetTicketOut")]
-        public IActionResult GetTicketOut([FromRoute]Guid organizationId)
-        {
-            var ticketing = _context.Ticketing.Where(x => x.timeOut == null).OrderBy(x => x.timeIn).ToList();
-            return Json(new { data = ticketing });
-        }
+        //[HttpGet("GetTicketOut")]
+        //public IActionResult GetTicketOut([FromRoute]Guid organizationId)
+        //{
+        //    //var ticketing = _context.Ticketing.Where(x => x.timeOut == null).OrderBy(x => x.timeIn).ToList();
+        //    var ticketing = _context.Ticketing.OrderBy(x => x.timeIn).ToList();
+        //    return Json(new { data = ticketing });
+        //}
         // GET: api/Ticketing/GetGatePass
         [HttpGet("GetGatePass")]
         public IActionResult GetGatePass([FromRoute]Guid organizationId)
@@ -57,34 +58,53 @@ namespace src.Controllers.Api
             return Json(new { data = gatePass });
         }
 
-
         // POST: api/Ticketing
         [HttpPost]
         public async Task<IActionResult> PostTicketing([FromBody] JObject model)
         {
             Guid objGuid = Guid.Empty;
+            //Guid ticket = Guid.Empty;
+
             objGuid = Guid.Parse(model["ticketingId"].ToString());
+            
             Ticketing ticketing = new Ticketing
             {
-                timeIn = Convert.ToDateTime(model["timeIn"].ToString()),
-                //timeOut = Convert.ToDateTime(model["timeOut"].ToString()),
+                timeIn = DateTime.Now,
                 plateNumber = model["plateNumber"].ToString(),
                 typeOfTransaction = model["typeOfTransaction"].ToString(),
                 typeOfCar = model["typeOfCar"].ToString()
             };
+
+            TradersTruck tradersTruck = new TradersTruck
+            {
+                ticketingId = ticketing.ticketingId,
+                TimeIn = DateTime.Now,
+                PlateNumber = ticketing.plateNumber
+                //timeIn = Convert.ToDateTime(model["timeIn"].ToString()),
+                //timeIn = DateTime.Now,
+                ////timeOut = Convert.ToDateTime(model["timeOut"].ToString()),
+                //plateNumber = model["plateNumber"].ToString(),
+                //typeOfTransaction = model["typeOfTransaction"].ToString(),
+                //typeOfCar = model["typeOfCar"].ToString()
+            };
             if (objGuid == Guid.Empty)
             {
                 ticketing.ticketingId = Guid.NewGuid();
+                tradersTruck.ticketingId = ticketing.ticketingId;
                 _context.Ticketing.Add(ticketing);
+                _context.TradersTruck.Add(tradersTruck);
             }
             else
             {
                 ticketing.ticketingId = objGuid;
+                tradersTruck.ticketingId = ticketing.ticketingId;
                 _context.Ticketing.Update(ticketing);
+                _context.TradersTruck.Update(tradersTruck);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
+
         // POST: api/Ticketing/UpdateTicketOut
         [HttpPost("UpdateTicketOut")]
         public async Task<IActionResult> UpdateTicketOut(Guid id)
@@ -95,6 +115,7 @@ namespace src.Controllers.Api
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
+
         // POST: api/Ticketing/PostGatePass
         [HttpPost("PostGatePass")]
         public async Task<IActionResult> PostGatePass([FromBody] JObject model)
@@ -149,5 +170,6 @@ namespace src.Controllers.Api
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
+
     }
 }

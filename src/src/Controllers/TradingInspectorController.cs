@@ -55,9 +55,32 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public IActionResult AddEditTradersTruck(Guid org, int id)
+        //public IActionResult AddEditTradersTruck(Guid org, Guid id)
+        //{
+        //    if (id == null)
+        //    {
+        //        Ticketing currentVehicles = new Ticketing();
+        //        //ticketing.ticketingId = org;
+        //        return View(currentVehicles);
+        //    }
+        //    else
+        //    {
+        //        Ticketing currentVehicles = _context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault();
+        //        //UserRole userRole = new UserRole();
+        //        TradersTruck tradersTruck = new TradersTruck();
+        //        //if (tradersTruck == null)
+        //        //{
+        //        //    tradersTruck = new TradersTruck();
+        //        //}
+        //        var TubleList = new Tuple<Ticketing, TradersTruck>(currentVehicles, tradersTruck);
+        //        return View(TubleList);
+        //    }
+
+        //}
+
+        public IActionResult AddEditTradersTruck(Guid org, Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 TradersTruck tradersTruck = new TradersTruck();
                 //ticketing.ticketingId = org;
@@ -65,7 +88,7 @@ namespace src.Controllers
             }
             else
             {
-                return View(_context.TradersTruck.Where(x => x.Id.Equals(id)).FirstOrDefault());
+                return View(_context.TradersTruck.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
 
         }
