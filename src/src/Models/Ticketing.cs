@@ -29,5 +29,7 @@ namespace src.Models
         [Display(Name = "Type of car")]
         public string typeOfCar { get; set; }
 
+        public int? amount { get; set; }
+
     }
 }

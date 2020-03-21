@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200321092552_TradersTruckModel2")]
+    partial class TradersTruckModel2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,14 +295,14 @@ namespace src.Migrations
 
             modelBuilder.Entity("src.Models.FarmersTruck", b =>
                 {
-                    b.Property<Guid>("ticketingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Barangay");
 
                     b.Property<string>("Commodity");
 
-                    b.Property<DateTime?>("Date");
+                    b.Property<DateTime>("Date");
 
                     b.Property<string>("FacilitatorsName");
 
@@ -315,11 +316,9 @@ namespace src.Migrations
 
                     b.Property<string>("StallNumber");
 
-                    b.Property<DateTime>("TimeIn");
+                    b.Property<int>("Volume");
 
-                    b.Property<int?>("Volume");
-
-                    b.HasKey("ticketingId");
+                    b.HasKey("Id");
 
                     b.ToTable("FarmersTruck");
                 });
@@ -514,14 +513,12 @@ namespace src.Migrations
 
             modelBuilder.Entity("src.Models.ShortTrip", b =>
                 {
-                    b.Property<Guid>("ticketingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Commodity");
 
-                    b.Property<DateTime?>("Date");
-
-                    b.Property<int?>("EstimatedVolume");
+                    b.Property<int>("EstimatedVolume");
 
                     b.Property<string>("PlateNumber");
 
@@ -529,7 +526,7 @@ namespace src.Migrations
 
                     b.Property<DateTime>("TimeOut");
 
-                    b.HasKey("ticketingId");
+                    b.HasKey("Id");
 
                     b.ToTable("ShortTrip");
                 });
@@ -643,8 +640,6 @@ namespace src.Migrations
                 {
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("amount");
 
                     b.Property<string>("plateNumber");
 

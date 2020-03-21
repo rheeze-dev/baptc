@@ -63,7 +63,6 @@ namespace src.Controllers.Api
         public async Task<IActionResult> PostTicketing([FromBody] JObject model)
         {
             Guid objGuid = Guid.Empty;
-            //Guid ticket = Guid.Empty;
 
             objGuid = Guid.Parse(model["ticketingId"].ToString());
             
@@ -72,7 +71,8 @@ namespace src.Controllers.Api
                 timeIn = DateTime.Now,
                 plateNumber = model["plateNumber"].ToString(),
                 typeOfTransaction = model["typeOfTransaction"].ToString(),
-                typeOfCar = model["typeOfCar"].ToString()
+                typeOfCar = model["typeOfCar"].ToString(),
+                amount = null
             };
 
             TradersTruck tradersTruck = new TradersTruck
@@ -80,26 +80,69 @@ namespace src.Controllers.Api
                 ticketingId = ticketing.ticketingId,
                 TimeIn = DateTime.Now,
                 PlateNumber = ticketing.plateNumber
-                //timeIn = Convert.ToDateTime(model["timeIn"].ToString()),
-                //timeIn = DateTime.Now,
-                ////timeOut = Convert.ToDateTime(model["timeOut"].ToString()),
-                //plateNumber = model["plateNumber"].ToString(),
-                //typeOfTransaction = model["typeOfTransaction"].ToString(),
-                //typeOfCar = model["typeOfCar"].ToString()
             };
+
+            FarmersTruck farmersTruck = new FarmersTruck
+            {
+                ticketingId = ticketing.ticketingId,
+                TimeIn = DateTime.Now,
+                PlateNumber = ticketing.plateNumber
+            };
+
+            ShortTrip shortTrip = new ShortTrip
+            {
+                ticketingId = ticketing.ticketingId,
+                TimeIn = DateTime.Now,
+                PlateNumber = ticketing.plateNumber
+            };
+
             if (objGuid == Guid.Empty)
             {
                 ticketing.ticketingId = Guid.NewGuid();
                 tradersTruck.ticketingId = ticketing.ticketingId;
-                _context.Ticketing.Add(ticketing);
-                _context.TradersTruck.Add(tradersTruck);
+                farmersTruck.ticketingId = ticketing.ticketingId;
+                shortTrip.ticketingId = ticketing.ticketingId;
+
+                if (ticketing.typeOfTransaction == "Trader truck")
+                {
+                    _context.TradersTruck.Add(tradersTruck);
+                }
+                else if (ticketing.typeOfTransaction == "Farmer truck")
+                {
+                    _context.FarmersTruck.Add(farmersTruck);
+                }
+                else
+                {
+                    _context.ShortTrip.Add(shortTrip);
+                }
+
+                if (ticketing.typeOfTransaction == "Trader truck" && ticketing.typeOfCar == "Single tire")
+                {
+                    ticketing.amount = 50;
+                }
+                    _context.Ticketing.Add(ticketing);
             }
             else
             {
                 ticketing.ticketingId = objGuid;
                 tradersTruck.ticketingId = ticketing.ticketingId;
+                farmersTruck.ticketingId = ticketing.ticketingId;
+                shortTrip.ticketingId = ticketing.ticketingId;
+
+                if (ticketing.typeOfTransaction == "Trader truck")
+                {
+                    _context.TradersTruck.Update(tradersTruck);
+                }
+                else if (ticketing.typeOfTransaction == "Farmer truck")
+                {
+                    _context.FarmersTruck.Update(farmersTruck);
+                }
+                else
+                {
+                    _context.ShortTrip.Update(shortTrip);
+                }
+
                 _context.Ticketing.Update(ticketing);
-                _context.TradersTruck.Update(tradersTruck);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -157,6 +200,8 @@ namespace src.Controllers.Api
         {
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(ticketing);
+            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+            _context.Remove(tradersTruck);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

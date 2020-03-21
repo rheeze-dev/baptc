@@ -14,13 +14,13 @@ namespace src.Models
         public Guid ticketingId { get; set; }
         //[Required]
         [Display(Name = "Date and time")]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         //[Required]
         [Display(Name = "Traders name")]
         public string TraderName { get; set; }
 
         [Display(Name = "Estimated volume (kg)")]
-        public int EstimatedVolume { get; set; }
+        public int? EstimatedVolume { get; set; }
 
         [Display(Name = "Destination")]
         public string Destination { get; set; }

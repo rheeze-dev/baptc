@@ -93,9 +93,9 @@ namespace src.Controllers
 
         }
 
-        public IActionResult AddEditFarmersTruck(Guid org, int id)
+        public IActionResult AddEditFarmersTruck(Guid org, Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 FarmersTruck farmersTruck = new FarmersTruck();
                 //ticketing.ticketingId = org;
@@ -103,14 +103,14 @@ namespace src.Controllers
             }
             else
             {
-                return View(_context.FarmersTruck.Where(x => x.Id.Equals(id)).FirstOrDefault());
+                return View(_context.FarmersTruck.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
 
         }
 
-        public IActionResult AddEditShortTrip(Guid org, int id)
+        public IActionResult AddEditShortTrip(Guid org, Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 ShortTrip shortTrip = new ShortTrip();
                 //ticketing.ticketingId = org;
@@ -118,7 +118,7 @@ namespace src.Controllers
             }
             else
             {
-                return View(_context.ShortTrip.Where(x => x.Id.Equals(id)).FirstOrDefault());
+                return View(_context.ShortTrip.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
 
         }

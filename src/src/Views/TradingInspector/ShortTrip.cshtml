@@ -8,20 +8,23 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-12">
             <div class="box box-primary">
                 <div class="box-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <input type="hidden" asp-for="@Model.organizationId" />
+                            @*<input type="hidden" asp-for="@Model.UserId" />*@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-2">Date</th>
-                                        <th class="col-md-2">Time</th>
+                                        @*<th class="col-md-2">Date entered</th>*@
+                                        <th class="col-md-2">Time in</th>
                                         <th class="col-md-2">Plate number</th>
+                                        @*<th class="col-md-2">Date inspected</th>*@
+                                        <th class="col-md-2">Time inspected</th>
                                         <th class="col-md-2">Commodity</th>
                                         <th class="col-md-2">Estimated volume (kg)</th>
+                                        <th class="col-md-2">Status</th>
                                         <th class="col-md-2">Action</th>
                                     </tr>
                                 </thead>
@@ -32,13 +35,13 @@
 
             </div>
         </div>
-        <div class="col-lg-2">
-            <div class="row">
-                <div class="col-md-12">
-                    <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditShortTrip","TradingInspector", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New short trip</a>
+        @*<div class="col-lg-2">
+                <div class="row">
+                    <div class="col-md-12">
+                            <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditRoles","Settings", new { org = Model.UserId })')"><i class="fa fa-plus"></i> Add User Roles</a>
+                        </div>
                 </div>
-            </div>
-        </div>
+            </div>*@
     </div>
 
 </section>
@@ -52,11 +55,8 @@
     </div>
 </div>
 
-
-
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script src="~/js/views/tradingInspector/shortTrip.js"></script>
-    <script src="~/lib/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
 }
 

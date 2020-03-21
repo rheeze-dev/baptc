@@ -14,37 +14,13 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ticketingId" />
         <input type="hidden" asp-for="TimeIn" />
-        @*<input type="hidden" asp-for="organizationId" />*@
-
-        @*<label asp-for="Item1.plateNumber" class="control-label">Plate number</label>*@
-        @*<input asp-for="Item2.Ticketing" class="form-control" value Item.2 />*@
-        @*<span asp-validation-for="Item1.plateNumber" class="text-danger"></span>*@
 
         <div class="form-group">
             <label asp-for="PlateNumber" class="control-label">Plate number</label>
             <input asp-for="PlateNumber" class="form-control" readonly />
             <span asp-validation-for="PlateNumber" class="text-danger"></span>
         </div>
-        @*<input type="hidden" asp-for="timeOut" />*@
-        @*<div class="form-group">
-            <label asp-for="timeOut" class="control-label">Time Out</label>
-            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="timeOut">
-                <input asp-for="timeOut" class="form-control" size="16" type="text" value="" readonly>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            <input type="hidden" id="dtp_input1" value="" />
-        </div>*@
-        @*<div class="form-group">
-            <label asp-for="timeIn" class="control-label"></label>
-            <input asp-for="timeIn" class="form-control" />
-            <span asp-validation-for="timeIn" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="timeOut" class="control-label"></label>
-            <input asp-for="timeOut" class="form-control" />
-            <span asp-validation-for="timeOut" class="text-danger"></span>
-        </div>*@
+ 
         <div class="form-group">
             <label asp-for="TraderName" class="control-label">Trader name</label>
             <input asp-for="TraderName" class="form-control" />

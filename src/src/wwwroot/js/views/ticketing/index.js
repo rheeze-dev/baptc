@@ -17,22 +17,22 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var d = new Date(data["timeIn"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
                     return spanData + output;
                 }
             },
-            {
-                "data": function (data) {
-                    var d = new Date(data["timeIn"]);
-                    var output = setClockTime(d);
-                    return output;
-                }
-            },
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["timeIn"]);
+            //        var output = setClockTime(d);
+            //        return output;
+            //    }
+            //},
             {
                 "data": function (data) {
                     var d = new Date(data["timeOut"]);
-                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     var output = dateOut;
                     if (data["timeOut"] == null) {
                         output = "";
@@ -40,16 +40,16 @@ $(document).ready(function () {
                     return output;
                 }
             },
-            {
-                "data": function (data) {
-                    var d = new Date(data["timeOut"]);
-                    var output = setClockTime(d);
-                    if (data["timeOut"] == null) {
-                        output = "";
-                    }
-                    return output;
-                }
-            },
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["timeOut"]);
+            //        var output = setClockTime(d);
+            //        if (data["timeOut"] == null) {
+            //            output = "";
+            //        }
+            //        return output;
+            //    }
+            //},
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
             { "data": "typeOfCar" },

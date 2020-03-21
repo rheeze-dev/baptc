@@ -64,10 +64,9 @@ namespace src.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> PostTradersTruck([FromBody] JObject model)
         {
-            //Guid id = Guid.Parse;
             Guid id = Guid.Empty;
             id = Guid.Parse(model["ticketingId"].ToString());
-            //id = Convert.ToInt32(model["Id"].ToString());
+
             TradersTruck tradersTruck = new TradersTruck
             {
                 Date = DateTime.Now,
@@ -94,11 +93,13 @@ namespace src.Controllers.Api
         [HttpPost("PostFarmersTruck")]
         public async Task<IActionResult> PostFarmersTruck([FromBody] JObject model)
         {
-            int id = 0;
-            id = Convert.ToInt32(model["Id"].ToString());
+            Guid id = Guid.Empty;
+            id = Guid.Parse(model["ticketingId"].ToString());
+
             FarmersTruck farmersTruck = new FarmersTruck
             {
-                Date = Convert.ToDateTime(model["Date"].ToString()),
+                Date = DateTime.Now,
+                TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 StallNumber = model["StallNumber"].ToString(),
                 PlateNumber = model["PlateNumber"].ToString(),
                 FarmersName = model["FarmersName"].ToString(),
@@ -109,13 +110,13 @@ namespace src.Controllers.Api
                 Province = model["Province"].ToString(),
                 FacilitatorsName = model["FacilitatorsName"].ToString()
             };
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 _context.FarmersTruck.Add(farmersTruck);
             }
             else
             {
-                farmersTruck.Id = id;
+                farmersTruck.ticketingId = id;
                 _context.FarmersTruck.Update(farmersTruck);
             }
             await _context.SaveChangesAsync();
@@ -126,22 +127,24 @@ namespace src.Controllers.Api
         [HttpPost("PostShortTrip")]
         public async Task<IActionResult> PostShortTrip([FromBody] JObject model)
         {
-            int id = 0;
-            id = Convert.ToInt32(model["Id"].ToString());
+            Guid id = Guid.Empty;
+            id = Guid.Parse(model["ticketingId"].ToString());
+
             ShortTrip shortTrip = new ShortTrip
             {
+                Date = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString()),
                 PlateNumber = model["PlateNumber"].ToString(),
                 Commodity = model["Commodity"].ToString()
             };
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 _context.ShortTrip.Add(shortTrip);
             }
             else
             {
-                shortTrip.Id = id;
+                shortTrip.ticketingId = id;
                 _context.ShortTrip.Update(shortTrip);
             }
             await _context.SaveChangesAsync();
@@ -160,9 +163,9 @@ namespace src.Controllers.Api
 
         // DELETE: api/Inspector/DeleteFarmersTruck
         [HttpDelete("Farmers/{id}")]
-        public async Task<IActionResult> DeleteFarmersTruck([FromRoute] int id)
+        public async Task<IActionResult> DeleteFarmersTruck([FromRoute] Guid id)
         {
-            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.Id == id).FirstOrDefault();
+            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(farmersTruck);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
@@ -170,9 +173,9 @@ namespace src.Controllers.Api
 
         // DELETE: api/Inspector/DeleteShortTrip
         [HttpDelete("ShortTrip/{id}")]
-        public async Task<IActionResult> DeleteShortTrip([FromRoute] int id)
+        public async Task<IActionResult> DeleteShortTrip([FromRoute] Guid id)
         {
-            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.Id == id).FirstOrDefault();
+            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(shortTrip);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
