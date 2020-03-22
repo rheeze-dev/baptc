@@ -55,6 +55,8 @@ namespace src.Data
 
         public DbSet<src.Models.GatePass> GatePass { get; set; }
 
+        public DbSet<src.Models.PayParking> PayParking { get; set; }
+
         public DbSet<src.Models.SecurityRepairCheck> SecurityRepairCheck { get; set; }
 
         public DbSet<src.Models.SecurityInspectionReport> SecurityInspectionReport { get; set; }

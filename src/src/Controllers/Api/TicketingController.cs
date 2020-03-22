@@ -96,12 +96,20 @@ namespace src.Controllers.Api
                 PlateNumber = ticketing.plateNumber
             };
 
+            PayParking payParking = new PayParking
+            {
+                ticketingId = ticketing.ticketingId,
+                TimeIn = DateTime.Now,
+                PlateNumber = ticketing.plateNumber
+            };
+
             if (objGuid == Guid.Empty)
             {
                 ticketing.ticketingId = Guid.NewGuid();
                 tradersTruck.ticketingId = ticketing.ticketingId;
                 farmersTruck.ticketingId = ticketing.ticketingId;
                 shortTrip.ticketingId = ticketing.ticketingId;
+                payParking.ticketingId = ticketing.ticketingId;
 
                 if (ticketing.typeOfTransaction == "Trader truck")
                 {
@@ -111,9 +119,13 @@ namespace src.Controllers.Api
                 {
                     _context.FarmersTruck.Add(farmersTruck);
                 }
-                else
+                else if (ticketing.typeOfTransaction == "Short trip")
                 {
                     _context.ShortTrip.Add(shortTrip);
+                }
+                else
+                {
+                    _context.PayParking.Add(payParking);
                 }
 
                 if (ticketing.typeOfTransaction == "Trader truck" && ticketing.typeOfCar == "Single tire")
@@ -128,6 +140,7 @@ namespace src.Controllers.Api
                 tradersTruck.ticketingId = ticketing.ticketingId;
                 farmersTruck.ticketingId = ticketing.ticketingId;
                 shortTrip.ticketingId = ticketing.ticketingId;
+                payParking.ticketingId = ticketing.ticketingId;
 
                 if (ticketing.typeOfTransaction == "Trader truck")
                 {
@@ -137,9 +150,13 @@ namespace src.Controllers.Api
                 {
                     _context.FarmersTruck.Update(farmersTruck);
                 }
-                else
+                else if (ticketing.typeOfTransaction == "Short trip")
                 {
                     _context.ShortTrip.Update(shortTrip);
+                }
+                else
+                {
+                    _context.PayParking.Update(payParking);
                 }
 
                 _context.Ticketing.Update(ticketing);
@@ -159,35 +176,56 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
+        // POST: api/Ticketing/ExtendGatePass
+        [HttpPost("ExtendGatePass")]
+        public async Task<IActionResult> ExtendGatePass(Guid id)
+        {
+            //Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
+            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
+
+            //ticketing.timeOut = DateTime.Now;
+            gatePass.EndDate = gatePass.EndDate.Value.AddYears(1);
+
+            //_context.Ticketing.Update(ticketing);
+            _context.GatePass.Update(gatePass);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
         // POST: api/Ticketing/PostGatePass
         [HttpPost("PostGatePass")]
         public async Task<IActionResult> PostGatePass([FromBody] JObject model)
         {
-            int id = 0;
-            id = Convert.ToInt32(model["Id"].ToString());
+            Guid id = Guid.Empty;
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddYears(1);
+            //DateTime theDate = DateTime.Now;
+            //DateTime yearInTheFuture = theDate.AddYears(1);
+            id = Guid.Parse(model["ticketingId"].ToString());
+            //id = Convert.ToInt32(model["Id"].ToString());
             GatePass gatePass = new GatePass
             {
-                BirthDate = Convert.ToDateTime(model["BirthDate"].ToString()),
+                StartDate = startDate,
+                EndDate = endDate,
+                //BirthDate = Convert.ToDateTime(model["BirthDate"].ToString()),
                 FirstName = model["FirstName"].ToString(),
                 LastName = model["LastName"].ToString(),
                 PlateNumber1 = model["PlateNumber1"].ToString(),
                 PlateNumber2 = model["PlateNumber2"].ToString(),
-                Status = Convert.ToInt32(model["Status"].ToString()),
-                StartDate = Convert.ToDateTime(model["StartDate"].ToString()),
-                EndDate = Convert.ToDateTime(model["EndDate"].ToString()),
-                ContactNumber = model["ContactNumber"].ToString(),
-                IdType = model["IdType"].ToString(),
-                IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
+                //Status = Convert.ToInt32(model["Status"].ToString()),
+                //ContactNumber = model["ContactNumber"].ToString(),
+                //IdType = model["IdType"].ToString(),
+                //IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
                 Remarks = model["Remarks"].ToString()
             };
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 //gatePass.Id = id();
                 _context.GatePass.Add(gatePass);
             }
             else
             {
-                gatePass.Id = id;
+                gatePass.ticketingId = id;
                 _context.GatePass.Update(gatePass);
             }
             await _context.SaveChangesAsync();
@@ -202,15 +240,21 @@ namespace src.Controllers.Api
             _context.Remove(ticketing);
             TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(tradersTruck);
+            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+            _context.Remove(farmersTruck);
+            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
+            _context.Remove(shortTrip);
+            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
+            _context.Remove(payParking);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
 
         // DELETE: api/Ticketing/DeleteGatePass
         [HttpDelete("DeleteGatePass/{id}")]
-        public async Task<IActionResult> DeleteGatePass([FromRoute] int id)
+        public async Task<IActionResult> DeleteGatePass([FromRoute] Guid id)
         {
-            GatePass gatePass = _context.GatePass.Where(x => x.Id == id).FirstOrDefault();
+            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(gatePass);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });

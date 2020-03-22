@@ -60,6 +60,14 @@ namespace src.Controllers.Api
             return Json(new { data = shortTrip });
         }
 
+        // GET: api/Inspector/GetPayParking
+        [HttpGet("GetPayParking")]
+        public IActionResult GetPayParking([FromRoute]Guid organizationId)
+        {
+            var payParking = _context.PayParking.ToList();
+            return Json(new { data = payParking });
+        }
+
         // POST: api/Inspector
         [HttpPost]
         public async Task<IActionResult> PostTradersTruck([FromBody] JObject model)
@@ -146,6 +154,33 @@ namespace src.Controllers.Api
             {
                 shortTrip.ticketingId = id;
                 _context.ShortTrip.Update(shortTrip);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Inspector/PostPayParking
+        [HttpPost("PostPayParking")]
+        public async Task<IActionResult> PostPayParking([FromBody] JObject model)
+        {
+            Guid id = Guid.Empty;
+            id = Guid.Parse(model["ticketingId"].ToString());
+
+            PayParking payParking = new PayParking
+            {
+                Date = DateTime.Now,
+                TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
+                PlateNumber = model["PlateNumber"].ToString(),
+                DriverName = model["DriverName"].ToString()
+            };
+            if (id == Guid.Empty)
+            {
+                _context.PayParking.Add(payParking);
+            }
+            else
+            {
+                payParking.ticketingId = id;
+                _context.PayParking.Update(payParking);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });

@@ -1,13 +1,13 @@
 ﻿var popup, dataTable;
-var entity = 'Ticketing';
+var entity = 'Inspector';
 var apiurl = '/api/' + entity;
 
 $(document).ready(function () {
     //alert(entity);
-    var organizationId = $('#organizationId').val();
+    //var organizationId = $('#organizationId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
-            "url": apiurl + '/GetGatePass',
+            "url": apiurl + '/GetPayParking',
             "type": 'GET',
             "datatype": 'json'
         },
@@ -16,58 +16,63 @@ $(document).ready(function () {
             //{ "data": "commodityDate" },
             {
                 "data": function (data) {
-                    var d = new Date(data["startDate"]);
+                    var d = new Date(data["timeIn"]);
                     var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-                    var spanData = "<span style = 'display:none;'> " + data["startDate"] + "</span>";
+                    var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
                     return spanData + output;
                 }
             },
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["timeIn"]);
+            //        var output = setClockTime(d);
+            //        return output;
+            //    }
+            //},
+            { "data": "plateNumber" },
             {
                 "data": function (data) {
-                    var d = new Date(data["endDate"]);
+                    var d = new Date(data["date"]);
                     var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     var output = dateOut;
-                    if (data["endDate"] == null) {
+                    if (data["date"] == null) {
                         output = "";
                     }
                     return output;
                 }
             },
-            { "data": "firstName" },
-            { "data": "lastName" },
-            //{ "data": "birthDate" },
-            //{ "data": "contactNumber" },
-            { "data": "plateNumber1" },
-            { "data": "plateNumber2" },
-            //{ "data": "idType" },
-            //{ "data": "idNumber" },
-            { "data": "remarks" },
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["date"]);
+            //        var output = setClockTime(d);
+            //        if (data["date"] == null) {
+            //            output = "";
+            //        }
+            //        return output;
+            //    }
+            //},
+            { "data": "driverName" },
             {
                 "data": function (data) {
-                    var status = "<span class='txt-success'>Valid</span>";
-                    if (data["endDate"] <= Date.now ) {
-                        status = "<label class='txt-info'>Expired</label>";
+                    var status = "<span class='txt-success'>Completed</span>";
+                    if (data["date"] == null) {
+                        status = "<label class='txt-info'>Active</label>";
                     }
                     return status;
                 }
             },
             {
                 "data": function (data) {
-                    //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-hourglass-end' title='Completed'></i></a>";
-                    var btnEdit = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Extend</a>";
-                    //if (data["endDate"] != null) {
-                    //    btnEdit = "";
-                    //}
-                    return btnEdit;
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditPayParking?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    //return btnEdit;
+                    var outPut = btnEdit;
+                    if (data["date"] != null) {
+                        outPut = "";
+                    }
+                    return outPut;
                 }
             }
-            //{
-            //    "data": function (data) {
-            //        var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditGatePass?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-            //        var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-            //        return btnEdit + btnDelete;
-            //    }
-            //}
         ],
         "language": {
             "emptyTable": "no data found."
@@ -75,37 +80,8 @@ $(document).ready(function () {
         "lengthChange": false,
     });
 });
-$("#grid").on("click", ".btnComplete", function (e) {
-    e.preventDefault();
-    var ticketId = $(this).attr("data-id");
-    var param = { id: ticketId };
-    swal({
-        title: "Are you sure want to complete this transaction?",
-        text: "You will not be able to restore the file!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#dd4b39",
-        confirmButtonText: "Yes, update it!",
-        closeOnConfirm: true
-    }, function () {
-        $.ajax({
-            type: 'POST',
-            url: apiurl + '/ExtendGatePass',
-            data: param,
-            success: function (data) {
-                if (data.success) {
-                    ShowMessage(data.message);
-                    dataTable.ajax.reload();
-                } else {
-                    ShowMessageError(data.message);
-                }
-            }
-        });
-    });
-});
 const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-];
+    "July", "August", "September", "October", "November", "December"];
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();
@@ -146,7 +122,7 @@ function SubmitAddEdit(form) {
         //return true;
         $.ajax({
             type: 'POST',
-            url: "/api/Ticketing/PostGatePass",
+            url: "/api/Inspector/PostPayParking",
             //url: '/PriceCommodity/PostPriceCommodity',
             data: data,
             contentType: 'application/json',
@@ -177,7 +153,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/DeleteGatePass/' + id,
+            url: apiurl + '/PayParking/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

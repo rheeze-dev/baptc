@@ -12,9 +12,11 @@
 <form onsubmit="return SubmitAddEdit(this)">
     <div class="box-body">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ticketingId" />
+        <input type="hidden" asp-for="StartDate" />
+        <input type="hidden" asp-for="EndDate" />
         @*<input type="hidden" asp-for="organizationId" />*@
-        <div class="form-group">
+        @*<div class="form-group">
             <label asp-for="StartDate" class="control-label">Start date</label>
             <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="StartDate">
                 <input asp-for="StartDate" class="form-control" size="16" type="text" />
@@ -31,7 +33,7 @@
                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
             </div>
             <input type="hidden" id="dtp_input1" value="" />
-        </div>
+        </div>*@
         @* <input type="hidden" asp-for="timeIn" />*@
         @*<div class="form-group">
             <label asp-for="timeOut" class="control-label">Time Out</label>
@@ -62,16 +64,16 @@
             <input asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <label asp-for="BirthDate" class="control-label"></label>
             <input asp-for="BirthDate" class="form-control" />
             <span asp-validation-for="BirthDate" class="text-danger"></span>
-        </div>
-        <div class="form-group">
+        </div>*@
+        @*<div class="form-group">
             <label asp-for="ContactNumber" class="control-label"></label>
             <input asp-for="ContactNumber" class="form-control" />
             <span asp-validation-for="ContactNumber" class="text-danger"></span>
-        </div>
+        </div>*@
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
@@ -87,12 +89,12 @@
                     <span asp-validation-for="PlateNumber2" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <input asp-for="Status" class="form-control" />
                 <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            </div>*@
+            @*<div class="form-group">
                 <label asp-for="IdType" class="control-label"></label>
                 <input asp-for="IdType" class="form-control" />
                 <span asp-validation-for="IdType" class="text-danger"></span>
@@ -101,7 +103,7 @@
                 <label asp-for="IdNumber" class="control-label"></label>
                 <input asp-for="IdNumber" class="form-control" />
                 <span asp-validation-for="IdNumber" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="Remarks" class="control-label"></label>
                 <input asp-for="Remarks" class="form-control" />

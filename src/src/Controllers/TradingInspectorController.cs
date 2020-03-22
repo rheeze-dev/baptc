@@ -55,6 +55,17 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public IActionResult PayParking(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         //public IActionResult AddEditTradersTruck(Guid org, Guid id)
         //{
         //    if (id == null)
@@ -120,7 +131,20 @@ namespace src.Controllers
             {
                 return View(_context.ShortTrip.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
+        }
 
+        public IActionResult AddEditPayParking(Guid org, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                PayParking payParking = new PayParking();
+                //ticketing.ticketingId = org;
+                return View(payParking);
+            }
+            else
+            {
+                return View(_context.PayParking.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+            }
         }
 
     }

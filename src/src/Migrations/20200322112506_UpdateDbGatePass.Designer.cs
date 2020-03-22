@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200322112506_UpdateDbGatePass")]
+    partial class UpdateDbGatePass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -329,13 +330,11 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("EndDate");
+                    b.Property<DateTime>("EndDate");
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
-
-                    b.Property<DateTime?>("NewStartDate");
 
                     b.Property<string>("PlateNumber1");
 

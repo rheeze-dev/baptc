@@ -80,9 +80,9 @@ namespace src.Controllers
 
         }
 
-        public IActionResult AddEditGatePass(Guid org, int id)
+        public IActionResult AddEditGatePass(Guid org, Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
             {
                 GatePass gatePass = new GatePass();
                 //customer.organizationId = org;
@@ -90,7 +90,7 @@ namespace src.Controllers
             }
             else
             {
-                return View(_context.GatePass.Where(x => x.Id.Equals(id)).FirstOrDefault());
+                return View(_context.GatePass.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
 
         }

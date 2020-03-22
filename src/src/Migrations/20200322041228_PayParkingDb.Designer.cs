@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200322041228_PayParkingDb")]
+    partial class PayParkingDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,16 +327,22 @@ namespace src.Migrations
 
             modelBuilder.Entity("src.Models.GatePass", b =>
                 {
-                    b.Property<Guid>("ticketingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("EndDate");
+                    b.Property<DateTime>("BirthDate");
+
+                    b.Property<string>("ContactNumber");
+
+                    b.Property<DateTime>("EndDate");
 
                     b.Property<string>("FirstName");
 
-                    b.Property<string>("LastName");
+                    b.Property<int>("IdNumber");
 
-                    b.Property<DateTime?>("NewStartDate");
+                    b.Property<string>("IdType");
+
+                    b.Property<string>("LastName");
 
                     b.Property<string>("PlateNumber1");
 
@@ -345,7 +352,9 @@ namespace src.Migrations
 
                     b.Property<DateTime>("StartDate");
 
-                    b.HasKey("ticketingId");
+                    b.Property<int>("Status");
+
+                    b.HasKey("Id");
 
                     b.ToTable("GatePass");
                 });
