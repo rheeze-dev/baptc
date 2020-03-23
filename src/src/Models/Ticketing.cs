@@ -13,7 +13,7 @@ namespace src.Models
         //[Required]
         [Display(Name = "Time In")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
-        public DateTime timeIn { get; set; }
+        public DateTime? timeIn { get; set; }
         //[Required]
 
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
@@ -29,7 +29,13 @@ namespace src.Models
         [Display(Name = "Type of car")]
         public string typeOfCar { get; set; }
 
+        public string driverName { get; set; }
+
+        public DateTime? endDate { get; set; }
+
         public int? amount { get; set; }
+
+        public string remarks { get; set; }
 
     }
 }

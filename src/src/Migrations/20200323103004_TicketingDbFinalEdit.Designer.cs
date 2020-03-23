@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200323103004_TicketingDbFinalEdit")]
+    partial class TicketingDbFinalEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,9 +332,11 @@ namespace src.Migrations
 
                     b.Property<int>("Amount");
 
-                    b.Property<string>("DriverName");
-
                     b.Property<DateTime?>("EndDate");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
 
                     b.Property<string>("PlateNumber1");
 
@@ -654,13 +657,7 @@ namespace src.Migrations
 
                     b.Property<int?>("amount");
 
-                    b.Property<string>("driverName");
-
-                    b.Property<DateTime?>("endDate");
-
                     b.Property<string>("plateNumber");
-
-                    b.Property<string>("remarks");
 
                     b.Property<DateTime?>("timeIn");
 

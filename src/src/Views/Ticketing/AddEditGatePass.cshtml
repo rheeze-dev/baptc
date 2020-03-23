@@ -9,61 +9,22 @@
     </button>
     <h4 class="modal-title">Add / Edit Data</h4>
 </div>
-<form onsubmit="return SubmitAddEdit(this)">
+<form onsubmit="return SubmitAddEditGatePass(this)">
     <div class="box-body">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ticketingId" />
         <input type="hidden" asp-for="StartDate" />
         <input type="hidden" asp-for="EndDate" />
-        @*<input type="hidden" asp-for="organizationId" />*@
-        @*<div class="form-group">
-            <label asp-for="StartDate" class="control-label">Start date</label>
-            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="StartDate">
-                <input asp-for="StartDate" class="form-control" size="16" type="text" />
-                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            <input type="hidden" id="dtp_input1" value="" />
+        <div class="form-group">
+            <label asp-for="DriverName" class="control-label"></label>
+            <input asp-for="DriverName" class="form-control" />
+            <span asp-validation-for="DriverName" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="EndDate" class="control-label">End date</label>
-            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="EndDate">
-                <input asp-for="EndDate" class="form-control" size="16" type="text" />
-                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            <input type="hidden" id="dtp_input1" value="" />
-        </div>*@
-        @* <input type="hidden" asp-for="timeIn" />*@
         @*<div class="form-group">
-            <label asp-for="timeOut" class="control-label">Time Out</label>
-            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="timeOut">
-                <input asp-for="timeOut" class="form-control" size="16" type="text" value="" readonly>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            <input type="hidden" id="dtp_input1" value="" />
-        </div>*@
-        @*<div class="form-group">
-            <label asp-for="timeIn" class="control-label"></label>
-            <input asp-for="timeIn" class="form-control" />
-            <span asp-validation-for="timeIn" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="timeOut" class="control-label"></label>
-            <input asp-for="timeOut" class="form-control" />
-            <span asp-validation-for="timeOut" class="text-danger"></span>
-        </div>*@
-        <div class="form-group">
-            <label asp-for="FirstName" class="control-label"></label>
-            <input asp-for="FirstName" class="form-control" />
-            <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
             <label asp-for="LastName" class="control-label"></label>
             <input asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
+        </div>*@
         @*<div class="form-group">
             <label asp-for="BirthDate" class="control-label"></label>
             <input asp-for="BirthDate" class="form-control" />
@@ -74,21 +35,22 @@
             <input asp-for="ContactNumber" class="form-control" />
             <span asp-validation-for="ContactNumber" class="text-danger"></span>
         </div>*@
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="PlateNumber1" class="control-label"></label>
-                    <input asp-for="PlateNumber1" class="form-control" />
-                    <span asp-validation-for="PlateNumber1" class="text-danger"></span>
-                </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label asp-for="PlateNumber1" class="control-label"></label>
+                <input asp-for="PlateNumber1" class="form-control" />
+                <span asp-validation-for="PlateNumber1" class="text-danger"></span>
             </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="PlateNumber2" class="control-label"></label>
-                    <input asp-for="PlateNumber2" class="form-control" />
-                    <span asp-validation-for="PlateNumber2" class="text-danger"></span>
-                </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label asp-for="PlateNumber2" class="control-label"></label>
+                <input asp-for="PlateNumber2" class="form-control" />
+                <span asp-validation-for="PlateNumber2" class="text-danger"></span>
             </div>
+        </div>
+    </div>
             @*<div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <input asp-for="Status" class="form-control" />
@@ -109,7 +71,7 @@
                 <input asp-for="Remarks" class="form-control" />
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-        </div>
+        
         @*<div class="row">
             <div class="col-lg-6">
                 <div class="form-group">

@@ -19,6 +19,9 @@ $(document).ready(function () {
                     var d = new Date(data["timeIn"]);
                     var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
+                    if (data["timeIn"] == null) {
+                        output = "";
+                    }
                     return spanData + output;
                 }
             },
@@ -53,25 +56,39 @@ $(document).ready(function () {
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
             { "data": "amount" },
+            { "data": "driverName" },
+            { "data": "remarks" },
             {
                 "data": function (data) {
-                    var status = "Completed";
-                    if (data["timeOut"] == null) {
-                        status = "Active";
+                    var completed = "Completed";
+                    var active = "Active";
+                    var availedGatePass = "Gate pass";
+                    if (data["timeIn"] != null && data["timeOut"] == null) {
+                        return active;
                     }
-                    return status;
+                    else if (data["timeOut"] != null) {
+                        return completed;
+                    }
+                    else {
+                        return availedGatePass;
+                    }
                 }
             },
-            //{ "data": "priceRange" },
-            //{ "data": "time" },
             {
                 "data": function (data) {
                     //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-hourglass-end' title='Completed'></i></a>";
-                    var btnEdit = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] +"'>Complete</a>";
-                    if (data["timeOut"] != null) {
-                        btnEdit = "";
+                    var availedGatePass = "Gate pass";
+                    var empty = "";
+                    var btnEdit = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Complete</a>";
+                    if (data["timeIn"] != null && data["timeOut"] != null) {
+                        return empty;
                     }
-                    return btnEdit;
+                    else if (data["timeIn"] != null && data["timeOut"] == null) {
+                        return btnEdit;
+                    }
+                    else if (data["timeIn"] == null && data["timeOut"] == null) {
+                        return availedGatePass;
+                    }
                 }
             }
         ],

@@ -72,6 +72,7 @@ namespace src.Controllers.Api
                 plateNumber = model["plateNumber"].ToString(),
                 typeOfTransaction = model["typeOfTransaction"].ToString(),
                 typeOfCar = model["typeOfCar"].ToString(),
+                driverName = model["driverName"].ToString(),
                 amount = null
             };
 
@@ -100,7 +101,8 @@ namespace src.Controllers.Api
             {
                 ticketingId = ticketing.ticketingId,
                 TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber
+                PlateNumber = ticketing.plateNumber,
+                DriverName = ticketing.driverName
             };
 
             if (objGuid == Guid.Empty)
@@ -182,12 +184,22 @@ namespace src.Controllers.Api
         {
             //Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
             GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
+            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
 
             //ticketing.timeOut = DateTime.Now;
-            gatePass.EndDate = gatePass.EndDate.Value.AddYears(1);
+            DateTime currentDate = DateTime.Now;
+            DateTime endDate = new DateTime(currentDate.Year, 12, 31);
+
+            gatePass.EndDate = endDate;
+            ticketing.endDate = gatePass.EndDate;
+            //gatePass.EndDate = gatePass.EndDate.Value.AddYears(1);
+            gatePass.Amount = gatePass.Amount + 500;
+            ticketing.amount = ticketing.amount + 500;
+
 
             //_context.Ticketing.Update(ticketing);
             _context.GatePass.Update(gatePass);
+            _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -198,9 +210,9 @@ namespace src.Controllers.Api
         {
             Guid id = Guid.Empty;
             DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddYears(1);
-            //DateTime theDate = DateTime.Now;
-            //DateTime yearInTheFuture = theDate.AddYears(1);
+            //DateTime endDate = startDate.AddYears(1);
+            var endDate = new DateTime(startDate.Year, 12, 31);
+            int amount = 500;
             id = Guid.Parse(model["ticketingId"].ToString());
             //id = Convert.ToInt32(model["Id"].ToString());
             GatePass gatePass = new GatePass
@@ -208,25 +220,111 @@ namespace src.Controllers.Api
                 StartDate = startDate,
                 EndDate = endDate,
                 //BirthDate = Convert.ToDateTime(model["BirthDate"].ToString()),
-                FirstName = model["FirstName"].ToString(),
-                LastName = model["LastName"].ToString(),
+                DriverName = model["DriverName"].ToString(),
+                //LastName = model["LastName"].ToString(),
                 PlateNumber1 = model["PlateNumber1"].ToString(),
                 PlateNumber2 = model["PlateNumber2"].ToString(),
                 //Status = Convert.ToInt32(model["Status"].ToString()),
                 //ContactNumber = model["ContactNumber"].ToString(),
                 //IdType = model["IdType"].ToString(),
                 //IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
-                Remarks = model["Remarks"].ToString()
+                Remarks = model["Remarks"].ToString(),
+                Amount = amount
+                
+            };
+
+            Ticketing ticketing = new Ticketing
+            {
+                ticketingId = gatePass.ticketingId,
+                amount = gatePass.Amount,
+                plateNumber = gatePass.PlateNumber1 + ", " + gatePass.PlateNumber2,
+                endDate = gatePass.EndDate,
+                driverName = gatePass.DriverName
             };
             if (id == Guid.Empty)
             {
+                gatePass.ticketingId = Guid.NewGuid();
+                ticketing.ticketingId = gatePass.ticketingId;
+
                 //gatePass.Id = id();
+                _context.GatePass.Add(gatePass);
+                _context.Ticketing.Add(ticketing);
+            }
+            else
+            {
+                gatePass.ticketingId = Guid.NewGuid();
+                ticketing.ticketingId = gatePass.ticketingId;
+                _context.GatePass.Add(gatePass);
+                _context.Ticketing.Add(ticketing);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Ticketing/PostNewGatePass
+        [HttpPost("PostNewGatePass")]
+        public async Task<IActionResult> PostNewGatePass([FromBody] JObject model)
+        {
+            Guid id = Guid.Empty;
+            //DateTime startDate = DateTime.Now;
+            //DateTime endDate = startDate.AddYears(1);
+            //var endDate = new DateTime(startDate.Year, 12, 31);
+            int amount = 0;
+            id = Guid.Parse(model["ticketingId"].ToString());
+            //id = Convert.ToInt32(model["Id"].ToString());
+
+            Ticketing ticketing = new Ticketing
+            {
+                timeIn = DateTime.Now,
+                //ticketingId = gatePass.ticketingId,
+                amount = amount,
+                plateNumber = model["plateNumber"].ToString(),
+                driverName = model["driverName"].ToString(),
+                remarks = model["remarks"].ToString()
+            };
+
+            GatePass gatePass = new GatePass
+            {
+                ticketingId = ticketing.ticketingId,
+                //StartDate = startDate,
+                //EndDate = endDate,
+                //BirthDate = Convert.ToDateTime(model["BirthDate"].ToString()),
+                DriverName = ticketing.driverName,
+                //LastName = model["LastName"].ToString(),
+                PlateNumber1 = ticketing.plateNumber,
+                PlateNumber2 = ticketing.plateNumber,
+                //Status = Convert.ToInt32(model["Status"].ToString()),
+                //ContactNumber = model["ContactNumber"].ToString(),
+                //IdType = model["IdType"].ToString(),
+                //IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
+                Remarks = ticketing.remarks,
+                Amount = amount
+
+            };
+
+            //Ticketing ticketing = new Ticketing
+            //{
+            //    ticketingId = gatePass.ticketingId,
+            //    amount = gatePass.Amount,
+            //    plateNumber = gatePass.PlateNumber1 + ", " + gatePass.PlateNumber2,
+            //    endDate = gatePass.EndDate,
+            //    driverName = gatePass.DriverName
+            //};
+            if (id == Guid.Empty)
+            {
+                ticketing.ticketingId = Guid.NewGuid();
+                gatePass.ticketingId = ticketing.ticketingId;
+
+                //gatePass.Id = id();
+                _context.Ticketing.Add(ticketing);
                 _context.GatePass.Add(gatePass);
             }
             else
             {
-                gatePass.ticketingId = id;
-                _context.GatePass.Update(gatePass);
+                ticketing.ticketingId = Guid.NewGuid();
+                gatePass.ticketingId = ticketing.ticketingId;
+                _context.Ticketing.Add(ticketing);
+                _context.GatePass.Add(gatePass);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });

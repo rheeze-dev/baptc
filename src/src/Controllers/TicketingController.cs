@@ -95,5 +95,20 @@ namespace src.Controllers
 
         }
 
+        public IActionResult AddEditNewGatePass(Guid org, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                Ticketing ticketing = new Ticketing();
+                //customer.organizationId = org;
+                return View(ticketing);
+            }
+            else
+            {
+                return View(_context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
     }
 }
