@@ -24,16 +24,19 @@ namespace src.Controllers.Api
         private readonly IDotnetdesk _dotnetdesk;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public TicketingController(ApplicationDbContext context,
             IDotnetdesk dotnetdesk,
             UserManager<ApplicationUser> userManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _dotnetdesk = dotnetdesk;
             _userManager = userManager;
             _emailSender = emailSender;
+            _signInManager = signInManager;
         }
 
         // GET: api/Ticketing
@@ -54,8 +57,8 @@ namespace src.Controllers.Api
         [HttpGet("GetGatePass")]
         public IActionResult GetGatePass([FromRoute]Guid organizationId)
         {
-            var gatePass = _context.GatePass.ToList();
-            return Json(new { data = gatePass });
+            var stallLease = _context.StallLease.ToList();
+            return Json(new { data = stallLease });
         }
 
         // POST: api/Ticketing
@@ -63,9 +66,10 @@ namespace src.Controllers.Api
         public async Task<IActionResult> PostTicketing([FromBody] JObject model)
         {
             Guid objGuid = Guid.Empty;
-
+            int getLastControlNumber = _context.Ticketing.OrderByDescending(x => x.controlNumber).Select(x => x.controlNumber).First();
+            int controlNumber = getLastControlNumber + 1;
+            var info = await _userManager.GetUserAsync(User);
             objGuid = Guid.Parse(model["ticketingId"].ToString());
-            
             Ticketing ticketing = new Ticketing
             {
                 timeIn = DateTime.Now,
@@ -73,6 +77,8 @@ namespace src.Controllers.Api
                 typeOfTransaction = model["typeOfTransaction"].ToString(),
                 typeOfCar = model["typeOfCar"].ToString(),
                 driverName = model["driverName"].ToString(),
+                remarks = model["remarks"].ToString(),
+                controlNumber = controlNumber,
                 amount = null
             };
 
@@ -105,13 +111,32 @@ namespace src.Controllers.Api
                 DriverName = ticketing.driverName
             };
 
+            GatePass gatePass = new GatePass
+            {
+                ticketingId = ticketing.ticketingId,
+                TimeIn = DateTime.Now,
+                PlateNumber = ticketing.plateNumber,
+                DriverName = ticketing.driverName
+            };
+
+            //StallLease stallLease = new StallLease
+            //{
+            //    //ticketingId = ticketing.ticketingId,
+            //    //TimeIn = DateTime.Now,
+            //    //PlateNumber = ticketing.plateNumber,
+            //    //DriverName = ticketing.driverName
+            //};
+
             if (objGuid == Guid.Empty)
             {
                 ticketing.ticketingId = Guid.NewGuid();
+                ticketing.issuingClerk = info.FullName;
                 tradersTruck.ticketingId = ticketing.ticketingId;
                 farmersTruck.ticketingId = ticketing.ticketingId;
                 shortTrip.ticketingId = ticketing.ticketingId;
                 payParking.ticketingId = ticketing.ticketingId;
+                gatePass.ticketingId = ticketing.ticketingId;
+                //stallLease.ticketingId = ticketing.ticketingId;
 
                 if (ticketing.typeOfTransaction == "Trader truck")
                 {
@@ -125,6 +150,24 @@ namespace src.Controllers.Api
                 {
                     _context.ShortTrip.Add(shortTrip);
                 }
+                else if (ticketing.typeOfTransaction == "Gate pass")
+                {
+                    //what if?
+                    StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
+                    if (stallLease != null)
+                    {
+                        if (stallLease.EndDate > DateTime.Now) { 
+                            _context.GatePass.Add(gatePass);
+                        }
+                        else { 
+                            return Json(new { success = false, message = "Your gate pass is expired!" });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Vehicle not registered!" });
+                    }
+                }
                 else
                 {
                     _context.PayParking.Add(payParking);
@@ -134,15 +177,21 @@ namespace src.Controllers.Api
                 {
                     ticketing.amount = 50;
                 }
-                    _context.Ticketing.Add(ticketing);
+                //if (ticketing.typeOfTransaction == "Gate pass" && ticketing.plateNumber == stallLease.PlateNumber1)
+                //{
+                //    ticketing.amount = 50;
+                //}
+                _context.Ticketing.Add(ticketing);
             }
             else
             {
                 ticketing.ticketingId = objGuid;
+                ticketing.receivingClerk = info.FullName;
                 tradersTruck.ticketingId = ticketing.ticketingId;
                 farmersTruck.ticketingId = ticketing.ticketingId;
                 shortTrip.ticketingId = ticketing.ticketingId;
                 payParking.ticketingId = ticketing.ticketingId;
+                gatePass.ticketingId = ticketing.ticketingId;
 
                 if (ticketing.typeOfTransaction == "Trader truck")
                 {
@@ -155,6 +204,26 @@ namespace src.Controllers.Api
                 else if (ticketing.typeOfTransaction == "Short trip")
                 {
                     _context.ShortTrip.Update(shortTrip);
+                }
+                else if (ticketing.typeOfTransaction == "Gate pass")
+                {
+                    StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
+
+                    if (stallLease != null)
+                    {
+                        if (stallLease.EndDate > DateTime.Now)
+                        {
+                            _context.GatePass.Update(gatePass);
+                        }
+                        else
+                        {
+                            return Json(new { success = false, message = "Your gate pass is expired!" });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Vehicle not registered!" });
+                    }
                 }
                 else
                 {
@@ -172,7 +241,39 @@ namespace src.Controllers.Api
         public async Task<IActionResult> UpdateTicketOut(Guid id)
         {
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
+            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
+            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
+            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
             ticketing.timeOut = DateTime.Now;
+            var info = await _userManager.GetUserAsync(User);
+            if (ticketing.typeOfTransaction == "Trader truck")
+            {
+                tradersTruck.TimeOut = ticketing.timeOut;
+                _context.TradersTruck.Update(tradersTruck);
+            }
+            else if (ticketing.typeOfTransaction == "Farmer truck")
+            {
+                farmersTruck.TimeOut = ticketing.timeOut;
+                _context.FarmersTruck.Update(farmersTruck);
+            }
+            else if (ticketing.typeOfTransaction == "Short trip")
+            {
+                shortTrip.TimeOut = ticketing.timeOut;
+                _context.ShortTrip.Update(shortTrip);
+            }
+            else if (ticketing.typeOfTransaction == "Gate pass")
+            {
+                gatePass.TimeOut = ticketing.timeOut;
+                _context.GatePass.Update(gatePass);
+            }
+            else
+            {
+                payParking.TimeOut = ticketing.timeOut;
+                _context.PayParking.Update(payParking);
+            }
+            ticketing.receivingClerk = info.FullName;
             _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -183,22 +284,22 @@ namespace src.Controllers.Api
         public async Task<IActionResult> ExtendGatePass(Guid id)
         {
             //Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
-            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
+            StallLease stallLease = _context.StallLease.Where(x => x.ticketingId == id).FirstOrDefault();
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
 
             //ticketing.timeOut = DateTime.Now;
             DateTime currentDate = DateTime.Now;
             DateTime endDate = new DateTime(currentDate.Year, 12, 31);
 
-            gatePass.EndDate = endDate;
-            ticketing.endDate = gatePass.EndDate;
+            stallLease.EndDate = endDate;
+            ticketing.endDate = stallLease.EndDate;
             //gatePass.EndDate = gatePass.EndDate.Value.AddYears(1);
-            gatePass.Amount = gatePass.Amount + 500;
+            stallLease.Amount = stallLease.Amount + 500;
             ticketing.amount = ticketing.amount + 500;
 
 
             //_context.Ticketing.Update(ticketing);
-            _context.GatePass.Update(gatePass);
+            _context.StallLease.Update(stallLease);
             _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -215,7 +316,7 @@ namespace src.Controllers.Api
             int amount = 500;
             id = Guid.Parse(model["ticketingId"].ToString());
             //id = Convert.ToInt32(model["Id"].ToString());
-            GatePass gatePass = new GatePass
+            StallLease stallLease = new StallLease
             {
                 StartDate = startDate,
                 EndDate = endDate,
@@ -233,29 +334,29 @@ namespace src.Controllers.Api
                 
             };
 
-            Ticketing ticketing = new Ticketing
-            {
-                ticketingId = gatePass.ticketingId,
-                amount = gatePass.Amount,
-                plateNumber = gatePass.PlateNumber1 + ", " + gatePass.PlateNumber2,
-                endDate = gatePass.EndDate,
-                driverName = gatePass.DriverName
-            };
+            //GatePass gatePass = new GatePass
+            //{
+            //    ticketingId = stallLease.ticketingId,
+            //    amount = stallLease.Amount,
+            //    plateNumber = stallLease.PlateNumber1 + ", " + stallLease.PlateNumber2,
+            //    endDate = stallLease.EndDate,
+            //    driverName = stallLease.DriverName
+            //};
             if (id == Guid.Empty)
             {
-                gatePass.ticketingId = Guid.NewGuid();
-                ticketing.ticketingId = gatePass.ticketingId;
+                stallLease.ticketingId = Guid.NewGuid();
+                //ticketing.ticketingId = stallLease.ticketingId;
 
                 //gatePass.Id = id();
-                _context.GatePass.Add(gatePass);
-                _context.Ticketing.Add(ticketing);
+                _context.StallLease.Add(stallLease);
+                //_context.Ticketing.Add(ticketing);
             }
             else
             {
-                gatePass.ticketingId = Guid.NewGuid();
-                ticketing.ticketingId = gatePass.ticketingId;
-                _context.GatePass.Add(gatePass);
-                _context.Ticketing.Add(ticketing);
+                stallLease.ticketingId = Guid.NewGuid();
+                //ticketing.ticketingId = stallLease.ticketingId;
+                _context.StallLease.Add(stallLease);
+                //_context.Ticketing.Add(ticketing);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -291,14 +392,13 @@ namespace src.Controllers.Api
                 //BirthDate = Convert.ToDateTime(model["BirthDate"].ToString()),
                 DriverName = ticketing.driverName,
                 //LastName = model["LastName"].ToString(),
-                PlateNumber1 = ticketing.plateNumber,
-                PlateNumber2 = ticketing.plateNumber,
+                PlateNumber = ticketing.plateNumber,
+                //PlateNumber2 = ticketing.plateNumber,
                 //Status = Convert.ToInt32(model["Status"].ToString()),
                 //ContactNumber = model["ContactNumber"].ToString(),
                 //IdType = model["IdType"].ToString(),
                 //IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
                 Remarks = ticketing.remarks,
-                Amount = amount
 
             };
 
@@ -358,5 +458,9 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Delete success." });
         }
 
+    }
+
+    internal class GetGatePass
+    {
     }
 }

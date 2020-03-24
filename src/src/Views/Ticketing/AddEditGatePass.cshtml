@@ -1,4 +1,4 @@
-﻿@model src.Models.GatePass
+﻿@model src.Models.StallLease
 @{
     Layout = null;
 }
@@ -9,7 +9,7 @@
     </button>
     <h4 class="modal-title">Add / Edit Data</h4>
 </div>
-<form onsubmit="return SubmitAddEditGatePass(this)">
+<form onsubmit="return SubmitListOfStallLease(this)">
     <div class="box-body">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ticketingId" />

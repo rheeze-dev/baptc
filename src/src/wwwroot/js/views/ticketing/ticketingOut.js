@@ -55,9 +55,13 @@ $(document).ready(function () {
             //},
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
+            { "data": "typeOfCar" },
             { "data": "amount" },
             { "data": "driverName" },
             { "data": "remarks" },
+            { "data": "issuingClerk" },
+            { "data": "receivingClerk" },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     var completed = "Completed";

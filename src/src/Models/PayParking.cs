@@ -14,7 +14,7 @@ namespace src.Models
         public Guid ticketingId { get; set; }
         //[Required]
         [Display(Name = "Date and time")]
-        public DateTime? Date { get; set; }
+        public DateTime? DateInspected { get; set; }
         //[Required]
         [Display(Name = "Traders name")]
         public string DriverName { get; set; }
@@ -26,6 +26,8 @@ namespace src.Models
         //public string Destination { get; set; }
 
         public DateTime TimeIn { get; set; }
+
+        public DateTime? TimeOut { get; set; }
 
         public string PlateNumber { get; set; }
     }

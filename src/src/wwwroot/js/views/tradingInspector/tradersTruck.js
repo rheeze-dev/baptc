@@ -31,10 +31,10 @@ $(document).ready(function () {
             { "data": "plateNumber" },
             {
                 "data": function (data) {
-                    var d = new Date(data["date"]);
+                    var d = new Date(data["dateInspected"]);
                     var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     var output = dateOut;
-                    if (data["date"] == null) {
+                    if (data["dateInspected"] == null) {
                         output = "";
                     }
                     return output;
@@ -58,7 +58,7 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";
-                    if (data["date"] == null) {
+                    if (data["dateInspected"] == null) {
                         status = "<label class='txt-info'>Active</label>";
                     }
                     return status;
@@ -70,7 +70,7 @@ $(document).ready(function () {
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     //return btnEdit;
                     var outPut = btnEdit;
-                    if (data["date"] != null) {
+                    if (data["dateInspected"] != null) {
                         outPut = "";
                     }
                     return outPut;

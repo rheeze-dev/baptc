@@ -15,9 +15,9 @@ namespace src.Models
         public DateTime TimeIn { get; set; }
         //[Required]
         [Display(Name = "Time out")]
-        public DateTime TimeOut { get; set; }
+        public DateTime? TimeOut { get; set; }
 
-        public DateTime? Date { get; set; }
+        public DateTime? DateInspected { get; set; }
         //[Required]
         [Display(Name = "Estimated volume (kg)")]
         public int? EstimatedVolume { get; set; }

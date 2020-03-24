@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200324052901_AddedTimeOutInTradingInspectorDb")]
+    partial class AddedTimeOutInTradingInspectorDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,19 +332,19 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Amount");
+
                     b.Property<string>("DriverName");
 
                     b.Property<DateTime?>("EndDate");
 
-                    b.Property<string>("PlateNumber");
+                    b.Property<string>("PlateNumber1");
+
+                    b.Property<string>("PlateNumber2");
 
                     b.Property<string>("Remarks");
 
                     b.Property<DateTime>("StartDate");
-
-                    b.Property<DateTime>("TimeIn");
-
-                    b.Property<DateTime?>("TimeOut");
 
                     b.HasKey("ticketingId");
 
@@ -539,35 +540,11 @@ namespace src.Migrations
 
                     b.Property<DateTime>("TimeIn");
 
-                    b.Property<DateTime?>("TimeOut");
+                    b.Property<DateTime>("TimeOut");
 
                     b.HasKey("ticketingId");
 
                     b.ToTable("ShortTrip");
-                });
-
-            modelBuilder.Entity("src.Models.StallLease", b =>
-                {
-                    b.Property<Guid>("ticketingId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Amount");
-
-                    b.Property<string>("DriverName");
-
-                    b.Property<DateTime?>("EndDate");
-
-                    b.Property<string>("PlateNumber1");
-
-                    b.Property<string>("PlateNumber2");
-
-                    b.Property<string>("Remarks");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("ticketingId");
-
-                    b.ToTable("StallLease");
                 });
 
             modelBuilder.Entity("src.Models.SupportAgent", b =>
@@ -682,17 +659,11 @@ namespace src.Migrations
 
                     b.Property<int?>("amount");
 
-                    b.Property<int>("controlNumber");
-
                     b.Property<string>("driverName");
 
                     b.Property<DateTime?>("endDate");
 
-                    b.Property<string>("issuingClerk");
-
                     b.Property<string>("plateNumber");
-
-                    b.Property<string>("receivingClerk");
 
                     b.Property<string>("remarks");
 

@@ -96,30 +96,30 @@ $(document).ready(function () {
             //        return btnEdit;
             //    }
             //}
-            //{
-            //    "data": function (data) {
-            //        //var valid = "<span class='txt-success'>Valid</span>";
-            //        //var expired = "<label class='txt-info'>Expired</label>";
-            //        var btnExtend = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Extend</a>";
-            //        var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditGatePass?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+            {
+                "data": function (data) {
+                    //var valid = "<span class='txt-success'>Valid</span>";
+                    //var expired = "<label class='txt-info'>Expired</label>";
+                    var btnExtend = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Extend</a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditGatePass?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
 
-            //        var endDate = data["endDate"];
-            //        var currentDate = new Date();
-            //        endDate = new Date(endDate);
+                    var endDate = data["endDate"];
+                    var currentDate = new Date();
+                    endDate = new Date(endDate);
 
-            //        var remainingDays = endDate - currentDate;
-            //        var days = Math.floor(remainingDays / (1000 * 60 * 60 * 24));
-            //        //var hours = Math.floor((remainingDays % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            //        //var minutes = Math.floor((remainingDays % (1000 * 60 * 60)) / (1000 * 60));
-            //        //var seconds = Math.floor((remainingDays % (1000 * 60)) / 1000); 
-            //        if (days > 0) {
-            //            return btnExtend = "" , btnEdit;
-            //        } 
-            //        else {
-            //            return btnExtend;
-            //        }
-            //    }
-            //}
+                    var remainingDays = endDate - currentDate;
+                    var days = Math.floor(remainingDays / (1000 * 60 * 60 * 24));
+                    //var hours = Math.floor((remainingDays % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    //var minutes = Math.floor((remainingDays % (1000 * 60 * 60)) / (1000 * 60));
+                    //var seconds = Math.floor((remainingDays % (1000 * 60)) / 1000); 
+                    if (days > 0) {
+                        return btnExtend = "" , btnEdit;
+                    } 
+                    else {
+                        return btnExtend;
+                    }
+                }
+            }
             //{
             //    "data": function (data) {
             //        var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditGatePass?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
@@ -192,7 +192,7 @@ function ShowPopup(url) {
 }
 
 
-function SubmitAddEditGatePass(form) {
+function SubmitListOfStallLease(form) {
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
         var data = $(form).serializeJSON();

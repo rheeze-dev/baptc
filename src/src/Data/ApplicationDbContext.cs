@@ -47,6 +47,8 @@ namespace src.Data
 
         public DbSet<src.Models.Module> Modules { get; set; }
 
+        public DbSet<src.Models.StallLease> StallLease { get; set; }
+
         public DbSet<src.Models.TradersTruck> TradersTruck { get; set; }
 
         public DbSet<src.Models.FarmersTruck> FarmersTruck { get; set; }

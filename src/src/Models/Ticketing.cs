@@ -37,5 +37,11 @@ namespace src.Models
 
         public string remarks { get; set; }
 
+        public int controlNumber { get; set; }
+
+        public string issuingClerk { get; set; }
+
+        public string receivingClerk { get; set; }
+
     }
 }

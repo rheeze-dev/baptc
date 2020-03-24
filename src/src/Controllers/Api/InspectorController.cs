@@ -77,7 +77,7 @@ namespace src.Controllers.Api
 
             TradersTruck tradersTruck = new TradersTruck
             {
-                Date = DateTime.Now,
+                DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 TraderName = model["TraderName"].ToString(),
                 PlateNumber = model["PlateNumber"].ToString(),
@@ -106,7 +106,7 @@ namespace src.Controllers.Api
 
             FarmersTruck farmersTruck = new FarmersTruck
             {
-                Date = DateTime.Now,
+                DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 StallNumber = model["StallNumber"].ToString(),
                 PlateNumber = model["PlateNumber"].ToString(),
@@ -140,7 +140,7 @@ namespace src.Controllers.Api
 
             ShortTrip shortTrip = new ShortTrip
             {
-                Date = DateTime.Now,
+                DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString()),
                 PlateNumber = model["PlateNumber"].ToString(),
@@ -168,7 +168,7 @@ namespace src.Controllers.Api
 
             PayParking payParking = new PayParking
             {
-                Date = DateTime.Now,
+                DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 PlateNumber = model["PlateNumber"].ToString(),
                 DriverName = model["DriverName"].ToString()

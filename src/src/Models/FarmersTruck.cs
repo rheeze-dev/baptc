@@ -12,9 +12,11 @@ namespace src.Models
         public Guid ticketingId { get; set; }
         //[Required]
         [Display(Name = "Date and time")]
-        public DateTime? Date { get; set; }
+        public DateTime? DateInspected { get; set; }
 
         public DateTime TimeIn { get; set; }
+
+        public DateTime? TimeOut { get; set; }
         //[Required]
         [Display(Name = "Stall number")]
         public string StallNumber { get; set; }

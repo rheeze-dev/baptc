@@ -84,13 +84,13 @@ namespace src.Controllers
         {
             if (id == Guid.Empty)
             {
-                GatePass gatePass = new GatePass();
+                StallLease stallLease = new StallLease();
                 //customer.organizationId = org;
-                return View(gatePass);
+                return View(stallLease);
             }
             else
             {
-                return View(_context.GatePass.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+                return View(_context.StallLease.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
             }
 
         }

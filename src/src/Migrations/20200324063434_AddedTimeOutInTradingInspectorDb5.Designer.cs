@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200324063434_AddedTimeOutInTradingInspectorDb5")]
+    partial class AddedTimeOutInTradingInspectorDb5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,7 +336,9 @@ namespace src.Migrations
 
                     b.Property<DateTime?>("EndDate");
 
-                    b.Property<string>("PlateNumber");
+                    b.Property<string>("PlateNumber1");
+
+                    b.Property<string>("PlateNumber2");
 
                     b.Property<string>("Remarks");
 
@@ -682,17 +685,11 @@ namespace src.Migrations
 
                     b.Property<int?>("amount");
 
-                    b.Property<int>("controlNumber");
-
                     b.Property<string>("driverName");
 
                     b.Property<DateTime?>("endDate");
 
-                    b.Property<string>("issuingClerk");
-
                     b.Property<string>("plateNumber");
-
-                    b.Property<string>("receivingClerk");
 
                     b.Property<string>("remarks");
 
