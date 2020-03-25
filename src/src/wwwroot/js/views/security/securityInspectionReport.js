@@ -11,15 +11,27 @@ $(document).ready(function () {
             "type": 'GET',
             "datatype": 'json'
         },
+        "order": [[0, 'desc']],
         "columns": [
             //{ "data": "commodityDate" },
             {
                 "data": function (data) {
                     var d = new Date(data["date"]);
-                    var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
                     return output;
                 }
             },
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["timeIn"]);
+            //        var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
+            //        var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
+            //        if (data["timeIn"] == null) {
+            //            output = "";
+            //        }
+            //        return spanData + output;
+            //    }
+            //},
             {
                 "data": function (data) {
                     var d = new Date(data["date"]);
@@ -29,6 +41,8 @@ $(document).ready(function () {
             },
             { "data": "location" },
             { "data": "remarks" },
+            { "data": "action" },
+            { "data": "inspector" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Security/AddEditSecurityInspectionReport?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
@@ -43,6 +57,9 @@ $(document).ready(function () {
         "lengthChange": false,
     });
 });
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();

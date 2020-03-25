@@ -1,7 +1,7 @@
 ﻿@model src.Models.Organization
 @{
-    ViewData["Title"] = "Security";
-    Layout = "_LayoutAdminlteSecurity";
+    ViewData["Title"] = "Repair";
+    Layout = "_LayoutAdminlteRepair";
 }
 
 <!-- Content Header (Page header) -->
@@ -17,21 +17,25 @@
                             <input type="hidden" asp-for="@Model.organizationId" />
                             @*<div class="col-lg-2">
                                 <div class="row">*@
-                                    <div class="col-md-6">
-                                        <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditSecurityInspectionReport","Security", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New inspection report</a>
-                                    </div>
-                                @*</div>
-                            </div>*@
+                            <div class="col-md-6">
+                                <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditVehicleRepair","Repair", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New vehicle repair</a>
+                            </div>
+                            @*</div>
+                                </div>*@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-2">Date</th>
-                                        <th class="col-md-2">Time</th>
-                                        <th class="col-md-2">Location</th>
-                                        <th class="col-md-2">Remarks</th>
-                                        <th class="col-md-2">Action taken</th>
-                                        <th class="col-md-2">Inspector</th>
-                                        <th class="col-md-2">Action</th>
+                                        <th class="col-md-1">Date</th>
+                                        <th class="col-md-1">Time</th>
+                                        <th class="col-md-1">Plate number</th>
+                                        <th class="col-md-1">Trip/Destination</th>
+                                        <th class="col-md-1">Driver name</th>
+                                        <th class="col-md-1">Location of repair</th>
+                                        <th class="col-md-1">Repair details</th>
+                                        <th class="col-md-1">Remarks</th>
+                                        <th class="col-md-1">Requester</th>
+                                        <th class="col-md-1">Request number</th>
+                                        <th class="col-md-1">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -41,7 +45,7 @@
 
             </div>
         </div>
-      
+
     </div>
 
 </section>
@@ -59,7 +63,7 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/security/securityInspectionReport.js"></script>
+    <script src="~/js/views/security/securityRepairCheck.js"></script>
     <script src="~/lib/DateTimePicker/bootstrap-datetimepicker.min.js"></script>
 }
 

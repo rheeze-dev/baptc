@@ -24,24 +24,29 @@ namespace src.Controllers.Api
         private readonly IDotnetdesk _dotnetdesk;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+
 
         public SecurityController(ApplicationDbContext context,
             IDotnetdesk dotnetdesk,
             UserManager<ApplicationUser> userManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _dotnetdesk = dotnetdesk;
             _userManager = userManager;
             _emailSender = emailSender;
+            _signInManager = signInManager;
         }
 
         // GET: api/Inspector
         [HttpGet("{organizationId}")]
         public IActionResult GetSecurityRepairCheck([FromRoute]Guid organizationId)
         {
-            var securityRepairCheck = _context.SecurityRepairCheck.ToList();
-            return Json(new { data = securityRepairCheck });
+            var repair = _context.Repair.ToList();
+            return Json(new { data = repair });
         }
 
         // GET: api/Inspector/GetSecurityInspectionReport
@@ -57,23 +62,38 @@ namespace src.Controllers.Api
         public async Task<IActionResult> PostSecurityRepairCheck([FromBody] JObject model)
         {
             int id = 0;
+            var getLastRequestNumber = _context.Repair.OrderByDescending(x => x.RequestNumber).Select(x => x.RequestNumber).FirstOrDefault();
+            var info = await _userManager.GetUserAsync(User);
             id = Convert.ToInt32(model["Id"].ToString());
-            SecurityRepairCheck securityRepairCheck = new SecurityRepairCheck
+            Repair repair = new Repair
             {
-                Date = Convert.ToDateTime(model["Date"].ToString()),
-                Name = model["Name"].ToString(),
+                Date = DateTime.Now,
                 PlateNumber = model["PlateNumber"].ToString(),
+                Destination = model["Destination"].ToString(),
+                DriverName = model["DriverName"].ToString(),
+                //RequesterName = model["RequesterName"].ToString(),
+                Location = model["Location"].ToString(),
                 RepairDetails = model["RepairDetails"].ToString(),
                 Remarks = model["Remarks"].ToString()
             };
-            if (id == 0)
+            if (getLastRequestNumber == null)
             {
-                _context.SecurityRepairCheck.Add(securityRepairCheck);
+                repair.RequestNumber = 1;
             }
             else
             {
-                securityRepairCheck.Id = id;
-                _context.SecurityRepairCheck.Update(securityRepairCheck);
+                repair.RequestNumber = getLastRequestNumber + 1;
+            }
+            if (id == 0)
+            {
+                repair.RequesterName = info.FullName;
+                _context.Repair.Add(repair);
+            }
+            else
+            {
+                repair.Id = id;
+                repair.RequesterName = info.FullName;
+                _context.Repair.Update(repair);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -84,20 +104,24 @@ namespace src.Controllers.Api
         public async Task<IActionResult> PostSecurityInspectionReport([FromBody] JObject model)
         {
             int id = 0;
+            var info = await _userManager.GetUserAsync(User);
             id = Convert.ToInt32(model["Id"].ToString());
             SecurityInspectionReport securityInspectionReport = new SecurityInspectionReport
             {
-                Date = Convert.ToDateTime(model["Date"].ToString()),
+                Date = DateTime.Now,
                 Location = model["Location"].ToString(),
-                Remarks = model["Remarks"].ToString()
+                Remarks = model["Remarks"].ToString(),
+                Action = model["Action"].ToString()
             };
             if (id == 0)
             {
+                securityInspectionReport.Inspector = info.FullName;
                 _context.SecurityInspectionReport.Add(securityInspectionReport);
             }
             else
             {
                 securityInspectionReport.Id = id;
+                securityInspectionReport.Inspector = info.FullName;
                 _context.SecurityInspectionReport.Update(securityInspectionReport);
             }
             await _context.SaveChangesAsync();
@@ -108,8 +132,8 @@ namespace src.Controllers.Api
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSecurityRepairCheck([FromRoute] int id)
         {
-            SecurityRepairCheck securityRepairCheck = _context.SecurityRepairCheck.Where(x => x.Id == id).FirstOrDefault();
-            _context.Remove(securityRepairCheck);
+            Repair repair = _context.Repair.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(repair);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

@@ -92,7 +92,7 @@
 
                         @if (appUser.IsSuperAdmin)
                         {
-                            <a href="@Url.Action("SecurityRepairCheck", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            <a href="@Url.Action("SecurityInspectionReport", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                             @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
                         }
                         else if (appUser.IsCustomer)
@@ -129,7 +129,7 @@
 
                         @if (appUser.IsSuperAdmin)
                         {
-                            <a href="@Url.Action("Repair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                            <a href="@Url.Action("VehicleRepair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                             @*<a href="@Url.Action("Organization", "Config")" class="small-box-footer">Configure <i class="fa fa-gear"></i></a>*@
                         }
                         else if (appUser.IsCustomer)
@@ -241,7 +241,6 @@
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Trading And Inter-trading</h4>
-
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>

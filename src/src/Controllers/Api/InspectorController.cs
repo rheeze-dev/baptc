@@ -24,16 +24,20 @@ namespace src.Controllers.Api
         private readonly IDotnetdesk _dotnetdesk;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
 
         public InspectorController(ApplicationDbContext context,
             IDotnetdesk dotnetdesk,
             UserManager<ApplicationUser> userManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _dotnetdesk = dotnetdesk;
             _userManager = userManager;
             _emailSender = emailSender;
+            _signInManager = signInManager;
         }
 
         // GET: api/Inspector/GetTradersTruck
@@ -66,6 +70,22 @@ namespace src.Controllers.Api
         {
             var payParking = _context.PayParking.ToList();
             return Json(new { data = payParking });
+        }
+
+        // GET: api/Inspector/GetInterTrading
+        [HttpGet("GetInterTrading")]
+        public IActionResult GetInterTrading([FromRoute]Guid organizationId)
+        {
+            var interTrading = _context.InterTrading.ToList();
+            return Json(new { data = interTrading });
+        }
+
+        // GET: api/Inspector/GetCarrotFacility
+        [HttpGet("GetCarrotFacility")]
+        public IActionResult GetCarrotFacility([FromRoute]Guid organizationId)
+        {
+            var carrotFacility = _context.CarrotFacility.ToList();
+            return Json(new { data = carrotFacility });
         }
 
         // POST: api/Inspector
@@ -186,6 +206,90 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
+        // POST: api/Inspector/PostInterTrading
+        [HttpPost("PostInterTrading")]
+        public async Task<IActionResult> PostInterTrading([FromBody] JObject model)
+        {
+            int id = 0;
+            var getLastCode = _context.InterTrading.OrderByDescending(x => x.Code).Select(x => x.Code).FirstOrDefault();
+            var info = await _userManager.GetUserAsync(User);
+            id = Convert.ToInt32(model["Id"].ToString());
+
+            InterTrading interTrading = new InterTrading
+            {
+                Date = DateTime.Now,
+                FarmerName = model["FarmerName"].ToString(),
+                FarmersOrganization = model["FarmersOrganization"].ToString(),
+                Commodity = model["Commodity"].ToString(),
+                Volume = Convert.ToInt32(model["Volume"].ToString()),
+                ProductionArea = model["ProductionArea"].ToString()
+
+            };
+            if (getLastCode == null)
+            {
+                interTrading.Code = 1;
+            }
+            else
+            {
+                interTrading.Code = getLastCode + 1;
+            }
+            if (id == 0)
+            {
+                interTrading.Inspector = info.FullName;
+                _context.InterTrading.Add(interTrading);
+            }
+            else
+            {
+                interTrading.Id = id;
+                interTrading.Inspector = info.FullName;
+                _context.InterTrading.Update(interTrading);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Inspector/PostCarrotFacility
+        [HttpPost("PostCarrotFacility")]
+        public async Task<IActionResult> PostCarrotFacility([FromBody] JObject model)
+        {
+            int id = 0;
+            var getLastCode = _context.CarrotFacility.OrderByDescending(x => x.Code).Select(x => x.Code).FirstOrDefault();
+            var info = await _userManager.GetUserAsync(User);
+            id = Convert.ToInt32(model["Id"].ToString());
+
+            CarrotFacility carrotFacility = new CarrotFacility
+            {
+                Date = DateTime.Now,
+                StallNumber = model["StallNumber"].ToString(),
+                Facilitator = model["Facilitator"].ToString(),
+                Commodity = model["Commodity"].ToString(),
+                Volume = Convert.ToInt32(model["Volume"].ToString()),
+                Destination = model["Destination"].ToString()
+
+            };
+            if (getLastCode == null)
+            {
+                carrotFacility.Code = 1;
+            }
+            else
+            {
+                carrotFacility.Code = getLastCode + 1;
+            }
+            if (id == 0)
+            {
+                carrotFacility.Inspector = info.FullName;
+                _context.CarrotFacility.Add(carrotFacility);
+            }
+            else
+            {
+                carrotFacility.Id = id;
+                carrotFacility.Inspector = info.FullName;
+                _context.CarrotFacility.Update(carrotFacility);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
         // DELETE: api/Inspector/
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTradersTruck([FromRoute] Guid id)
@@ -212,6 +316,26 @@ namespace src.Controllers.Api
         {
             ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(shortTrip);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete success." });
+        }
+
+        // DELETE: api/Inspector/DeleteInterTrading
+        [HttpDelete("InterTrading/{id}")]
+        public async Task<IActionResult> DeleteInterTrading([FromRoute] int id)
+        {
+            InterTrading interTrading = _context.InterTrading.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(interTrading);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete success." });
+        }
+
+        // DELETE: api/Inspector/DeleteCarrotFacility
+        [HttpDelete("CarrotFacility/{id}")]
+        public async Task<IActionResult> DeleteCarrotFacility([FromRoute] int id)
+        {
+            CarrotFacility carrotFacility = _context.CarrotFacility.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(carrotFacility);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

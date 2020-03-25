@@ -6,21 +6,24 @@ using System.Threading.Tasks;
 
 namespace src.Models
 {
-    public class SecurityInspectionReport
+    public class InterTrading
     {
 
         public int Id { get; set; }
+
+        public int? Code { get; set; }
         //[Required]
-        [Display(Name = "Date")]
         public DateTime Date { get; set; }
         //[Required]
-        [Display(Name = "Location")]
-        public string Location { get; set; }
+        public string FarmerName { get; set; }
 
-        [Display(Name = "Remarks")]
-        public string Remarks { get; set; }
+        public string FarmersOrganization { get; set; }
 
-        public string Action { get; set; }
+        public string Commodity { get; set; }
+
+        public int Volume { get; set; }
+
+        public string ProductionArea { get; set; }
 
         public string Inspector { get; set; }
 

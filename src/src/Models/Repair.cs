@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace src.Models
 {
-    public class SecurityRepairCheck
+    public class Repair
     {
 
         public int Id { get; set; }
@@ -17,14 +17,22 @@ namespace src.Models
         [Display(Name = "Plate number")]
         public string PlateNumber { get; set; }
 
+        public string Destination { get; set; }
+
         [Display(Name = "Name")]
-        public string Name { get; set; }
+        public string DriverName { get; set; }
 
         [Display(Name = "Repair details")]
-        public string RepairDetails { get; set; }
+        public string RequesterName { get; set; }
 
         [Display(Name = "Remarks")]
         public string Remarks { get; set; }
+
+        public string Location { get; set; }
+
+        public string RepairDetails { get; set; }
+
+        public int? RequestNumber { get; set; }
 
     }
 }

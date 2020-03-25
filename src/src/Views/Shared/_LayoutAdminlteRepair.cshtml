@@ -116,15 +116,15 @@
                         {
                             <li class="header">MAIN NAVIGATION</li>
                             <li class="@Html.IsSelected(controller: "Repair")">
-                                <a href="@Url.Action("Repair", "Repair", new { org = org })">
-                                    <i class="fa fa-th"></i> <span>Ticketing In</span>
+                                <a href="@Url.Action("VehicleRepair", "Repair", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Vehicle repair</span>
                                 </a>
                             </li>
-                            <li class="@Html.IsSelected(controller: "Ticketing")">
+                            @*<li class="@Html.IsSelected(controller: "Ticketing")">
                                 <a href="@Url.Action("TicketingOut", "Ticketing", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Ticketing Out</span>
                                 </a>
-                            </li>
+                            </li>*@
                             @*<li class="@Html.IsSelected(controller: "SupportAgent")">
                                     <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
                                         <i class="fa fa-th"></i> <span>Support Agents</span>

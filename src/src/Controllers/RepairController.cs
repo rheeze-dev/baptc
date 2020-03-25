@@ -18,7 +18,7 @@ namespace src.Controllers
             _context = context;
         }
 
-        public IActionResult Repair(Guid org)
+        public IActionResult VehicleRepair(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -27,6 +27,20 @@ namespace src.Controllers
             Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
             ViewData["org"] = org;
             return View(organization);
+        }
+
+        public IActionResult AddEditVehicleRepair(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Repair repair = new Repair();
+                //ticketing.ticketingId = org;
+                return View(repair);
+            }
+            else
+            {
+                return View(_context.Repair.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
         }
 
     }

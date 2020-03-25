@@ -59,7 +59,11 @@ namespace src.Data
 
         public DbSet<src.Models.PayParking> PayParking { get; set; }
 
-        public DbSet<src.Models.SecurityRepairCheck> SecurityRepairCheck { get; set; }
+        public DbSet<src.Models.Repair> Repair { get; set; }
+
+        public DbSet<src.Models.InterTrading> InterTrading { get; set; }
+
+        public DbSet<src.Models.CarrotFacility> CarrotFacility { get; set; }
 
         public DbSet<src.Models.SecurityInspectionReport> SecurityInspectionReport { get; set; }
 

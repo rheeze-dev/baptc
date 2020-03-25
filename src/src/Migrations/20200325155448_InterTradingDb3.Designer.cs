@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200325155448_InterTradingDb3")]
+    partial class InterTradingDb3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,32 +198,6 @@ namespace src.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("src.Models.CarrotFacility", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("Code");
-
-                    b.Property<string>("Commodity");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Destination");
-
-                    b.Property<string>("Facilitator");
-
-                    b.Property<string>("Inspector");
-
-                    b.Property<string>("StallNumber");
-
-                    b.Property<int>("Volume");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarrotFacility");
                 });
 
             modelBuilder.Entity("src.Models.Contact", b =>

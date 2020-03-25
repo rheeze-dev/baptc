@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200325132423_SecurityInspectionReportDb2")]
+    partial class SecurityInspectionReportDb2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,32 +200,6 @@ namespace src.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("src.Models.CarrotFacility", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("Code");
-
-                    b.Property<string>("Commodity");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Destination");
-
-                    b.Property<string>("Facilitator");
-
-                    b.Property<string>("Inspector");
-
-                    b.Property<string>("StallNumber");
-
-                    b.Property<int>("Volume");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarrotFacility");
-                });
-
             modelBuilder.Entity("src.Models.Contact", b =>
                 {
                     b.Property<Guid>("contactId")
@@ -376,32 +351,6 @@ namespace src.Migrations
                     b.ToTable("GatePass");
                 });
 
-            modelBuilder.Entity("src.Models.InterTrading", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("Code");
-
-                    b.Property<string>("Commodity");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("FarmerName");
-
-                    b.Property<string>("FarmersOrganization");
-
-                    b.Property<string>("Inspector");
-
-                    b.Property<string>("ProductionArea");
-
-                    b.Property<int>("Volume");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InterTrading");
-                });
-
             modelBuilder.Entity("src.Models.Module", b =>
                 {
                     b.Property<int>("Id")
@@ -516,34 +465,6 @@ namespace src.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("src.Models.Repair", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Destination");
-
-                    b.Property<string>("DriverName");
-
-                    b.Property<string>("Location");
-
-                    b.Property<string>("PlateNumber");
-
-                    b.Property<string>("Remarks");
-
-                    b.Property<string>("RepairDetails");
-
-                    b.Property<int?>("RequestNumber");
-
-                    b.Property<string>("RequesterName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Repair");
-                });
-
             modelBuilder.Entity("src.Models.Roles", b =>
                 {
                     b.Property<int>("Id")
@@ -586,6 +507,26 @@ namespace src.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SecurityInspectionReport");
+                });
+
+            modelBuilder.Entity("src.Models.SecurityRepairCheck", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PlateNumber");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("RepairDetails");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SecurityRepairCheck");
                 });
 
             modelBuilder.Entity("src.Models.ShortTrip", b =>
