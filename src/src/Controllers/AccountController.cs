@@ -246,7 +246,7 @@ namespace src.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                int getLastUserId = _context.ApplicationUser.OrderByDescending(u=>u.UserId).Select(x => x.UserId).First();
+                int getLastUserId = _context.ApplicationUser.OrderByDescending(u=>u.UserId).Select(x => x.UserId).FirstOrDefault();
                 int userId = getLastUserId + 1;
                 
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, UserId=userId };

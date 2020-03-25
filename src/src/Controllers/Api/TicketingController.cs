@@ -66,8 +66,8 @@ namespace src.Controllers.Api
         public async Task<IActionResult> PostTicketing([FromBody] JObject model)
         {
             Guid objGuid = Guid.Empty;
-            int getLastControlNumber = _context.Ticketing.OrderByDescending(x => x.controlNumber).Select(x => x.controlNumber).First();
-            int controlNumber = getLastControlNumber + 1;
+            var getLastControlNumber = _context.Ticketing.OrderByDescending(x => x.controlNumber).Select(x => x.controlNumber).FirstOrDefault();
+            //int? controlNumber = getLastControlNumber + 1;
             var info = await _userManager.GetUserAsync(User);
             objGuid = Guid.Parse(model["ticketingId"].ToString());
             Ticketing ticketing = new Ticketing
@@ -78,9 +78,17 @@ namespace src.Controllers.Api
                 typeOfCar = model["typeOfCar"].ToString(),
                 driverName = model["driverName"].ToString(),
                 remarks = model["remarks"].ToString(),
-                controlNumber = controlNumber,
+                //controlNumber = controlNumber,
                 amount = null
             };
+            if (getLastControlNumber == null)
+            {
+                ticketing.controlNumber = 1;
+            }
+            else
+            {
+                ticketing.controlNumber = getLastControlNumber + 1;
+            }
 
             TradersTruck tradersTruck = new TradersTruck
             {
@@ -118,14 +126,6 @@ namespace src.Controllers.Api
                 PlateNumber = ticketing.plateNumber,
                 DriverName = ticketing.driverName
             };
-
-            //StallLease stallLease = new StallLease
-            //{
-            //    //ticketingId = ticketing.ticketingId,
-            //    //TimeIn = DateTime.Now,
-            //    //PlateNumber = ticketing.plateNumber,
-            //    //DriverName = ticketing.driverName
-            //};
 
             if (objGuid == Guid.Empty)
             {
