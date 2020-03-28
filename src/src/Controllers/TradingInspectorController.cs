@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using src.Data;
 using src.Models;
+using src.Services;
 
 namespace src.Controllers
 {
@@ -14,17 +15,26 @@ namespace src.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ISecurityService _securityService;
 
         public TradingInspectorController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ISecurityService securityService)
         {
             _context = context;
             _userManager = userManager;
+            _securityService = securityService;
         }
 
-        public IActionResult TradersTruck(Guid org)
+        public async Task<IActionResult> TradersTruck(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingInspector"))
             {
                 return NotFound();
             }
@@ -33,9 +43,15 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public IActionResult FarmersTruck(Guid org)
+        public async Task<IActionResult> FarmersTruck(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingInspector"))
             {
                 return NotFound();
             }
@@ -44,9 +60,15 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public IActionResult ShortTrip(Guid org)
+        public async Task<IActionResult> ShortTrip(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingInspector"))
             {
                 return NotFound();
             }
@@ -55,9 +77,15 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public IActionResult PayParking(Guid org)
+        public async Task<IActionResult> PayParking(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingInspector"))
             {
                 return NotFound();
             }

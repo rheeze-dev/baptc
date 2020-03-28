@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using src.Data;
 using src.Models;
+using src.Services;
 
 namespace src.Controllers
 {
@@ -12,15 +14,27 @@ namespace src.Controllers
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ISecurityService _securityService;
 
-        public TradingAndIntertradingController(ApplicationDbContext context)
+        public TradingAndIntertradingController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            ISecurityService securityService)
         {
             _context = context;
+            _userManager = userManager;
+            _securityService = securityService;
         }
 
-        public IActionResult TradingAndIntertrading(Guid org)
+        public async Task<IActionResult> TradingAndIntertrading(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingAndInterTrading"))
             {
                 return NotFound();
             }
@@ -29,9 +43,15 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public IActionResult CarrotFacility(Guid org)
+        public async Task<IActionResult> CarrotFacility(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingAndInterTrading"))
             {
                 return NotFound();
             }

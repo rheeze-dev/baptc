@@ -15,13 +15,15 @@ namespace src.Models
         //[Required]
         [Display(Name = "Date and time")]
         public DateTime? DateInspected { get; set; }
-        //[Required]
+
+        [Required]
         [Display(Name = "Traders name")]
         public string TraderName { get; set; }
 
         [Display(Name = "Estimated volume (kg)")]
         public int? EstimatedVolume { get; set; }
 
+        [Required]
         [Display(Name = "Destination")]
         public string Destination { get; set; }
 
@@ -30,5 +32,7 @@ namespace src.Models
         public DateTime? TimeOut { get; set; }
 
         public string PlateNumber { get; set; }
+
+        public string Inspector { get; set; }
     }
 }

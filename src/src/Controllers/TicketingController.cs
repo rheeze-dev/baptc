@@ -2,24 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using src.Data;
 using src.Models;
+using src.Services;
 
 namespace src.Controllers
 {
     public class TicketingController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ISecurityService _securityService;
 
-        public TicketingController(ApplicationDbContext context)
+        public TicketingController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            ISecurityService securityService)
         {
             _context = context;
+            _userManager = userManager;
+            _securityService = securityService;
         }
 
-        public IActionResult TicketingOut(Guid org)
+        public async Task<IActionResult> TicketingOut(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
             {
                 return NotFound();
             }
@@ -28,9 +42,15 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public IActionResult TicketingIn(Guid org)
+        public async Task<IActionResult> TicketingIn(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
             {
                 return NotFound();
             }
@@ -39,9 +59,15 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public IActionResult GatePass(Guid org)
+        public async Task<IActionResult> GatePass(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
             {
                 return NotFound();
             }

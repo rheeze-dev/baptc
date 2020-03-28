@@ -18,14 +18,17 @@ namespace src.Models
         public DateTime? TimeOut { get; set; }
 
         public DateTime? DateInspected { get; set; }
-        //[Required]
+
         [Display(Name = "Estimated volume (kg)")]
         public int? EstimatedVolume { get; set; }
 
         [Display(Name = "Plate number")]
         public string PlateNumber { get; set; }
 
+        [Required]
         [Display(Name = "Commodity")]
         public string Commodity { get; set; }
+
+        public string Inspector { get; set; }
     }
 }

@@ -117,11 +117,11 @@
                         @if (appUser.IsSuperAdmin)
                         {
                             <li class="header">MAIN NAVIGATION</li>
-                            <li class="@Html.IsSelected(controller: "Security",action:"SecurityRepairCheck")">
+                            @*<li class="@Html.IsSelected(controller: "Security",action:"SecurityRepairCheck")">
                                 <a href="@Url.Action("SecurityRepairCheck", "Security", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Security Repair Check</span>
                                 </a>
-                            </li>
+                            </li>*@
                             <li class="@Html.IsSelected(controller: "Security",action:"SecurityInspectionReport")">
                                 <a href="@Url.Action("SecurityInspectionReport", "Security", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Security Inspection Report</span>

@@ -17,25 +17,30 @@ namespace src.Models
         public DateTime TimeIn { get; set; }
 
         public DateTime? TimeOut { get; set; }
-        //[Required]
+
+        [Required]
         [Display(Name = "Stall number")]
         public string StallNumber { get; set; }
 
         [Display(Name = "Plate number")]
         public string PlateNumber { get; set; }
 
+        [Required]
         [Display(Name = "Farmers name")]
         public string FarmersName { get; set; }
 
+        [Required]
         [Display(Name = "Organization")]
         public string Organization { get; set; }
 
+        [Required]
         [Display(Name = "Commodity")]
         public string Commodity { get; set; }
 
         [Display(Name = "Volume")]
         public int? Volume { get; set; }
 
+        [Required]
         [Display(Name = "Barangay")]
         public string Barangay { get; set; }
 
@@ -44,5 +49,7 @@ namespace src.Models
 
         [Display(Name = "FacilitatorsName")]
         public string FacilitatorsName { get; set; }
+
+        public string Inspector { get; set; }
     }
 }

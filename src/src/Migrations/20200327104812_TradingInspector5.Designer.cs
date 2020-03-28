@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200327104812_TradingInspector5")]
+    partial class TradingInspector5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -348,8 +349,6 @@ namespace src.Migrations
                     b.Property<string>("FarmersName")
                         .IsRequired();
 
-                    b.Property<string>("Inspector");
-
                     b.Property<string>("Organization")
                         .IsRequired();
 
@@ -619,8 +618,6 @@ namespace src.Migrations
 
                     b.Property<int?>("EstimatedVolume");
 
-                    b.Property<string>("Inspector");
-
                     b.Property<string>("PlateNumber");
 
                     b.Property<DateTime>("TimeIn");
@@ -806,8 +803,6 @@ namespace src.Migrations
                         .IsRequired();
 
                     b.Property<int?>("EstimatedVolume");
-
-                    b.Property<string>("Inspector");
 
                     b.Property<string>("PlateNumber");
 

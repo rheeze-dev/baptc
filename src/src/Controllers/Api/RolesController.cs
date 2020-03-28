@@ -53,7 +53,7 @@ namespace src.Controllers.Api
             id = Convert.ToInt32(model["Id"].ToString());
             Roles roles = new Roles
             {
-                DateAdded = Convert.ToDateTime(model["DateAdded"].ToString()),
+                DateAdded = DateTime.Now,
                 FullName = model["FullName"].ToString(),
                 Remarks = model["Remarks"].ToString(),
                 ShortName = model["ShortName"].ToString(),
@@ -135,17 +135,27 @@ namespace src.Controllers.Api
                     RoleId = userRole.RoleId,
                     UserId = userRole.UserId,
                     Modules = userRole.Modules,
-                    DateAdded = DateTime.UtcNow
+                    DateAdded = DateTime.Now
                 };
                 _context.UserRole.Add(newUserRole);
             }
             else
             {
                 UserRole updateUserRole = _context.UserRole.Where(x => x.Id == id && x.UserId == userRole.UserId).FirstOrDefault();
-                updateUserRole.Remarks = userRole.Remarks;
-                updateUserRole.RoleId = userRole.RoleId;
-                updateUserRole.Modules = userRole.Modules;
-                _context.UserRole.Update(updateUserRole);
+                {
+                    updateUserRole.Remarks = userRole.Remarks;
+                    updateUserRole.RoleId = userRole.RoleId;
+                    updateUserRole.Modules = userRole.Modules;
+                    if (updateUserRole.RoleId == null)
+                    {
+                        return Json(new { success = false, message = "Role field cannot be empty!" });
+                    }
+                    else if (updateUserRole.RoleId.Contains(",") )
+                    {
+                        return Json(new { success = false, message = "Role field cannot be more than 1!" });
+                    }
+                    _context.UserRole.Update(updateUserRole);
+                }
             }
             
             await _context.SaveChangesAsync();

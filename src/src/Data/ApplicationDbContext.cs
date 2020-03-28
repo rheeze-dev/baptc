@@ -65,6 +65,8 @@ namespace src.Data
 
         public DbSet<src.Models.CarrotFacility> CarrotFacility { get; set; }
 
+        public DbSet<src.Models.Accredited> Accredited { get; set; }
+
         public DbSet<src.Models.SecurityInspectionReport> SecurityInspectionReport { get; set; }
 
         public DbSet<src.Models.ApplicationUser> ApplicationUser { get; set; }

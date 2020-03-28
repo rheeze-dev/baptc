@@ -215,7 +215,7 @@ function SubmitAddEditNewGatePass(form) {
         //var data = {
         //    priceCommodity: "petsay"
         //};
-        alert(data);
+        //alert(data);
         //return true;
         $.ajax({
             type: 'POST',

@@ -53,6 +53,7 @@ $(document).ready(function () {
             { "data": "traderName" },
             { "data": "estimatedVolume" },
             { "data": "destination" },
+            { "data": "inspector" },
             //{ "data": "priceRange" },
             //{ "data": "time" },
             {
@@ -122,7 +123,7 @@ function SubmitAddEdit(form) {
         //var data = {
         //    priceCommodity: "petsay"
         //};
-        alert(data);
+        //alert(data);
         //return true;
         $.ajax({
             type: 'POST',

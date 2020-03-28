@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200327080026_AccreditedDb")]
+    partial class AccreditedDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,30 +336,23 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Barangay")
-                        .IsRequired();
+                    b.Property<string>("Barangay");
 
-                    b.Property<string>("Commodity")
-                        .IsRequired();
+                    b.Property<string>("Commodity");
 
                     b.Property<DateTime?>("DateInspected");
 
                     b.Property<string>("FacilitatorsName");
 
-                    b.Property<string>("FarmersName")
-                        .IsRequired();
+                    b.Property<string>("FarmersName");
 
-                    b.Property<string>("Inspector");
-
-                    b.Property<string>("Organization")
-                        .IsRequired();
+                    b.Property<string>("Organization");
 
                     b.Property<string>("PlateNumber");
 
                     b.Property<string>("Province");
 
-                    b.Property<string>("StallNumber")
-                        .IsRequired();
+                    b.Property<string>("StallNumber");
 
                     b.Property<DateTime>("TimeIn");
 
@@ -612,14 +606,11 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Commodity")
-                        .IsRequired();
+                    b.Property<string>("Commodity");
 
                     b.Property<DateTime?>("DateInspected");
 
                     b.Property<int?>("EstimatedVolume");
-
-                    b.Property<string>("Inspector");
 
                     b.Property<string>("PlateNumber");
 
@@ -802,12 +793,9 @@ namespace src.Migrations
 
                     b.Property<DateTime?>("DateInspected");
 
-                    b.Property<string>("Destination")
-                        .IsRequired();
+                    b.Property<string>("Destination");
 
                     b.Property<int?>("EstimatedVolume");
-
-                    b.Property<string>("Inspector");
 
                     b.Property<string>("PlateNumber");
 
@@ -815,8 +803,7 @@ namespace src.Migrations
 
                     b.Property<DateTime?>("TimeOut");
 
-                    b.Property<string>("TraderName")
-                        .IsRequired();
+                    b.Property<string>("TraderName");
 
                     b.HasKey("ticketingId");
 

@@ -81,34 +81,35 @@ namespace src.Controllers.Api
                 //controlNumber = controlNumber,
                 amount = null
             };
-            if (getLastControlNumber == null)
-            {
-                ticketing.controlNumber = 1;
-            }
-            else
-            {
-                ticketing.controlNumber = getLastControlNumber + 1;
-            }
+            
 
             TradersTruck tradersTruck = new TradersTruck
             {
                 ticketingId = ticketing.ticketingId,
                 TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber
+                PlateNumber = ticketing.plateNumber,
+                TraderName = "",
+                Destination = ""
             };
 
             FarmersTruck farmersTruck = new FarmersTruck
             {
                 ticketingId = ticketing.ticketingId,
                 TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber
+                PlateNumber = ticketing.plateNumber,
+                StallNumber = "",
+                FarmersName = "",
+                Organization = "",
+                Commodity = "",
+                Barangay = ""
             };
 
             ShortTrip shortTrip = new ShortTrip
             {
                 ticketingId = ticketing.ticketingId,
                 TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber
+                PlateNumber = ticketing.plateNumber,
+                Commodity = ""
             };
 
             PayParking payParking = new PayParking
@@ -129,6 +130,15 @@ namespace src.Controllers.Api
 
             if (objGuid == Guid.Empty)
             {
+                if (getLastControlNumber == null)
+                {
+                    ticketing.controlNumber = 1;
+                }
+                else
+                {
+                    ticketing.controlNumber = getLastControlNumber + 1;
+                }
+
                 ticketing.ticketingId = Guid.NewGuid();
                 ticketing.issuingClerk = info.FullName;
                 tradersTruck.ticketingId = ticketing.ticketingId;
@@ -186,6 +196,7 @@ namespace src.Controllers.Api
             else
             {
                 ticketing.ticketingId = objGuid;
+                ticketing.controlNumber = Convert.ToInt32(model["controlNumber"].ToString());
                 ticketing.receivingClerk = info.FullName;
                 tradersTruck.ticketingId = ticketing.ticketingId;
                 farmersTruck.ticketingId = ticketing.ticketingId;

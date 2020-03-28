@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200327103239_TradingInspector3")]
+    partial class TradingInspector3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -348,8 +349,6 @@ namespace src.Migrations
                     b.Property<string>("FarmersName")
                         .IsRequired();
 
-                    b.Property<string>("Inspector");
-
                     b.Property<string>("Organization")
                         .IsRequired();
 
@@ -364,7 +363,7 @@ namespace src.Migrations
 
                     b.Property<DateTime?>("TimeOut");
 
-                    b.Property<int?>("Volume");
+                    b.Property<int>("Volume");
 
                     b.HasKey("ticketingId");
 
@@ -617,9 +616,7 @@ namespace src.Migrations
 
                     b.Property<DateTime?>("DateInspected");
 
-                    b.Property<int?>("EstimatedVolume");
-
-                    b.Property<string>("Inspector");
+                    b.Property<int>("EstimatedVolume");
 
                     b.Property<string>("PlateNumber");
 
@@ -805,9 +802,7 @@ namespace src.Migrations
                     b.Property<string>("Destination")
                         .IsRequired();
 
-                    b.Property<int?>("EstimatedVolume");
-
-                    b.Property<string>("Inspector");
+                    b.Property<int>("EstimatedVolume");
 
                     b.Property<string>("PlateNumber");
 

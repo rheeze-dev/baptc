@@ -59,6 +59,7 @@ $(document).ready(function () {
             { "data": "barangay" },
             { "data": "province" },
             { "data": "facilitatorsName" },
+            { "data": "inspector" },
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";
@@ -125,7 +126,7 @@ function SubmitAddEdit(form) {
         //var data = {
         //    priceCommodity: "petsay"
         //};
-        alert(data);
+        //alert(data);
         //return true;
         $.ajax({
             type: 'POST',

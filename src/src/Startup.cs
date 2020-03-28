@@ -72,6 +72,8 @@ namespace src
             // Add DI for Dotnetdesk
             services.AddTransient<IDotnetdesk, Dotnetdesk>();
 
+            services.AddTransient<ISecurityService, SecurityService>();
+
             // Get SendGrid configuration options
             //services.Configure<SendGridOptions>(Configuration.GetSection("SendGridOptions"));
 

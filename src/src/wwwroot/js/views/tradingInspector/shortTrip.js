@@ -53,6 +53,7 @@ $(document).ready(function () {
             //},
             { "data": "commodity" },
             { "data": "estimatedVolume" },
+            { "data": "inspector" },
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";
@@ -119,7 +120,7 @@ function SubmitAddEdit(form) {
         //var data = {
         //    priceCommodity: "petsay"
         //};
-        alert(data);
+        //alert(data);
         //return true;
         $.ajax({
             type: 'POST',

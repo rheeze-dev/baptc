@@ -11,7 +11,7 @@ $(document).ready(function () {
             "type": 'GET',
             "datatype": 'json'
         },
-        //"order": [[0, 'desc']],
+        "order": [[0, 'desc']],
         "columns": [
             //{ "data": "commodityDate" },
             {

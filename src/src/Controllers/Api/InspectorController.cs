@@ -94,23 +94,30 @@ namespace src.Controllers.Api
         {
             Guid id = Guid.Empty;
             id = Guid.Parse(model["ticketingId"].ToString());
+            var info = await _userManager.GetUserAsync(User);
 
             TradersTruck tradersTruck = new TradersTruck
             {
-                DateInspected = DateTime.Now,
+            DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 TraderName = model["TraderName"].ToString(),
                 PlateNumber = model["PlateNumber"].ToString(),
-                EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString()),
-                Destination = model["Destination"].ToString()
+                Destination = model["Destination"].ToString(),
+                EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString())
             };
             if (id == Guid.Empty)
             {
+                tradersTruck.Inspector = info.FullName;
                 _context.TradersTruck.Add(tradersTruck);
             }
             else
             {
+                //if (tradersTruck.EstimatedVolume == null)
+                //{
+                //    return Json(new { success = false, message = "Estimated volume cannot be empty!" });
+                //}
                 tradersTruck.ticketingId = id;
+                tradersTruck.Inspector = info.FullName;
                 _context.TradersTruck.Update(tradersTruck);
             }
             await _context.SaveChangesAsync();
@@ -123,6 +130,7 @@ namespace src.Controllers.Api
         {
             Guid id = Guid.Empty;
             id = Guid.Parse(model["ticketingId"].ToString());
+            var info = await _userManager.GetUserAsync(User);
 
             FarmersTruck farmersTruck = new FarmersTruck
             {
@@ -133,18 +141,24 @@ namespace src.Controllers.Api
                 FarmersName = model["FarmersName"].ToString(),
                 Organization = model["Organization"].ToString(),
                 Commodity = model["Commodity"].ToString(),
-                Volume = Convert.ToInt32(model["Volume"].ToString()),
                 Barangay = model["Barangay"].ToString(),
                 Province = model["Province"].ToString(),
-                FacilitatorsName = model["FacilitatorsName"].ToString()
+                FacilitatorsName = model["FacilitatorsName"].ToString(),
+                Volume = Convert.ToInt32(model["Volume"].ToString())
             };
             if (id == Guid.Empty)
             {
+                farmersTruck.Inspector = info.FullName;
                 _context.FarmersTruck.Add(farmersTruck);
             }
             else
             {
+                //if (farmersTruck.Volume == null)
+                //{
+                //    return Json(new { success = false, message = "Volume cannot be empty!" });
+                //}
                 farmersTruck.ticketingId = id;
+                farmersTruck.Inspector = info.FullName;
                 _context.FarmersTruck.Update(farmersTruck);
             }
             await _context.SaveChangesAsync();
@@ -157,22 +171,29 @@ namespace src.Controllers.Api
         {
             Guid id = Guid.Empty;
             id = Guid.Parse(model["ticketingId"].ToString());
+            var info = await _userManager.GetUserAsync(User);
 
             ShortTrip shortTrip = new ShortTrip
             {
                 DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
-                EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString()),
                 PlateNumber = model["PlateNumber"].ToString(),
-                Commodity = model["Commodity"].ToString()
+                Commodity = model["Commodity"].ToString(),
+                EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString())
             };
             if (id == Guid.Empty)
             {
+                shortTrip.Inspector = info.FullName;
                 _context.ShortTrip.Add(shortTrip);
             }
             else
             {
+                //if (shortTrip.EstimatedVolume == null)
+                //{
+                //    return Json(new { success = false, message = "Estimated volume cannot be empty!" });
+                //}
                 shortTrip.ticketingId = id;
+                shortTrip.Inspector = info.FullName;
                 _context.ShortTrip.Update(shortTrip);
             }
             await _context.SaveChangesAsync();
@@ -222,25 +243,28 @@ namespace src.Controllers.Api
                 FarmersOrganization = model["FarmersOrganization"].ToString(),
                 Commodity = model["Commodity"].ToString(),
                 Volume = Convert.ToInt32(model["Volume"].ToString()),
+                //Code = Convert.ToInt32(model["Volume"].ToString()),
                 ProductionArea = model["ProductionArea"].ToString()
 
             };
-            if (getLastCode == null)
-            {
-                interTrading.Code = 1;
-            }
-            else
-            {
-                interTrading.Code = getLastCode + 1;
-            }
+            
             if (id == 0)
             {
+                if (getLastCode == null)
+                {
+                    interTrading.Code = 1;
+                }
+                else
+                {
+                    interTrading.Code = getLastCode + 1;
+                }
                 interTrading.Inspector = info.FullName;
                 _context.InterTrading.Add(interTrading);
             }
             else
             {
                 interTrading.Id = id;
+                interTrading.Code = Convert.ToInt32(model["Code"].ToString());
                 interTrading.Inspector = info.FullName;
                 _context.InterTrading.Update(interTrading);
             }
@@ -267,22 +291,24 @@ namespace src.Controllers.Api
                 Destination = model["Destination"].ToString()
 
             };
-            if (getLastCode == null)
-            {
-                carrotFacility.Code = 1;
-            }
-            else
-            {
-                carrotFacility.Code = getLastCode + 1;
-            }
+            
             if (id == 0)
             {
+                if (getLastCode == null)
+                {
+                    carrotFacility.Code = 1;
+                }
+                else
+                {
+                    carrotFacility.Code = getLastCode + 1;
+                }
                 carrotFacility.Inspector = info.FullName;
                 _context.CarrotFacility.Add(carrotFacility);
             }
             else
             {
                 carrotFacility.Id = id;
+                carrotFacility.Code = Convert.ToInt32(model["Code"].ToString());
                 carrotFacility.Inspector = info.FullName;
                 _context.CarrotFacility.Update(carrotFacility);
             }

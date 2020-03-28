@@ -41,7 +41,7 @@ namespace src.Controllers.Api
             _signInManager = signInManager;
         }
 
-        // GET: api/Inspector
+        // GET: api/Security
         [HttpGet("{organizationId}")]
         public IActionResult GetSecurityRepairCheck([FromRoute]Guid organizationId)
         {
@@ -49,7 +49,7 @@ namespace src.Controllers.Api
             return Json(new { data = repair });
         }
 
-        // GET: api/Inspector/GetSecurityInspectionReport
+        // GET: api/Security/GetSecurityInspectionReport
         [HttpGet("GetSecurityInspectionReport")]
         public IActionResult GetSecurityInspectionReport([FromRoute]Guid organizationId)
         {
@@ -57,7 +57,15 @@ namespace src.Controllers.Api
             return Json(new { data = securityInspectionReport });
         }
 
-        // POST: api/Inspector
+        // GET: api/Security/GetAccredited
+        [HttpGet("GetAccredited")]
+        public IActionResult GetAccredited([FromRoute]Guid organizationId)
+        {
+            var accredited = _context.Accredited.ToList();
+            return Json(new { data = accredited });
+        }
+
+        // POST: api/Security
         [HttpPost]
         public async Task<IActionResult> PostSecurityRepairCheck([FromBody] JObject model)
         {
@@ -76,22 +84,24 @@ namespace src.Controllers.Api
                 RepairDetails = model["RepairDetails"].ToString(),
                 Remarks = model["Remarks"].ToString()
             };
-            if (getLastRequestNumber == null)
-            {
-                repair.RequestNumber = 1;
-            }
-            else
-            {
-                repair.RequestNumber = getLastRequestNumber + 1;
-            }
+            
             if (id == 0)
             {
+                if (getLastRequestNumber == null)
+                {
+                    repair.RequestNumber = 1;
+                }
+                else
+                {
+                    repair.RequestNumber = getLastRequestNumber + 1;
+                }
                 repair.RequesterName = info.FullName;
                 _context.Repair.Add(repair);
             }
             else
             {
                 repair.Id = id;
+                repair.RequestNumber = Convert.ToInt32(model["RequestNumber"].ToString());
                 repair.RequesterName = info.FullName;
                 _context.Repair.Update(repair);
             }
@@ -99,7 +109,7 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
-        // POST: api/Inspector/PostSecurityInspectionReport
+        // POST: api/Security/PostSecurityInspectionReport
         [HttpPost("PostSecurityInspectionReport")]
         public async Task<IActionResult> PostSecurityInspectionReport([FromBody] JObject model)
         {
@@ -128,7 +138,34 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
-        // DELETE: api/Inspector/
+        // POST: api/Security/PostAccredited
+        [HttpPost("PostAccredited")]
+        public async Task<IActionResult> PostAccredited([FromBody] JObject model)
+        {
+            int id = 0;
+            var info = await _userManager.GetUserAsync(User);
+            id = Convert.ToInt32(model["Id"].ToString());
+            Accredited accredited = new Accredited
+            {
+                //Date = DateTime.Now,
+                Name = model["Name"].ToString()
+            };
+            if (id == 0)
+            {
+                //accredited.Inspector = info.FullName;
+                _context.Accredited.Add(accredited);
+            }
+            else
+            {
+                accredited.Id = id;
+                //accredited.Inspector = info.FullName;
+                _context.Accredited.Update(accredited);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // DELETE: api/Security/
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSecurityRepairCheck([FromRoute] int id)
         {
@@ -138,12 +175,22 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Delete success." });
         }
 
-        // DELETE: api/Inspector/DeleteSecurityInspectionReport
+        // DELETE: api/Security/DeleteSecurityInspectionReport
         [HttpDelete("SecurityInspectionReport/{id}")]
         public async Task<IActionResult> DeleteSecurityInspectionReport([FromRoute] int id)
         {
             SecurityInspectionReport securityInspectionReport = _context.SecurityInspectionReport.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(securityInspectionReport);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete success." });
+        }
+
+        // DELETE: api/Security/DeleteAccredited
+        [HttpDelete("Accredited/{id}")]
+        public async Task<IActionResult> DeleteAccredited([FromRoute] int id)
+        {
+            Accredited accredited = _context.Accredited.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(accredited);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

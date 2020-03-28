@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using src.Data;
 using src.Models;
+using src.Services;
 
 namespace src.Controllers
 {
@@ -16,16 +17,19 @@ namespace src.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ISecurityService _securityService;
 
         public SettingsController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ISecurityService securityService)
         {
             _context = context;
             _userManager = userManager;
+            _securityService = securityService;
         }
 
         //public class SettingsController : Controller
-    //{
+        //{
         //private readonly ApplicationDbContext _context;
 
         //public SettingsController(ApplicationDbContext context)
@@ -33,9 +37,15 @@ namespace src.Controllers
         //    _context = context;
         //}
 
-        public IActionResult Roles(Guid org)
+        public async Task<IActionResult> Roles(Guid org)
         {
             if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
             {
                 return NotFound();
             }
@@ -47,6 +57,11 @@ namespace src.Controllers
         public async Task<IActionResult> UserRoles(Guid org)
         {
             ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
             Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
             ViewData["org"] = org;
             return View(appUser);
