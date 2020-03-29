@@ -12,7 +12,7 @@
         Customer customer = (contact != null) ? Context.Customer.Where(x => x.customerId.Equals(contact.customerId)).FirstOrDefault() : null;
         cust = (customer != null) ? customer.customerId : Guid.Empty;
     }
-    var selectedRoles = Context.UserRole.Where(x => x.UserId.Equals(appUser.UserId)).FirstOrDefault();
+    var selectedRoles = Context.ApplicationUser.Where(x => x.UserId.Equals(appUser.UserId)).FirstOrDefault();
     var selectedModules = Context.Role.Where(x => x.Name.Equals(selectedRoles.RoleId)).Select(m => m.Module).FirstOrDefault();
     string[] listSelectedModule = selectedModules.Split(",");
     //string[] addedModule = new string[] { };
@@ -28,6 +28,11 @@
     <div class="row">
         @foreach (var item in Model)
         {
+            if (listModule.Contains(""))
+            {
+                
+            }
+
             if (listModule.Contains("Ticketing"))
             {
                 <div class="col-lg-4">
@@ -44,19 +49,19 @@
                         <a href="@Url.Action("TicketingIn", "Ticketing", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("TicketingIn", "Ticketing", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("TicketingIn", "Ticketing", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -77,19 +82,19 @@
                         <a href="@Url.Action("TradersTruck", "TradingInspector", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("TradersTruck", "TradingInspector", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("TradersTruck", "TradingInspector", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -111,27 +116,27 @@
                         <a href="@Url.Action("SecurityInspectionReport", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("SecurityInspectionReport", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("SecurityInspectionReport", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
             }
         }
-    @*</div>
+        @*</div>
 
-    <div class="row">*@
+        <div class="row">*@
         @foreach (var item in Model)
         {
             if (listModule.Contains("Repair"))
@@ -150,19 +155,19 @@
                         <a href="@Url.Action("VehicleRepair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("VehicleRepair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("VehicleRepair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -184,19 +189,19 @@
                         <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -218,19 +223,19 @@
                         <a href="@Url.Action("Price", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("Price", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("Price", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -252,19 +257,19 @@
                         <a href="@Url.Action("Accreditation", "Accreditation", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("Accreditation", "Accreditation", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("Accreditation", "Accreditation", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -285,19 +290,19 @@
                         <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -319,19 +324,19 @@
                         <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -339,10 +344,10 @@
 
 
         }
-    @*</div>*@
+        @*</div>*@
 
 
-    @*<div class="row">*@
+        @*<div class="row">*@
         @foreach (var item in Model)
         {
             if (listModule.Contains("InstitutionalDevelopmentAndExtensionServicesUnit"))
@@ -360,19 +365,19 @@
                         <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnit", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnit", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnit", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -394,19 +399,19 @@
                         <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -428,19 +433,19 @@
                         <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -448,9 +453,9 @@
 
 
         }
-    @*</div>
+        @*</div>
 
-    <div class="row">*@
+        <div class="row">*@
         @foreach (var item in Model)
         {
             if (listModule.Contains("Admin"))
@@ -469,19 +474,19 @@
                         <a href="@Url.Action("Admin", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("Admin", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("Admin", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -502,19 +507,19 @@
                         <a href="@Url.Action("AssetsAmenitiesManagementUnit", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("AssetsAmenitiesManagementUnit", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("AssetsAmenitiesManagementUnit", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>
@@ -536,19 +541,19 @@
                         <a href="@Url.Action("Roles", "Settings", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
-                            {
-                                <a href="@Url.Action("Roles", "Settings", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                            }
-                            else if (appUser.IsCustomer)
-                            {
-                                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        {
+                            <a href="@Url.Action("Roles", "Settings", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                            }*@
+                        }*@
 
                     </div>
                 </div>

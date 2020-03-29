@@ -249,7 +249,7 @@ namespace src.Controllers
                 int getLastUserId = _context.ApplicationUser.OrderByDescending(u=>u.UserId).Select(x => x.UserId).FirstOrDefault();
                 int userId = getLastUserId + 1;
                 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, UserId=userId };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, UserId=userId, RoleId = "Default" };
                 //user registered using registration screen is SuperAdmin
                 user.IsSuperAdmin = true;
                 var result = await _userManager.CreateAsync(user, model.Password);

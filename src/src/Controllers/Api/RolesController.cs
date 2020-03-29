@@ -97,7 +97,7 @@ namespace src.Controllers.Api
         public IActionResult GetUsers()
         {
             List<ApplicationUser> currentUser = _context.ApplicationUser.ToList();
-            var userModules = currentUser;
+            //var userModules = currentUser;
             List<ApplicationUser> listUser = _context.ApplicationUser.ToList();
 
             //if (userModules != null)
@@ -124,43 +124,55 @@ namespace src.Controllers.Api
 
         // POST: api/Roles/PostUserRole
         [HttpPost("PostUserRole")]
-        public async Task<IActionResult> PostUserRole(UserRole userRole)
+        public async Task<IActionResult> PostUserRole(ApplicationUser applicationUser, UserRole userRole)
         {
-            int id = userRole.Id;
-            if (id == 0)
+            int id = applicationUser.UserId;
+            int userRoleId = userRole.Id;
+            var info = await _userManager.GetUserAsync(User);
+             
+            ApplicationUser updateApplicationUser = _context.ApplicationUser.Where(x => x.UserId == id).FirstOrDefault();
+                {
+                    updateApplicationUser.RoleId = applicationUser.RoleId;
+                    updateApplicationUser.Modules = applicationUser.Modules;
+                    updateApplicationUser.DateModified = DateTime.Now;
+                    updateApplicationUser.Modifier = info.FullName;
+                if (applicationUser.RoleId == null)
+                {
+                    return Json(new { success = false, message = "Role field cannot be empty!" });
+                }
+                else if (applicationUser.RoleId.Contains(","))
+                {
+                    return Json(new { success = false, message = "Role field cannot be more than 1!" });
+                }
+
+                _context.ApplicationUser.Update(updateApplicationUser);
+                }
+
+            if (userRoleId == 0)
             {
                 UserRole newUserRole = new UserRole
                 {
-                    Remarks = userRole.Remarks,
-                    RoleId = userRole.RoleId,
-                    UserId = userRole.UserId,
-                    Modules = userRole.Modules,
-                    DateAdded = DateTime.Now
+                    RoleId = updateApplicationUser.RoleId,
+                    UserId = updateApplicationUser.UserId,
+                    Modules = updateApplicationUser.Modules
                 };
                 _context.UserRole.Add(newUserRole);
-            }
-            else
-            {
-                UserRole updateUserRole = _context.UserRole.Where(x => x.Id == id && x.UserId == userRole.UserId).FirstOrDefault();
-                {
-                    updateUserRole.Remarks = userRole.Remarks;
-                    updateUserRole.RoleId = userRole.RoleId;
-                    updateUserRole.Modules = userRole.Modules;
-                    if (updateUserRole.RoleId == null)
-                    {
-                        return Json(new { success = false, message = "Role field cannot be empty!" });
-                    }
-                    else if (updateUserRole.RoleId.Contains(",") )
-                    {
-                        return Json(new { success = false, message = "Role field cannot be more than 1!" });
-                    }
-                    _context.UserRole.Update(updateUserRole);
                 }
-            }
+                else
+                {
+                    UserRole updateUserRole = _context.UserRole.Where(x => x.UserId == id).FirstOrDefault();
+                    {
+                        updateUserRole.RoleId = applicationUser.RoleId;
+                        updateUserRole.Modules = applicationUser.Modules;
+      
+                        _context.UserRole.Update(updateUserRole);
+                    }
+                }
             
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
+
         // POST: api/Roles/GetUserRoleByUserID
         [HttpPost("GetUserRoleByUserID")]
         public IActionResult GetUserRoleByUserID(int userId)
@@ -185,6 +197,28 @@ namespace src.Controllers.Api
                 }
             }
             return Json(new { data = listRole });
+        }
+
+        // POST: api/Roles/DeactivateUser
+        [HttpPost("DeactivateUser")]
+        public async Task<IActionResult> DeactivateUser(int id)
+        {
+            UserRole userRole = _context.UserRole.Where(x => x.UserId == id).FirstOrDefault();
+            {
+                userRole.RoleId = "Default";
+                userRole.Modules = null;
+            }
+
+            ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId == id).FirstOrDefault();
+            {
+                applicationUser.RoleId = "Default";
+                applicationUser.Modules = null;
+            }
+
+            _context.UserRole.Update(userRole);
+            _context.ApplicationUser.Update(applicationUser);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Account has been Deactivated!" });
         }
 
     }

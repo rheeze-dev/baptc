@@ -197,7 +197,7 @@ namespace src.Controllers.Api
             {
                 ticketing.ticketingId = objGuid;
                 ticketing.controlNumber = Convert.ToInt32(model["controlNumber"].ToString());
-                ticketing.receivingClerk = info.FullName;
+                ticketing.issuingClerk = info.FullName;
                 tradersTruck.ticketingId = ticketing.ticketingId;
                 farmersTruck.ticketingId = ticketing.ticketingId;
                 shortTrip.ticketingId = ticketing.ticketingId;

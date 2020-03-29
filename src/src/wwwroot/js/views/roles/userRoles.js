@@ -18,9 +18,40 @@ $(document).ready(function () {
             { "data": "emailConfirmed" },
             {
                 "data": function (data) {
+                    var d = new Date(data["dateModified"]);
+                    var empty = "";
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    if (data["dateModified"] == null) {
+                        return empty;
+                    }
+                    else {
+                        return output;
+                    }
+                }
+            },
+            { "data": "modifier" },
+            {
+                "data": function (data) {
                     var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnConfig + btnDelete;
+                    //var btnIncative = "<a class='btn btn-default btn-xs btnInactive' data-id='" + data["userId"] + "'>Deactivate</a>";
+                    //var btnActive = "<a class='btn btn-default btn-xs btnActive' data-id='" + data["userId"] + "'>Activate</a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    return btnConfig;
+                }
+            },
+            {
+                "data": function (data) {
+                    //var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
+                    var btnActive = "Deactivated";
+                    var btnInActive = "<a class='btn btn-default btn-xs btnInActive' data-id='" + data["userId"] + "'>Deactivate</a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    if (data["roleId"] != "Default") {
+                        return btnInActive;
+                    }
+                    else if (data["roleId"] == "Default")
+                    {
+                        return btnActive;
+                    }
                 }
             }
         ],
@@ -30,6 +61,37 @@ $(document).ready(function () {
         "lengthChange": false,
     });
 });
+$("#grid").on("click", ".btnInActive", function (e) {
+    e.preventDefault();
+    var userId = $(this).attr("data-id");
+    var param = { id: userId };
+    swal({
+        title: "Are you sure want to deactivate this account?",
+        //text: "You will not be able to restore the file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dd4b39",
+        confirmButtonText: "Yes, deactivate it!",
+        closeOnConfirm: true
+    }, function () {
+        $.ajax({
+            type: 'POST',
+            url: apiurl + '/DeactivateUser',
+            data: param,
+            success: function (data) {
+                if (data.success) {
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+    });
+});
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();

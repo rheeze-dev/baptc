@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200329104252_ApplicationUserDb")]
+    partial class ApplicationUserDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,8 +152,6 @@ namespace src.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<DateTime?>("DateModified");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -173,9 +172,7 @@ namespace src.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("Modifier");
-
-                    b.Property<string>("Modules");
+                    b.Property<int>("Modules");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -192,7 +189,7 @@ namespace src.Migrations
                     b.Property<string>("ProfilePictureUrl")
                         .HasMaxLength(250);
 
-                    b.Property<string>("RoleId");
+                    b.Property<int>("RoleId");
 
                     b.Property<string>("SecurityStamp");
 
@@ -835,6 +832,8 @@ namespace src.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateAdded");
 
                     b.Property<string>("Modules");
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,5 +28,13 @@ namespace src.Models
         public bool IsSupportEngineer { get; set; } = false;
 
         public int UserId { get; set; }
+
+        public string Modules { get; set; }
+
+        public string RoleId { get; set; }
+
+        public DateTime? DateModified { get; set; }
+
+        public string Modifier { get; set; }
     }
 }
