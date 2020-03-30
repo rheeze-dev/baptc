@@ -1,0 +1,72 @@
+﻿@model src.Models.Organization
+@{
+    ViewData["Title"] = "Accreditation";
+    Layout = "_LayoutAdminlteAccreditation";
+}
+
+<!-- Content Header (Page header) -->
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="hidden" asp-for="@Model.organizationId" />
+                            @*<div class="col-lg-2">
+                                <div class="row">*@
+                            <div class="col-md-6">
+                                <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditInterTraders","Accreditation", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New inter traders</a>
+                            </div>
+                            @*</div>
+                                </div>*@
+                            <table id="grid" name="grid" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-2">Date of application</th>
+                                        <th class="col-md-2">Counter</th>
+                                        <th class="col-md-2">Name of association</th>
+                                        <th class="col-md-2">Reference number</th>
+                                        <th class="col-md-2">Id number</th>
+                                        <th class="col-md-2">Name</th>
+                                        <th class="col-md-2">Name of spouse</th>
+                                        <th class="col-md-2">Present address</th>
+                                        <th class="col-md-2">Barangay</th>
+                                        <th class="col-md-2">Municipality</th>
+                                        <th class="col-md-2">Province</th>
+                                        <th class="col-md-2">Contact number</th>
+                                        <th class="col-md-2">Tin</th>
+                                        <th class="col-md-2">Business permit</th>
+                                        <th class="col-md-2">Destination</th>
+                                        <th class="col-md-2">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+<!-- /.content -->
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/views/accreditation/interTraders.js"></script>
+}
+

@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200330145847_AccreditaionDb")]
+    partial class AccreditaionDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,6 +130,18 @@ namespace src.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("src.Models.Accredited", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accredited");
+                });
+
             modelBuilder.Entity("src.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -205,40 +218,6 @@ namespace src.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("src.Models.Buyers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Barangay");
-
-                    b.Property<string>("BirthDate");
-
-                    b.Property<string>("BusinessAddress");
-
-                    b.Property<string>("BusinessName");
-
-                    b.Property<string>("ContactNumber");
-
-                    b.Property<string>("Municipality");
-
-                    b.Property<string>("NameOfSpouse");
-
-                    b.Property<string>("PresentAddress");
-
-                    b.Property<string>("ProductDestination");
-
-                    b.Property<string>("Province");
-
-                    b.Property<int>("Tin");
-
-                    b.Property<string>("VehiclePlateNumber");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccreditedBuyers");
                 });
 
             modelBuilder.Entity("src.Models.CarrotFacility", b =>
@@ -425,96 +404,6 @@ namespace src.Migrations
                     b.ToTable("GatePass");
                 });
 
-            modelBuilder.Entity("src.Models.IndividualFarmers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Association");
-
-                    b.Property<string>("Barangay");
-
-                    b.Property<string>("BirthDate");
-
-                    b.Property<string>("ContactNumber");
-
-                    b.Property<string>("Counter");
-
-                    b.Property<DateTime>("DateOfApplication");
-
-                    b.Property<int>("EstimatedProduce");
-
-                    b.Property<string>("EstimatedTotalLandArea");
-
-                    b.Property<string>("Harvesting");
-
-                    b.Property<int>("IdNumber");
-
-                    b.Property<string>("LandAreaPerCrop");
-
-                    b.Property<string>("MajorCrops");
-
-                    b.Property<string>("Municipality");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Planting");
-
-                    b.Property<string>("PlateNumber");
-
-                    b.Property<string>("Province");
-
-                    b.Property<int>("ReferenceNumber");
-
-                    b.Property<string>("Sitio");
-
-                    b.Property<string>("SpouseName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccreditedIndividualFarmers");
-                });
-
-            modelBuilder.Entity("src.Models.InterTraders", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Barangay");
-
-                    b.Property<string>("BusinessPermit");
-
-                    b.Property<string>("ContactNumber");
-
-                    b.Property<string>("Counter");
-
-                    b.Property<DateTime>("DateOfApplication");
-
-                    b.Property<string>("Destination");
-
-                    b.Property<int>("IdNumber");
-
-                    b.Property<string>("Municipality");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("NameOfAssociation");
-
-                    b.Property<string>("NameOfSpouse");
-
-                    b.Property<string>("PresentAddress");
-
-                    b.Property<string>("Province");
-
-                    b.Property<int>("ReferenceNumber");
-
-                    b.Property<int>("Tin");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccreditedInterTraders");
-                });
-
             modelBuilder.Entity("src.Models.InterTrading", b =>
                 {
                     b.Property<int>("Id")
@@ -539,50 +428,6 @@ namespace src.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InterTrading");
-                });
-
-            modelBuilder.Entity("src.Models.MarketFacilitators", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Barangay");
-
-                    b.Property<string>("BirthDate");
-
-                    b.Property<string>("BusinessAddress");
-
-                    b.Property<string>("BusinessName");
-
-                    b.Property<string>("ContactNumber");
-
-                    b.Property<DateTime>("DateOfApplication");
-
-                    b.Property<int>("IdNumber");
-
-                    b.Property<string>("MajorCommodity");
-
-                    b.Property<string>("Municipality");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("NameOfAssociation");
-
-                    b.Property<string>("NameOfSpouse");
-
-                    b.Property<string>("NickName");
-
-                    b.Property<string>("PresentAddress");
-
-                    b.Property<string>("Province");
-
-                    b.Property<int>("ReferenceNumber");
-
-                    b.Property<int>("Tin");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccreditedMarketFacilitators");
                 });
 
             modelBuilder.Entity("src.Models.Module", b =>
@@ -625,46 +470,6 @@ namespace src.Migrations
                     b.HasKey("organizationId");
 
                     b.ToTable("Organization");
-                });
-
-            modelBuilder.Entity("src.Models.PackersAndPorters", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Barangay");
-
-                    b.Property<string>("BirthDate");
-
-                    b.Property<string>("ContactNumber");
-
-                    b.Property<DateTime>("DateOfApplication");
-
-                    b.Property<int>("IdNumber");
-
-                    b.Property<string>("Municipality");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("NameOfAssociation");
-
-                    b.Property<string>("NameOfSpouse");
-
-                    b.Property<string>("NickName");
-
-                    b.Property<string>("PackerOrPorter");
-
-                    b.Property<string>("PresentAddress");
-
-                    b.Property<string>("Province");
-
-                    b.Property<string>("ProvincialAddress");
-
-                    b.Property<string>("Requirements");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccreditedPackersAndPorters");
                 });
 
             modelBuilder.Entity("src.Models.PayParking", b =>

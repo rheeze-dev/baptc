@@ -57,14 +57,6 @@ namespace src.Controllers.Api
             return Json(new { data = securityInspectionReport });
         }
 
-        // GET: api/Security/GetAccredited
-        [HttpGet("GetAccredited")]
-        public IActionResult GetAccredited([FromRoute]Guid organizationId)
-        {
-            var accredited = _context.Accredited.ToList();
-            return Json(new { data = accredited });
-        }
-
         // POST: api/Security
         [HttpPost]
         public async Task<IActionResult> PostSecurityRepairCheck([FromBody] JObject model)
@@ -138,33 +130,6 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
-        // POST: api/Security/PostAccredited
-        [HttpPost("PostAccredited")]
-        public async Task<IActionResult> PostAccredited([FromBody] JObject model)
-        {
-            int id = 0;
-            var info = await _userManager.GetUserAsync(User);
-            id = Convert.ToInt32(model["Id"].ToString());
-            Accredited accredited = new Accredited
-            {
-                //Date = DateTime.Now,
-                Name = model["Name"].ToString()
-            };
-            if (id == 0)
-            {
-                //accredited.Inspector = info.FullName;
-                _context.Accredited.Add(accredited);
-            }
-            else
-            {
-                accredited.Id = id;
-                //accredited.Inspector = info.FullName;
-                _context.Accredited.Update(accredited);
-            }
-            await _context.SaveChangesAsync();
-            return Json(new { success = true, message = "Successfully Saved!" });
-        }
-
         // DELETE: api/Security/
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSecurityRepairCheck([FromRoute] int id)
@@ -184,16 +149,5 @@ namespace src.Controllers.Api
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
-
-        // DELETE: api/Security/DeleteAccredited
-        [HttpDelete("Accredited/{id}")]
-        public async Task<IActionResult> DeleteAccredited([FromRoute] int id)
-        {
-            Accredited accredited = _context.Accredited.Where(x => x.Id == id).FirstOrDefault();
-            _context.Remove(accredited);
-            await _context.SaveChangesAsync();
-            return Json(new { success = true, message = "Delete success." });
-        }
-
     }
 }

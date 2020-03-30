@@ -65,7 +65,15 @@ namespace src.Data
 
         public DbSet<src.Models.CarrotFacility> CarrotFacility { get; set; }
 
-        public DbSet<src.Models.Accredited> Accredited { get; set; }
+        public DbSet<src.Models.Buyers> AccreditedBuyers { get; set; }
+
+        public DbSet<src.Models.IndividualFarmers> AccreditedIndividualFarmers { get; set; }
+
+        public DbSet<src.Models.InterTraders> AccreditedInterTraders { get; set; }
+
+        public DbSet<src.Models.MarketFacilitators> AccreditedMarketFacilitators { get; set; }
+
+        public DbSet<src.Models.PackersAndPorters> AccreditedPackersAndPorters { get; set; }
 
         public DbSet<src.Models.SecurityInspectionReport> SecurityInspectionReport { get; set; }
 

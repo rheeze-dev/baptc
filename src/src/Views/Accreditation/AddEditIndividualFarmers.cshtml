@@ -1,0 +1,131 @@
+﻿@model src.Models.IndividualFarmers
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Add / Edit Data</h4>
+</div>
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Counter" class="control-label">Counter</label>
+            <input asp-for="Counter" class="form-control" />
+            <span asp-validation-for="Counter" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Association" class="control-label">Association</label>
+            <input asp-for="Association" class="form-control" />
+            <span asp-validation-for="Association" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReferenceNumber" class="control-label">Reference number</label>
+            <input asp-for="ReferenceNumber" class="form-control" />
+            <span asp-validation-for="ReferenceNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdNumber" class="control-label">Id number</label>
+            <input asp-for="IdNumber" class="form-control" />
+            <span asp-validation-for="IdNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label">Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="SpouseName" class="control-label">Spouse name</label>
+            <input asp-for="SpouseName" class="form-control" />
+            <span asp-validation-for="SpouseName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Sitio" class="control-label">Sitio</label>
+            <input asp-for="Sitio" class="form-control" />
+            <span asp-validation-for="Sitio" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Barangay" class="control-label">Barangay</label>
+            <input asp-for="Barangay" class="form-control" />
+            <span asp-validation-for="Barangay" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ContactNumber" class="control-label">Contact number</label>
+            <input asp-for="ContactNumber" class="form-control" />
+            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="BirthDate" class="control-label">Birthdate</label>
+            <input asp-for="BirthDate" class="form-control" />
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PlateNumber" class="control-label">Plate number</label>
+            <input asp-for="PlateNumber" class="form-control" />
+            <span asp-validation-for="PlateNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EstimatedTotalLandArea" class="control-label">Estimated total land area</label>
+            <input asp-for="EstimatedTotalLandArea" class="form-control" />
+            <span asp-validation-for="EstimatedTotalLandArea" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MajorCrops" class="control-label">Major crops</label>
+            <input asp-for="MajorCrops" class="form-control" />
+            <span asp-validation-for="MajorCrops" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LandAreaPerCrop" class="control-label">Land area per crop</label>
+            <input asp-for="LandAreaPerCrop" class="form-control" />
+            <span asp-validation-for="LandAreaPerCrop" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EstimatedProduce" class="control-label">Estimated produce</label>
+            <input asp-for="EstimatedProduce" class="form-control" />
+            <span asp-validation-for="EstimatedProduce" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Planting" class="control-label">Planting</label>
+            <input asp-for="Planting" class="form-control" />
+            <span asp-validation-for="Planting" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Harvesting" class="control-label">Harvesting</label>
+            <input asp-for="Harvesting" class="form-control" />
+            <span asp-validation-for="Harvesting" class="text-danger"></span>
+        </div>
+        @*<div class="form-group">
+            <label asp-for="Destination" class="control-label"></label>
+            <select id="cars" asp-for="Destination" class="form-control">
+                <option value="Spot 1">Spot 1</option>
+                <option value="Spot 2">Spot 2</option>
+                <option value="Spot 3">Spot 3</option>
+                <option value="Dry and cold storage">Dry and cold storage</option>
+                <option value="Pay parking">Pay parking</option>
+                <option value="Entrance">Entrance</option>
+                <option value="Exit">Exit</option>
+                <option value="Carrot section">Carrot section</option>
+                <option value="Nursery (greenhouse)">Nursery (greenhouse)</option>
+                <option value="UPLB cold storage back of guestel">UPLB cold storage back of guestel</option>
+                <option value="Sewarage treatment plant back of guestel">Sewarage treatment plant back of guestel</option>
+            </select>
+            <span asp-validation-for="Destination" class="text-danger"></span>
+        </div>*@
+    </div>
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+</script>
+
+
+

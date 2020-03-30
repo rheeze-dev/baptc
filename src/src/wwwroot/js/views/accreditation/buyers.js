@@ -1,13 +1,13 @@
 ﻿var popup, dataTable;
-var entity = 'Security';
+var entity = 'Accreditation';
 var apiurl = '/api/' + entity;
 
 $(document).ready(function () {
     //alert(entity);
-    var organizationId = $('#organizationId').val();
+    //var organizationId = $('#organizationId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
-            "url": apiurl + '/GetAccredited',
+            "url": apiurl + '/GetBuyers',
             "type": 'GET',
             "datatype": 'json'
         },
@@ -15,22 +15,26 @@ $(document).ready(function () {
         "columns": [
             //{
             //    "data": function (data) {
-            //        var d = new Date(data["date"]);
+            //        var d = new Date(data["dateOfApplication"]);
             //        var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
             //        return output;
             //    }
             //},
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["date"]);
-            //        var output = setClockTime(d);
-            //        return output;
-            //    }
-            //},
-            { "data": "name" },
+            { "data": "nameOfSpouse" },
+            { "data": "presentAddress" },
+            { "data": "barangay" },
+            { "data": "municipality" },
+            { "data": "province" },
+            { "data": "contactNumber" },
+            { "data": "birthDate" },
+            { "data": "tin" },
+            { "data": "businessName" },
+            { "data": "businessAddress" },
+            { "data": "vehiclePlateNumber" },
+            { "data": "productDestination" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditAccreditation?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditBuyers?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     return btnEdit + btnDelete;
                 }
@@ -85,7 +89,7 @@ function SubmitAddEdit(form) {
         //return true;
         $.ajax({
             type: 'POST',
-            url: "/api/Security/PostAccredited",
+            url: "/api/Accreditation/PostBuyers",
             //url: '/PriceCommodity/PostPriceCommodity',
             data: data,
             contentType: 'application/json',
@@ -116,7 +120,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/Accredited/' + id,
+            url: apiurl + '/DeleteBuyers/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

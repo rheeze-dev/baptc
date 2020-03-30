@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200330150636_AccreditaionDb2")]
+    partial class AccreditaionDb2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,7 +215,7 @@ namespace src.Migrations
 
                     b.Property<string>("Barangay");
 
-                    b.Property<string>("BirthDate");
+                    b.Property<DateTime>("BirthDate");
 
                     b.Property<string>("BusinessAddress");
 
@@ -434,7 +435,7 @@ namespace src.Migrations
 
                     b.Property<string>("Barangay");
 
-                    b.Property<string>("BirthDate");
+                    b.Property<DateTime>("BirthDate");
 
                     b.Property<string>("ContactNumber");
 
@@ -446,7 +447,7 @@ namespace src.Migrations
 
                     b.Property<string>("EstimatedTotalLandArea");
 
-                    b.Property<string>("Harvesting");
+                    b.Property<DateTime>("Harvesting");
 
                     b.Property<int>("IdNumber");
 
@@ -458,7 +459,7 @@ namespace src.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Planting");
+                    b.Property<DateTime>("Planting");
 
                     b.Property<string>("PlateNumber");
 
@@ -483,6 +484,8 @@ namespace src.Migrations
                     b.Property<string>("Barangay");
 
                     b.Property<string>("BusinessPermit");
+
+                    b.Property<string>("Column1");
 
                     b.Property<string>("ContactNumber");
 
@@ -548,7 +551,7 @@ namespace src.Migrations
 
                     b.Property<string>("Barangay");
 
-                    b.Property<string>("BirthDate");
+                    b.Property<DateTime>("BirthDate");
 
                     b.Property<string>("BusinessAddress");
 
@@ -634,7 +637,7 @@ namespace src.Migrations
 
                     b.Property<string>("Barangay");
 
-                    b.Property<string>("BirthDate");
+                    b.Property<DateTime>("BirthDate");
 
                     b.Property<string>("ContactNumber");
 
