@@ -46,13 +46,7 @@ namespace src.Controllers.Api
             var ticketing = _context.Ticketing.OrderBy(x => x.timeIn).ToList();
             return Json(new { data = ticketing });
         }
-        //[HttpGet("GetTicketOut")]
-        //public IActionResult GetTicketOut([FromRoute]Guid organizationId)
-        //{
-        //    //var ticketing = _context.Ticketing.Where(x => x.timeOut == null).OrderBy(x => x.timeIn).ToList();
-        //    var ticketing = _context.Ticketing.OrderBy(x => x.timeIn).ToList();
-        //    return Json(new { data = ticketing });
-        //}
+    
         // GET: api/Ticketing/GetGatePass
         [HttpGet("GetGatePass")]
         public IActionResult GetGatePass([FromRoute]Guid organizationId)
@@ -70,66 +64,20 @@ namespace src.Controllers.Api
             //int? controlNumber = getLastControlNumber + 1;
             var info = await _userManager.GetUserAsync(User);
             objGuid = Guid.Parse(model["ticketingId"].ToString());
-            Ticketing ticketing = new Ticketing
-            {
-                timeIn = DateTime.Now,
-                plateNumber = model["plateNumber"].ToString(),
-                typeOfTransaction = model["typeOfTransaction"].ToString(),
-                typeOfCar = model["typeOfCar"].ToString(),
-                driverName = model["driverName"].ToString(),
-                remarks = model["remarks"].ToString(),
-                //controlNumber = controlNumber,
-                amount = null
-            };
-            
-
-            TradersTruck tradersTruck = new TradersTruck
-            {
-                ticketingId = ticketing.ticketingId,
-                TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber,
-                TraderName = "",
-                Destination = ""
-            };
-
-            FarmersTruck farmersTruck = new FarmersTruck
-            {
-                ticketingId = ticketing.ticketingId,
-                TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber,
-                StallNumber = "",
-                FarmersName = "",
-                Organization = "",
-                Commodity = "",
-                Barangay = ""
-            };
-
-            ShortTrip shortTrip = new ShortTrip
-            {
-                ticketingId = ticketing.ticketingId,
-                TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber,
-                Commodity = ""
-            };
-
-            PayParking payParking = new PayParking
-            {
-                ticketingId = ticketing.ticketingId,
-                TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber,
-                DriverName = ticketing.driverName
-            };
-
-            GatePass gatePass = new GatePass
-            {
-                ticketingId = ticketing.ticketingId,
-                TimeIn = DateTime.Now,
-                PlateNumber = ticketing.plateNumber,
-                DriverName = ticketing.driverName
-            };
 
             if (objGuid == Guid.Empty)
             {
+                Ticketing ticketing = new Ticketing
+                {
+                    timeIn = DateTime.Now,
+                    plateNumber = model["plateNumber"].ToString(),
+                    typeOfTransaction = model["typeOfTransaction"].ToString(),
+                    typeOfCar = model["typeOfCar"].ToString(),
+                    driverName = model["driverName"].ToString(),
+                    remarks = model["remarks"].ToString(),
+                    amount = null
+                };
+
                 if (getLastControlNumber == null)
                 {
                     ticketing.controlNumber = 1;
@@ -141,23 +89,56 @@ namespace src.Controllers.Api
 
                 ticketing.ticketingId = Guid.NewGuid();
                 ticketing.issuingClerk = info.FullName;
-                tradersTruck.ticketingId = ticketing.ticketingId;
-                farmersTruck.ticketingId = ticketing.ticketingId;
-                shortTrip.ticketingId = ticketing.ticketingId;
-                payParking.ticketingId = ticketing.ticketingId;
-                gatePass.ticketingId = ticketing.ticketingId;
-                //stallLease.ticketingId = ticketing.ticketingId;
+                _context.Ticketing.Add(ticketing);
+
+                CurrentTicket currentTicket = new CurrentTicket
+                {
+                    ticketingId = ticketing.ticketingId,
+                    plateNumber = ticketing.plateNumber,
+                    typeOfTransaction = ticketing.typeOfTransaction
+                };
+                _context.CurrentTicket.Add(currentTicket);
 
                 if (ticketing.typeOfTransaction == "Trader truck")
                 {
+                    TradersTruck tradersTruck = new TradersTruck
+                    {
+                        ticketingId = ticketing.ticketingId,
+                        TimeIn = DateTime.Now,
+                        PlateNumber = ticketing.plateNumber,
+                        TraderName = "",
+                        Destination = ""
+                    };
+                    if (ticketing.typeOfTransaction == "Trader truck" && ticketing.typeOfCar == "Single tire")
+                    {
+                        ticketing.amount = 50;
+                    }
                     _context.TradersTruck.Add(tradersTruck);
                 }
                 else if (ticketing.typeOfTransaction == "Farmer truck")
                 {
+                    FarmersTruck farmersTruck = new FarmersTruck
+                    {
+                        ticketingId = ticketing.ticketingId,
+                        TimeIn = DateTime.Now,
+                        PlateNumber = ticketing.plateNumber,
+                        StallNumber = "",
+                        FarmersName = "",
+                        Organization = "",
+                        Commodity = "",
+                        Barangay = ""
+                    };
                     _context.FarmersTruck.Add(farmersTruck);
                 }
                 else if (ticketing.typeOfTransaction == "Short trip")
                 {
+                    ShortTrip shortTrip = new ShortTrip
+                    {
+                        ticketingId = ticketing.ticketingId,
+                        TimeIn = DateTime.Now,
+                        PlateNumber = ticketing.plateNumber,
+                        Commodity = ""
+                    };
                     _context.ShortTrip.Add(shortTrip);
                 }
                 else if (ticketing.typeOfTransaction == "Gate pass")
@@ -166,6 +147,13 @@ namespace src.Controllers.Api
                     StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
                     if (stallLease != null)
                     {
+                        GatePass gatePass = new GatePass
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            DriverName = ticketing.driverName
+                        };
                         if (stallLease.EndDate > DateTime.Now) { 
                             _context.GatePass.Add(gatePass);
                         }
@@ -180,68 +168,386 @@ namespace src.Controllers.Api
                 }
                 else
                 {
+                    PayParking payParking = new PayParking
+                    {
+                        ticketingId = ticketing.ticketingId,
+                        TimeIn = DateTime.Now,
+                        PlateNumber = ticketing.plateNumber,
+                        DriverName = ticketing.driverName
+                    };
                     _context.PayParking.Add(payParking);
                 }
-
-                if (ticketing.typeOfTransaction == "Trader truck" && ticketing.typeOfCar == "Single tire")
-                {
-                    ticketing.amount = 50;
-                }
-                //if (ticketing.typeOfTransaction == "Gate pass" && ticketing.plateNumber == stallLease.PlateNumber1)
-                //{
-                //    ticketing.amount = 50;
-                //}
-                _context.Ticketing.Add(ticketing);
             }
             else
             {
+                Ticketing ticketing = new Ticketing
+                {
+                    timeIn = DateTime.Now,
+                    plateNumber = model["plateNumber"].ToString(),
+                    typeOfTransaction = model["typeOfTransaction"].ToString(),
+                    typeOfCar = model["typeOfCar"].ToString(),
+                    driverName = model["driverName"].ToString(),
+                    remarks = model["remarks"].ToString(),
+                    amount = null
+                };
+
                 ticketing.ticketingId = objGuid;
                 ticketing.controlNumber = Convert.ToInt32(model["controlNumber"].ToString());
                 ticketing.issuingClerk = info.FullName;
-                tradersTruck.ticketingId = ticketing.ticketingId;
-                farmersTruck.ticketingId = ticketing.ticketingId;
-                shortTrip.ticketingId = ticketing.ticketingId;
-                payParking.ticketingId = ticketing.ticketingId;
-                gatePass.ticketingId = ticketing.ticketingId;
+                _context.Ticketing.Update(ticketing);
 
-                if (ticketing.typeOfTransaction == "Trader truck")
+                var currentTicketing = _context.CurrentTicket.Where(x=> x.ticketingId == objGuid).FirstOrDefault();
+                if (currentTicketing.typeOfTransaction != model["typeOfTransaction"].ToString())
                 {
-                    _context.TradersTruck.Update(tradersTruck);
-                }
-                else if (ticketing.typeOfTransaction == "Farmer truck")
-                {
-                    _context.FarmersTruck.Update(farmersTruck);
-                }
-                else if (ticketing.typeOfTransaction == "Short trip")
-                {
-                    _context.ShortTrip.Update(shortTrip);
-                }
-                else if (ticketing.typeOfTransaction == "Gate pass")
-                {
-                    StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
-
-                    if (stallLease != null)
+                    if (model["typeOfTransaction"].ToString() == "Trader truck")
                     {
-                        if (stallLease.EndDate > DateTime.Now)
+                        TradersTruck tradersTruck = new TradersTruck
                         {
-                            _context.GatePass.Update(gatePass);
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            TraderName = "",
+                            Destination = ""
+                        };
+                        _context.TradersTruck.Add(tradersTruck);
+                        if (currentTicketing.typeOfTransaction == "Farmer truck")
+                        {
+                            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (farmersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(farmersTruck);
                         }
-                        else
+                        else if (currentTicketing.typeOfTransaction == "Short trip")
                         {
-                            return Json(new { success = false, message = "Your gate pass is expired!" });
+                            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (shortTrip == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(shortTrip);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Pay parking")
+                        {
+                            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (payParking == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(payParking);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Gate pass")
+                        {
+                            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (gatePass == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(gatePass);
                         }
                     }
-                    else
+                    else if (model["typeOfTransaction"].ToString() == "Farmer truck")
                     {
-                        return Json(new { success = false, message = "Vehicle not registered!" });
+                        FarmersTruck farmersTruck = new FarmersTruck
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            StallNumber = "",
+                            FarmersName = "",
+                            Organization = "",
+                            Commodity = "",
+                            Barangay = ""
+                        };
+                        _context.FarmersTruck.Add(farmersTruck);
+                        if (currentTicketing.typeOfTransaction == "Trader truck")
+                        {
+                            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (tradersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(tradersTruck);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Short trip")
+                        {
+                            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (shortTrip == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(shortTrip);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Pay parking")
+                        {
+                            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (payParking == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(payParking);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Gate pass")
+                        {
+                            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (gatePass == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(gatePass);
+                        }
+                    }
+
+                    else if (model["typeOfTransaction"].ToString() == "Short trip")
+                    {
+                        ShortTrip shortTrip = new ShortTrip
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            Commodity = ""
+                        };
+                        _context.ShortTrip.Add(shortTrip);
+                        if (currentTicketing.typeOfTransaction == "Trader truck")
+                        {
+                            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (tradersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(tradersTruck);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Farmer truck")
+                        {
+                            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (farmersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(farmersTruck);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Pay parking")
+                        {
+                            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (payParking == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(payParking);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Gate pass")
+                        {
+                            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (gatePass == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(gatePass);
+                        }
+                    }
+
+                    else if (model["typeOfTransaction"].ToString() == "Pay parking")
+                    {
+                        PayParking payParking = new PayParking
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            DriverName = ticketing.driverName
+                        };
+                        _context.PayParking.Add(payParking);
+                        if (currentTicketing.typeOfTransaction == "Trader truck")
+                        {
+                            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (tradersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(tradersTruck);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Farmer truck")
+                        {
+                            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (farmersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(farmersTruck);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Short trip")
+                        {
+                            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (shortTrip == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(shortTrip);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Gate pass")
+                        {
+                            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (gatePass == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(gatePass);
+                        }
+                    }
+
+                    else if (model["typeOfTransaction"].ToString() == "Gate pass")
+                    {
+                        GatePass gatePass = new GatePass
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            DriverName = ticketing.driverName
+                        };
+                        _context.GatePass.Add(gatePass);
+                        if (currentTicketing.typeOfTransaction == "Trader truck")
+                        {
+                            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (tradersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(tradersTruck);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Farmer truck")
+                        {
+                            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (farmersTruck == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(farmersTruck);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Short trip")
+                        {
+                            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (shortTrip == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(shortTrip);
+                        }
+                        else if (currentTicketing.typeOfTransaction == "Pay parking")
+                        {
+                            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                            if (payParking == null)
+                            {
+                                return Json(new { success = false, message = "Edit limit is reached!" });
+                            }
+                            _context.Remove(payParking);
+                        }
                     }
                 }
                 else
                 {
-                    _context.PayParking.Update(payParking);
-                }
+                    if (ticketing.typeOfTransaction == "Trader truck")
+                    {
+                        TradersTruck tradersTruck = new TradersTruck
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            TraderName = "",
+                            Destination = ""
+                        };
+                        _context.TradersTruck.Update(tradersTruck);
+                        TradersTruck checkTradersTruck = _context.TradersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                        if (checkTradersTruck == null)
+                        {
+                            return Json(new { success = false, message = "Edit limit is reached!" });
+                        }
+                    }
+                    else if (ticketing.typeOfTransaction == "Farmer truck")
+                    {
+                        FarmersTruck farmersTruck = new FarmersTruck
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            StallNumber = "",
+                            FarmersName = "",
+                            Organization = "",
+                            Commodity = "",
+                            Barangay = ""
+                        };
+                        _context.FarmersTruck.Update(farmersTruck);
+                        FarmersTruck checkFarmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                        if (checkFarmersTruck == null)
+                        {
+                            return Json(new { success = false, message = "Edit limit is reached!" });
+                        }
+                    }
+                    else if (ticketing.typeOfTransaction == "Short trip")
+                    {
+                        ShortTrip shortTrip = new ShortTrip
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            Commodity = ""
+                        };
+                        _context.ShortTrip.Update(shortTrip);
+                        ShortTrip checkShortTrip = _context.ShortTrip.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                        if (checkShortTrip == null)
+                        {
+                            return Json(new { success = false, message = "Edit limit is reached!" });
+                        }
+                    }
+                    else if (ticketing.typeOfTransaction == "Gate pass")
+                    {
+                        StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
 
-                _context.Ticketing.Update(ticketing);
+                        GatePass gatePass = new GatePass
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            DriverName = ticketing.driverName
+                        };
+
+                        if (stallLease != null)
+                        {
+                            if (stallLease.EndDate > DateTime.Now)
+                            {
+                                _context.GatePass.Update(gatePass);
+                            }
+                            else
+                            {
+                                return Json(new { success = false, message = "Your gate pass is expired!" });
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { success = false, message = "Vehicle not registered!" });
+                        }
+                        GatePass checkGatePass = _context.GatePass.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                        if (checkGatePass == null)
+                        {
+                            return Json(new { success = false, message = "Edit limit is reached!" });
+                        }
+                    }
+                    else
+                    {
+                        PayParking payParking = new PayParking
+                        {
+                            ticketingId = ticketing.ticketingId,
+                            TimeIn = DateTime.Now,
+                            PlateNumber = ticketing.plateNumber,
+                            DriverName = ticketing.driverName
+                        };
+                        _context.PayParking.Update(payParking);
+                        PayParking checkPayParking = _context.PayParking.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                        if (checkPayParking == null)
+                        {
+                            return Json(new { success = false, message = "Edit limit is reached!" });
+                        }
+                    }
+                }
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -252,35 +558,35 @@ namespace src.Controllers.Api
         public async Task<IActionResult> UpdateTicketOut(Guid id)
         {
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
-            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
-            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
-            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
-            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
-            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
             ticketing.timeOut = DateTime.Now;
             var info = await _userManager.GetUserAsync(User);
             if (ticketing.typeOfTransaction == "Trader truck")
             {
+                TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
                 tradersTruck.TimeOut = ticketing.timeOut;
                 _context.TradersTruck.Update(tradersTruck);
             }
             else if (ticketing.typeOfTransaction == "Farmer truck")
             {
+                FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
                 farmersTruck.TimeOut = ticketing.timeOut;
                 _context.FarmersTruck.Update(farmersTruck);
             }
             else if (ticketing.typeOfTransaction == "Short trip")
             {
+                ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
                 shortTrip.TimeOut = ticketing.timeOut;
                 _context.ShortTrip.Update(shortTrip);
             }
             else if (ticketing.typeOfTransaction == "Gate pass")
             {
+                GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
                 gatePass.TimeOut = ticketing.timeOut;
                 _context.GatePass.Update(gatePass);
             }
             else
             {
+                PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
                 payParking.TimeOut = ticketing.timeOut;
                 _context.PayParking.Update(payParking);
             }
@@ -331,7 +637,6 @@ namespace src.Controllers.Api
             {
                 StartDate = startDate,
                 EndDate = endDate,
-                //BirthDate = Convert.ToDateTime(model["BirthDate"].ToString()),
                 DriverName = model["DriverName"].ToString(),
                 //LastName = model["LastName"].ToString(),
                 PlateNumber1 = model["PlateNumber1"].ToString(),
@@ -447,14 +752,26 @@ namespace src.Controllers.Api
         {
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(ticketing);
-            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
-            _context.Remove(tradersTruck);
-            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
-            _context.Remove(farmersTruck);
-            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
-            _context.Remove(shortTrip);
-            PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
-            _context.Remove(payParking);
+            if (ticketing.typeOfTransaction == "Trader truck")
+            {
+                TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+                _context.Remove(tradersTruck);
+            }
+            else if (ticketing.typeOfTransaction == "Farmer truck")
+            {
+                FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+                _context.Remove(farmersTruck);
+            }
+            else if (ticketing.typeOfTransaction == "Short trip")
+            {
+                ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
+                _context.Remove(shortTrip);
+            }
+            else if (ticketing.typeOfTransaction == "Pay parking")
+            {
+                PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
+                _context.Remove(payParking);
+            }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -471,7 +788,7 @@ namespace src.Controllers.Api
 
     }
 
-    internal class GetGatePass
-    {
-    }
+    //internal class GetGatePass
+    //{
+    //}
 }

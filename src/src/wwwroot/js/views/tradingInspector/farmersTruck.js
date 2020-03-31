@@ -63,8 +63,11 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";
-                    if (data["dateInspected"] == null) {
+                    if (data["dateInspected"] == null && data["timeOut"] == null) {
                         status = "<label class='txt-info'>Active</label>";
+                    }
+                    else if (data["dateInspected"] == null && data["timeOut"] != null) {
+                        status = "<label class='txt-info'>Unchecked</label>";
                     }
                     return status;
                 }
@@ -75,7 +78,7 @@ $(document).ready(function () {
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     //return btnEdit;
                     var outPut = btnEdit;
-                    if (data["dateInspected"] != null) {
+                    if (data["dateInspected"] != null || data["timeOut"] != null) {
                         outPut = "";
                     }
                     return outPut;
