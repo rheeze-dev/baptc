@@ -7,29 +7,51 @@ $(document).ready(function () {
     var organizationId = $('#organizationId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
-            "url": apiurl + '/' + organizationId,
+            "url": apiurl + '/GetUsers' ,
             "type": 'GET',
             "datatype": 'json'
         },
-        "order": [[0, 'desc']],
         "columns": [
+            { "data": "userId" },
+            { "data": "fullName" },
+            { "data": "email" },
+            { "data": "emailConfirmed" },
             {
                 "data": function (data) {
-                    var d = new Date(data["dateAdded"]);
+                    var d = new Date(data["dateModified"]);
+                    var empty = "";
                     var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-                    return output;
+                    if (data["dateModified"] == null) {
+                        return empty;
+                    }
+                    else {
+                        return output;
+                    }
                 }
             },
-            { "data": "fullName" },
-            { "data": "remarks" },
-            { "data": "shortName" },
+            { "data": "modifier" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/AddEditRoles?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigRoles?id=" + data["id"] + "')><i class='fa fa-cog' title='Config'></i></a>";
-                    var btnReport = "<a class='btn btn-default btn-xs btnReport' href='/api/Report/roles?id=" + data["id"] + "'><i class='fa fa-download' title='Report'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit + btnConfig + btnReport + btnDelete;
+                    var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
+                    //var btnIncative = "<a class='btn btn-default btn-xs btnInactive' data-id='" + data["userId"] + "'>Deactivate</a>";
+                    //var btnActive = "<a class='btn btn-default btn-xs btnActive' data-id='" + data["userId"] + "'>Activate</a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    return btnConfig;
+                }
+            },
+            {
+                "data": function (data) {
+                    //var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
+                    var btnActive = "Deactivated";
+                    var btnInActive = "<a class='btn btn-default btn-xs btnInActive' data-id='" + data["userId"] + "'>Deactivate</a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    if (data["roleId"] != "Default") {
+                        return btnInActive;
+                    }
+                    else if (data["roleId"] == "Default")
+                    {
+                        return btnActive;
+                    }
                 }
             }
         ],
@@ -37,6 +59,34 @@ $(document).ready(function () {
             "emptyTable": "no data found."
         },
         "lengthChange": false,
+    });
+});
+$("#grid").on("click", ".btnInActive", function (e) {
+    e.preventDefault();
+    var userId = $(this).attr("data-id");
+    var param = { id: userId };
+    swal({
+        title: "Are you sure want to deactivate this account?",
+        //text: "You will not be able to restore the file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dd4b39",
+        confirmButtonText: "Yes, deactivate it!",
+        closeOnConfirm: true
+    }, function () {
+        $.ajax({
+            type: 'POST',
+            url: apiurl + '/DeactivateUser',
+            data: param,
+            success: function (data) {
+                if (data.success) {
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
     });
 });
 const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -113,7 +163,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/' + id,
+            url: apiurl + '/UserRoles/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

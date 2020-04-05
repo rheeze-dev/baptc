@@ -36,7 +36,7 @@ namespace src.Controllers.Api
             _emailSender = emailSender;
         }
 
-        // GET: api/SupportEngineer
+        // GET: api/PriceCommodity
         [HttpGet("{organizationId}")]
         public IActionResult GetPriceCommodity([FromRoute]Guid organizationId)
         {
@@ -83,44 +83,6 @@ namespace src.Controllers.Api
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteSupportEngineer([FromRoute] Guid id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
 
-        //    try
-        //    {
-        //        var supportEngineer = await _context.SupportEngineer.SingleOrDefaultAsync(m => m.supportEngineerId == id);
-        //        if (supportEngineer == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        string applicationUserId = supportEngineer.applicationUserId;
-
-        //        _context.SupportEngineer.Remove(supportEngineer);
-        //        await _context.SaveChangesAsync();
-
-        //        ApplicationUser appUser = await _userManager.FindByIdAsync(applicationUserId);
-        //        await _userManager.DeleteAsync(appUser);
-
-        //        return Json(new { success = true, message = "Delete success." });
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-
-
-        //}
-
-        //private bool SupportEngineerExists(Guid id)
-        //{
-        //    return _context.SupportEngineer.Any(e => e.supportEngineerId == id);
-        //}
     }
 }

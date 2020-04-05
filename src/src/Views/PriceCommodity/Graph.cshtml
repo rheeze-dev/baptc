@@ -60,15 +60,37 @@
     @*<script src="~/js/views/supportengineer/index.js"></script>*@
     <script src="~/lib/Graph/Chart.min.js"></script>
     <script>
+        //$(document).ready(function () {
+
+        function GetJSON_Simple() {
+          var resp = [];
+              $.ajax({
+                  type: "GET",
+                  url: '/PriceCommodity/BarGraph',
+                  async: false,
+                  contentType: "application/json",
+                  success: function (data) {
+                      resp.push(data);
+                  },
+                  error: function (req, status, error) {
+                      // do something with error
+                      alert("error");
+                  }
+              });
+          return resp;
+     }
+
         $(document).ready(function () {
+            var simpleData = GetJSON_Simple();
             var ctx = document.getElementById('myChart');
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'Novermber', 'December'],
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                     datasets: [{
                         label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
+                        //data: [12, 19, 3, 5, 2, 3],
+                        data: simpleData,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',

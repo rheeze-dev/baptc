@@ -30,7 +30,7 @@
         {
             if (listModule.Contains(""))
             {
-                
+
             }
 
             if (listModule.Contains("Ticketing"))
@@ -525,6 +525,40 @@
                 </div>
             }
 
+            if (listModule.Contains("Reports"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Reports</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        @*@if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("Roles", "Settings", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }*@
+
+                    </div>
+                </div>
+            }
+
             if (listModule.Contains("Settings"))
             {
                 <div class="col-lg-4">
@@ -558,7 +592,6 @@
                     </div>
                 </div>
             }
-
 
         }
     </div>
