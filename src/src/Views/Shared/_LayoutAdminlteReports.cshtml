@@ -18,6 +18,16 @@
         customerName = (customer != null) ? customer.customerName : "Undefined";
 
     }
+    var selectedRoles = Context.ApplicationUser.Where(x => x.UserId.Equals(appUser.UserId)).FirstOrDefault();
+    var selectedModules = Context.Role.Where(x => x.Name.Equals(selectedRoles.RoleId)).Select(m => m.Module).FirstOrDefault();
+    string[] listSelectedModule = selectedModules.Split(",");
+    //string[] addedModule = new string[] { };
+    string[] addedModule = string.IsNullOrEmpty(selectedRoles.Modules) ? new string[] { } : selectedRoles.Modules.Split(",");
+    //if (!string.IsNullOrEmpty(selectedRoles.Modules))
+    //{
+    //    addedModule = selectedRoles.Modules.Split(",");
+    //}
+    var listModule = listSelectedModule.Union(addedModule);
 
 }
 
@@ -79,7 +89,7 @@
 
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        <li class="dropdown messages-menu">
+                        @*<li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-building-o"></i>
                                 @if (appUser.IsCustomer)
@@ -94,7 +104,7 @@
                                 }
 
                             </a>
-                        </li>
+                        </li>*@
                         <!-- User Account: style can be found in dropdown.less -->
                         @Html.Partial("_ProfileSignout")
                     </ul>
@@ -115,108 +125,105 @@
                     @if (appUser.IsSuperAdmin)
                     {
                         <li class="header">MAIN NAVIGATION</li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"TicketingReports")">
-                            <a href="@Url.Action("TicketingReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Ticketing</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"StallLeaserReports")">
-                            <a href="@Url.Action("StallLeaserReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Stall leasers</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"TradersTruckReports")">
-                            <a href="@Url.Action("TradersTruckReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Traders truck</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"FarmersTruckReports")">
-                            <a href="@Url.Action("FarmersTruckReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Farmers truck</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"ShortTripReports")">
-                            <a href="@Url.Action("ShortTripReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Short trip</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"InterTradingReports")">
-                            <a href="@Url.Action("InterTradingReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Inter trading</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"CarrotFacilityReports")">
-                            <a href="@Url.Action("CarrotFacilityReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Carrot facility</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"SecurityReports")">
-                            <a href="@Url.Action("SecurityReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Security</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"RepairReports")">
-                            <a href="@Url.Action("RepairReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Repair</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"PriceCommodityReports")">
-                            <a href="@Url.Action("PriceCommodityReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Price commodity</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"AccreditationReports")">
-                            <a href="@Url.Action("AccreditationReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Accreditation</span>
-                            </a>
-                        </li>
-                        @*<li class="@Html.IsSelected(controller: "Reports",action:"AccreditationReports")">
-                            <a href="@Url.Action("AccreditationReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Accredited packers</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"AccreditationReports")">
-                            <a href="@Url.Action("AccreditationReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Accredited buyers</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"AccreditationReports")">
-                            <a href="@Url.Action("AccreditationReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Accredited facilitators</span>
-                            </a>
-                        </li>
-                        <li class="@Html.IsSelected(controller: "Reports",action:"AccreditationReports")">
-                            <a href="@Url.Action("AccreditationReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Accredited farmers</span>
-                            </a>
-                        </li>*@
-                        <li class="@Html.IsSelected(controller: "Reports",action:"SettingsReports")">
-                            <a href="@Url.Action("SettingsReports", "Reports", new { org = org })">
-                                <i class="fa fa-th"></i> <span>User roles</span>
-                            </a>
-                        </li>
-                        @*<li class="@Html.IsSelected(controller: "Ticketing")">
-                <a href="@Url.Action("TicketingOut", "Ticketing", new { org = org })">
-                    <i class="fa fa-th"></i> <span>Ticketing Out</span>
-                </a>
-            </li>*@
-                        @*<li class="@Html.IsSelected(controller: "SupportAgent")">
-                <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
-                    <i class="fa fa-th"></i> <span>Support Agents</span>
-                </a>
-            </li>
-            <li class="@Html.IsSelected(controller: "SupportEngineer")">
-                <a href="@Url.Action("Index", "SupportEngineer", new { org = org })">
-                    <i class="fa fa-th"></i> <span>Support Engineers</span>
-                </a>
-            </li>
-            <li class="@Html.IsSelected(controller: "Ticket")">
-                <a href="@Url.Action("Index", "Ticket", new { org = org })">
-                    <i class="fa fa-th"></i> <span>Ticket</span>
-                </a>
-            </li>*@
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"TicketingReports")">
+                                <a href="@Url.Action("TicketingReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Ticketing</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "Reports",action:"StallLeaserReports")">
+                                <a href="@Url.Action("StallLeaserReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Stall leasers</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("TradingInspector"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"TradersTruckReports")">
+                                <a href="@Url.Action("TradersTruckReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Traders truck</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "Reports",action:"FarmersTruckReports")">
+                                <a href="@Url.Action("FarmersTruckReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Farmers truck</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "Reports",action:"ShortTripReports")">
+                                <a href="@Url.Action("ShortTripReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Short trip</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("TradingAndInterTrading"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"InterTradingReports")">
+                                <a href="@Url.Action("InterTradingReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Inter trading</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "Reports",action:"CarrotFacilityReports")">
+                                <a href="@Url.Action("CarrotFacilityReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Carrot facility</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Security"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"SecurityReports")">
+                                <a href="@Url.Action("SecurityReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Security</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Repair"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"RepairReports")">
+                                <a href="@Url.Action("RepairReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Repair</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("PriceCommodities"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"PriceCommodityReports")">
+                                <a href="@Url.Action("PriceCommodityReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Price commodity</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Accreditation"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"AccreditationReports")">
+                                <a href="@Url.Action("AccreditationReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Accreditation</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Settings"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"SettingsReports")">
+                                <a href="@Url.Action("SettingsReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>User roles</span>
+                                </a>
+                            </li>
+                        }
+
                     }
-                    @if (appUser.IsCustomer)
+
+                    @*@if (appUser.IsCustomer)
                     {
                         <li class="header">CUSTOMER NAVIGATION</li>
                         <li class="@Html.IsSelected(controller: "Ticket")">
@@ -242,7 +249,7 @@
                                 <i class="fa fa-th"></i> <span>Ticket</span>
                             </a>
                         </li>
-                    }
+                    }*@
 
                 </ul>
                 }

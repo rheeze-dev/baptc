@@ -41,20 +41,20 @@
                         <li class="list-group-item text-center">
                             <span class="btn btn-success fileinput-button">
                                 <i class="fa fa-camera bg-green"></i>
-                                <span>Select file ...</span>
+                                <span>Select picture ...</span>
                                 <!-- The file input field used as target for the file upload widget -->
                                 <input id="fileupload" type="file" name="files" multiple="">
                             </span>
 
                         </li>
-                        <li class="list-group-item">
+                        @*<li class="list-group-item">
                             <div id="progress" class="progress">
                                 <div class="progress-bar progress-bar-success"></div>
                             </div>
-                        </li>
+                        </li>*@
 
                     </ul>
-                    @if (Model.IsCustomer)
+                    @*@if (Model.IsCustomer)
                     {
                         <a href="@src.MVC.Pages.TicketCustomer.FullUrl?cust=@customerId" class="btn btn-primary btn-block"><b><i class="fa fa-building"></i> Tickets</b></a>
                     }
@@ -67,7 +67,7 @@
                     {
 
                         <a href="@src.MVC.Pages.ConfigOrganization.FullUrl" class="btn btn-primary btn-block"><b><i class="fa fa-building"></i> Organizations</b></a>
-                    }
+                    }*@
 
                 </div>
                 <!-- /.box-body -->

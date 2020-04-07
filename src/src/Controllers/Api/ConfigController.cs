@@ -34,6 +34,7 @@ namespace src.Controllers.Api
             {
                 ApplicationUser appUser = _context.ApplicationUser.Where(x => x.Id.Equals(applicationUser.Id)).FirstOrDefault();
                 appUser.FullName = applicationUser.FullName;
+                appUser.PhoneNumber = applicationUser.PhoneNumber;
                 _context.Update(appUser);
 
                 await _context.SaveChangesAsync();
