@@ -17,7 +17,7 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th colspan="3"><center>Traders truck</center></th>
+                                        <th colspan="3"><center>Total</center></th>
                                     </tr>
                                     <tr>
                                         <th class="col-md-1">Year</th>
@@ -26,10 +26,12 @@
                                     </tr>
                                     <tr>
                                         <th class="col-md-1">
-                                            <select name="selectYearTraders" class="form-control" id="dropdownYearTraders"></select>
+                                            <select name="selectYear" class="form-control" id="dropdownYear"></select>
+                                            @*style="width: 120px;"
+                onchange="getProjectReportFunc()"*@
                                         </th>
                                         <th class="col-md-1">
-                                            <select class="form-control" id="dropdownMonthTraders">
+                                            <select class="form-control" id="dropdownMonth">
                                                 <option value="01">January</option>
                                                 <option value="02">February</option>
                                                 <option value="03">March</option>
@@ -45,16 +47,12 @@
                                             </select>
                                         </th>
                                         <th class="col-md-1">
-                                            <a class="btn btn-success btn-xs exportTraders"><i class='fa fa-download'></i> Export</a>
+                                            <a class="btn btn-success btn-xs exportTotal"><i class='fa fa-download'></i> Export</a>
                                         </th>
                                     </tr>
-                                    @*<tr>
-                                        <th colspan="3"><center>Traders truck</center></th>
-                                    </tr>*@
                                     <tr>
-                                        <th class="col-md-1">By days</th>
                                         <th class="col-md-1">
-                                            <select class="form-control" id="dropdownTradersDate">
+                                            <select class="form-control" id="dropdownDate">
                                                 <option value="1000000">All</option>
                                                 <option value="365">Last year</option>
                                                 <option value="31">Last month</option>
@@ -63,12 +61,11 @@
                                             </select>
                                         </th>
                                         <th class="col-md-1">
-                                            <a class="btn btn-success btn-xs exportTradersDate"><i class='fa fa-download'></i> Export</a>
+                                        </th>
+                                        <th class="col-md-1">
+                                            <a class="btn btn-success btn-xs exportTotalDate"><i class='fa fa-download'></i> Export</a>
                                         </th>
                                     </tr>
-                                    @*<tr>
-                                        <th colspan="3"><center>Traders truck</center></th>
-                                    </tr>*@
                                 </thead>
                             </table>
                         </div>
@@ -90,33 +87,35 @@
     </div>
 </div>
 
+
+
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script>
-        let selectYearTraders = document.getElementById('dropdownYearTraders');
-        let currYear = new Date().getFullYear();
-        let pastYear = currYear - 2;
-        for (let year = pastYear; year <= currYear; year++) {
-            let option = document.createElement('option');
-            option.setAttribute('value', year);
-            if (year === currYear) {
-                option.setAttribute('selected', true);
-            }
-            option.innerHTML = year;
-            selectYearTraders.appendChild(option);
+<script>
+    let selectYear = document.getElementById('dropdownYear');
+    let currYear = new Date().getFullYear();
+    let pastYear = currYear - 2;
+    for (let year = pastYear; year <= currYear; year++) {
+        let option = document.createElement('option');
+        option.setAttribute('value', year);
+        if (year === currYear) {
+            option.setAttribute('selected', true);
         }
+        option.innerHTML = year;
+        selectYear.appendChild(option);
 
-        $(".exportTraders").on("click", function (e) {
-            var getSelectedYear = $("#dropdownYearTraders").val();
-            var getSelectedMonth = $("#dropdownMonthTraders").val();
-            $(".exportTraders").attr("href", "/api/Report/TradersReport?Year=" + getSelectedYear + "&Month=" + getSelectedMonth);
+        $(".exportTotal").on("click", function (e) {
+            var getSelectedYear = $("#dropdownYear").val();
+            var getSelectedMonth = $("#dropdownMonth").val();
+            $(".exportTotal").attr("href", "/api/Report/TotalReport?Year=" + getSelectedYear + "&Month=" + getSelectedMonth);
         });
 
-        $(".exportTradersDate").on("click", function (e) {
-            var getSelectedDate = $("#dropdownTradersDate").val();
-            $(".exportTradersDate").attr("href", "/api/Report/TradersReportDate?Date=" + getSelectedDate);
+        $(".exportTotalDate").on("click", function (e) {
+            var getSelectedDate = $("#dropdownDate").val();
+            $(".exportTotalDate").attr("href", "/api/Report/TotalReportDate?Date=" + getSelectedDate);
         });
 
-    </script>
+    }
+</script>
 }
 

@@ -89,7 +89,68 @@ namespace src.Controllers.Api
 
                 ticketing.ticketingId = Guid.NewGuid();
                 ticketing.issuingClerk = info.FullName;
-                _context.Ticketing.Add(ticketing);
+
+                if (ticketing.typeOfTransaction == "Trader truck")
+                {
+                    if (ticketing.typeOfCar == "With transaction" || ticketing.typeOfCar == "Without transaction" || ticketing.typeOfCar == "Overnight")
+                    {
+                        _context.Ticketing.Add(ticketing);
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                    }
+                }
+
+                else if (ticketing.typeOfTransaction == "Farmer truck")
+                {
+                    if (ticketing.typeOfCar == "Single tire" || ticketing.typeOfCar == "Double tire" || ticketing.typeOfCar == "Forward tire")
+                    {
+                        _context.Ticketing.Add(ticketing);
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                    }
+                }
+
+                else if (ticketing.typeOfTransaction == "Short trip")
+                {
+                    if (ticketing.typeOfCar == "Pick-up" || ticketing.typeOfCar == "Delivery")
+                    {
+                        _context.Ticketing.Add(ticketing);
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                    }
+                }
+
+                else if (ticketing.typeOfTransaction == "Pay parking")
+                {
+                    if (ticketing.typeOfCar == "Day time" || ticketing.typeOfCar == "Night time")
+                    {
+                        _context.Ticketing.Add(ticketing);
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                    }
+                    if (ticketing.driverName == "")
+                    {
+                        return Json(new { success = false, message = "Drivers name cannot be empty!" });
+                    }
+                }
+                else if (ticketing.typeOfTransaction == "Gate pass")
+                {
+                    if (ticketing.driverName == "")
+                    {
+                        return Json(new { success = false, message = "Drivers name cannot be empty!" });
+                    }
+
+                    ticketing.typeOfCar = null;
+                    _context.Ticketing.Add(ticketing);
+                }
 
                 CurrentTicket currentTicket = new CurrentTicket
                 {
@@ -109,10 +170,7 @@ namespace src.Controllers.Api
                         TraderName = "",
                         Destination = ""
                     };
-                    if (ticketing.typeOfTransaction == "Trader truck" && ticketing.typeOfCar == "Single tire")
-                    {
-                        ticketing.amount = 50;
-                    }
+
                     _context.TradersTruck.Add(tradersTruck);
                 }
                 else if (ticketing.typeOfTransaction == "Farmer truck")
@@ -128,6 +186,7 @@ namespace src.Controllers.Api
                         Commodity = "",
                         Barangay = ""
                     };
+
                     _context.FarmersTruck.Add(farmersTruck);
                 }
                 else if (ticketing.typeOfTransaction == "Short trip")
@@ -139,6 +198,7 @@ namespace src.Controllers.Api
                         PlateNumber = ticketing.plateNumber,
                         Commodity = ""
                     };
+
                     _context.ShortTrip.Add(shortTrip);
                 }
                 else if (ticketing.typeOfTransaction == "Gate pass")
@@ -175,6 +235,7 @@ namespace src.Controllers.Api
                         PlateNumber = ticketing.plateNumber,
                         DriverName = ticketing.driverName
                     };
+
                     _context.PayParking.Add(payParking);
                 }
             }
@@ -560,22 +621,464 @@ namespace src.Controllers.Api
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
             ticketing.timeOut = DateTime.Now;
             var info = await _userManager.GetUserAsync(User);
+
             if (ticketing.typeOfTransaction == "Trader truck")
             {
                 TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
                 tradersTruck.TimeOut = ticketing.timeOut;
+                var lessThan30Minutes = ticketing.timeIn.Value.AddMinutes(30);
+
+                if (ticketing.typeOfCar == "Overnight")
+                {
+                    DateTime beforeMidnight = ticketing.timeIn.Value;
+                    beforeMidnight = new DateTime(beforeMidnight.Year, beforeMidnight.Month, beforeMidnight.Day, 22, 00, 00); //10 o'clock
+
+                    DateTime midnight = ticketing.timeIn.Value.AddDays(1);
+                    midnight = new DateTime(midnight.Year, midnight.Month, midnight.Day, 00, 00, 00); //12 o'clock
+
+                    if (ticketing.timeIn >= beforeMidnight && ticketing.timeIn <= midnight)
+                    {
+                        var pm = ticketing.timeIn.Value.AddDays(1);
+                        pm = new DateTime(pm.Year, pm.Month, pm.Day, 04, 00, 00);
+
+                        var extended1Day = pm.AddHours(18);
+                        var extended1Day1Night = pm.AddDays(1);
+                        var extended2Days1Night = pm.AddDays(1).AddHours(18);
+                        var extended2Days2Nights = pm.AddDays(2);
+                        var extended3Days2Nights = pm.AddDays(2).AddHours(18);
+                        var extended3Days3Nights = pm.AddDays(3);
+
+                        if (ticketing.timeOut <= lessThan30Minutes)
+                        {
+                            ticketing.amount = 20;
+                        }
+                        else if (ticketing.timeOut <= pm)
+                        {
+                            ticketing.amount = 250;
+                        }
+                        else if (ticketing.timeOut <= extended1Day)
+                        {
+                            ticketing.amount = 350;
+                        }
+                        else if (ticketing.timeOut <= extended1Day1Night)
+                        {
+                            ticketing.amount = 600;
+                        }
+                        else if (ticketing.timeOut <= extended2Days1Night)
+                        {
+                            ticketing.amount = 700;
+                        }
+                        else if (ticketing.timeOut <= extended2Days2Nights)
+                        {
+                            ticketing.amount = 950;
+                        }
+                        else if (ticketing.timeOut <= extended3Days2Nights)
+                        {
+                            ticketing.amount = 1050;
+                        }
+                        else if (ticketing.timeOut <= extended3Days3Nights)
+                        {
+                            ticketing.amount = 1300;
+                        }
+                    }
+                    else
+                    {
+                        var am = ticketing.timeIn.Value;
+                        am = new DateTime(am.Year, am.Month, am.Day, 04, 00, 00);
+
+                        var extended1Day = am.AddHours(18);
+                        var extended1Day1Night = am.AddDays(1);
+                        var extended2Days1Night = am.AddDays(1).AddHours(18);
+                        var extended2Days2Nights = am.AddDays(2);
+                        var extended3Days2Nights = am.AddDays(2).AddHours(18);
+                        var extended3Days3Nights = am.AddDays(3);
+
+                        if (ticketing.timeOut <= lessThan30Minutes)
+                        {
+                            ticketing.amount = 20;
+                        }
+                        else if (ticketing.timeOut <= am)
+                        {
+                            ticketing.amount = 250;
+                        }
+                        else if (ticketing.timeOut <= extended1Day)
+                        {
+                            ticketing.amount = 350;
+                        }
+                        else if (ticketing.timeOut <= extended1Day1Night)
+                        {
+                            ticketing.amount = 600;
+                        }
+                        else if (ticketing.timeOut <= extended2Days1Night)
+                        {
+                            ticketing.amount = 700;
+                        }
+                        else if (ticketing.timeOut <= extended2Days2Nights)
+                        {
+                            ticketing.amount = 950;
+                        }
+                        else if (ticketing.timeOut <= extended3Days2Nights)
+                        {
+                            ticketing.amount = 1050;
+                        }
+                        else if (ticketing.timeOut <= extended3Days3Nights)
+                        {
+                            ticketing.amount = 1300;
+                        }
+                    }
+                }
+
+                else if (ticketing.typeOfCar == "With transaction")
+                {
+                    var daytimeExpiration = ticketing.timeIn.Value;
+                    daytimeExpiration = new DateTime(daytimeExpiration.Year, daytimeExpiration.Month, daytimeExpiration.Day, 22, 00, 00);
+
+                    var extended1Night = daytimeExpiration.AddHours(6);
+                    var extended1Day1Night = daytimeExpiration.AddDays(1);
+                    var extended1Day2Nights = daytimeExpiration.AddDays(1).AddHours(6);
+                    var extended2Days2Nights = daytimeExpiration.AddDays(2);
+                    var extended2Days3Nights = daytimeExpiration.AddDays(2).AddHours(6);
+                    var extended3Days3Nights = daytimeExpiration.AddDays(3);
+
+                    if (ticketing.timeOut <= lessThan30Minutes)
+                    {
+                        ticketing.amount = 20;
+                    }
+                    else if (ticketing.timeOut <= daytimeExpiration)
+                    {
+                    ticketing.amount = 150;
+                    }
+                    else if (ticketing.timeOut <= extended1Night)
+                    {
+                        ticketing.amount = 400;
+                    }
+                    else if (ticketing.timeOut <= extended1Day1Night)
+                    {
+                        ticketing.amount = 550;
+                    }
+                    else if (ticketing.timeOut <= extended1Day2Nights)
+                    {
+                        ticketing.amount = 800;
+                    }
+                    else if (ticketing.timeOut <= extended2Days2Nights)
+                    {
+                        ticketing.amount = 950;
+                    }
+                    else if (ticketing.timeOut <= extended2Days3Nights)
+                    {
+                        ticketing.amount = 1200;
+                    }
+                    else if (ticketing.timeOut <= extended3Days3Nights)
+                    {
+                        ticketing.amount = 1350;
+                    }
+                }
+
+                else if (ticketing.typeOfCar == "Without transaction")
+                {
+                    var daytimeExpiration = ticketing.timeIn.Value;
+                    daytimeExpiration = new DateTime(daytimeExpiration.Year, daytimeExpiration.Month, daytimeExpiration.Day, 22, 00, 00);
+
+                    var extended1Night = daytimeExpiration.AddHours(6);
+                    var extended1Day1Night = daytimeExpiration.AddDays(1);
+                    var extended1Day2Nights = daytimeExpiration.AddDays(1).AddHours(6);
+                    var extended2Days2Nights = daytimeExpiration.AddDays(2);
+                    var extended2Days3Nights = daytimeExpiration.AddDays(2).AddHours(6);
+                    var extended3Days3Nights = daytimeExpiration.AddDays(3);
+
+                    if (ticketing.timeOut <= lessThan30Minutes)
+                    {
+                        ticketing.amount = 20;
+                    }
+                    else if (ticketing.timeOut <= daytimeExpiration)
+                    {
+                        ticketing.amount = 100;
+                    }
+                    else if (ticketing.timeOut <= extended1Night)
+                    {
+                        ticketing.amount = 350;
+                    }
+                    else if (ticketing.timeOut <= extended1Day1Night)
+                    {
+                        ticketing.amount = 450;
+                    }
+                    else if (ticketing.timeOut <= extended1Day2Nights)
+                    {
+                        ticketing.amount = 700;
+                    }
+                    else if (ticketing.timeOut <= extended2Days2Nights)
+                    {
+                        ticketing.amount = 800;
+                    }
+                    else if (ticketing.timeOut <= extended2Days3Nights)
+                    {
+                        ticketing.amount = 1050;
+                    }
+                    else if (ticketing.timeOut <= extended3Days3Nights)
+                    {
+                        ticketing.amount = 1150;
+                    }
+                }
+
                 _context.TradersTruck.Update(tradersTruck);
             }
             else if (ticketing.typeOfTransaction == "Farmer truck")
             {
                 FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
                 farmersTruck.TimeOut = ticketing.timeOut;
+
+                var day1 = ticketing.timeIn.Value.AddDays(1);
+                var day2 = ticketing.timeIn.Value.AddDays(2);
+                var day3 = ticketing.timeIn.Value.AddDays(3);
+                var day4 = ticketing.timeIn.Value.AddDays(4);
+                var day5 = ticketing.timeIn.Value.AddDays(5);
+                var day6 = ticketing.timeIn.Value.AddDays(6);
+                var day7 = ticketing.timeIn.Value.AddDays(7);
+                var day8 = ticketing.timeIn.Value.AddDays(8);
+                var day9 = ticketing.timeIn.Value.AddDays(9);
+                var day10 = ticketing.timeIn.Value.AddDays(10);
+
+                if (ticketing.typeOfCar == "Single tire")
+                {
+                    if (ticketing.timeOut <= day1)
+                    {
+                        ticketing.amount = 100;
+                    }
+                    else if (ticketing.timeOut <= day2)
+                    {
+                        ticketing.amount = 200;
+                    }
+                    else if (ticketing.timeOut <= day3)
+                    {
+                        ticketing.amount = 300;
+                    }
+                    else if (ticketing.timeOut <= day4)
+                    {
+                        ticketing.amount = 400;
+                    }
+                    else if (ticketing.timeOut <= day5)
+                    {
+                        ticketing.amount = 500;
+                    }
+                    else if (ticketing.timeOut <= day6)
+                    {
+                        ticketing.amount = 600;
+                    }
+                    else if (ticketing.timeOut <= day7)
+                    {
+                        ticketing.amount = 700;
+                    }
+                    else if (ticketing.timeOut <= day8)
+                    {
+                        ticketing.amount = 800;
+                    }
+                    else if (ticketing.timeOut <= day9)
+                    {
+                        ticketing.amount = 900;
+                    }
+                    else if (ticketing.timeOut <= day10)
+                    {
+                        ticketing.amount = 1000;
+                    }
+                }
+                else if (ticketing.typeOfCar == "Double tire")
+                {
+                    if (ticketing.timeOut <= day1)
+                    {
+                        ticketing.amount = 150;
+                    }
+                    else if (ticketing.timeOut <= day2)
+                    {
+                        ticketing.amount = 300;
+                    }
+                    else if (ticketing.timeOut <= day3)
+                    {
+                        ticketing.amount = 450;
+                    }
+                    else if (ticketing.timeOut <= day4)
+                    {
+                        ticketing.amount = 600;
+                    }
+                    else if (ticketing.timeOut <= day5)
+                    {
+                        ticketing.amount = 750;
+                    }
+                    else if (ticketing.timeOut <= day6)
+                    {
+                        ticketing.amount = 900;
+                    }
+                    else if (ticketing.timeOut <= day7)
+                    {
+                        ticketing.amount = 1050;
+                    }
+                    else if (ticketing.timeOut <= day8)
+                    {
+                        ticketing.amount = 1200;
+                    }
+                    else if (ticketing.timeOut <= day9)
+                    {
+                        ticketing.amount = 1350;
+                    }
+                    else if (ticketing.timeOut <= day10)
+                    {
+                        ticketing.amount = 1500;
+                    }
+                }
+                else if (ticketing.typeOfCar == "Forward tire")
+                {
+                    if (ticketing.timeOut <= day1)
+                    {
+                        ticketing.amount = 200;
+                    }
+                    else if (ticketing.timeOut <= day2)
+                    {
+                        ticketing.amount = 400;
+                    }
+                    else if (ticketing.timeOut <= day3)
+                    {
+                        ticketing.amount = 600;
+                    }
+                    else if (ticketing.timeOut <= day4)
+                    {
+                        ticketing.amount = 800;
+                    }
+                    else if (ticketing.timeOut <= day5)
+                    {
+                        ticketing.amount = 1000;
+                    }
+                    else if (ticketing.timeOut <= day6)
+                    {
+                        ticketing.amount = 1200;
+                    }
+                    else if (ticketing.timeOut <= day7)
+                    {
+                        ticketing.amount = 1400;
+                    }
+                    else if (ticketing.timeOut <= day8)
+                    {
+                        ticketing.amount = 1600;
+                    }
+                    else if (ticketing.timeOut <= day9)
+                    {
+                        ticketing.amount = 1800;
+                    }
+                    else if (ticketing.timeOut <= day10)
+                    {
+                        ticketing.amount = 2000;
+                    }
+                }
+
                 _context.FarmersTruck.Update(farmersTruck);
             }
             else if (ticketing.typeOfTransaction == "Short trip")
             {
                 ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
                 shortTrip.TimeOut = ticketing.timeOut;
+
+                if (ticketing.typeOfCar == "Pick-up" || ticketing.typeOfCar == "Delivery")
+                {
+                    if (ticketing.timeIn.Value.AddHours(1) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 20;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(2) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 40;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(3) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 60;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(4) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 80;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(5) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 100;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(6) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 120;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(7) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 140;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(8) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 160;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(9) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 180;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(10) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 200;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(11) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 220;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(12) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 240;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(13) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 260;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(14) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 280;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(15) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 300;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(16) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 320;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(17) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 340;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(18) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 360;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(19) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 380;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(20) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 400;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(21) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 420;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(22) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 440;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(23) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 460;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(24) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 480;
+                    }
+                    else if (ticketing.timeIn.Value.AddHours(25) >= ticketing.timeOut)
+                    {
+                        ticketing.amount = 500;
+                    }
+                }
+
                 _context.ShortTrip.Update(shortTrip);
             }
             else if (ticketing.typeOfTransaction == "Gate pass")
@@ -584,13 +1087,168 @@ namespace src.Controllers.Api
                 gatePass.TimeOut = ticketing.timeOut;
                 _context.GatePass.Update(gatePass);
             }
-            else
+            else if (ticketing.typeOfTransaction == "Pay parking")
             {
                 PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
                 payParking.TimeOut = ticketing.timeOut;
+
+                if (ticketing.typeOfCar == "Night time")
+                {
+                    DateTime beforeMidnight = ticketing.timeIn.Value;
+                    beforeMidnight = new DateTime(beforeMidnight.Year, beforeMidnight.Month, beforeMidnight.Day, 22, 00, 00); //10 o'clock
+
+                    DateTime midnight = ticketing.timeIn.Value.AddDays(1);
+                    midnight = new DateTime(midnight.Year, midnight.Month, midnight.Day, 00, 00, 00); //12 o'clock
+
+                    if (ticketing.timeIn >= beforeMidnight && ticketing.timeIn <= midnight)
+                    {
+                        var pm = ticketing.timeIn.Value.AddDays(1);
+                        pm = new DateTime(pm.Year, pm.Month, pm.Day, 04, 00, 00);
+
+                        var extended1Day = pm.AddHours(18);
+                        var extended1Day1Night = pm.AddDays(1);
+                        var extended2Days1Night = pm.AddDays(1).AddHours(18);
+                        var extended2Days2Nights = pm.AddDays(2);
+                        var extended3Days2Nights = pm.AddDays(2).AddHours(18);
+                        var extended3Days3Nights = pm.AddDays(3);
+
+                        //if (ticketing.timeOut <= lessThan30Minutes)
+                        //{
+                        //    ticketing.amount = 20;
+                        //}
+                        if (ticketing.timeOut <= pm)
+                        {
+                            ticketing.amount = 100;
+                        }
+                        else if (ticketing.timeOut <= extended1Day)
+                        {
+                            ticketing.amount = 140;
+                        }
+                        else if (ticketing.timeOut <= extended1Day1Night)
+                        {
+                            ticketing.amount = 240;
+                        }
+                        else if (ticketing.timeOut <= extended2Days1Night)
+                        {
+                            ticketing.amount = 280;
+                        }
+                        else if (ticketing.timeOut <= extended2Days2Nights)
+                        {
+                            ticketing.amount = 380;
+                        }
+                        else if (ticketing.timeOut <= extended3Days2Nights)
+                        {
+                            ticketing.amount = 420;
+                        }
+                        else if (ticketing.timeOut <= extended3Days3Nights)
+                        {
+                            ticketing.amount = 520;
+                        }
+                    }
+                    else
+                    {
+                        var am = ticketing.timeIn.Value;
+                        am = new DateTime(am.Year, am.Month, am.Day, 04, 00, 00);
+
+                        var extended1Day = am.AddHours(18);
+                        var extended1Day1Night = am.AddDays(1);
+                        var extended2Days1Night = am.AddDays(1).AddHours(18);
+                        var extended2Days2Nights = am.AddDays(2);
+                        var extended3Days2Nights = am.AddDays(2).AddHours(18);
+                        var extended3Days3Nights = am.AddDays(3);
+
+                        //if (ticketing.timeOut <= lessThan30Minutes)
+                        //{
+                        //    ticketing.amount = 20;
+                        //}
+                        if (ticketing.timeOut <= am)
+                        {
+                            ticketing.amount = 100;
+                        }
+                        else if (ticketing.timeOut <= extended1Day)
+                        {
+                            ticketing.amount = 140;
+                        }
+                        else if (ticketing.timeOut <= extended1Day1Night)
+                        {
+                            ticketing.amount = 240;
+                        }
+                        else if (ticketing.timeOut <= extended2Days1Night)
+                        {
+                            ticketing.amount = 280;
+                        }
+                        else if (ticketing.timeOut <= extended2Days2Nights)
+                        {
+                            ticketing.amount = 380;
+                        }
+                        else if (ticketing.timeOut <= extended3Days2Nights)
+                        {
+                            ticketing.amount = 420;
+                        }
+                        else if (ticketing.timeOut <= extended3Days3Nights)
+                        {
+                            ticketing.amount = 520;
+                        }
+                    }
+                }
+
+                else if (ticketing.typeOfCar == "Day time")
+                {
+                    var daytimeExpiration = ticketing.timeIn.Value;
+                    daytimeExpiration = new DateTime(daytimeExpiration.Year, daytimeExpiration.Month, daytimeExpiration.Day, 22, 00, 00);
+
+                    var extended1Night = daytimeExpiration.AddHours(6);
+                    var extended1Day1Night = daytimeExpiration.AddDays(1);
+                    var extended1Day2Nights = daytimeExpiration.AddDays(1).AddHours(6);
+                    var extended2Days2Nights = daytimeExpiration.AddDays(2);
+                    var extended2Days3Nights = daytimeExpiration.AddDays(2).AddHours(6);
+                    var extended3Days3Nights = daytimeExpiration.AddDays(3);
+
+                    //if (ticketing.timeOut <= lessThan30Minutes)
+                    //{
+                    //    ticketing.amount = 20;
+                    //}
+                    if (ticketing.timeOut <= daytimeExpiration)
+                    {
+                        ticketing.amount = 40;
+                    }
+                    else if (ticketing.timeOut <= extended1Night)
+                    {
+                        ticketing.amount = 140;
+                    }
+                    else if (ticketing.timeOut <= extended1Day1Night)
+                    {
+                        ticketing.amount = 180;
+                    }
+                    else if (ticketing.timeOut <= extended1Day2Nights)
+                    {
+                        ticketing.amount = 280;
+                    }
+                    else if (ticketing.timeOut <= extended2Days2Nights)
+                    {
+                        ticketing.amount = 320;
+                    }
+                    else if (ticketing.timeOut <= extended2Days3Nights)
+                    {
+                        ticketing.amount = 420;
+                    }
+                    else if (ticketing.timeOut <= extended3Days3Nights)
+                    {
+                        ticketing.amount = 460;
+                    }
+                }
+
                 _context.PayParking.Update(payParking);
             }
+            Total total = new Total
+            {
+                ticketingId = ticketing.ticketingId,
+                origin = "Ticketing",
+                date = DateTime.Now,
+                amount = ticketing.amount.Value,
+            };
             ticketing.receivingClerk = info.FullName;
+            _context.Total.Add(total);
             _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -614,8 +1272,15 @@ namespace src.Controllers.Api
             stallLease.Amount = stallLease.Amount + 500;
             ticketing.amount = ticketing.amount + 500;
 
+            Total total = new Total
+            {
+                ticketingId = ticketing.ticketingId,
+                origin = "Gate pass",
+                date = DateTime.Now,
+                amount = ticketing.amount.Value
+            };
 
-            //_context.Ticketing.Update(ticketing);
+            _context.Total.Add(total);
             _context.StallLease.Update(stallLease);
             _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
@@ -650,14 +1315,6 @@ namespace src.Controllers.Api
                 
             };
 
-            //GatePass gatePass = new GatePass
-            //{
-            //    ticketingId = stallLease.ticketingId,
-            //    amount = stallLease.Amount,
-            //    plateNumber = stallLease.PlateNumber1 + ", " + stallLease.PlateNumber2,
-            //    endDate = stallLease.EndDate,
-            //    driverName = stallLease.DriverName
-            //};
             if (id == Guid.Empty)
             {
                 stallLease.ticketingId = Guid.NewGuid();
@@ -674,6 +1331,16 @@ namespace src.Controllers.Api
                 _context.StallLease.Add(stallLease);
                 //_context.Ticketing.Add(ticketing);
             }
+
+            Total total = new Total
+            {
+                ticketingId = stallLease.ticketingId,
+                origin = "Gate pass",
+                date = DateTime.Now,
+                amount = stallLease.Amount
+            };
+
+            _context.Total.Add(total);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }

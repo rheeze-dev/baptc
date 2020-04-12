@@ -140,7 +140,7 @@ namespace src.Controllers.Api
             // query data from database  
             await Task.Yield();
 
-            var ticketing = _context.Ticketing.Where(y => y.timeIn.Value.Year.Equals(Year) && y.timeIn.Value.Month.Equals(Month)).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+            var ticketing = _context.Ticketing.Where(y => y.timeIn.Value.Year.Equals(Year) && y.timeIn.Value.Month.Equals(Month) && y.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
 
             var stream = new MemoryStream();
 
@@ -167,17 +167,20 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.Ticketing.Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
-                using (var package = new ExcelPackage(stream))
                 {
-                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
-                    workSheet.Cells.LoadFromCollection(all, true);
-                    package.Save();
+                    var all = _context.Ticketing.Where(x => x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
                 }
+                
             }
             else if (Date == 1)
             {
-                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -187,7 +190,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7)).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -197,7 +200,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31)).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -207,7 +210,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365)).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -218,6 +221,98 @@ namespace src.Controllers.Api
             
             stream.Position = 0;
             string excelName = $"Ticketing {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalReport")]
+        public async Task<IActionResult> TotalReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var total = _context.Total.Where(x => x.date.Year.Equals(Year) && x.date.Month.Equals(Month)).Select(x => new { Date = x.date.ToString("MMMM dd, yyyy / hh:mm tt"), Origin = x.origin, Amount = x.amount }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(total, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Total {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalReportDate")]
+        public async Task<IActionResult> TotalReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.Total.Select(x => new { Date = x.date.ToString("MMMM dd, yyyy / hh:mm tt"), Origin = x.origin, Amount = x.amount }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.Total.Where(x => x.date >= DateTime.Today).Select(x => new { Date = x.date.ToString("MMMM dd, yyyy / hh:mm tt"), Origin = x.origin, Amount = x.amount }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.Total.Where(x => x.date >= DateTime.Today.AddDays(-7)).Select(x => new { Date = x.date.ToString("MMMM dd, yyyy / hh:mm tt"), Origin = x.origin, Amount = x.amount }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.Total.Where(x => x.date >= DateTime.Today.AddDays(-31)).Select(x => new { Date = x.date.ToString("MMMM dd, yyyy / hh:mm tt"), Origin = x.origin, Amount = x.amount }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.Total.Where(x => x.date >= DateTime.Today.AddDays(-365)).Select(x => new { Date = x.date.ToString("MMMM dd, yyyy / hh:mm tt"), Origin = x.origin, Amount = x.amount }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Total {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
@@ -280,7 +375,7 @@ namespace src.Controllers.Api
             if (Date == 1000000)
             {
                 //var all = _context.TradersTruck.Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
-                var all = _context.TradersTruck.Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                var all = _context.TradersTruck.Where(x => x.DateInspected != null).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -369,8 +464,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                //var all = _context.FarmersTruck.Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
-                var all = _context.FarmersTruck.Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                var all = _context.FarmersTruck.Where(x => x.DateInspected != null).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -432,7 +526,7 @@ namespace src.Controllers.Api
             // query data from database  
             await Task.Yield();
 
-            var shortTrip = _context.ShortTrip.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month)).Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+            var shortTrip = _context.ShortTrip.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
 
             var stream = new MemoryStream();
 
@@ -459,7 +553,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.ShortTrip.Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var all = _context.ShortTrip.Where(x => x.DateInspected != null).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -469,7 +563,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today).Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -479,7 +573,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -489,7 +583,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -499,7 +593,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.DateInspected, PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -521,7 +615,7 @@ namespace src.Controllers.Api
             // query data from database  
             await Task.Yield();
 
-            var interTrading = _context.InterTrading.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { DateInspected = x.Date, Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+            var interTrading = _context.InterTrading.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
 
             var stream = new MemoryStream();
 
@@ -548,7 +642,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.InterTrading.Select(x => new { DateInspected = x.Date, Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var all = _context.InterTrading.Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -558,7 +652,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.InterTrading.Where(x => x.Date >= DateTime.Today).Select(x => new { DateInspected = x.Date, Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.InterTrading.Where(x => x.Date >= DateTime.Today).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -568,7 +662,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.Date, Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -578,7 +672,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.Date, Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -588,7 +682,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.Date, Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -610,7 +704,7 @@ namespace src.Controllers.Api
             // query data from database  
             await Task.Yield();
 
-            var carrotFacility = _context.CarrotFacility.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { DateInspected = x.Date, Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+            var carrotFacility = _context.CarrotFacility.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
 
             var stream = new MemoryStream();
 
@@ -637,7 +731,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.CarrotFacility.Select(x => new { DateInspected = x.Date, Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var all = _context.CarrotFacility.Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -647,7 +741,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today).Select(x => new { DateInspected = x.Date, Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -657,7 +751,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.Date, Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -667,7 +761,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.Date, Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -677,7 +771,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.Date, Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1037,7 +1131,7 @@ namespace src.Controllers.Api
 
             if (Role == 1000000)
             {
-                var all = _context.ApplicationUser.Where(x => x.RoleId != "Default").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var all = _context.ApplicationUser.Where(x => x.RoleId != "Default").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1047,7 +1141,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 1)
             {
-                var gsu = _context.ApplicationUser.Where(x => x.RoleId == "GSU").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var gsu = _context.ApplicationUser.Where(x => x.RoleId == "GSU").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1057,7 +1151,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 2)
             {
-                var idesu = _context.ApplicationUser.Where(x => x.RoleId == "IDESU").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var idesu = _context.ApplicationUser.Where(x => x.RoleId == "IDESU").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1067,7 +1161,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 3)
             {
-                var ictmisu = _context.ApplicationUser.Where(x => x.RoleId == "ICT-MISU").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var ictmisu = _context.ApplicationUser.Where(x => x.RoleId == "ICT-MISU").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1077,7 +1171,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 4)
             {
-                var tod = _context.ApplicationUser.Where(x => x.RoleId == "TOD").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var tod = _context.ApplicationUser.Where(x => x.RoleId == "TOD").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1087,7 +1181,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 5)
             {
-                var fd = _context.ApplicationUser.Where(x => x.RoleId == "FD").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var fd = _context.ApplicationUser.Where(x => x.RoleId == "FD").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1097,7 +1191,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 6)
             {
-                var aamd = _context.ApplicationUser.Where(x => x.RoleId == "AAMD").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var aamd = _context.ApplicationUser.Where(x => x.RoleId == "AAMD").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1107,7 +1201,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 7)
             {
-                var pru = _context.ApplicationUser.Where(x => x.RoleId == "PRU").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var pru = _context.ApplicationUser.Where(x => x.RoleId == "PRU").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1117,7 +1211,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 8)
             {
-                var hrmu = _context.ApplicationUser.Where(x => x.RoleId == "HRMU").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var hrmu = _context.ApplicationUser.Where(x => x.RoleId == "HRMU").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1127,7 +1221,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 9)
             {
-                var ad = _context.ApplicationUser.Where(x => x.RoleId == "AD").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var ad = _context.ApplicationUser.Where(x => x.RoleId == "AD").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1137,7 +1231,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 10)
             {
-                var sd = _context.ApplicationUser.Where(x => x.RoleId == "SD").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var sd = _context.ApplicationUser.Where(x => x.RoleId == "SD").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1147,7 +1241,7 @@ namespace src.Controllers.Api
             }
             else if (Role == 11)
             {
-                var coo = _context.ApplicationUser.Where(x => x.RoleId == "COO").Select(x => new { Employees = x.FullName, EmailAddress = x.Email, Unit = x.RoleId }).ToList();
+                var coo = _context.ApplicationUser.Where(x => x.RoleId == "COO").Select(x => new { FullName = x.FullName, EmailAddress = x.Email, PhoneNumber = x.PhoneNumber, Unit = x.RoleId }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1157,7 +1251,7 @@ namespace src.Controllers.Api
             }
 
             stream.Position = 0;
-            string excelName = $"PriceCommodity {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+            string excelName = $"Employees {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);

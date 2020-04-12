@@ -11,22 +11,23 @@ $(document).ready(function () {
             "type": 'GET',
             "datatype": 'json'
         },
+        "order": [[0, 'desc']],
         "columns": [
             //{ "data": "commodityDate" },
             {
                 "data": function (data) {
                     var d = new Date(data["commodityDate"]);
-                    var output = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     return output;
                 }
             },
-            {
-                "data": function (data) {
-                    var d = new Date(data["commodityDate"]);
-                    var output = setClockTime(d);
-                    return output;
-                }
-            },
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["commodityDate"]);
+            //        var output = setClockTime(d);
+            //        return output;
+            //    }
+            //},
             { "data": "classVariety" },
             { "data": "commodity" },
             { "data": "commodityRemarks" },
@@ -46,6 +47,9 @@ $(document).ready(function () {
         "lengthChange": false,
     });
 });
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();

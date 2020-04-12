@@ -54,7 +54,7 @@ namespace src.Controllers.Api
             PriceCommodity priceCommodity = new PriceCommodity
             {
                 //time = Convert.ToDateTime(model["time"].ToString()),
-                commodityDate = Convert.ToDateTime(model["commodityDate"].ToString()),
+                commodityDate = DateTime.Now,
                 commodity = model["commodity"].ToString(),
                 commodityRemarks = model["commodityRemarks"].ToString(),
                 priceRange = Convert.ToDouble(model["priceRange"].ToString()),

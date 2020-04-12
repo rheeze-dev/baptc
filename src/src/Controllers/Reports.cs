@@ -43,6 +43,23 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> TotalReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> StallLeaserReports(Guid org)
         {
             if (org == Guid.Empty)

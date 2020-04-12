@@ -2,49 +2,27 @@
 @{
     Layout = null;
 }
+<style>
+  
+.default {
+  display: none;
+}
 
+</style>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
     <h4 class="modal-title">Add / Edit Data</h4>
 </div>
+
 <form onsubmit="return SubmitAddEdit(this)">
     <div class="box-body">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ticketingId" />
         <input type="hidden" asp-for="controlNumber" />
-        @*<input type="hidden" asp-for="organizationId" />*@
-        @*<div class="form-group">
-            <label asp-for="timeIn" class="control-label">Time In</label>
-            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="timeIn">
-                <input asp-for="timeIn" class="form-control" size="16" type="text" value="" readonly>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            <input type="hidden" id="dtp_input1" value="" />
-        </div>*@
-
         <input type="hidden" asp-for="timeOut" />
-        @*<div class="form-group">
-            <label asp-for="timeOut" class="control-label">Time Out</label>
-            <div class="input-group date form_datetime" data-date="1" data-date-format="MM dd yyyy - HH:ii p" data-link-field="timeOut">
-                <input asp-for="timeOut" class="form-control" size="16" type="text" value="" readonly>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            <input type="hidden" id="dtp_input1" value="" />
-        </div>*@
-        @*<div class="form-group">
-            <label asp-for="timeIn" class="control-label"></label>
-            <input asp-for="timeIn" class="form-control" />
-            <span asp-validation-for="timeIn" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="timeOut" class="control-label"></label>
-            <input asp-for="timeOut" class="form-control" />
-            <span asp-validation-for="timeOut" class="text-danger"></span>
-        </div>*@
+
         <div class="form-group">
             <label asp-for="plateNumber" class="control-label"></label>
             <input asp-for="plateNumber" class="form-control" />
@@ -52,10 +30,10 @@
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <div class="form-group">
+                <div class="form-group" id="typeOfTransaction">
                     <label asp-for="typeOfTransaction" class="control-label"></label>
                     <select asp-for="typeOfTransaction" class="form-control">
-                        <option value="Trader truck">Trader Truck</option>
+                        <option value="Trader truck" selected>Trader Truck</option>
                         <option value="Farmer truck">Farmer truck</option>
                         <option value="Short trip">Short trip</option>
                         <option value="Pay parking">Pay parking</option>
@@ -63,21 +41,61 @@
                     </select>
                 </div>
             </div>
-            <div class="col-lg-6">
+
+            <div class="col-lg-6 typeOfCar">
+                <div class="form-group">
+                    <label asp-for="typeOfCar" class="control-label">Type of entry</label>
+                    <select asp-for="typeOfCar" class="form-control">
+                        @*<option selected disabled>make a selection...</option>*@
+                        <option class="traderTruck" value="With transaction">With transaction</option>
+                        <option class="traderTruck" value="Without transaction">Without transaction</option>
+                        <option class="traderTruck" value="Overnight">Overnight</option>
+                        <option class="farmerTruck default sT" value="Single tire">Single tire</option>
+                        <option class="farmerTruck default" value="Double tire">Double tire</option>
+                        <option class="farmerTruck default" value="Forward tire">Forward tire</option>
+                        <option class="shortTrip default" value="Pick-up">Pick-up</option>
+                        <option class="shortTrip default" value="Delivery">Delivery</option>
+                        <option class="payParking default" value="Day time">Day time</option>
+                        <option class="payParking default" value="Night time">Night time</option>
+                    </select>
+                </div>
+            </div>
+
+            @*<div class="col-lg-6 farmerTruck default">
                 <div class="form-group">
                     <label asp-for="typeOfCar" class="control-label"></label>
                     <select asp-for="typeOfCar" class="form-control">
                         <option value="Single tire">Single tire</option>
                         <option value="Double tire">Double tire</option>
-                        <option value="Forward">Forward</option>
-                        <option value="10 wheeler">10 wheeler</option>
+                        <option value="Forward tire">Forward tire</option>
                     </select>
                 </div>
             </div>
+
+            <div class="col-lg-6 shortTrip default">
+                <div class="form-group">
+                    <label asp-for="typeOfCar" class="control-label"></label>
+                    <select asp-for="typeOfCar" class="form-control">
+                        <option value="Pick-up">Pick-up</option>
+                        <option value="Delivery">Delivery</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-6 payParking default">
+                <div class="form-group">
+                    <label asp-for="typeOfCar" class="control-label"></label>
+                    <select asp-for="typeOfCar" class="form-control">
+                        <option value="Day time">Day time</option>
+                        <option value="Night time">Night time</option>
+                    </select>
+                </div>
+            </div>*@
+
         </div>
-        <div class="form-group">
+        <div class="form-group driverName default">
             <label asp-for="driverName" class="control-label">Drivers name</label>
-            <input asp-for="driverName" class="form-control" placeholder="For pay parking and gate pass only" />
+            <input asp-for="driverName" class="form-control" />
             <span asp-validation-for="driverName" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -85,28 +103,6 @@
             <input asp-for="remarks" class="form-control" placeholder="Optional" />
             <span asp-validation-for="remarks" class="text-danger"></span>
         </div>
-        @*<div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="website" class="control-label"></label>
-                    <input asp-for="website" class="form-control" />
-                    <span asp-validation-for="website" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="linkedin" class="control-label"></label>
-                    <input asp-for="linkedin" class="form-control" />
-                    <span asp-validation-for="linkedin" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="customerType" class="control-label"></label>
-            <select asp-for="customerType" class="form-control" asp-items="Html.GetEnumSelectList<src.Enum.CustomerType>()"></select>
-            <span asp-validation-for="customerType" class="text-danger"></span>
-        </div>*@
 
     </div>
 
@@ -125,6 +121,56 @@
         startView: 2,
         forceParse: 0,
         showMeridian: 1
+    });
+
+    $(document).ready(function () {
+        $("select", "#typeOfTransaction").change(function () {
+            //$(".typeOfCar").select('refresh', true);
+            var test = (this.value);
+            //alert(test);
+            if (test == "Trader truck") {
+                //$("#test *").attr("disabled", "disabled").off('click');
+                $(".typeOfCar").show();
+                $(".farmerTruck").hide();
+                $(".shortTrip").hide();
+                $(".payParking").hide();
+                $(".driverName").hide();
+                $(".traderTruck").show();
+            }
+            else if (test == "Farmer truck") {
+                
+                $(".typeOfCar").show();
+                $(".traderTruck").hide();
+                $(".shortTrip").hide();
+                $(".payParking").hide();
+                $(".driverName").hide();
+                $(".farmerTruck").show();
+                //$('.farmerTruck option[value=Single tire]').attr('selected','selected');
+                //$(".farmerTruck").select(".sT");
+                //<option class="farmerTruck default" value="Single tire" selected>Single tire</option>
+                //$(".farmerTruck").select();
+            }
+            else if (test == "Short trip") {
+                $(".typeOfCar").show();
+                $(".traderTruck").hide();
+                $(".farmerTruck").hide();
+                $(".payParking").hide();
+                $(".driverName").hide();
+                $(".shortTrip").show();
+            }
+            else if (test == "Pay parking") {
+                $(".typeOfCar").show();
+                $(".traderTruck").hide();
+                $(".farmerTruck").hide();
+                $(".shortTrip").hide();
+                $(".driverName").show();
+                $(".payParking").show();
+            }
+            else if (test == "Gate pass") {
+                $(".typeOfCar").hide();
+                $(".driverName").show();
+            }
+        });
     });
 </script>
 

@@ -212,6 +212,15 @@
                             </li>
                         }
 
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"TotalReports")">
+                                <a href="@Url.Action("TotalReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Total</span>
+                                </a>
+                            </li>
+                        }
+
                         if (listModule.Contains("Settings"))
                         {
                             <li class="@Html.IsSelected(controller: "Reports",action:"SettingsReports")">
@@ -224,32 +233,32 @@
                     }
 
                     @*@if (appUser.IsCustomer)
-                    {
-                        <li class="header">CUSTOMER NAVIGATION</li>
-                        <li class="@Html.IsSelected(controller: "Ticket")">
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })">
-                                <i class="fa fa-th"></i> <span>Ticket</span>
-                            </a>
-                        </li>
-                    }
-                    @if (appUser.IsSupportAgent)
-                    {
-                        <li class="header">SUPPORT AGENT NAVIGATION</li>
-                        <li class="@Html.IsSelected(controller: "Ticket")">
-                            <a href="@Url.Action("Index", "Ticket", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Ticket</span>
-                            </a>
-                        </li>
-                    }
-                    @if (appUser.IsSupportEngineer)
-                    {
-                        <li class="header">SUPPORT ENGINEER NAVIGATION</li>
-                        <li class="@Html.IsSelected(controller: "Ticket")">
-                            <a href="@Url.Action("Index", "Ticket", new { org = org })">
-                                <i class="fa fa-th"></i> <span>Ticket</span>
-                            </a>
-                        </li>
-                    }*@
+        {
+            <li class="header">CUSTOMER NAVIGATION</li>
+            <li class="@Html.IsSelected(controller: "Ticket")">
+                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })">
+                    <i class="fa fa-th"></i> <span>Ticket</span>
+                </a>
+            </li>
+        }
+        @if (appUser.IsSupportAgent)
+        {
+            <li class="header">SUPPORT AGENT NAVIGATION</li>
+            <li class="@Html.IsSelected(controller: "Ticket")">
+                <a href="@Url.Action("Index", "Ticket", new { org = org })">
+                    <i class="fa fa-th"></i> <span>Ticket</span>
+                </a>
+            </li>
+        }
+        @if (appUser.IsSupportEngineer)
+        {
+            <li class="header">SUPPORT ENGINEER NAVIGATION</li>
+            <li class="@Html.IsSelected(controller: "Ticket")">
+                <a href="@Url.Action("Index", "Ticket", new { org = org })">
+                    <i class="fa fa-th"></i> <span>Ticket</span>
+                </a>
+            </li>
+        }*@
 
                 </ul>
                 }

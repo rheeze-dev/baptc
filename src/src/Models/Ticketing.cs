@@ -12,14 +12,14 @@ namespace src.Models
         public Guid ticketingId { get; set; }
         //[Required]
         [Display(Name = "Time In")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
+
         public DateTime? timeIn { get; set; }
         //[Required]
 
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         [Display(Name = "Time Out")]
         public DateTime? timeOut { get; set; }
 
+        [Required]
         [Display(Name = "Plate Number")]
         public string plateNumber { get; set; }
 
