@@ -14,79 +14,72 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
-        <div class="form-group">
-            <label asp-for="NameOfSpouse" class="control-label">Name of spouse</label>
-            <input asp-for="NameOfSpouse" class="form-control" />
-            <span asp-validation-for="NameOfSpouse" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="NameOfSpouse" class="control-label">Name of spouse</label>
+                <input asp-for="NameOfSpouse" class="form-control" />
+                <span asp-validation-for="NameOfSpouse" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="PresentAddress" class="control-label">Present address</label>
+                <input asp-for="PresentAddress" class="form-control" />
+                <span asp-validation-for="PresentAddress" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="PresentAddress" class="control-label">Present address</label>
-            <input asp-for="PresentAddress" class="form-control" />
-            <span asp-validation-for="PresentAddress" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="Barangay" class="control-label"></label>
+                <input asp-for="Barangay" class="form-control" />
+                <span asp-validation-for="Barangay" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="ContactNumber" class="control-label">Contact number</label>
+                <input asp-for="ContactNumber" class="form-control" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Barangay" class="control-label"></label>
-            <input asp-for="Barangay" class="form-control" />
-            <span asp-validation-for="Barangay" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="BirthDate" class="control-label">Birthdate</label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Tin" class="control-label"></label>
+                <input asp-for="Tin" class="form-control" />
+                <span asp-validation-for="Tin" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="ContactNumber" class="control-label">Contact number</label>
-            <input asp-for="ContactNumber" class="form-control" />
-            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="BusinessName" class="control-label">Business name</label>
+                <input asp-for="BusinessName" class="form-control" />
+                <span asp-validation-for="BusinessName" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="BusinessAddress" class="control-label">Business address</label>
+                <input asp-for="BusinessAddress" class="form-control" />
+                <span asp-validation-for="BusinessAddress" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="BirthDate" class="control-label">Birthdate</label>
-            <input asp-for="BirthDate" class="form-control" />
-            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="VehiclePlateNumber" class="control-label">Vehicle plate number</label>
+                <input asp-for="VehiclePlateNumber" class="form-control" />
+                <span asp-validation-for="VehiclePlateNumber" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="ProductDestination" class="control-label">Product destination</label>
+                <input asp-for="ProductDestination" class="form-control" />
+                <span asp-validation-for="ProductDestination" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Tin" class="control-label"></label>
-            <input asp-for="Tin" class="form-control" />
-            <span asp-validation-for="Tin" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="BusinessName" class="control-label">Business name</label>
-            <input asp-for="BusinessName" class="form-control" />
-            <span asp-validation-for="BusinessName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="BusinessAddress" class="control-label">Business address</label>
-            <input asp-for="BusinessAddress" class="form-control" />
-            <span asp-validation-for="BusinessAddress" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="VehiclePlateNumber" class="control-label">Vehicle plate number</label>
-            <input asp-for="VehiclePlateNumber" class="form-control" />
-            <span asp-validation-for="VehiclePlateNumber" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ProductDestination" class="control-label">Product destination</label>
-            <input asp-for="ProductDestination" class="form-control" />
-            <span asp-validation-for="ProductDestination" class="text-danger"></span>
-        </div>
-        @*<div class="form-group">
-            <label asp-for="Destination" class="control-label"></label>
-            <select id="cars" asp-for="Destination" class="form-control">
-                <option value="Spot 1">Spot 1</option>
-                <option value="Spot 2">Spot 2</option>
-                <option value="Spot 3">Spot 3</option>
-                <option value="Dry and cold storage">Dry and cold storage</option>
-                <option value="Pay parking">Pay parking</option>
-                <option value="Entrance">Entrance</option>
-                <option value="Exit">Exit</option>
-                <option value="Carrot section">Carrot section</option>
-                <option value="Nursery (greenhouse)">Nursery (greenhouse)</option>
-                <option value="UPLB cold storage back of guestel">UPLB cold storage back of guestel</option>
-                <option value="Sewarage treatment plant back of guestel">Sewarage treatment plant back of guestel</option>
-            </select>
-            <span asp-validation-for="Destination" class="text-danger"></span>
-        </div>*@
     </div>
 
-    <div class="box-footer">
-        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-    </div>
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+        </div>
 </form>
 <script>
     Ladda.bind('.btn', { timeout: 1000 });

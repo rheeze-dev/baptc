@@ -49,48 +49,13 @@
                         @*<option selected disabled>make a selection...</option>*@
                         <option class="traderTruck" value="With transaction">With transaction</option>
                         <option class="traderTruck" value="Without transaction">Without transaction</option>
-                        <option class="traderTruck" value="Overnight">Overnight</option>
                         <option class="farmerTruck default sT" value="Single tire">Single tire</option>
                         <option class="farmerTruck default" value="Double tire">Double tire</option>
-                        <option class="farmerTruck default" value="Forward tire">Forward tire</option>
                         <option class="shortTrip default" value="Pick-up">Pick-up</option>
                         <option class="shortTrip default" value="Delivery">Delivery</option>
-                        <option class="payParking default" value="Day time">Day time</option>
-                        <option class="payParking default" value="Night time">Night time</option>
                     </select>
                 </div>
             </div>
-
-            @*<div class="col-lg-6 farmerTruck default">
-                <div class="form-group">
-                    <label asp-for="typeOfCar" class="control-label"></label>
-                    <select asp-for="typeOfCar" class="form-control">
-                        <option value="Single tire">Single tire</option>
-                        <option value="Double tire">Double tire</option>
-                        <option value="Forward tire">Forward tire</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-lg-6 shortTrip default">
-                <div class="form-group">
-                    <label asp-for="typeOfCar" class="control-label"></label>
-                    <select asp-for="typeOfCar" class="form-control">
-                        <option value="Pick-up">Pick-up</option>
-                        <option value="Delivery">Delivery</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-lg-6 payParking default">
-                <div class="form-group">
-                    <label asp-for="typeOfCar" class="control-label"></label>
-                    <select asp-for="typeOfCar" class="form-control">
-                        <option value="Day time">Day time</option>
-                        <option value="Night time">Night time</option>
-                    </select>
-                </div>
-            </div>*@
 
         </div>
         <div class="form-group driverName default">
@@ -159,12 +124,8 @@
                 $(".shortTrip").show();
             }
             else if (test == "Pay parking") {
-                $(".typeOfCar").show();
-                $(".traderTruck").hide();
-                $(".farmerTruck").hide();
-                $(".shortTrip").hide();
+                $(".typeOfCar").hide();
                 $(".driverName").show();
-                $(".payParking").show();
             }
             else if (test == "Gate pass") {
                 $(".typeOfCar").hide();

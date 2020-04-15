@@ -37,6 +37,8 @@ namespace src.Data
 
         public DbSet<src.Models.Ticket> Ticket { get; set; }
 
+        public DbSet<src.Models.TicketingPrice> TicketingPrice { get; set; }
+
         public DbSet<src.Models.Total> Total { get; set; }
 
         public DbSet<src.Models.CurrentTicket> CurrentTicket { get; set; }

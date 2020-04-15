@@ -92,7 +92,7 @@ namespace src.Controllers.Api
 
                 if (ticketing.typeOfTransaction == "Trader truck")
                 {
-                    if (ticketing.typeOfCar == "With transaction" || ticketing.typeOfCar == "Without transaction" || ticketing.typeOfCar == "Overnight")
+                    if (ticketing.typeOfCar == "With transaction" || ticketing.typeOfCar == "Without transaction")
                     {
                         _context.Ticketing.Add(ticketing);
                     }
@@ -104,7 +104,7 @@ namespace src.Controllers.Api
 
                 else if (ticketing.typeOfTransaction == "Farmer truck")
                 {
-                    if (ticketing.typeOfCar == "Single tire" || ticketing.typeOfCar == "Double tire" || ticketing.typeOfCar == "Forward tire")
+                    if (ticketing.typeOfCar == "Single tire" || ticketing.typeOfCar == "Double tire")
                     {
                         _context.Ticketing.Add(ticketing);
                     }
@@ -128,18 +128,12 @@ namespace src.Controllers.Api
 
                 else if (ticketing.typeOfTransaction == "Pay parking")
                 {
-                    if (ticketing.typeOfCar == "Day time" || ticketing.typeOfCar == "Night time")
-                    {
-                        _context.Ticketing.Add(ticketing);
-                    }
-                    else
-                    {
-                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
-                    }
                     if (ticketing.driverName == "")
                     {
                         return Json(new { success = false, message = "Drivers name cannot be empty!" });
                     }
+                    ticketing.typeOfCar = "";
+                    _context.Ticketing.Add(ticketing);
                 }
                 else if (ticketing.typeOfTransaction == "Gate pass")
                 {
@@ -168,7 +162,7 @@ namespace src.Controllers.Api
                         TimeIn = DateTime.Now,
                         PlateNumber = ticketing.plateNumber,
                         TraderName = "",
-                        Destination = ""
+                        Destination = "",
                     };
 
                     _context.TradersTruck.Add(tradersTruck);
@@ -619,204 +613,340 @@ namespace src.Controllers.Api
         public async Task<IActionResult> UpdateTicketOut(Guid id)
         {
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
+            var ticketingPrice = _context.TicketingPrice.FirstOrDefault();
             ticketing.timeOut = DateTime.Now;
             var info = await _userManager.GetUserAsync(User);
+
+            DateTime beforeMidnight = ticketing.timeIn.Value;
+            beforeMidnight = new DateTime(beforeMidnight.Year, beforeMidnight.Month, beforeMidnight.Day, 22, 00, 00); //10 o'clock
+
+            var afterMidnight = ticketing.timeIn.Value.AddDays(1);
+            afterMidnight = new DateTime(afterMidnight.Year, afterMidnight.Month, afterMidnight.Day, 04, 00, 00);
+
+            DateTime midnight = ticketing.timeIn.Value.AddDays(1);
+            midnight = new DateTime(midnight.Year, midnight.Month, midnight.Day, 00, 00, 00); //12 o'clock
+
+            var am = ticketing.timeIn.Value;
+            am = new DateTime(am.Year, am.Month, am.Day, 22, 00, 00);
+
+            var extended1Night = am.AddDays(1);
+            var extended2Nights = am.AddDays(2);
+            var extended3Nights = am.AddDays(3);
+            var extended4Nights = am.AddDays(4);
+            var extended5Nights = am.AddDays(5);
+            var extended6Nights = am.AddDays(6);
+            var extended7Nights = am.AddDays(7);
 
             if (ticketing.typeOfTransaction == "Trader truck")
             {
                 TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
                 tradersTruck.TimeOut = ticketing.timeOut;
-                var lessThan30Minutes = ticketing.timeIn.Value.AddMinutes(30);
 
-                if (ticketing.typeOfCar == "Overnight")
+                if (ticketing.typeOfCar == "With transaction")
                 {
-                    DateTime beforeMidnight = ticketing.timeIn.Value;
-                    beforeMidnight = new DateTime(beforeMidnight.Year, beforeMidnight.Month, beforeMidnight.Day, 22, 00, 00); //10 o'clock
-
-                    DateTime midnight = ticketing.timeIn.Value.AddDays(1);
-                    midnight = new DateTime(midnight.Year, midnight.Month, midnight.Day, 00, 00, 00); //12 o'clock
-
                     if (ticketing.timeIn >= beforeMidnight && ticketing.timeIn <= midnight)
                     {
                         var pm = ticketing.timeIn.Value.AddDays(1);
-                        pm = new DateTime(pm.Year, pm.Month, pm.Day, 04, 00, 00);
+                        pm = new DateTime(pm.Year, pm.Month, pm.Day, 22, 00, 00);
 
-                        var extended1Day = pm.AddHours(18);
-                        var extended1Day1Night = pm.AddDays(1);
-                        var extended2Days1Night = pm.AddDays(1).AddHours(18);
-                        var extended2Days2Nights = pm.AddDays(2);
-                        var extended3Days2Nights = pm.AddDays(2).AddHours(18);
-                        var extended3Days3Nights = pm.AddDays(3);
+                        var extended1NightPm = pm.AddDays(1);
+                        var extended2NightsPm = pm.AddDays(2);
+                        var extended3NightsPm = pm.AddDays(3);
+                        var extended4NightsPm = pm.AddDays(4);
+                        var extended5NightsPm = pm.AddDays(5);
+                        var extended6NightsPm = pm.AddDays(6);
 
-                        if (ticketing.timeOut <= lessThan30Minutes)
+                        if (ticketing.timeOut <= pm)
                         {
-                            ticketing.amount = 20;
+                            ticketing.typeOfCar = "Overnight(1)";
+                            //ticketing.amount = 250;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + ticketingPrice.PayParkingOvernight;
                         }
-                        else if (ticketing.timeOut <= pm)
+                        else if (ticketing.timeOut <= extended1NightPm)
                         {
-                            ticketing.amount = 250;
+                            ticketing.typeOfCar = "Overnight(2)";
+                            //ticketing.amount = 350;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 2);
                         }
-                        else if (ticketing.timeOut <= extended1Day)
+                        else if (ticketing.timeOut <= extended2NightsPm)
                         {
-                            ticketing.amount = 350;
+                            ticketing.typeOfCar = "Overnight(3)";
+                            //ticketing.amount = 450;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 3);
                         }
-                        else if (ticketing.timeOut <= extended1Day1Night)
+                        else if (ticketing.timeOut <= extended3NightsPm)
                         {
-                            ticketing.amount = 600;
+                            ticketing.typeOfCar = "Overnight(4)";
+                            //ticketing.amount = 550;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 4);
                         }
-                        else if (ticketing.timeOut <= extended2Days1Night)
+                        else if (ticketing.timeOut <= extended4NightsPm)
                         {
-                            ticketing.amount = 700;
+                            ticketing.typeOfCar = "Overnight(5)";
+                            //ticketing.amount = 650;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 5);
                         }
-                        else if (ticketing.timeOut <= extended2Days2Nights)
+                        else if (ticketing.timeOut <= extended5NightsPm)
                         {
-                            ticketing.amount = 950;
+                            ticketing.typeOfCar = "Overnight(6)";
+                            //ticketing.amount = 750;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 6);
                         }
-                        else if (ticketing.timeOut <= extended3Days2Nights)
+                        else if (ticketing.timeOut <= extended6NightsPm)
                         {
-                            ticketing.amount = 1050;
-                        }
-                        else if (ticketing.timeOut <= extended3Days3Nights)
-                        {
-                            ticketing.amount = 1300;
+                            ticketing.typeOfCar = "Overnight(7)";
+                            //ticketing.amount = 850;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 7);
                         }
                     }
-                    else
+                    else if (ticketing.timeIn <= afterMidnight && ticketing.timeIn <= midnight)
                     {
-                        var am = ticketing.timeIn.Value;
-                        am = new DateTime(am.Year, am.Month, am.Day, 04, 00, 00);
-
-                        var extended1Day = am.AddHours(18);
-                        var extended1Day1Night = am.AddDays(1);
-                        var extended2Days1Night = am.AddDays(1).AddHours(18);
-                        var extended2Days2Nights = am.AddDays(2);
-                        var extended3Days2Nights = am.AddDays(2).AddHours(18);
-                        var extended3Days3Nights = am.AddDays(3);
-
-                        if (ticketing.timeOut <= lessThan30Minutes)
+                        if (ticketing.timeIn <= beforeMidnight && ticketing.timeIn >= afterMidnight.AddDays(-1))
                         {
-                            ticketing.amount = 20;
+                            if (ticketing.timeOut <= am)
+                            {
+                                //ticketing.amount = 150;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction;
+                            }
+                            else if (ticketing.timeOut <= extended1Night)
+                            {
+                            ticketing.typeOfCar = "Overnight(1) with transaction";
+                                //ticketing.amount = 250;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + ticketingPrice.PayParkingOvernight;
+                            }
+                            else if (ticketing.timeOut <= extended2Nights)
+                            {
+                            ticketing.typeOfCar = "Overnight(2) with transaction";
+                                //ticketing.amount = 350;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 2);
+                            }
+                            else if (ticketing.timeOut <= extended3Nights)
+                            {
+                            ticketing.typeOfCar = "Overnight(3) with transaction";
+                                //ticketing.amount = 450;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 3);
+                            }
+                            else if (ticketing.timeOut <= extended4Nights)
+                            {
+                            ticketing.typeOfCar = "Overnight(4) with transaction";
+                                //ticketing.amount = 550;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 4);
+                            }
+                            else if (ticketing.timeOut <= extended5Nights)
+                            {
+                            ticketing.typeOfCar = "Overnight(5) with transaction";
+                                //ticketing.amount = 650;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 5);
+                            }
+                            else if (ticketing.timeOut <= extended6Nights)
+                            {
+                            ticketing.typeOfCar = "Overnight(6) with transaction";
+                                //ticketing.amount = 750;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 6);
+                            }
+                            else if (ticketing.timeOut <= extended7Nights)
+                            {
+                                ticketing.typeOfCar = "Overnight(7) with transaction";
+                                //ticketing.amount = 850;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 7);
+                            }
                         }
                         else if (ticketing.timeOut <= am)
                         {
-                            ticketing.amount = 250;
+                            ticketing.typeOfCar = "Overnight(1)";
+                            //ticketing.amount = 250;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + ticketingPrice.PayParkingOvernight;
                         }
-                        else if (ticketing.timeOut <= extended1Day)
+                        else if (ticketing.timeOut <= extended1Night)
                         {
-                            ticketing.amount = 350;
+                            ticketing.typeOfCar = "Overnight(2)";
+                            //ticketing.amount = 350;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 2);
                         }
-                        else if (ticketing.timeOut <= extended1Day1Night)
+                        else if (ticketing.timeOut <= extended2Nights)
                         {
-                            ticketing.amount = 600;
+                            ticketing.typeOfCar = "Overnight(3)";
+                            //ticketing.amount = 450;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 3);
                         }
-                        else if (ticketing.timeOut <= extended2Days1Night)
+                        else if (ticketing.timeOut <= extended3Nights)
                         {
-                            ticketing.amount = 700;
+                            ticketing.typeOfCar = "Overnight(4)";
+                            //ticketing.amount = 550;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 4);
                         }
-                        else if (ticketing.timeOut <= extended2Days2Nights)
+                        else if (ticketing.timeOut <= extended4Nights)
                         {
-                            ticketing.amount = 950;
+                            ticketing.typeOfCar = "Overnight(5)";
+                            //ticketing.amount = 650;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 5);
                         }
-                        else if (ticketing.timeOut <= extended3Days2Nights)
+                        else if (ticketing.timeOut <= extended5Nights)
                         {
-                            ticketing.amount = 1050;
+                            ticketing.typeOfCar = "Overnight(6)";
+                            //ticketing.amount = 750;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 6);
                         }
-                        else if (ticketing.timeOut <= extended3Days3Nights)
+                        else if (ticketing.timeOut <= extended6Nights)
                         {
-                            ticketing.amount = 1300;
+                            ticketing.typeOfCar = "Overnight(7)";
+                            //ticketing.amount = 850;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 7);
                         }
-                    }
-                }
-
-                else if (ticketing.typeOfCar == "With transaction")
-                {
-                    var daytimeExpiration = ticketing.timeIn.Value;
-                    daytimeExpiration = new DateTime(daytimeExpiration.Year, daytimeExpiration.Month, daytimeExpiration.Day, 22, 00, 00);
-
-                    var extended1Night = daytimeExpiration.AddHours(6);
-                    var extended1Day1Night = daytimeExpiration.AddDays(1);
-                    var extended1Day2Nights = daytimeExpiration.AddDays(1).AddHours(6);
-                    var extended2Days2Nights = daytimeExpiration.AddDays(2);
-                    var extended2Days3Nights = daytimeExpiration.AddDays(2).AddHours(6);
-                    var extended3Days3Nights = daytimeExpiration.AddDays(3);
-
-                    if (ticketing.timeOut <= lessThan30Minutes)
-                    {
-                        ticketing.amount = 20;
-                    }
-                    else if (ticketing.timeOut <= daytimeExpiration)
-                    {
-                    ticketing.amount = 150;
-                    }
-                    else if (ticketing.timeOut <= extended1Night)
-                    {
-                        ticketing.amount = 400;
-                    }
-                    else if (ticketing.timeOut <= extended1Day1Night)
-                    {
-                        ticketing.amount = 550;
-                    }
-                    else if (ticketing.timeOut <= extended1Day2Nights)
-                    {
-                        ticketing.amount = 800;
-                    }
-                    else if (ticketing.timeOut <= extended2Days2Nights)
-                    {
-                        ticketing.amount = 950;
-                    }
-                    else if (ticketing.timeOut <= extended2Days3Nights)
-                    {
-                        ticketing.amount = 1200;
-                    }
-                    else if (ticketing.timeOut <= extended3Days3Nights)
-                    {
-                        ticketing.amount = 1350;
                     }
                 }
 
                 else if (ticketing.typeOfCar == "Without transaction")
                 {
-                    var daytimeExpiration = ticketing.timeIn.Value;
-                    daytimeExpiration = new DateTime(daytimeExpiration.Year, daytimeExpiration.Month, daytimeExpiration.Day, 22, 00, 00);
+                    if (ticketing.timeIn >= beforeMidnight && ticketing.timeIn <= midnight)
+                    {
+                        var pm = ticketing.timeIn.Value.AddDays(1);
+                        pm = new DateTime(pm.Year, pm.Month, pm.Day, 22, 00, 00);
 
-                    var extended1Night = daytimeExpiration.AddHours(6);
-                    var extended1Day1Night = daytimeExpiration.AddDays(1);
-                    var extended1Day2Nights = daytimeExpiration.AddDays(1).AddHours(6);
-                    var extended2Days2Nights = daytimeExpiration.AddDays(2);
-                    var extended2Days3Nights = daytimeExpiration.AddDays(2).AddHours(6);
-                    var extended3Days3Nights = daytimeExpiration.AddDays(3);
+                        var extended1NightPm = pm.AddDays(1);
+                        var extended2NightsPm = pm.AddDays(2);
+                        var extended3NightsPm = pm.AddDays(3);
+                        var extended4NightsPm = pm.AddDays(4);
+                        var extended5NightsPm = pm.AddDays(5);
+                        var extended6NightsPm = pm.AddDays(6);
 
-                    if (ticketing.timeOut <= lessThan30Minutes)
-                    {
-                        ticketing.amount = 20;
+                        if (ticketing.timeOut <= pm)
+                        {
+                            ticketing.typeOfCar = "Overnight(1)";
+                            //ticketing.amount = 250;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + ticketingPrice.PayParkingOvernight;
+                        }
+                        else if (ticketing.timeOut <= extended1NightPm)
+                        {
+                            ticketing.typeOfCar = "Overnight(2)";
+                            //ticketing.amount = 350;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 2);
+                        }
+                        else if (ticketing.timeOut <= extended2NightsPm)
+                        {
+                            ticketing.typeOfCar = "Overnight(3)";
+                            //ticketing.amount = 450;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 3);
+                        }
+                        else if (ticketing.timeOut <= extended3NightsPm)
+                        {
+                            ticketing.typeOfCar = "Overnight(4)";
+                            //ticketing.amount = 550;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 4);
+                        }
+                        else if (ticketing.timeOut <= extended4NightsPm)
+                        {
+                            ticketing.typeOfCar = "Overnight(5)";
+                            //ticketing.amount = 650;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 5);
+                        }
+                        else if (ticketing.timeOut <= extended5NightsPm)
+                        {
+                            ticketing.typeOfCar = "Overnight(6)";
+                            //ticketing.amount = 750;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 6);
+                        }
+                        else if (ticketing.timeOut <= extended6NightsPm)
+                        {
+                            ticketing.typeOfCar = "Overnight(7)";
+                            //ticketing.amount = 850;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 7);
+                        }
                     }
-                    else if (ticketing.timeOut <= daytimeExpiration)
+                    else if (ticketing.timeIn <= afterMidnight && ticketing.timeIn <= midnight)
                     {
-                        ticketing.amount = 100;
-                    }
-                    else if (ticketing.timeOut <= extended1Night)
-                    {
-                        ticketing.amount = 350;
-                    }
-                    else if (ticketing.timeOut <= extended1Day1Night)
-                    {
-                        ticketing.amount = 450;
-                    }
-                    else if (ticketing.timeOut <= extended1Day2Nights)
-                    {
-                        ticketing.amount = 700;
-                    }
-                    else if (ticketing.timeOut <= extended2Days2Nights)
-                    {
-                        ticketing.amount = 800;
-                    }
-                    else if (ticketing.timeOut <= extended2Days3Nights)
-                    {
-                        ticketing.amount = 1050;
-                    }
-                    else if (ticketing.timeOut <= extended3Days3Nights)
-                    {
-                        ticketing.amount = 1150;
+                        if (ticketing.timeIn <= beforeMidnight && ticketing.timeIn >= afterMidnight.AddDays(-1))
+                        {
+                            if (ticketing.timeOut <= am)
+                            {
+                                //ticketing.amount = 100;
+                                ticketing.amount = ticketingPrice.TradersTruckWithoutTransaction;
+                            }
+                            else if (ticketing.timeOut <= extended1Night)
+                            {
+                                ticketing.typeOfCar = "Overnight(1) without transaction";
+                                //ticketing.amount = 250;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + ticketingPrice.PayParkingOvernight;
+                            }
+                            else if (ticketing.timeOut <= extended2Nights)
+                            {
+                                ticketing.typeOfCar = "Overnight(2) without transaction";
+                                //ticketing.amount = 350;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 2);
+                            }
+                            else if (ticketing.timeOut <= extended3Nights)
+                            {
+                                ticketing.typeOfCar = "Overnight(3) without transaction";
+                                //ticketing.amount = 450;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 3);
+                            }
+                            else if (ticketing.timeOut <= extended4Nights)
+                            {
+                                ticketing.typeOfCar = "Overnight(4) without transaction";
+                                //ticketing.amount = 550;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 4);
+                            }
+                            else if (ticketing.timeOut <= extended5Nights)
+                            {
+                                ticketing.typeOfCar = "Overnight(5) without transaction";
+                                //ticketing.amount = 650;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 5);
+                            }
+                            else if (ticketing.timeOut <= extended6Nights)
+                            {
+                                ticketing.typeOfCar = "Overnight(6) without transaction";
+                                //ticketing.amount = 750;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 6);
+                            }
+                            else if (ticketing.timeOut <= extended7Nights)
+                            {
+                                ticketing.typeOfCar = "Overnight(7) without transaction";
+                                //ticketing.amount = 850;
+                                ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 7);
+                            }
+                        }
+                        else if (ticketing.timeOut <= am)
+                        {
+                            ticketing.typeOfCar = "Overnight(1)";
+                            //ticketing.amount = 250;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + ticketingPrice.PayParkingOvernight;
+                        }
+                        else if (ticketing.timeOut <= extended1Night)
+                        {
+                            ticketing.typeOfCar = "Overnight(2)";
+                            //ticketing.amount = 350;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 2);
+                        }
+                        else if (ticketing.timeOut <= extended2Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(3)";
+                            //ticketing.amount = 450;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 3);
+                        }
+                        else if (ticketing.timeOut <= extended3Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(4)";
+                            //ticketing.amount = 550;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 4);
+                        }
+                        else if (ticketing.timeOut <= extended4Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(5)";
+                            //ticketing.amount = 650;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 5);
+                        }
+                        else if (ticketing.timeOut <= extended5Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(6)";
+                            //ticketing.amount = 750;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 6);
+                        }
+                        else if (ticketing.timeOut <= extended6Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(7)";
+                            //ticketing.amount = 850;
+                            ticketing.amount = ticketingPrice.TradersTruckWithTransaction + (ticketingPrice.PayParkingOvernight * 7);
+                        }
                     }
                 }
 
@@ -827,144 +957,92 @@ namespace src.Controllers.Api
                 FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
                 farmersTruck.TimeOut = ticketing.timeOut;
 
-                var day1 = ticketing.timeIn.Value.AddDays(1);
-                var day2 = ticketing.timeIn.Value.AddDays(2);
-                var day3 = ticketing.timeIn.Value.AddDays(3);
-                var day4 = ticketing.timeIn.Value.AddDays(4);
-                var day5 = ticketing.timeIn.Value.AddDays(5);
-                var day6 = ticketing.timeIn.Value.AddDays(6);
-                var day7 = ticketing.timeIn.Value.AddDays(7);
-                var day8 = ticketing.timeIn.Value.AddDays(8);
-                var day9 = ticketing.timeIn.Value.AddDays(9);
-                var day10 = ticketing.timeIn.Value.AddDays(10);
-
                 if (ticketing.typeOfCar == "Single tire")
                 {
-                    if (ticketing.timeOut <= day1)
+                    if (ticketing.timeOut <= extended1Night)
                     {
-                        ticketing.amount = 100;
+                        //ticketing.amount = 100;
+                        ticketing.amount = ticketingPrice.FarmersTruckSingleTire;
                     }
-                    else if (ticketing.timeOut <= day2)
+                    else if (ticketing.timeOut <= extended2Nights)
                     {
-                        ticketing.amount = 200;
+                        ticketing.typeOfCar = "Overnight(2)";
+                        //ticketing.amount = 200;
+                        ticketing.amount = ticketingPrice.FarmersTruckSingleTire + ticketingPrice.PayParkingOvernight;
                     }
-                    else if (ticketing.timeOut <= day3)
+                    else if (ticketing.timeOut <= extended3Nights)
                     {
-                        ticketing.amount = 300;
+                        ticketing.typeOfCar = "Overnight(3)";
+                        //ticketing.amount = 300;
+                        ticketing.amount = ticketingPrice.FarmersTruckSingleTire + (ticketingPrice.PayParkingOvernight * 2);
                     }
-                    else if (ticketing.timeOut <= day4)
+                    else if (ticketing.timeOut <= extended4Nights)
                     {
-                        ticketing.amount = 400;
+                        ticketing.typeOfCar = "Overnight(4)";
+                        //ticketing.amount = 400;
+                        ticketing.amount = ticketingPrice.FarmersTruckSingleTire + (ticketingPrice.PayParkingOvernight * 3);
                     }
-                    else if (ticketing.timeOut <= day5)
+                    else if (ticketing.timeOut <= extended5Nights)
                     {
-                        ticketing.amount = 500;
+                        ticketing.typeOfCar = "Overnight(5)";
+                        //ticketing.amount = 500;
+                        ticketing.amount = ticketingPrice.FarmersTruckSingleTire + (ticketingPrice.PayParkingOvernight * 4);
                     }
-                    else if (ticketing.timeOut <= day6)
+                    else if (ticketing.timeOut <= extended6Nights)
                     {
-                        ticketing.amount = 600;
+                        ticketing.typeOfCar = "Overnight(6)";
+                        //ticketing.amount = 600;
+                        ticketing.amount = ticketingPrice.FarmersTruckSingleTire + (ticketingPrice.PayParkingOvernight * 5);
                     }
-                    else if (ticketing.timeOut <= day7)
+                    else if (ticketing.timeOut <= extended7Nights)
                     {
-                        ticketing.amount = 700;
-                    }
-                    else if (ticketing.timeOut <= day8)
-                    {
-                        ticketing.amount = 800;
-                    }
-                    else if (ticketing.timeOut <= day9)
-                    {
-                        ticketing.amount = 900;
-                    }
-                    else if (ticketing.timeOut <= day10)
-                    {
-                        ticketing.amount = 1000;
+                        ticketing.typeOfCar = "Overnight(7)";
+                        //ticketing.amount = 700;
+                        ticketing.amount = ticketingPrice.FarmersTruckSingleTire + (ticketingPrice.PayParkingOvernight * 6);
                     }
                 }
                 else if (ticketing.typeOfCar == "Double tire")
                 {
-                    if (ticketing.timeOut <= day1)
+                    if (ticketing.timeOut <= extended1Night)
                     {
-                        ticketing.amount = 150;
+                        //ticketing.amount = 150;
+                        ticketing.amount = ticketingPrice.FarmersTruckDoubleTire;
                     }
-                    else if (ticketing.timeOut <= day2)
+                    else if (ticketing.timeOut <= extended2Nights)
                     {
-                        ticketing.amount = 300;
+                        ticketing.typeOfCar = "Overnight(2)";
+                        //ticketing.amount = 250;
+                        ticketing.amount = ticketingPrice.FarmersTruckDoubleTire + ticketingPrice.PayParkingOvernight;
                     }
-                    else if (ticketing.timeOut <= day3)
+                    else if (ticketing.timeOut <= extended3Nights)
                     {
-                        ticketing.amount = 450;
+                        ticketing.typeOfCar = "Overnight(3)";
+                        //ticketing.amount = 350;
+                        ticketing.amount = ticketingPrice.FarmersTruckDoubleTire + (ticketingPrice.PayParkingOvernight * 2);
                     }
-                    else if (ticketing.timeOut <= day4)
+                    else if (ticketing.timeOut <= extended4Nights)
                     {
-                        ticketing.amount = 600;
+                        ticketing.typeOfCar = "Overnight(4)";
+                        //ticketing.amount = 450;
+                        ticketing.amount = ticketingPrice.FarmersTruckDoubleTire + (ticketingPrice.PayParkingOvernight * 3);
                     }
-                    else if (ticketing.timeOut <= day5)
+                    else if (ticketing.timeOut <= extended5Nights)
                     {
-                        ticketing.amount = 750;
+                        ticketing.typeOfCar = "Overnight(5)";
+                        //ticketing.amount = 550;
+                        ticketing.amount = ticketingPrice.FarmersTruckDoubleTire + (ticketingPrice.PayParkingOvernight * 4);
                     }
-                    else if (ticketing.timeOut <= day6)
+                    else if (ticketing.timeOut <= extended6Nights)
                     {
-                        ticketing.amount = 900;
+                        ticketing.typeOfCar = "Overnight(6)";
+                        //ticketing.amount = 650;
+                        ticketing.amount = ticketingPrice.FarmersTruckDoubleTire + (ticketingPrice.PayParkingOvernight * 5);
                     }
-                    else if (ticketing.timeOut <= day7)
+                    else if (ticketing.timeOut <= extended7Nights)
                     {
-                        ticketing.amount = 1050;
-                    }
-                    else if (ticketing.timeOut <= day8)
-                    {
-                        ticketing.amount = 1200;
-                    }
-                    else if (ticketing.timeOut <= day9)
-                    {
-                        ticketing.amount = 1350;
-                    }
-                    else if (ticketing.timeOut <= day10)
-                    {
-                        ticketing.amount = 1500;
-                    }
-                }
-                else if (ticketing.typeOfCar == "Forward tire")
-                {
-                    if (ticketing.timeOut <= day1)
-                    {
-                        ticketing.amount = 200;
-                    }
-                    else if (ticketing.timeOut <= day2)
-                    {
-                        ticketing.amount = 400;
-                    }
-                    else if (ticketing.timeOut <= day3)
-                    {
-                        ticketing.amount = 600;
-                    }
-                    else if (ticketing.timeOut <= day4)
-                    {
-                        ticketing.amount = 800;
-                    }
-                    else if (ticketing.timeOut <= day5)
-                    {
-                        ticketing.amount = 1000;
-                    }
-                    else if (ticketing.timeOut <= day6)
-                    {
-                        ticketing.amount = 1200;
-                    }
-                    else if (ticketing.timeOut <= day7)
-                    {
-                        ticketing.amount = 1400;
-                    }
-                    else if (ticketing.timeOut <= day8)
-                    {
-                        ticketing.amount = 1600;
-                    }
-                    else if (ticketing.timeOut <= day9)
-                    {
-                        ticketing.amount = 1800;
-                    }
-                    else if (ticketing.timeOut <= day10)
-                    {
-                        ticketing.amount = 2000;
+                        ticketing.typeOfCar = "Overnight(7)";
+                        //ticketing.amount = 750;
+                        ticketing.amount = ticketingPrice.FarmersTruckDoubleTire + (ticketingPrice.PayParkingOvernight * 6);
                     }
                 }
 
@@ -975,107 +1053,121 @@ namespace src.Controllers.Api
                 ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
                 shortTrip.TimeOut = ticketing.timeOut;
 
-                if (ticketing.typeOfCar == "Pick-up" || ticketing.typeOfCar == "Delivery")
+                var AM = ticketing.timeIn.Value;
+                AM = new DateTime(AM.Year, AM.Month, AM.Day, 00, 00, 00);
+
+                var pm = ticketing.timeIn.Value;
+                pm = new DateTime(pm.Year, pm.Month, pm.Day, 12, 00, 00);
+                if (ticketing.timeIn >= pm && ticketing.timeIn <= midnight)
                 {
-                    if (ticketing.timeIn.Value.AddHours(1) >= ticketing.timeOut)
+                    if (ticketing.typeOfCar == "Pick-up" || ticketing.typeOfCar == "Delivery")
                     {
-                        ticketing.amount = 20;
+                        if (midnight >= ticketing.timeOut)
+                        {
+                            //ticketing.amount = 20;
+                            ticketing.amount = ticketingPrice.ShortTripPickUp;
+                        }
+                        else if (ticketing.timeOut <= extended1Night)
+                        {
+                            //ticketing.amount = 100;
+                            ticketing.typeOfCar = "Overnight(1)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight;
+                        }
+                        else if (ticketing.timeOut <= extended2Nights)
+                        {
+                            //ticketing.amount = 200;
+                            ticketing.typeOfCar = "Overnight(2)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
+                        }
+                        else if (ticketing.timeOut <= extended3Nights)
+                        {
+                            //ticketing.amount = 300;
+                            ticketing.typeOfCar = "Overnight(3)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
+                        }
+                        else if (ticketing.timeOut <= extended4Nights)
+                        {
+                            //ticketing.amount = 400;
+                            ticketing.typeOfCar = "Overnight(4)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
+                        }
+                        else if (ticketing.timeOut <= extended5Nights)
+                        {
+                            //ticketing.amount = 500;
+                            ticketing.typeOfCar = "Overnight(5)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
+                        }
+                        else if (ticketing.timeOut <= extended6Nights)
+                        {
+                            //ticketing.amount = 600;
+                            ticketing.typeOfCar = "Overnight(6)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
+                        }
+                        else if (ticketing.timeOut <= extended7Nights)
+                        {
+                            //ticketing.amount = 700;
+                            ticketing.typeOfCar = "Overnight(7)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
+                        }
+
                     }
-                    else if (ticketing.timeIn.Value.AddHours(2) >= ticketing.timeOut)
+                }
+                else if (ticketing.timeIn >= AM && ticketing.timeIn <= pm)
+                {
+                    if (ticketing.typeOfCar == "Pick-up" || ticketing.typeOfCar == "Delivery")
                     {
-                        ticketing.amount = 40;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(3) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 60;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(4) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 80;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(5) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 100;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(6) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 120;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(7) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 140;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(8) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 160;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(9) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 180;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(10) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 200;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(11) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 220;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(12) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 240;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(13) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 260;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(14) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 280;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(15) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 300;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(16) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 320;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(17) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 340;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(18) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 360;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(19) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 380;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(20) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 400;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(21) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 420;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(22) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 440;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(23) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 460;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(24) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 480;
-                    }
-                    else if (ticketing.timeIn.Value.AddHours(25) >= ticketing.timeOut)
-                    {
-                        ticketing.amount = 500;
+                        if (midnight.AddHours(-12) >= ticketing.timeOut)
+                        {
+                            //ticketing.amount = 20;
+                            ticketing.amount = ticketingPrice.ShortTripPickUp;
+                        }
+                        else if (midnight >= ticketing.timeOut)
+                        {
+                            //ticketing.amount = 40;
+                            ticketing.amount = ticketingPrice.ShortTripPickUp * 2;
+                        }
+                        else if (ticketing.timeOut <= extended1Night)
+                        {
+                            //ticketing.amount = 100;
+                            ticketing.typeOfCar = "Overnight(1)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight;
+                        }
+                        else if (ticketing.timeOut <= extended2Nights)
+                        {
+                            //ticketing.amount = 200;
+                            ticketing.typeOfCar = "Overnight(2)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
+                        }
+                        else if (ticketing.timeOut <= extended3Nights)
+                        {
+                            //ticketing.amount = 300;
+                            ticketing.typeOfCar = "Overnight(3)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
+                        }
+                        else if (ticketing.timeOut <= extended4Nights)
+                        {
+                            //ticketing.amount = 400;
+                            ticketing.typeOfCar = "Overnight(4)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
+                        }
+                        else if (ticketing.timeOut <= extended5Nights)
+                        {
+                            //ticketing.amount = 500;
+                            ticketing.typeOfCar = "Overnight(5)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
+                        }
+                        else if (ticketing.timeOut <= extended6Nights)
+                        {
+                            //ticketing.amount = 600;
+                            ticketing.typeOfCar = "Overnight(6)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
+                        }
+                        else if (ticketing.timeOut <= extended7Nights)
+                        {
+                            //ticketing.amount = 700;
+                            ticketing.typeOfCar = "Overnight(7)";
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
+                        }
                     }
                 }
 
@@ -1086,155 +1178,314 @@ namespace src.Controllers.Api
                 GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
                 gatePass.TimeOut = ticketing.timeOut;
                 _context.GatePass.Update(gatePass);
+
+                if (ticketing.timeIn >= beforeMidnight && ticketing.timeIn <= midnight)
+                {
+                    var pm = ticketing.timeIn.Value.AddDays(1);
+                    pm = new DateTime(pm.Year, pm.Month, pm.Day, 22, 00, 00);
+
+                    var extended1NightPm = pm.AddDays(1);
+                    var extended2NightsPm = pm.AddDays(2);
+                    var extended3NightsPm = pm.AddDays(3);
+                    var extended4NightsPm = pm.AddDays(4);
+                    var extended5NightsPm = pm.AddDays(5);
+                    var extended6NightsPm = pm.AddDays(6);
+
+                    if (ticketing.timeOut <= pm)
+                    {
+                        ticketing.typeOfCar = "Overnight(1)";
+                        //ticketing.amount = 100;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight;
+                    }
+                    else if (ticketing.timeOut <= extended1NightPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(2)";
+                        //ticketing.amount = 200;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
+                    }
+                    else if (ticketing.timeOut <= extended2NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(3)";
+                        //ticketing.amount = 300;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
+                    }
+                    else if (ticketing.timeOut <= extended3NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(4)";
+                        //ticketing.amount = 400;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
+                    }
+                    else if (ticketing.timeOut <= extended4NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(5)";
+                        //ticketing.amount = 500;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
+                    }
+                    else if (ticketing.timeOut <= extended5NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(6)";
+                        //ticketing.amount = 600;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
+                    }
+                    else if (ticketing.timeOut <= extended6NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(7)";
+                        //ticketing.amount = 700;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
+                    }
+                }
+                else if (ticketing.timeIn <= afterMidnight && ticketing.timeIn <= midnight)
+                {
+                    if (ticketing.timeIn <= beforeMidnight && ticketing.timeIn >= afterMidnight.AddDays(-1))
+                    {
+                        if (ticketing.timeOut <= am)
+                        {
+                            //ticketing.amount = 0;
+                            ticketing.typeOfCar = "Gate pass";
+                            ticketing.amount = 0;
+                        }
+                        else if (ticketing.timeOut <= extended1Night)
+                        {
+                            ticketing.typeOfCar = "Overnight(1)";
+                            //ticketing.amount = 100;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight;
+                        }
+                        else if (ticketing.timeOut <= extended2Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(2)";
+                            //ticketing.amount = 200;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
+                        }
+                        else if (ticketing.timeOut <= extended3Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(3)";
+                            //ticketing.amount = 300;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
+                        }
+                        else if (ticketing.timeOut <= extended4Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(4)";
+                            //ticketing.amount = 400;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
+                        }
+                        else if (ticketing.timeOut <= extended5Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(5)";
+                            //ticketing.amount = 500;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
+                        }
+                        else if (ticketing.timeOut <= extended6Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(6)";
+                            //ticketing.amount = 600;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
+                        }
+                        else if (ticketing.timeOut <= extended6Nights.AddDays(1))
+                        {
+                            ticketing.typeOfCar = "Overnight(7)";
+                            //ticketing.amount = 700;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
+                        }
+                    }
+                    else if (ticketing.timeOut <= am)
+                    {
+                        ticketing.typeOfCar = "Overnight(1)";
+                        //ticketing.amount = 100;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight;
+                    }
+                    else if (ticketing.timeOut <= extended1Night)
+                    {
+                        ticketing.typeOfCar = "Overnight(2)";
+                        //ticketing.amount = 200;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
+                    }
+                    else if (ticketing.timeOut <= extended2Nights)
+                    {
+                        ticketing.typeOfCar = "Overnight(3)";
+                        //ticketing.amount = 300;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
+                    }
+                    else if (ticketing.timeOut <= extended3Nights)
+                    {
+                        ticketing.typeOfCar = "Overnight(4)";
+                        //ticketing.amount = 400;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
+                    }
+                    else if (ticketing.timeOut <= extended4Nights)
+                    {
+                        ticketing.typeOfCar = "Overnight(5)";
+                        //ticketing.amount = 500;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
+                    }
+                    else if (ticketing.timeOut <= extended5Nights)
+                    {
+                        ticketing.typeOfCar = "Overnight(6)";
+                        //ticketing.amount = 600;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
+                    }
+                    else if (ticketing.timeOut <= extended6Nights)
+                    {
+                        ticketing.typeOfCar = "Overnight(7)";
+                        //ticketing.amount = 700;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
+                    }
+                }
+
             }
             else if (ticketing.typeOfTransaction == "Pay parking")
             {
                 PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
                 payParking.TimeOut = ticketing.timeOut;
 
-                if (ticketing.typeOfCar == "Night time")
+                if (ticketing.timeIn >= beforeMidnight && ticketing.timeIn <= midnight)
                 {
-                    DateTime beforeMidnight = ticketing.timeIn.Value;
-                    beforeMidnight = new DateTime(beforeMidnight.Year, beforeMidnight.Month, beforeMidnight.Day, 22, 00, 00); //10 o'clock
+                    var pm = ticketing.timeIn.Value.AddDays(1);
+                    pm = new DateTime(pm.Year, pm.Month, pm.Day, 22, 00, 00);
 
-                    DateTime midnight = ticketing.timeIn.Value.AddDays(1);
-                    midnight = new DateTime(midnight.Year, midnight.Month, midnight.Day, 00, 00, 00); //12 o'clock
+                    var extended1NightPm = pm.AddDays(1);
+                    var extended2NightsPm = pm.AddDays(2);
+                    var extended3NightsPm = pm.AddDays(3);
+                    var extended4NightsPm = pm.AddDays(4);
+                    var extended5NightsPm = pm.AddDays(5);
+                    var extended6NightsPm = pm.AddDays(6);
 
-                    if (ticketing.timeIn >= beforeMidnight && ticketing.timeIn <= midnight)
+                    if (ticketing.timeOut <= pm)
                     {
-                        var pm = ticketing.timeIn.Value.AddDays(1);
-                        pm = new DateTime(pm.Year, pm.Month, pm.Day, 04, 00, 00);
-
-                        var extended1Day = pm.AddHours(18);
-                        var extended1Day1Night = pm.AddDays(1);
-                        var extended2Days1Night = pm.AddDays(1).AddHours(18);
-                        var extended2Days2Nights = pm.AddDays(2);
-                        var extended3Days2Nights = pm.AddDays(2).AddHours(18);
-                        var extended3Days3Nights = pm.AddDays(3);
-
-                        //if (ticketing.timeOut <= lessThan30Minutes)
-                        //{
-                        //    ticketing.amount = 20;
-                        //}
-                        if (ticketing.timeOut <= pm)
-                        {
-                            ticketing.amount = 100;
-                        }
-                        else if (ticketing.timeOut <= extended1Day)
-                        {
-                            ticketing.amount = 140;
-                        }
-                        else if (ticketing.timeOut <= extended1Day1Night)
-                        {
-                            ticketing.amount = 240;
-                        }
-                        else if (ticketing.timeOut <= extended2Days1Night)
-                        {
-                            ticketing.amount = 280;
-                        }
-                        else if (ticketing.timeOut <= extended2Days2Nights)
-                        {
-                            ticketing.amount = 380;
-                        }
-                        else if (ticketing.timeOut <= extended3Days2Nights)
-                        {
-                            ticketing.amount = 420;
-                        }
-                        else if (ticketing.timeOut <= extended3Days3Nights)
-                        {
-                            ticketing.amount = 520;
-                        }
+                        ticketing.typeOfCar = "Overnight(1)";
+                        //ticketing.amount = 100;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight;
                     }
-                    else
+                    else if (ticketing.timeOut <= extended1NightPm)
                     {
-                        var am = ticketing.timeIn.Value;
-                        am = new DateTime(am.Year, am.Month, am.Day, 04, 00, 00);
-
-                        var extended1Day = am.AddHours(18);
-                        var extended1Day1Night = am.AddDays(1);
-                        var extended2Days1Night = am.AddDays(1).AddHours(18);
-                        var extended2Days2Nights = am.AddDays(2);
-                        var extended3Days2Nights = am.AddDays(2).AddHours(18);
-                        var extended3Days3Nights = am.AddDays(3);
-
-                        //if (ticketing.timeOut <= lessThan30Minutes)
-                        //{
-                        //    ticketing.amount = 20;
-                        //}
-                        if (ticketing.timeOut <= am)
-                        {
-                            ticketing.amount = 100;
-                        }
-                        else if (ticketing.timeOut <= extended1Day)
-                        {
-                            ticketing.amount = 140;
-                        }
-                        else if (ticketing.timeOut <= extended1Day1Night)
-                        {
-                            ticketing.amount = 240;
-                        }
-                        else if (ticketing.timeOut <= extended2Days1Night)
-                        {
-                            ticketing.amount = 280;
-                        }
-                        else if (ticketing.timeOut <= extended2Days2Nights)
-                        {
-                            ticketing.amount = 380;
-                        }
-                        else if (ticketing.timeOut <= extended3Days2Nights)
-                        {
-                            ticketing.amount = 420;
-                        }
-                        else if (ticketing.timeOut <= extended3Days3Nights)
-                        {
-                            ticketing.amount = 520;
-                        }
+                        ticketing.typeOfCar = "Overnight(2)";
+                        //ticketing.amount = 200;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
+                    }
+                    else if (ticketing.timeOut <= extended2NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(3)";
+                        //ticketing.amount = 300;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
+                    }
+                    else if (ticketing.timeOut <= extended3NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(4)";
+                        //ticketing.amount = 400;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
+                    }
+                    else if (ticketing.timeOut <= extended4NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(5)";
+                        //ticketing.amount = 500;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
+                    }
+                    else if (ticketing.timeOut <= extended5NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(6)";
+                        //ticketing.amount = 600;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
+                    }
+                    else if (ticketing.timeOut <= extended6NightsPm)
+                    {
+                        ticketing.typeOfCar = "Overnight(7)";
+                        //ticketing.amount = 700;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
                     }
                 }
-
-                else if (ticketing.typeOfCar == "Day time")
+                else if (ticketing.timeIn <= afterMidnight && ticketing.timeIn <= midnight)
                 {
-                    var daytimeExpiration = ticketing.timeIn.Value;
-                    daytimeExpiration = new DateTime(daytimeExpiration.Year, daytimeExpiration.Month, daytimeExpiration.Day, 22, 00, 00);
-
-                    var extended1Night = daytimeExpiration.AddHours(6);
-                    var extended1Day1Night = daytimeExpiration.AddDays(1);
-                    var extended1Day2Nights = daytimeExpiration.AddDays(1).AddHours(6);
-                    var extended2Days2Nights = daytimeExpiration.AddDays(2);
-                    var extended2Days3Nights = daytimeExpiration.AddDays(2).AddHours(6);
-                    var extended3Days3Nights = daytimeExpiration.AddDays(3);
-
-                    //if (ticketing.timeOut <= lessThan30Minutes)
-                    //{
-                    //    ticketing.amount = 20;
-                    //}
-                    if (ticketing.timeOut <= daytimeExpiration)
+                    if (ticketing.timeIn <= beforeMidnight && ticketing.timeIn >= afterMidnight.AddDays(-1))
                     {
-                        ticketing.amount = 40;
+                        if (ticketing.timeOut <= am)
+                        {
+                            ticketing.typeOfCar = "Day time";
+                            //ticketing.amount = 40;
+                            ticketing.amount = ticketingPrice.PayParkingDaytime;
+                        }
+                        else if (ticketing.timeOut <= extended1Night)
+                        {
+                            ticketing.typeOfCar = "Overnight(1)";
+                            //ticketing.amount = 100;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight;
+                        }
+                        else if (ticketing.timeOut <= extended2Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(2)";
+                            //ticketing.amount = 200;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
+                        }
+                        else if (ticketing.timeOut <= extended3Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(3)";
+                            //ticketing.amount = 300;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
+                        }
+                        else if (ticketing.timeOut <= extended4Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(4)";
+                            //ticketing.amount = 400;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
+                        }
+                        else if (ticketing.timeOut <= extended5Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(5)";
+                            //ticketing.amount = 500;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
+                        }
+                        else if (ticketing.timeOut <= extended6Nights)
+                        {
+                            ticketing.typeOfCar = "Overnight(6)";
+                            //ticketing.amount = 600;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
+                        }
+                        else if (ticketing.timeOut <= extended6Nights.AddDays(1))
+                        {
+                            ticketing.typeOfCar = "Overnight(7)";
+                            //ticketing.amount = 700;
+                            ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
+                        }
+                    }
+                    else if (ticketing.timeOut <= am)
+                    {
+                        ticketing.typeOfCar = "Overnight(1)";
+                        //ticketing.amount = 100;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight;
                     }
                     else if (ticketing.timeOut <= extended1Night)
                     {
-                        ticketing.amount = 140;
+                        ticketing.typeOfCar = "Overnight(2)";
+                        //ticketing.amount = 200;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 2;
                     }
-                    else if (ticketing.timeOut <= extended1Day1Night)
+                    else if (ticketing.timeOut <= extended2Nights)
                     {
-                        ticketing.amount = 180;
+                        ticketing.typeOfCar = "Overnight(3)";
+                        //ticketing.amount = 300;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 3;
                     }
-                    else if (ticketing.timeOut <= extended1Day2Nights)
+                    else if (ticketing.timeOut <= extended3Nights)
                     {
-                        ticketing.amount = 280;
+                        ticketing.typeOfCar = "Overnight(4)";
+                        //ticketing.amount = 400;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 4;
                     }
-                    else if (ticketing.timeOut <= extended2Days2Nights)
+                    else if (ticketing.timeOut <= extended4Nights)
                     {
-                        ticketing.amount = 320;
+                        ticketing.typeOfCar = "Overnight(5)";
+                        //ticketing.amount = 500;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 5;
                     }
-                    else if (ticketing.timeOut <= extended2Days3Nights)
+                    else if (ticketing.timeOut <= extended5Nights)
                     {
-                        ticketing.amount = 420;
+                        ticketing.typeOfCar = "Overnight(6)";
+                        //ticketing.amount = 600;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 6;
                     }
-                    else if (ticketing.timeOut <= extended3Days3Nights)
+                    else if (ticketing.timeOut <= extended6Nights)
                     {
-                        ticketing.amount = 460;
+                        ticketing.typeOfCar = "Overnight(7)";
+                        //ticketing.amount = 700;
+                        ticketing.amount = ticketingPrice.PayParkingOvernight * 7;
                     }
                 }
 
@@ -1282,6 +1533,27 @@ namespace src.Controllers.Api
 
             _context.Total.Add(total);
             _context.StallLease.Update(stallLease);
+            _context.Ticketing.Update(ticketing);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Ticketing/ExtendGatePass
+        [HttpPost("AddCount")]
+        public async Task<IActionResult> AddCount(Guid id)
+        {
+            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
+
+            if (ticketing.@return == null)
+            {
+                ticketing.@return = 1;
+            }
+            else if (ticketing.@return != null)
+            {
+                ticketing.@return = ticketing.@return.Value + 1;
+            }
+
+
             _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });

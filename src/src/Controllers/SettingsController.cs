@@ -67,6 +67,38 @@ namespace src.Controllers
             return View(appUser);
         }
 
+        public async Task<IActionResult> TicketingPrice(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public IActionResult AddEditTicketingPrice(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                TicketingPrice ticketingPrice = new TicketingPrice();
+                //ticketing.ticketingId = org;
+                return View(ticketingPrice);
+            }
+            else
+            {
+                return View(_context.TicketingPrice.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
         public IActionResult AddEditRoles(Guid org, int id)
         {
             if (id == 0)

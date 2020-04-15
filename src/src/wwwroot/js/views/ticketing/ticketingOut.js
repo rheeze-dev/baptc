@@ -56,9 +56,9 @@ $(document).ready(function () {
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
             { "data": "typeOfCar" },
-            { "data": "amount" },
             { "data": "driverName" },
             { "data": "remarks" },
+            { "data": "amount" },
             { "data": "issuingClerk" },
             { "data": "receivingClerk" },
             { "data": "controlNumber" },
@@ -136,15 +136,13 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();
-    var s = d.getSeconds();
     var suffix = "AM";
     if (h > 11) { suffix = "PM"; }
     if (h > 12) { h = h - 12; }
     if (h == 0) { h = 12; }
     if (h < 10) { h = "0" + h; }
     if (m < 10) { m = "0" + m; }
-    if (s < 10) { s = "0" + s; }
-    return h + ":" + m + ":" + s + " " + suffix;
+    return h + ":" + m + " " + suffix;
 }
 function ShowPopup(url) {
     var modalId = 'modalDefault';

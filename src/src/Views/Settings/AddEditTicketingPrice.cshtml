@@ -1,0 +1,91 @@
+﻿@model src.Models.TicketingPrice
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Add / Edit Data</h4>
+</div>
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="TradersTruckWithTransaction" class="control-label">Traders truck with transaction price</label>
+                <input asp-for="TradersTruckWithTransaction" class="form-control" />
+                <span asp-validation-for="TradersTruckWithTransaction" class="text-danger"></span>
+            </div>
+
+            <div class="col-lg-6 form-group">
+                <label asp-for="TradersTruckWithoutTransaction" class="control-label">Traders truck without transaction price</label>
+                <input asp-for="TradersTruckWithoutTransaction" class="form-control" />
+                <span asp-validation-for="TradersTruckWithoutTransaction" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="FarmersTruckSingleTire" class="control-label">Farmers truck single tire price</label>
+                <input asp-for="FarmersTruckSingleTire" class="form-control" />
+                <span asp-validation-for="FarmersTruckSingleTire" class="text-danger"></span>
+            </div>
+
+            <div class="col-lg-6 form-group">
+                <label asp-for="FarmersTruckDoubleTire" class="control-label">Farmers truck double tire price</label>
+                <input asp-for="FarmersTruckDoubleTire" class="form-control" />
+                <span asp-validation-for="FarmersTruckDoubleTire" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="ShortTripPickUp" class="control-label">Short trip pick-up price</label>
+                <input asp-for="ShortTripPickUp" class="form-control" />
+                <span asp-validation-for="ShortTripPickUp" class="text-danger"></span>
+            </div>
+
+            <div class="col-lg-6 form-group">
+                <label asp-for="ShortTripDelivery" class="control-label">Short trip delivery price</label>
+                <input asp-for="ShortTripDelivery" class="form-control" />
+                <span asp-validation-for="ShortTripDelivery" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="PayParkingDaytime" class="control-label">Pay parking day time price</label>
+                <input asp-for="PayParkingDaytime" class="form-control" />
+                <span asp-validation-for="PayParkingDaytime" class="text-danger"></span>
+            </div>
+
+            <div class="col-lg-6 form-group">
+                <label asp-for="PayParkingOvernight" class="control-label">Pay parking overnight price</label>
+                <input asp-for="PayParkingOvernight" class="form-control" />
+                <span asp-validation-for="PayParkingOvernight" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StallLeasePrice" class="control-label">Gate pass price</label>
+            <input asp-for="StallLeasePrice" class="form-control" />
+            <span asp-validation-for="StallLeasePrice" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+</script>
+
+
+

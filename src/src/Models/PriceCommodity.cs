@@ -8,35 +8,27 @@ namespace src.Models
 {
     public class PriceCommodity
     {
-        //public PriceCommodity()
-        //{
-        //    //this.ticketStatus = Enum.TicketStatus.Unassigned;
-        //    //this.ticketType = Enum.TicketType.Problem;
-        //    //this.ticketPriority = Enum.TicketPriority.Low;
-        //}
-        //[StringLength(300)]
-        //[Display(Name = "Price Commodity Id")]
         public Guid priceCommodityId { get; set; }
         //[Required]
         [Display(Name = "Time")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         public DateTime time { get; set; }
         //[Required]
 
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         [Display(Name = "Commodity Date")]
         public DateTime commodityDate { get; set; }
 
+        [Required]
         [Display(Name = "Commodity")]
         public string commodity { get; set; }
 
+        [Required]
         [Display(Name = "Class Variety")]
         public string classVariety { get; set; }
 
-        //[StringLength(300)]
+        [Required]
         [Display(Name = "Price Range")]
-        public double priceRange { get; set; }
-        //[StringLength(300)]
+        public double? priceRange { get; set; }
+
         [Display(Name = "Commodity Remarks")]
         public string commodityRemarks { get; set; }
 

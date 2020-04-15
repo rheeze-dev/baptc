@@ -58,6 +58,7 @@ $(document).ready(function () {
             { "data": "typeOfCar" },
             { "data": "driverName" },
             { "data": "remarks" },
+            { "data": "return" },
             { "data": "issuingClerk" },
             { "data": "receivingClerk" },
             { "data": "controlNumber" },
@@ -92,53 +93,23 @@ $(document).ready(function () {
                 "data": function (data) {
                     var empty = "";
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    var outPut = btnEdit + btnDelete;
-                    var btnExtend = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Extend</a>";
-                    var btnEdit = "<a class='btn btn-default btn-xs btnEditz' id='addEditGatePass' onclick=ShowPopup('/Ticketing/AddEditNewGatePass?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnCount = "<a class='btn btn-default btn-xs btnCount' data-id='" + data["ticketingId"] + "'><i class='fa fa-plus-circle' title='Count'></i></a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    var outPut = btnEdit + " " + btnCount;
 
-                    var endDate = data["endDate"];
-                    var currentDate = new Date();
-                    endDate = new Date(endDate);
-
-                    var remainingDays = endDate - currentDate;
-                    var days = Math.floor(remainingDays / (1000 * 60 * 60 * 24));
-                    //var hours = Math.floor((remainingDays % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    //var minutes = Math.floor((remainingDays % (1000 * 60 * 60)) / (1000 * 60));
-                    //var seconds = Math.floor((remainingDays % (1000 * 60)) / 1000); 
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return empty;
                     }
                     else if (data["timeIn"] != null && data["timeOut"] == null) {
-                        return outPut;
-                    }
-
-                    else if (days > 0) {
-                        return btnExtend = "", btnEdit;
-                    }
-                    else {
-                        return btnExtend;
+                        if (data["typeOfTransaction"] == "Short trip") {
+                            return outPut;
+                        }
+                        else {
+                            return btnEdit;
+                        }
                     }
                 }
             }
-            //{
-            //    "data": function (data) {
-            //        var availedGatePass = "Gate pass";
-            //        var empty = "";
-            //        var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-            //        var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-            //        var outPut = btnEdit + btnDelete;
-            //        if (data["timeIn"] != null && data["timeOut"] != null) {
-            //            return empty;
-            //        }
-            //        else if (data["timeIn"] != null && data["timeOut"] == null) {
-            //            return outPut;
-            //        }
-            //        else if (data["timeIn"] == null && data["timeOut"] == null) {
-            //            return availedGatePass;
-            //        }
-            //    }
-            //}
         ],
         "language": {
             "emptyTable": "no data found."
@@ -146,7 +117,7 @@ $(document).ready(function () {
         "lengthChange": false,
     });
 });
-$("#grid").on("click", ".btnComplete", function (e) {
+$("#grid").on("click", ".btnCount", function (e) {
     e.preventDefault();
     var ticketId = $(this).attr("data-id");
     var param = { id: ticketId };
@@ -161,7 +132,7 @@ $("#grid").on("click", ".btnComplete", function (e) {
     }, function () {
         $.ajax({
             type: 'POST',
-            url: apiurl + '/ExtendGatePass',
+            url: apiurl + '/AddCount',
             data: param,
             success: function (data) {
                 if (data.success) {
@@ -183,15 +154,13 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();
-    var s = d.getSeconds();
     var suffix = "AM";
     if (h > 11) { suffix = "PM"; }
     if (h > 12) { h = h - 12; }
     if (h == 0) { h = 12; }
     if (h < 10) { h = "0" + h; }
     if (m < 10) { m = "0" + m; }
-    if (s < 10) { s = "0" + s; }
-    return h + ":" + m + ":" + s + " " + suffix;
+    return h + ":" + m + " " + suffix;
 }
 function ShowPopup(url) {
     var modalId = 'modalDefault';

@@ -417,10 +417,10 @@
                 </div>
             }
 
-            if (listModule.Contains("Finance"))
+            @*if (listModule.Contains("Finance"))
             {
                 <div class="col-lg-4">
-                    <!-- small box -->
+                     small box 
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Finance</h4>
@@ -432,7 +432,7 @@
 
                         <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @*@if (appUser.IsSuperAdmin)
+                        @if (appUser.IsSuperAdmin)
                         {
                             <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                         }
@@ -445,11 +445,11 @@
                         {
                             <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        }*@
+                        }
 
                     </div>
                 </div>
-            }
+            }*@
 
 
         }

@@ -44,8 +44,42 @@ namespace src.Controllers.Api
             return Json(new { data = roles });
         }
 
+        // POST: api/Roles/PostTicketingPrice
+        [HttpPost("PostTicketingPrice")]
+        public async Task<IActionResult> PostTicketingPrice([FromBody] JObject model)
+        {
+            int id = 0;
+            id = Convert.ToInt32(model["Id"].ToString());
+            var info = await _userManager.GetUserAsync(User);
 
-        // POST: api/Roles
+            TicketingPrice ticketingPrice = new TicketingPrice
+            {
+                DateAdded = DateTime.Now,
+                TradersTruckWithTransaction = Convert.ToInt32(model["TradersTruckWithTransaction"].ToString()),
+                TradersTruckWithoutTransaction = Convert.ToInt32(model["TradersTruckWithoutTransaction"].ToString()),
+                FarmersTruckSingleTire = Convert.ToInt32(model["FarmersTruckSingleTire"].ToString()),
+                FarmersTruckDoubleTire = Convert.ToInt32(model["FarmersTruckDoubleTire"].ToString()),
+                ShortTripPickUp = Convert.ToInt32(model["ShortTripPickUp"].ToString()),
+                ShortTripDelivery = Convert.ToInt32(model["ShortTripDelivery"].ToString()),
+                PayParkingDaytime = Convert.ToInt32(model["PayParkingDaytime"].ToString()),
+                PayParkingOvernight = Convert.ToInt32(model["PayParkingOvernight"].ToString()),
+                StallLeasePrice = Convert.ToInt32(model["StallLeasePrice"].ToString()),
+            };
+            if (id == 0)
+            {
+                _context.TicketingPrice.Add(ticketingPrice);
+            }
+            else
+            {
+                ticketingPrice.Id = id;
+                _context.TicketingPrice.Update(ticketingPrice);
+            }
+            ticketingPrice.Editor = info.FullName;
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Roles/PostRoles
         [HttpPost]
         public async Task<IActionResult> PostRoles([FromBody] JObject model)
         {
@@ -92,34 +126,27 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Delete success." });
         }
 
-        // POST: api/ModuleConfig/GetModules
+        // GET: api/Roles/GetUsers
         [HttpGet("GetUsers")]
         public IActionResult GetUsers()
         {
-            List<ApplicationUser> currentUser = _context.ApplicationUser.ToList();
-            //var userModules = currentUser;
             List<ApplicationUser> listUser = _context.ApplicationUser.ToList();
-
-            //if (userModules != null)
-            //{
-            //    var query = from val in userModules.Split(',')
-            //                select (val);
-            //    foreach (var item in listUser)
-            //    {
-            //        bool containsItem = query.Any(x => x == item.FullName);
-            //        if (containsItem)
-            //            item.Selected = true;
-            //    }
-            //}
             return Json(new { data = listUser });
         }
+
+        // GET: api/Roles/GetUsers
+        [HttpGet("GetTicketingPrice")]
+        public IActionResult GetTicketingPrice()
+        {
+            var ticketingPrice = _context.TicketingPrice.ToList();
+            return Json(new { data = ticketingPrice });
+        }
+
         //[HttpPost("ConfigUserRoles")]
         public IActionResult ConfigUserRole(int userId)
         {
             ApplicationUser applicationUser = _context.ApplicationUser.Where(user => user.UserId == userId).FirstOrDefault();
-
             return Json(new { data = applicationUser });
-
         }
 
         // POST: api/Roles/PostUserRole

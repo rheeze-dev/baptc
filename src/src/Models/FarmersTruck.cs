@@ -37,6 +37,7 @@ namespace src.Models
         [Display(Name = "Commodity")]
         public string Commodity { get; set; }
 
+        //[Required]
         [Display(Name = "Volume")]
         public int? Volume { get; set; }
 

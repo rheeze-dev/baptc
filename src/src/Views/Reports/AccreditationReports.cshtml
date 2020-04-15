@@ -24,18 +24,68 @@
                                     </tr>
                                     <tr>
                                         <th class="col-md-1">
-                                            <select class="form-control" id="dropdownAccreditationDate">
-                                                <option value="1">Accredited inter-traders</option>
-                                                <option value="2">Accredited packers and porters</option>
-                                                <option value="3">Accredited buyers</option>
-                                                <option value="4">Accredited market facilitators</option>
-                                                <option value="5">Accredited individual farmers</option>
-                                            </select>
+                                            Accredited inter-traders
                                         </th>
                                         <th class="col-md-1">
                                         </th>
                                         <th class="col-md-1">
-                                            <a class="btn btn-success btn-xs exportAccreditationDate"><i class='fa fa-download'></i> Export</a>
+                                            <a class="btn btn-success btn-xs exportAccreditedInterTraders"><i class='fa fa-download'></i> Export</a>
+                                        </th>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="3"></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-1">
+                                            Accredited packers and porters
+                                        </th>
+                                        <th class="col-md-1">
+                                        </th>
+                                        <th class="col-md-1">
+                                            <a class="btn btn-success btn-xs exportAccreditedPackersAndPorters"><i class='fa fa-download'></i> Export</a>
+                                        </th>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="3"></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-1">
+                                            Accredited buyers
+                                        </th>
+                                        <th class="col-md-1">
+                                        </th>
+                                        <th class="col-md-1">
+                                            <a class="btn btn-success btn-xs exportAccreditedBuyers"><i class='fa fa-download'></i> Export</a>
+                                        </th>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="3"></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-1">
+                                            Accredited market facilitators
+                                        </th>
+                                        <th class="col-md-1">
+                                        </th>
+                                        <th class="col-md-1">
+                                            <a class="btn btn-success btn-xs exportAccreditedMarketFacilitators"><i class='fa fa-download'></i> Export</a>
+                                        </th>
+                                    </tr>
+
+                                    <tr>
+                                        <th colspan="3"></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-1">
+                                            Accredited individual farmers
+                                        </th>
+                                        <th class="col-md-1">
+                                        </th>
+                                        <th class="col-md-1">
+                                            <a class="btn btn-success btn-xs exportAccreditedIndividualFarmers"><i class='fa fa-download'></i> Export</a>
                                         </th>
                                     </tr>
                                 </thead>
@@ -60,11 +110,26 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script>
-        $(".exportAccreditationDate").on("click", function (e) {
-            var getSelectedDate = $("#dropdownAccreditationDate").val();
-            $(".exportAccreditationDate").attr("href", "/api/Report/AccreditationReportDate?Date=" + getSelectedDate);
-        });
-    </script>
+<script>
+    $(".exportAccreditedInterTraders").on("click", function (e) {
+        $(".exportAccreditedInterTraders").attr("href", "/api/Report/AccreditedInterTradersReport");
+    });
+
+    $(".exportAccreditedPackersAndPorters").on("click", function (e) {
+        $(".exportAccreditedPackersAndPorters").attr("href", "/api/Report/AccreditedPackersAndPortersReport");
+    });
+
+    $(".exportAccreditedBuyers").on("click", function (e) {
+        $(".exportAccreditedBuyers").attr("href", "/api/Report/AccreditedBuyersReport");
+    });
+
+    $(".exportAccreditedMarketFacilitators").on("click", function (e) {
+        $(".exportAccreditedMarketFacilitators").attr("href", "/api/Report/AccreditedMarketFacilitatorsReport");
+    });
+
+    $(".exportAccreditedIndividualFarmers").on("click", function (e) {
+        $(".exportAccreditedIndividualFarmers").attr("href", "/api/Report/AccreditedIndividualFarmersReport");
+    });
+</script>
 }
 

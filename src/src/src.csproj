@@ -16,6 +16,8 @@
     <Compile Remove="Migrations\20200320101108_RemoveForeignKey.Designer.cs" />
     <Compile Remove="Migrations\20200320111143_FinalTradersTruckDb.cs" />
     <Compile Remove="Migrations\20200320111143_FinalTradersTruckDb.Designer.cs" />
+    <Compile Remove="Migrations\20200413162341_TicketingDbUpdate4.cs" />
+    <Compile Remove="Migrations\20200413162341_TicketingDbUpdate4.Designer.cs" />
   </ItemGroup>
 
 

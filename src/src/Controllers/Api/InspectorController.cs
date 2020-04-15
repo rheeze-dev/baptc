@@ -98,28 +98,23 @@ namespace src.Controllers.Api
 
             TradersTruck tradersTruck = new TradersTruck
             {
-            DateInspected = DateTime.Now,
+                DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 TraderName = model["TraderName"].ToString(),
                 PlateNumber = model["PlateNumber"].ToString(),
-                Destination = model["Destination"].ToString(),
-                EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString())
+                Destination = model["Destination"].ToString()
+                //EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString())
             };
-            if (id == Guid.Empty)
+
+            if (model["EstimatedVolume"].ToString() == "")
             {
-                tradersTruck.Inspector = info.FullName;
-                _context.TradersTruck.Add(tradersTruck);
+                return Json(new { success = false, message = "Estimated volume cannot be empty!" });
             }
-            else
-            {
-                //if (tradersTruck.EstimatedVolume == null)
-                //{
-                //    return Json(new { success = false, message = "Estimated volume cannot be empty!" });
-                //}
-                tradersTruck.ticketingId = id;
-                tradersTruck.Inspector = info.FullName;
-                _context.TradersTruck.Update(tradersTruck);
-            }
+            tradersTruck.EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString());
+
+            tradersTruck.ticketingId = id;
+            tradersTruck.Inspector = info.FullName;
+            _context.TradersTruck.Update(tradersTruck);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -143,24 +138,19 @@ namespace src.Controllers.Api
                 Commodity = model["Commodity"].ToString(),
                 Barangay = model["Barangay"].ToString(),
                 Province = model["Province"].ToString(),
-                FacilitatorsName = model["FacilitatorsName"].ToString(),
-                Volume = Convert.ToInt32(model["Volume"].ToString())
+                FacilitatorsName = model["FacilitatorsName"].ToString()
             };
-            if (id == Guid.Empty)
+
+            if (model["Volume"].ToString() == "")
             {
-                farmersTruck.Inspector = info.FullName;
-                _context.FarmersTruck.Add(farmersTruck);
+                return Json(new { success = false, message = "Volume cannot be empty!" });
             }
-            else
-            {
-                //if (farmersTruck.Volume == null)
-                //{
-                //    return Json(new { success = false, message = "Volume cannot be empty!" });
-                //}
-                farmersTruck.ticketingId = id;
-                farmersTruck.Inspector = info.FullName;
-                _context.FarmersTruck.Update(farmersTruck);
-            }
+
+            farmersTruck.Volume = Convert.ToInt32(model["Volume"].ToString());
+
+            farmersTruck.ticketingId = id;
+            farmersTruck.Inspector = info.FullName;
+            _context.FarmersTruck.Update(farmersTruck);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -179,23 +169,18 @@ namespace src.Controllers.Api
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
                 PlateNumber = model["PlateNumber"].ToString(),
                 Commodity = model["Commodity"].ToString(),
-                EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString())
             };
-            if (id == Guid.Empty)
+
+            if (model["EstimatedVolume"].ToString() == "")
             {
-                shortTrip.Inspector = info.FullName;
-                _context.ShortTrip.Add(shortTrip);
+                return Json(new { success = false, message = "Volume cannot be empty!" });
             }
-            else
-            {
-                //if (shortTrip.EstimatedVolume == null)
-                //{
-                //    return Json(new { success = false, message = "Estimated volume cannot be empty!" });
-                //}
-                shortTrip.ticketingId = id;
-                shortTrip.Inspector = info.FullName;
-                _context.ShortTrip.Update(shortTrip);
-            }
+
+            shortTrip.EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString());
+
+            shortTrip.ticketingId = id;
+            shortTrip.Inspector = info.FullName;
+            _context.ShortTrip.Update(shortTrip);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -214,15 +199,10 @@ namespace src.Controllers.Api
                 PlateNumber = model["PlateNumber"].ToString(),
                 DriverName = model["DriverName"].ToString()
             };
-            if (id == Guid.Empty)
-            {
-                _context.PayParking.Add(payParking);
-            }
-            else
-            {
-                payParking.ticketingId = id;
-                _context.PayParking.Update(payParking);
-            }
+
+            payParking.ticketingId = id;
+            _context.PayParking.Update(payParking);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }

@@ -12,19 +12,25 @@ namespace src.Models
         public int Id { get; set; }
 
         public int? Code { get; set; }
-        //[Required]
+
         public DateTime Date { get; set; }
-        //[Required]
+
+        [Required]
         public string FarmerName { get; set; }
 
+        [Required]
         public string FarmersOrganization { get; set; }
 
+        [Required]
         public string Commodity { get; set; }
 
-        public int Volume { get; set; }
+        [Required]
+        public int? Volume { get; set; }
 
+        [Required]
         public string ProductionArea { get; set; }
 
+        [Required]
         public string Inspector { get; set; }
 
     }

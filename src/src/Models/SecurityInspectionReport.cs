@@ -20,6 +20,7 @@ namespace src.Models
         [Display(Name = "Remarks")]
         public string Remarks { get; set; }
 
+        [Required]
         public string Action { get; set; }
 
         public string Inspector { get; set; }

@@ -29,54 +29,57 @@
             <input asp-for="PlateNumber" class="form-control" />
             <span asp-validation-for="PlateNumber" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="Destination" class="control-label">Destination</label>
-            <select id="cars" asp-for="Destination" class="form-control">
-                <option value="Spot 1">Spot 1</option>
-                <option value="Spot 2">Spot 2</option>
-                <option value="Spot 3">Spot 3</option>
-                <option value="Dry and cold storage">Dry and cold storage</option>
-                <option value="Pay parking">Pay parking</option>
-                <option value="Entrance">Entrance</option>
-                <option value="Exit">Exit</option>
-                <option value="Carrot section">Carrot section</option>
-                <option value="Nursery (greenhouse)">Nursery (greenhouse)</option>
-                <option value="UPLB cold storage back of guestel">UPLB cold storage back of guestel</option>
-                <option value="Sewarage treatment plant back of guestel">Sewarage treatment plant back of guestel</option>
-            </select>
-            <span asp-validation-for="Destination" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="Destination" class="control-label">Destination</label>
+                <select id="cars" asp-for="Destination" class="form-control">
+                    <option value="Spot 1">Spot 1</option>
+                    <option value="Spot 2">Spot 2</option>
+                    <option value="Spot 3">Spot 3</option>
+                    <option value="Dry and cold storage">Dry and cold storage</option>
+                    <option value="Pay parking">Pay parking</option>
+                    <option value="Entrance">Entrance</option>
+                    <option value="Exit">Exit</option>
+                    <option value="Carrot section">Carrot section</option>
+                    <option value="Nursery (greenhouse)">Nursery (greenhouse)</option>
+                    <option value="UPLB cold storage back of guestel">UPLB cold storage back of guestel</option>
+                    <option value="Sewarage treatment plant back of guestel">Sewarage treatment plant back of guestel</option>
+                </select>
+                <span asp-validation-for="Destination" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Location" class="control-label">Location</label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="DriverName" class="control-label">Driver name</label>
-            <input asp-for="DriverName" class="form-control" />
-            <span asp-validation-for="DriverName" class="text-danger"></span>
-        </div>
-        @*<div class="form-group">
-            <label asp-for="RequesterName" class="control-label"></label>
-            <input asp-for="RequesterName" class="form-control" />
-            <span asp-validation-for="RequesterName" class="text-danger"></span>
-        </div>*@
-        <div class="form-group">
-            <label asp-for="Location" class="control-label">Location</label>
-            <input asp-for="Location" class="form-control" />
-            <span asp-validation-for="Location" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="RepairDetails" class="control-label">Repair details</label>
-            <input asp-for="RepairDetails" class="form-control" />
-            <span asp-validation-for="RepairDetails" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Remarks" class="control-label">Remarks</label>
-            <input asp-for="Remarks" class="form-control" />
-            <span asp-validation-for="Remarks" class="text-danger"></span>
-        </div>
-    </div>
+                <div class="form-group">
+                    <label asp-for="DriverName" class="control-label">Driver name</label>
+                    <input asp-for="DriverName" class="form-control" />
+                    <span asp-validation-for="DriverName" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
+                    <label asp-for="RequesterName" class="control-label"></label>
+                    <input asp-for="RequesterName" class="form-control" />
+                    <span asp-validation-for="RequesterName" class="text-danger"></span>
+                </div>*@
 
-    <div class="box-footer">
-        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-    </div>
+                <div class="form-group">
+                    <label asp-for="RepairDetails" class="control-label">Repair details</label>
+                    <input asp-for="RepairDetails" class="form-control" />
+                    <span asp-validation-for="RepairDetails" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Remarks" class="control-label">Remarks</label>
+                    <input asp-for="Remarks" class="form-control" />
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+            </div>
 </form>
 <script>
     Ladda.bind('.btn', { timeout: 1000 });

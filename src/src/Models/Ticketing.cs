@@ -35,6 +35,8 @@ namespace src.Models
 
         public int? amount { get; set; }
 
+        public int? @return { get; set; }
+
         public string remarks { get; set; }
 
         public int? controlNumber { get; set; }

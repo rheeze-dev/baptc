@@ -19,6 +19,7 @@ namespace src.Models
 
         public DateTime? DateInspected { get; set; }
 
+        //[Required]
         [Display(Name = "Estimated volume (kg)")]
         public int? EstimatedVolume { get; set; }
 

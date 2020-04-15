@@ -787,36 +787,60 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
-        [HttpGet("AccreditationReportDate")]
-        public async Task<IActionResult> AccreditationReportDate(int Date)
+        [HttpGet("AccreditedInterTradersReport")]
+        public async Task<IActionResult> AccreditedInterTradersReport()
         {
             // query data from database  
             await Task.Yield();
 
             var stream = new MemoryStream();
 
-            if (Date == 1)
-            {
-                var intertraders = _context.AccreditedInterTraders.Select(x => new { Name = x.Name, ReferenceNumber = x.ReferenceNumber, NameOfAssociation = x.NameOfAssociation, NameOfSpouse = x.NameOfSpouse, ContactNumber = x.ContactNumber, Barangay = x.Barangay, Municipality = x.Municipality, Province = x.Province, BusinessPermit = x.BusinessPermit, Tin = x.Tin, IdNumber = x.IdNumber, Counter = x.Counter, Destination = x.Destination, PresentAddress = x.PresentAddress }).ToList();
+                var intertraders = _context.AccreditedInterTraders.Select(x => new { DateOfApplication = x.DateOfApplication.ToString("MMMM dd, yyyy / hh:mm tt"), Name = x.Name, ReferenceNumber = x.ReferenceNumber, NameOfAssociation = x.NameOfAssociation, NameOfSpouse = x.NameOfSpouse, ContactNumber = x.ContactNumber, Barangay = x.Barangay, Municipality = x.Municipality, Province = x.Province, BusinessPermit = x.BusinessPermit, Tin = x.Tin, IdNumber = x.IdNumber, Counter = x.Counter, Destination = x.Destination, PresentAddress = x.PresentAddress }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
                     workSheet.Cells.LoadFromCollection(intertraders, true);
                     package.Save();
                 }
-            }
-            else if (Date == 2)
-            {
-                var packersAndPorters = _context.AccreditedPackersAndPorters.Select(x => new { Name = x.Name, Nickname = x.NickName, NameOfAssociation = x.NameOfAssociation, NameOfSpouse = x.NameOfSpouse, Birthdate = x.BirthDate, ContactNumber = x.ContactNumber, Barangay = x.Barangay, Municipality = x.Municipality, Province = x.Province, IdNumber= x.IdNumber, Requirements = x.Requirements, ProvincialAddress = x.ProvincialAddress, PresentAddress = x.PresentAddress, PackerOrPorter = x.PackerOrPorter }).ToList();
+
+            stream.Position = 0;
+            string excelName = $"Accreditation inter-traders {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("AccreditedPackersAndPortersReport")]
+        public async Task<IActionResult> AccreditedPackersAndPortersReport(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+                var packersAndPorters = _context.AccreditedPackersAndPorters.Select(x => new { DateOfApplication = x.DateOfApplication.ToString("MMMM dd, yyyy / hh:mm tt"), Name = x.Name, Nickname = x.NickName, NameOfAssociation = x.NameOfAssociation, NameOfSpouse = x.NameOfSpouse, Birthdate = x.BirthDate, ContactNumber = x.ContactNumber, Barangay = x.Barangay, Municipality = x.Municipality, Province = x.Province, IdNumber = x.IdNumber, Requirements = x.Requirements, ProvincialAddress = x.ProvincialAddress, PresentAddress = x.PresentAddress, PackerOrPorter = x.PackerOrPorter }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
                     workSheet.Cells.LoadFromCollection(packersAndPorters, true);
                     package.Save();
                 }
-            }
-            else if (Date == 3)
-            {
+
+            stream.Position = 0;
+            string excelName = $"Accredited packers and porters {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("AccreditedBuyersReport")]
+        public async Task<IActionResult> AccreditedBuyersReport(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
                 var buyers = _context.AccreditedBuyers.Select(x => new { BusinessName = x.BusinessName, BusinessAddress = x.BusinessAddress, NameOfSpouse = x.NameOfSpouse, Birthdate = x.BirthDate, ContactNumber = x.ContactNumber, VehiclePlateNumber = x.VehiclePlateNumber, Barangay = x.Barangay, Muncipality = x.Municipality, Province = x.Province, PresentAddress = x.PresentAddress, ProductDestination = x.ProductDestination, Tin = x.Tin }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
@@ -824,30 +848,55 @@ namespace src.Controllers.Api
                     workSheet.Cells.LoadFromCollection(buyers, true);
                     package.Save();
                 }
-            }
-            else if (Date == 4)
+
+            stream.Position = 0;
+            string excelName = $"Accredited buyers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("AccreditedMarketFacilitatorsReport")]
+        public async Task<IActionResult> AccreditedMarketFacilitatorsReport(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            var marketFacilitators = _context.AccreditedMarketFacilitators.Select(x => new { DateOfApplication = x.DateOfApplication.ToString("MMMM dd, yyyy / hh:mm tt"), Name = x.Name, Nickname = x.NickName, NameOfSpouse = x.NameOfSpouse, NameOfAssociation = x.NameOfAssociation, Birthdate = x.BirthDate, ContactNumber = x.ContactNumber, BusinessName = x.BusinessName, BusinessAddress = x.BusinessAddress, ReferenceNumber = x.ReferenceNumber, Barangay = x.Barangay, Municipality = x.Municipality, Province = x.Province, IdNumber = x.IdNumber, MajorCommodity = x.MajorCommodity, PresentAddress = x.PresentAddress, Tin = x.Tin }).ToList();
+            using (var package = new ExcelPackage(stream))
             {
-                var marketFacilitators = _context.AccreditedMarketFacilitators.Select(x => new { Name = x.Name, Nickname = x.NickName, NameOfSpouse = x.NameOfSpouse, NameOfAssociation = x.NameOfAssociation, Birthdate = x.BirthDate, ContactNumber = x.ContactNumber, BusinessName = x.BusinessName, BusinessAddress = x.BusinessAddress, ReferenceNumber = x.ReferenceNumber, Barangay = x.Barangay, Municipality = x.Municipality, Province = x.Province, IdNumber = x.IdNumber, MajorCommodity = x.MajorCommodity, PresentAddress = x.PresentAddress, Tin = x.Tin }).ToList();
-                using (var package = new ExcelPackage(stream))
-                {
-                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
-                    workSheet.Cells.LoadFromCollection(marketFacilitators, true);
-                    package.Save();
-                }
-            }
-            else if (Date == 5)
-            {
-                var individualFarmers = _context.AccreditedIndividualFarmers.Select(x => new { Name = x.Name, PlateNumber = x.PlateNumber, SpouseName = x.SpouseName, ReferenceNumber = x.ReferenceNumber, Association = x.Association, ContactNumber = x.ContactNumber, Birthdate = x.BirthDate, MajorCrops = x.MajorCrops, EstimatedProduce = x.EstimatedProduce, EstimatedTotalLandAre = x.EstimatedTotalLandArea, Sitio = x.Sitio, Barangay = x.Barangay, Municipality = x.Municipality, Province = x. Province, Counter = x.Counter, IdNumber = x.IdNumber, Harvesting = x.Harvesting, Planting = x.Planting }).ToList();
-                using (var package = new ExcelPackage(stream))
-                {
-                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
-                    workSheet.Cells.LoadFromCollection(individualFarmers, true);
-                    package.Save();
-                }
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(marketFacilitators, true);
+                package.Save();
             }
 
             stream.Position = 0;
-            string excelName = $"Accreditation {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+            string excelName = $"Accredited market facilitators {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("AccreditedIndividualFarmersReport")]
+        public async Task<IActionResult> AccreditedIndividualFarmersReport(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            var individualFarmers = _context.AccreditedIndividualFarmers.Select(x => new { DateOfApplication = x.DateOfApplication.ToString("MMMM dd, yyyy / hh:mm tt"), Name = x.Name, PlateNumber = x.PlateNumber, SpouseName = x.SpouseName, ReferenceNumber = x.ReferenceNumber, Association = x.Association, ContactNumber = x.ContactNumber, Birthdate = x.BirthDate, MajorCrops = x.MajorCrops, EstimatedProduce = x.EstimatedProduce, EstimatedTotalLandAre = x.EstimatedTotalLandArea, Sitio = x.Sitio, Barangay = x.Barangay, Municipality = x.Municipality, Province = x.Province, Counter = x.Counter, IdNumber = x.IdNumber, Harvesting = x.Harvesting, Planting = x.Planting }).ToList();
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(individualFarmers, true);
+                package.Save();
+            }
+
+            stream.Position = 0;
+            string excelName = $"Accredited individual farmers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);

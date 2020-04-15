@@ -20,6 +20,7 @@ namespace src.Models
         [Display(Name = "Traders name")]
         public string TraderName { get; set; }
 
+        //[Required]
         [Display(Name = "Estimated volume (kg)")]
         public int? EstimatedVolume { get; set; }
 

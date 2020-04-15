@@ -13,23 +13,29 @@ namespace src.Models
         //[Required]
         [Display(Name = "Date")]
         public DateTime Date { get; set; }
-        //[Required]
+
+        [Required]
         [Display(Name = "Plate number")]
         public string PlateNumber { get; set; }
 
+        [Required]
         public string Destination { get; set; }
 
+        [Required]
         [Display(Name = "Name")]
         public string DriverName { get; set; }
 
+        [Required]
         [Display(Name = "Repair details")]
         public string RequesterName { get; set; }
 
         [Display(Name = "Remarks")]
         public string Remarks { get; set; }
 
+        [Required]
         public string Location { get; set; }
 
+        [Required]
         public string RepairDetails { get; set; }
 
         public int? RequestNumber { get; set; }

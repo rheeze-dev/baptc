@@ -212,29 +212,41 @@ namespace src.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Barangay");
+                    b.Property<string>("Barangay")
+                        .IsRequired();
 
-                    b.Property<string>("BirthDate");
+                    b.Property<string>("BirthDate")
+                        .IsRequired();
 
-                    b.Property<string>("BusinessAddress");
+                    b.Property<string>("BusinessAddress")
+                        .IsRequired();
 
-                    b.Property<string>("BusinessName");
+                    b.Property<string>("BusinessName")
+                        .IsRequired();
 
-                    b.Property<string>("ContactNumber");
+                    b.Property<string>("ContactNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Municipality");
+                    b.Property<string>("Municipality")
+                        .IsRequired();
 
-                    b.Property<string>("NameOfSpouse");
+                    b.Property<string>("NameOfSpouse")
+                        .IsRequired();
 
-                    b.Property<string>("PresentAddress");
+                    b.Property<string>("PresentAddress")
+                        .IsRequired();
 
-                    b.Property<string>("ProductDestination");
+                    b.Property<string>("ProductDestination")
+                        .IsRequired();
 
-                    b.Property<string>("Province");
+                    b.Property<string>("Province")
+                        .IsRequired();
 
-                    b.Property<int>("Tin");
+                    b.Property<int?>("Tin")
+                        .IsRequired();
 
-                    b.Property<string>("VehiclePlateNumber");
+                    b.Property<string>("VehiclePlateNumber")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -248,19 +260,25 @@ namespace src.Migrations
 
                     b.Property<int?>("Code");
 
-                    b.Property<string>("Commodity");
+                    b.Property<string>("Commodity")
+                        .IsRequired();
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Destination");
+                    b.Property<string>("Destination")
+                        .IsRequired();
 
-                    b.Property<string>("Facilitator");
+                    b.Property<string>("Facilitator")
+                        .IsRequired();
 
-                    b.Property<string>("Inspector");
+                    b.Property<string>("Inspector")
+                        .IsRequired();
 
-                    b.Property<string>("StallNumber");
+                    b.Property<string>("StallNumber")
+                        .IsRequired();
 
-                    b.Property<int>("Volume");
+                    b.Property<int?>("Volume")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -444,45 +462,64 @@ namespace src.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Association");
+                    b.Property<string>("Association")
+                        .IsRequired();
 
-                    b.Property<string>("Barangay");
+                    b.Property<string>("Barangay")
+                        .IsRequired();
 
-                    b.Property<string>("BirthDate");
+                    b.Property<string>("BirthDate")
+                        .IsRequired();
 
-                    b.Property<string>("ContactNumber");
+                    b.Property<string>("ContactNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Counter");
+                    b.Property<string>("Counter")
+                        .IsRequired();
 
                     b.Property<DateTime>("DateOfApplication");
 
-                    b.Property<int>("EstimatedProduce");
+                    b.Property<int?>("EstimatedProduce")
+                        .IsRequired();
 
-                    b.Property<string>("EstimatedTotalLandArea");
+                    b.Property<string>("EstimatedTotalLandArea")
+                        .IsRequired();
 
-                    b.Property<string>("Harvesting");
+                    b.Property<string>("Harvesting")
+                        .IsRequired();
 
-                    b.Property<int>("IdNumber");
+                    b.Property<int?>("IdNumber")
+                        .IsRequired();
 
-                    b.Property<string>("LandAreaPerCrop");
+                    b.Property<string>("LandAreaPerCrop")
+                        .IsRequired();
 
-                    b.Property<string>("MajorCrops");
+                    b.Property<string>("MajorCrops")
+                        .IsRequired();
 
-                    b.Property<string>("Municipality");
+                    b.Property<string>("Municipality")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("Planting");
+                    b.Property<string>("Planting")
+                        .IsRequired();
 
-                    b.Property<string>("PlateNumber");
+                    b.Property<string>("PlateNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Province");
+                    b.Property<string>("Province")
+                        .IsRequired();
 
-                    b.Property<int>("ReferenceNumber");
+                    b.Property<int?>("ReferenceNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Sitio");
+                    b.Property<string>("Sitio")
+                        .IsRequired();
 
-                    b.Property<string>("SpouseName");
+                    b.Property<string>("SpouseName")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -494,35 +531,49 @@ namespace src.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Barangay");
+                    b.Property<string>("Barangay")
+                        .IsRequired();
 
-                    b.Property<string>("BusinessPermit");
+                    b.Property<string>("BusinessPermit")
+                        .IsRequired();
 
-                    b.Property<string>("ContactNumber");
+                    b.Property<string>("ContactNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Counter");
+                    b.Property<string>("Counter")
+                        .IsRequired();
 
                     b.Property<DateTime>("DateOfApplication");
 
-                    b.Property<string>("Destination");
+                    b.Property<string>("Destination")
+                        .IsRequired();
 
-                    b.Property<int>("IdNumber");
+                    b.Property<int?>("IdNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Municipality");
+                    b.Property<string>("Municipality")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("NameOfAssociation");
+                    b.Property<string>("NameOfAssociation")
+                        .IsRequired();
 
-                    b.Property<string>("NameOfSpouse");
+                    b.Property<string>("NameOfSpouse")
+                        .IsRequired();
 
-                    b.Property<string>("PresentAddress");
+                    b.Property<string>("PresentAddress")
+                        .IsRequired();
 
-                    b.Property<string>("Province");
+                    b.Property<string>("Province")
+                        .IsRequired();
 
-                    b.Property<int>("ReferenceNumber");
+                    b.Property<int?>("ReferenceNumber")
+                        .IsRequired();
 
-                    b.Property<int>("Tin");
+                    b.Property<int?>("Tin")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -536,19 +587,25 @@ namespace src.Migrations
 
                     b.Property<int?>("Code");
 
-                    b.Property<string>("Commodity");
+                    b.Property<string>("Commodity")
+                        .IsRequired();
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("FarmerName");
+                    b.Property<string>("FarmerName")
+                        .IsRequired();
 
-                    b.Property<string>("FarmersOrganization");
+                    b.Property<string>("FarmersOrganization")
+                        .IsRequired();
 
-                    b.Property<string>("Inspector");
+                    b.Property<string>("Inspector")
+                        .IsRequired();
 
-                    b.Property<string>("ProductionArea");
+                    b.Property<string>("ProductionArea")
+                        .IsRequired();
 
-                    b.Property<int>("Volume");
+                    b.Property<int?>("Volume")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -560,39 +617,55 @@ namespace src.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Barangay");
+                    b.Property<string>("Barangay")
+                        .IsRequired();
 
-                    b.Property<string>("BirthDate");
+                    b.Property<string>("BirthDate")
+                        .IsRequired();
 
-                    b.Property<string>("BusinessAddress");
+                    b.Property<string>("BusinessAddress")
+                        .IsRequired();
 
-                    b.Property<string>("BusinessName");
+                    b.Property<string>("BusinessName")
+                        .IsRequired();
 
-                    b.Property<string>("ContactNumber");
+                    b.Property<string>("ContactNumber")
+                        .IsRequired();
 
                     b.Property<DateTime>("DateOfApplication");
 
-                    b.Property<int>("IdNumber");
+                    b.Property<int?>("IdNumber")
+                        .IsRequired();
 
-                    b.Property<string>("MajorCommodity");
+                    b.Property<string>("MajorCommodity")
+                        .IsRequired();
 
-                    b.Property<string>("Municipality");
+                    b.Property<string>("Municipality")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("NameOfAssociation");
+                    b.Property<string>("NameOfAssociation")
+                        .IsRequired();
 
-                    b.Property<string>("NameOfSpouse");
+                    b.Property<string>("NameOfSpouse")
+                        .IsRequired();
 
-                    b.Property<string>("NickName");
+                    b.Property<string>("NickName")
+                        .IsRequired();
 
-                    b.Property<string>("PresentAddress");
+                    b.Property<string>("PresentAddress")
+                        .IsRequired();
 
-                    b.Property<string>("Province");
+                    b.Property<string>("Province")
+                        .IsRequired();
 
-                    b.Property<int>("ReferenceNumber");
+                    b.Property<int?>("ReferenceNumber")
+                        .IsRequired();
 
-                    b.Property<int>("Tin");
+                    b.Property<int?>("Tin")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -646,35 +719,49 @@ namespace src.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Barangay");
+                    b.Property<string>("Barangay")
+                        .IsRequired();
 
-                    b.Property<string>("BirthDate");
+                    b.Property<string>("BirthDate")
+                        .IsRequired();
 
-                    b.Property<string>("ContactNumber");
+                    b.Property<string>("ContactNumber")
+                        .IsRequired();
 
                     b.Property<DateTime>("DateOfApplication");
 
-                    b.Property<int>("IdNumber");
+                    b.Property<int?>("IdNumber")
+                        .IsRequired();
 
-                    b.Property<string>("Municipality");
+                    b.Property<string>("Municipality")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<string>("NameOfAssociation");
+                    b.Property<string>("NameOfAssociation")
+                        .IsRequired();
 
-                    b.Property<string>("NameOfSpouse");
+                    b.Property<string>("NameOfSpouse")
+                        .IsRequired();
 
-                    b.Property<string>("NickName");
+                    b.Property<string>("NickName")
+                        .IsRequired();
 
-                    b.Property<string>("PackerOrPorter");
+                    b.Property<string>("PackerOrPorter")
+                        .IsRequired();
 
-                    b.Property<string>("PresentAddress");
+                    b.Property<string>("PresentAddress")
+                        .IsRequired();
 
-                    b.Property<string>("Province");
+                    b.Property<string>("Province")
+                        .IsRequired();
 
-                    b.Property<string>("ProvincialAddress");
+                    b.Property<string>("ProvincialAddress")
+                        .IsRequired();
 
-                    b.Property<string>("Requirements");
+                    b.Property<string>("Requirements")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -706,15 +793,18 @@ namespace src.Migrations
                     b.Property<Guid>("priceCommodityId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("classVariety");
+                    b.Property<string>("classVariety")
+                        .IsRequired();
 
-                    b.Property<string>("commodity");
+                    b.Property<string>("commodity")
+                        .IsRequired();
 
                     b.Property<DateTime>("commodityDate");
 
                     b.Property<string>("commodityRemarks");
 
-                    b.Property<double>("priceRange");
+                    b.Property<double?>("priceRange")
+                        .IsRequired();
 
                     b.Property<DateTime>("time");
 
@@ -760,21 +850,27 @@ namespace src.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Destination");
+                    b.Property<string>("Destination")
+                        .IsRequired();
 
-                    b.Property<string>("DriverName");
+                    b.Property<string>("DriverName")
+                        .IsRequired();
 
-                    b.Property<string>("Location");
+                    b.Property<string>("Location")
+                        .IsRequired();
 
-                    b.Property<string>("PlateNumber");
+                    b.Property<string>("PlateNumber")
+                        .IsRequired();
 
                     b.Property<string>("Remarks");
 
-                    b.Property<string>("RepairDetails");
+                    b.Property<string>("RepairDetails")
+                        .IsRequired();
 
                     b.Property<int?>("RequestNumber");
 
-                    b.Property<string>("RequesterName");
+                    b.Property<string>("RequesterName")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -810,7 +906,8 @@ namespace src.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Action");
+                    b.Property<string>("Action")
+                        .IsRequired();
 
                     b.Property<DateTime>("Date");
 
@@ -1001,6 +1098,8 @@ namespace src.Migrations
 
                     b.Property<string>("remarks");
 
+                    b.Property<int?>("return");
+
                     b.Property<DateTime?>("timeIn");
 
                     b.Property<DateTime?>("timeOut");
@@ -1012,6 +1111,47 @@ namespace src.Migrations
                     b.HasKey("ticketingId");
 
                     b.ToTable("Ticketing");
+                });
+
+            modelBuilder.Entity("src.Models.TicketingPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<string>("Editor");
+
+                    b.Property<int?>("FarmersTruckDoubleTire")
+                        .IsRequired();
+
+                    b.Property<int?>("FarmersTruckSingleTire")
+                        .IsRequired();
+
+                    b.Property<int?>("PayParkingDaytime")
+                        .IsRequired();
+
+                    b.Property<int?>("PayParkingOvernight")
+                        .IsRequired();
+
+                    b.Property<int?>("ShortTripDelivery")
+                        .IsRequired();
+
+                    b.Property<int?>("ShortTripPickUp")
+                        .IsRequired();
+
+                    b.Property<int?>("StallLeasePrice")
+                        .IsRequired();
+
+                    b.Property<int?>("TradersTruckWithTransaction")
+                        .IsRequired();
+
+                    b.Property<int?>("TradersTruckWithoutTransaction")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicketingPrice");
                 });
 
             modelBuilder.Entity("src.Models.Total", b =>
