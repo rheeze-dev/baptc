@@ -26,17 +26,6 @@ namespace src.Controllers
             _securityService = securityService;
         }
 
-        //public IActionResult SecurityRepairCheck(Guid org)
-        //{
-        //    if (org == Guid.Empty)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-        //    ViewData["org"] = org;
-        //    return View(organization);
-        //}
-
         public async Task <IActionResult> SecurityInspectionReport(Guid org)
         {
             if (org == Guid.Empty)
@@ -53,20 +42,6 @@ namespace src.Controllers
             ViewData["org"] = org;
             return View(organization);
         }
-
-        //public IActionResult AddEditSecurityRepairCheck(Guid org, int id)
-        //{
-        //    if (id == 0)
-        //    {
-        //        SecurityRepairCheck securityRepairCheck = new Models.SecurityRepairCheck();
-        //        //ticketing.ticketingId = org;
-        //        return View(securityRepairCheck);
-        //    }
-        //    else
-        //    {
-        //        return View(_context.SecurityRepairCheck.Where(x => x.Id.Equals(id)).FirstOrDefault());
-        //    }
-        //}
 
         public IActionResult AddEditSecurityInspectionReport(Guid org, int id)
         {

@@ -111,7 +111,6 @@ namespace src.Controllers.Api
                 return Json(new { success = false, message = "Estimated volume cannot be empty!" });
             }
             tradersTruck.EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString());
-
             tradersTruck.ticketingId = id;
             tradersTruck.Inspector = info.FullName;
             _context.TradersTruck.Update(tradersTruck);
@@ -147,7 +146,6 @@ namespace src.Controllers.Api
             }
 
             farmersTruck.Volume = Convert.ToInt32(model["Volume"].ToString());
-
             farmersTruck.ticketingId = id;
             farmersTruck.Inspector = info.FullName;
             _context.FarmersTruck.Update(farmersTruck);
@@ -177,7 +175,6 @@ namespace src.Controllers.Api
             }
 
             shortTrip.EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString());
-
             shortTrip.ticketingId = id;
             shortTrip.Inspector = info.FullName;
             _context.ShortTrip.Update(shortTrip);
@@ -223,7 +220,6 @@ namespace src.Controllers.Api
                 FarmersOrganization = model["FarmersOrganization"].ToString(),
                 Commodity = model["Commodity"].ToString(),
                 Volume = Convert.ToInt32(model["Volume"].ToString()),
-                //Code = Convert.ToInt32(model["Volume"].ToString()),
                 ProductionArea = model["ProductionArea"].ToString()
 
             };

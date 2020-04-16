@@ -17,31 +17,13 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var d = new Date(data["date"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-                    return output;
-                }
-            },
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["timeIn"]);
-            //        var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-            //        var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
-            //        if (data["timeIn"] == null) {
-            //            output = "";
-            //        }
-            //        return spanData + output;
-            //    }
-            //},
-            {
-                "data": function (data) {
-                    var d = new Date(data["date"]);
-                    var output = setClockTime(d);
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     return output;
                 }
             },
             { "data": "location" },
-            { "data": "remarks" },
             { "data": "action" },
+            { "data": "remarks" },
             { "data": "inspector" },
             {
                 "data": function (data) {

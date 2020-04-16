@@ -83,7 +83,7 @@ $(document).ready(function () {
                     //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-hourglass-end' title='Completed'></i></a>";
                     var availedGatePass = "Gate pass";
                     var empty = "";
-                    var btnEdit = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Complete</a>";
+                    var btnEdit = "<a class='btn btn-success btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Complete</a>";
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return empty;
                     }

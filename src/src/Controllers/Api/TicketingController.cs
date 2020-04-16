@@ -264,6 +264,10 @@ namespace src.Controllers.Api
                             TraderName = "",
                             Destination = ""
                         };
+                        if (model["typeOfCar"].ToString() != "With transaction" && model["typeOfCar"].ToString() != "Without transaction")
+                        {
+                            return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                        }
                         _context.TradersTruck.Add(tradersTruck);
                         if (currentTicketing.typeOfTransaction == "Farmer truck")
                         {
@@ -315,6 +319,10 @@ namespace src.Controllers.Api
                             Commodity = "",
                             Barangay = ""
                         };
+                        if (model["typeOfCar"].ToString() != "Single tire" && model["typeOfCar"].ToString() != "Double tire")
+                        {
+                            return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                        }
                         _context.FarmersTruck.Add(farmersTruck);
                         if (currentTicketing.typeOfTransaction == "Trader truck")
                         {
@@ -363,6 +371,10 @@ namespace src.Controllers.Api
                             PlateNumber = ticketing.plateNumber,
                             Commodity = ""
                         };
+                        if (model["typeOfCar"].ToString() != "Pick-up" && model["typeOfCar"].ToString() != "Delivery")
+                        {
+                            return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                        }
                         _context.ShortTrip.Add(shortTrip);
                         if (currentTicketing.typeOfTransaction == "Trader truck")
                         {
@@ -459,6 +471,28 @@ namespace src.Controllers.Api
                             PlateNumber = ticketing.plateNumber,
                             DriverName = ticketing.driverName
                         };
+
+                        StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
+
+                        if (stallLease != null)
+                        {
+                            if (stallLease.EndDate > DateTime.Now)
+                            {
+                                _context.GatePass.Update(gatePass);
+                            }
+                            else
+                            {
+                                return Json(new { success = false, message = "Your gate pass is expired!" });
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { success = false, message = "Vehicle not registered!" });
+                        }
+                        if (model["driverName"].ToString() == "")
+                        {
+                            return Json(new { success = false, message = "Drivers name cannot be empty!" });
+                        }
                         _context.GatePass.Add(gatePass);
                         if (currentTicketing.typeOfTransaction == "Trader truck")
                         {

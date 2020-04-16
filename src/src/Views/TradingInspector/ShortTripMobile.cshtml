@@ -16,21 +16,17 @@
                             <div class="col-md-6">
                                 <a class="btn btn-default btn-sm" style="margin-bottom:10px" href="@Url.Action("TradersTruckMobile","TradingInspector", new { org = Model.organizationId })">Traders <i class="fa fa-mobile-phone"></i></a>
                                 <a class="btn btn-default btn-sm" style="margin-bottom:10px" href="@Url.Action("FarmersTruckMobile","TradingInspector", new { org = Model.organizationId })">Farmers <i class="fa fa-mobile-phone"></i></a>
-                                <a class="btn btn-default btn-sm" style="margin-bottom:10px" href="@Url.Action("ShortTripMobile","TradingInspector", new { org = Model.organizationId })">Short trip <i class="fa fa-mobile-phone"></i></a>
+                                <a class="btn btn-primary btn-sm" style="margin-bottom:10px" href="@Url.Action("ShortTripMobile","TradingInspector", new { org = Model.organizationId })">Short trip <i class="fa fa-mobile-phone"></i></a>
                             </div>
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        @*<th class="col-md-2">Date entered</th>*@
-                                        <th class="col-md-2">Time in</th>
-                                        <th class="col-md-2">Plate number</th>
-                                        @*<th class="col-md-2">Date inspected</th>*@
-                                        <th class="col-md-2">Time inspected</th>
-                                        <th class="col-md-2">Commodity</th>
-                                        <th class="col-md-2">Estimated volume (kg)</th>
-                                        <th class="col-md-2">Inspector</th>
-                                        <th class="col-md-2">Status</th>
-                                        <th class="col-md-2">Action</th>
+                                        <th class="col-md-1">Time in</th>
+                                        <th class="col-md-1">Plate number</th>
+                                        <th class="col-md-1">Time inspected</th>
+                                        <th class="col-md-1">Inspector</th>
+                                        <th class="col-md-1">Status</th>
+                                        <th class="col-md-1">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -55,6 +51,6 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/tradingInspector/shortTrip.js"></script>
+    <script src="~/js/views/tradingInspector/shortTripMobile.js"></script>
 }
 

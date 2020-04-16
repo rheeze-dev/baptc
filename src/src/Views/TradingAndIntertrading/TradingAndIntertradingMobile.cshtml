@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="col-md-6">
-                                <a class="btn btn-default btn-sm" style="margin-bottom:10px" href="@Url.Action("TradingAndIntertradingMobile","TradingAndIntertrading", new { org = Model.organizationId })">Inter-trading <i class="fa fa-mobile-phone"></i></a>
+                                <a class="btn btn-primary btn-sm" style="margin-bottom:10px" href="@Url.Action("TradingAndIntertradingMobile","TradingAndIntertrading", new { org = Model.organizationId })">Inter-trading <i class="fa fa-mobile-phone"></i></a>
                                 <a class="btn btn-default btn-sm" style="margin-bottom:10px" href="@Url.Action("CarrotFacilityMobile","TradingAndIntertrading", new { org = Model.organizationId })">Carrot facility <i class="fa fa-mobile-phone"></i></a>
                                 <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditTradingAndIntertrading","TradingAndIntertrading", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New inter trading</a>
                             </div>
@@ -24,12 +24,8 @@
                                         @*<th class="col-md-1">Date entered</th>*@
                                         <th class="col-md-1">Date</th>
                                         <th class="col-md-1">Farmers name</th>
-                                        <th class="col-md-1">Farmers organization</th>
                                         <th class="col-md-1">Commodity</th>
-                                        <th class="col-md-1">Volume (kg)</th>
-                                        <th class="col-md-1">Production area</th>
                                         <th class="col-md-1">Inspector</th>
-                                        <th class="col-md-1">Code</th>
                                         <th class="col-md-1">Action</th>
                                     </tr>
                                 </thead>
@@ -56,6 +52,6 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/tradingInspector/interTrading.js"></script>
+    <script src="~/js/views/tradingInspector/interTradingMobile.js"></script>
 }
 

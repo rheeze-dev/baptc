@@ -43,7 +43,41 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> TradingAndIntertradingMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingAndInterTrading"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> CarrotFacility(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingAndInterTrading"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> CarrotFacilityMobile(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -75,7 +109,37 @@ namespace src.Controllers
 
         }
 
+        public IActionResult ViewTradingAndIntertradingMobile(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                InterTrading interTrading = new InterTrading();
+                //ticketing.ticketingId = org;
+                return View(interTrading);
+            }
+            else
+            {
+                return View(_context.InterTrading.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
         public IActionResult AddEditCarrotFacility(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                CarrotFacility carrotFacility = new CarrotFacility();
+                //ticketing.ticketingId = org;
+                return View(carrotFacility);
+            }
+            else
+            {
+                return View(_context.CarrotFacility.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult ViewCarrotFacilityMobile(Guid org, int id)
         {
             if (id == 0)
             {
