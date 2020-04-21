@@ -25,13 +25,6 @@ $(document).ready(function () {
                     return spanData + output;
                 }
             },
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["timeIn"]);
-            //        var output = setClockTime(d);
-            //        return output;
-            //    }
-            //},
             {
                 "data": function (data) {
                     var d = new Date(data["timeOut"]);
@@ -43,73 +36,48 @@ $(document).ready(function () {
                     return output;
                 }
             },
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["timeOut"]);
-            //        var output = setClockTime(d);
-            //        if (data["timeOut"] == null) {
-            //            output = "";
-            //        }
-            //        return output;
-            //    }
-            //},
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
-            { "data": "typeOfCar" },
-            { "data": "driverName" },
-            { "data": "remarks" },
             { "data": "count" },
-            { "data": "issuingClerk" },
-            { "data": "receivingClerk" },
-            { "data": "controlNumber" },
-            //{ "data": "gatePassDate" },
-            //{ "data": "priceRange" },
-            //{ "data": "time" },
             {
                 "data": function (data) {
-                    var valid = "<span class='txt-success'>Valid</span>";
-                    var expired = "<label class='txt-info'>Expired</label>";
-                    var completed = "Completed";
-                    var active = "Active";
-                    var endDate = data["endDate"];
-                    var currentDate = new Date();
-                    endDate = new Date(endDate);
-
-                    if (data["timeIn"] != null && data["timeOut"] == null) {
-                        return active;
-                    }
-                    else if (data["timeOut"] != null) {
-                        return completed;
-                    }
-
-                    else if (endDate >= currentDate) {
-                        return valid;
-                    } else {
-                        return expired;
-                    }
-                }
-            },
-            {
-                "data": function (data) {
-                    var empty = "";
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnCount = "<a class='btn btn-default btn-xs btnCount' data-id='" + data["ticketingId"] + "'><i class='fa fa-plus-circle' title='Count'></i></a>";
+                    //var empty = "";
+                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')>Edit</a>";
+                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')>View</a>";
+                    var btnCount = "<a class='btn btn-success btn-xs btnCount' data-id='" + data["ticketingId"] + "'>Count</a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    var outPut = btnEdit + " " + btnCount;
+                    var outPut = btnEdit + " " + btnCount + " " + btnView;
 
                     if (data["timeIn"] != null && data["timeOut"] != null) {
-                        return empty;
+                        return btnView;
                     }
                     else if (data["timeIn"] != null && data["timeOut"] == null) {
                         if (data["typeOfTransaction"] == "Short trip") {
                             return outPut;
                         }
                         else {
-                            return btnEdit;
+                            return btnEdit + " " + btnView;
                         }
                     }
                 }
             }
+            //{
+            //    "data": function (data) {
+            //        var unchecked = "";
+            //        var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/TradingInspector/AddEditFarmersTruck?id=" + data["ticketingId"] + "')>Edit</a>";
+            //        var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/ViewFarmersTruckMobile?id=" + data["ticketingId"] + "')>View</a>";
+
+            //        if (data["dateInspected"] != null) {
+            //            return btnView;
+            //        }
+            //        else if (data["dateInspected"] == null && data["timeOut"] == null) {
+            //            return btnEdit;
+            //        }
+            //        else if (data["dateInspected"] == null && data["timeOut"] != null) {
+            //            return unchecked;
+            //        }
+            //    }
+            //}
         ],
         "language": {
             "emptyTable": "no data found."

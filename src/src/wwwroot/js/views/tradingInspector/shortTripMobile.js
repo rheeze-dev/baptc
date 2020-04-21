@@ -51,7 +51,7 @@ $(document).ready(function () {
                 "data": function (data) {
                     var unchecked = "";
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["ticketingId"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/ViewShortTripMobile?id=" + data["ticketingId"] + "')>View</a>";
+                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["ticketingId"] + "')>View</a>";
 
                     if (data["dateInspected"] != null) {
                         return btnView;

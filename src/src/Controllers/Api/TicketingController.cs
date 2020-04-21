@@ -46,7 +46,7 @@ namespace src.Controllers.Api
             var ticketing = _context.Ticketing.OrderBy(x => x.timeIn).ToList();
             return Json(new { data = ticketing });
         }
-    
+
         // GET: api/Ticketing/GetGatePass
         [HttpGet("GetGatePass")]
         public IActionResult GetGatePass([FromRoute]Guid organizationId)
@@ -1578,13 +1578,13 @@ namespace src.Controllers.Api
         {
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
 
-            if (ticketing.@return == null)
+            if (ticketing.count == null)
             {
-                ticketing.@return = 1;
+                ticketing.count = 1;
             }
-            else if (ticketing.@return != null)
+            else if (ticketing.count != null)
             {
-                ticketing.@return = ticketing.@return.Value + 1;
+                ticketing.count = ticketing.count.Value + 1;
             }
 
 

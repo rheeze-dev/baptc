@@ -1,0 +1,489 @@
+﻿@model IEnumerable<src.Models.Organization>
+@inject UserManager<ApplicationUser> UserManager
+@inject src.Data.ApplicationDbContext Context
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminlteWallpaperMobile.cshtml";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
+    Guid cust = Guid.Empty;
+    if (appUser.IsCustomer)
+    {
+        Contact contact = Context.Contact.Where(x => x.applicationUserId.Equals(appUser.Id)).FirstOrDefault();
+        Customer customer = (contact != null) ? Context.Customer.Where(x => x.customerId.Equals(contact.customerId)).FirstOrDefault() : null;
+        cust = (customer != null) ? customer.customerId : Guid.Empty;
+    }
+    var selectedRoles = Context.ApplicationUser.Where(x => x.UserId.Equals(appUser.UserId)).FirstOrDefault();
+    var selectedModules = Context.Role.Where(x => x.Name.Equals(selectedRoles.RoleId)).Select(m => m.Module).FirstOrDefault();
+    string[] listSelectedModule = selectedModules.Split(",");
+    //string[] addedModule = new string[] { };
+    string[] addedModule = string.IsNullOrEmpty(selectedRoles.Modules) ? new string[] { } : selectedRoles.Modules.Split(",");
+    //if (!string.IsNullOrEmpty(selectedRoles.Modules))
+    //{
+    //    addedModule = selectedRoles.Modules.Split(",");
+    //}
+    var listModule = listSelectedModule.Union(addedModule);
+}
+
+<div class="content">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            if (listModule.Contains(""))
+            {
+
+            }
+
+            if (listModule.Contains("Ticketing"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Ticketing</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("TicketingInMobile", "Ticketing", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("TradingInspector"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Trading Inspector</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="@Url.Action("TradersTruckMobile", "TradingInspector", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("Security"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Security</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("SecurityInspectionReportMobile", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+        }
+        @*</div>
+
+        <div class="row">*@
+        @foreach (var item in Model)
+        {
+            if (listModule.Contains("Repair"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Repair</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("VehicleRepairMobile", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("HumanResource"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Human Resource</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("HumanResourceMobile", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("PriceCommodities"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Price Commodities</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("PriceMobile", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("Accreditation"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Accreditation</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("InterTradersMobile", "Accreditation", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("TradingAndInterTrading"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Trading And Inter-trading</h4>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("TradingAndIntertradingMobile", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("GovernanceAndPolicies"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Governance And Policies</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("GovernanceAndPoliciesMobile", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+
+        }
+        @*</div>*@
+
+
+        @*<div class="row">*@
+        @foreach (var item in Model)
+        {
+            if (listModule.Contains("InstitutionalDevelopmentAndExtensionServicesUnit"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Institutional Development & Extension Services Unit</h4>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnitMobile", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("ResearchDevelopmentAndExtension"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Research Development And Extension</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("ResearchDevelopmentAndExtensionMobile", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            @*if (listModule.Contains("Finance"))
+            {
+                <div class="col-lg-4">
+                     small box 
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Finance</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        @if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+
+                    </div>
+                </div>
+            }*@
+
+
+        }
+        @*</div>
+
+        <div class="row">*@
+        @foreach (var item in Model)
+        {
+            if (listModule.Contains("Admin"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Admin</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("AdminMobile", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("AssetsAndAmenitiesManagementUnit"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Assets & Amenities Management Unit</h4>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("AssetsAmenitiesManagementUnitMobile", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+            if (listModule.Contains("Reports"))
+            {
+                if (listModule.Contains("Ticketing"))
+                {
+                    <div class="col-lg-4" id="btn-Ticketing">
+                        <!-- small box -->
+
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            @*<a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>*@
+                            <a href="@Url.Action("TicketingReportsMobile", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        </div>
+                    </div>
+                }
+
+                else if (listModule.Contains("TradingInspector"))
+                {
+                    <div class="col-lg-4" id="btn-Trading">
+                        <!-- small box -->
+
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            @*<a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>*@
+                            <a href="@Url.Action("TradersTruckReportsMobile", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        </div>
+                    </div>
+                }
+
+                else if (listModule.Contains("TradingAndInterTrading"))
+                {
+                    <div class="col-lg-4" id="btn-InterTrading">
+                        <!-- small box -->
+
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            @*<a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>*@
+                            <a href="@Url.Action("InterTradingReportsMobile", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        </div>
+                    </div>
+                }
+
+                else if (listModule.Contains("Security"))
+                {
+                    <div class="col-lg-4" id="btn-Security">
+                        <!-- small box -->
+
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            @*<a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>*@
+                            <a href="@Url.Action("SecurityReportsMobile", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        </div>
+                    </div>
+                }
+
+                else if (listModule.Contains("Repair"))
+                {
+                    <div class="col-lg-4" id="btn-Repair">
+                        <!-- small box -->
+
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            @*<a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>*@
+                            <a href="@Url.Action("RepairReportsMobile", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        </div>
+                    </div>
+                }
+
+                else if (listModule.Contains("PriceCommodities"))
+                {
+                    <div class="col-lg-4" id="btn-Price">
+                        <!-- small box -->
+
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            @*<a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>*@
+                            <a href="@Url.Action("PriceCommodityReportsMobile", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        </div>
+                    </div>
+                }
+
+                else if (listModule.Contains("Accreditation"))
+                {
+                    <div class="col-lg-4" id="btn-Accreditation">
+                        <!-- small box -->
+
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            @*<a href="@Url.Action("TicketingReports", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>*@
+                            <a href="@Url.Action("AccreditationReportsMobile", "Reports", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        </div>
+                    </div>
+                }
+
+            }
+
+            if (listModule.Contains("Settings"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Settings</h4>
+
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("UserRolesMobile", "Settings", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                    </div>
+                </div>
+            }
+
+        }
+    </div>
+</div>
+
+
+
+
+

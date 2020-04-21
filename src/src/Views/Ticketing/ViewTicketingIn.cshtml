@@ -1,0 +1,130 @@
+﻿@model src.Models.Ticketing
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">View Data</h4>
+</div>
+
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ticketingId" />
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="timeIn">Time in: </label>
+                <label class="text-warning">@Model.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="timeOut">Time out: </label>
+                    <label class="text-warning">@if (Model.timeOut.Equals(null)) {
+                        ;
+                    }
+                    else if (!Model.timeOut.Value.Equals(null))
+                    {
+                        @Model.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt");
+                    }
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="plateNumber">Plate number: </label>
+                <label class="text-warning">@Model.plateNumber</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="driverName">Drivers name: </label>
+                    <label class="text-warning">@Model.driverName</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="typeOfTransaction">Type of transaction: </label>
+                    <label class="text-warning">@Model.typeOfTransaction</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="typeOfCar">Type of car: </label>
+                    <label class="text-warning">@Model.typeOfCar</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="controlNumber">Control number: </label>
+                    <label class="text-warning">@Model.controlNumber</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="remarks">Remarks: </label>
+                    <label class="text-warning">@Model.remarks</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="amount">Amount: </label>
+                    <label class="text-warning">@Model.amount</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="count">Count: </label>
+                    <label class="text-warning">@Model.count</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="issuingClerk">Issuing clerk: </label>
+                    <label class="text-warning">@Model.issuingClerk</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="receivingClerk">Receiving clerk: </label>
+                    <label class="text-warning">@Model.receivingClerk</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+
+
+

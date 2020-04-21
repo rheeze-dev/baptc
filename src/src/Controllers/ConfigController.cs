@@ -84,6 +84,36 @@ namespace src.Controllers
 
         }
 
+        public async Task<IActionResult> IndexMobile()
+        {
+            var info = await _userManager.GetUserAsync(User);
+            if (!this.IsHaveEnoughAccessRight())
+            {
+                return NotFound();
+            }
+
+            var roleId = _context.UserRole.OrderByDescending(x => x.RoleId).Select(x => x.RoleId).FirstOrDefault();
+
+            if (roleId == null)
+            {
+                return NotFound();
+            }
+
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+   
+            if (appUser.IsSuperAdmin)
+            {
+                var orgList = _context.Organization.Where(x => x.organizationOwnerId.Equals(appUser.Id)).ToList();
+
+                return View(orgList);
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
         public async Task<IActionResult> Organization()
         {
             ApplicationUser appUser = await _userManager.GetUserAsync(User);

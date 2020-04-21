@@ -35,7 +35,7 @@ namespace src.Models
 
         public int? amount { get; set; }
 
-        public int? @return { get; set; }
+        public int? count { get; set; }
 
         public string remarks { get; set; }
 

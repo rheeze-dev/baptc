@@ -71,6 +71,49 @@
         .main-header .sidebar-toggle {
             padding: 18px 18px !important;
         }
+
+        .content-wrapper, .main-footer {
+            margin-left: unset !important;
+        }
+
+        .main-header .header {
+            /*-webkit-transition: width .3s ease-in-out;
+            -o-transition: width .3s ease-in-out;
+            transition: width .3s ease-in-out;*/
+            /*display: inline;*/
+            float: left;
+            /*height: 50px;*/
+            /*font-size: 20px;*/
+            line-height: 50px;
+            /*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;*/
+            padding: 0 15px;
+            /*font-weight: 300;*/
+            /*overflow: hidden;*/
+        }
+
+        .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+            color: #fff;
+            background-color: grey;
+            border-color: gray;
+        }
+
+        .btn-lg, .btn-group-lg > .btn {
+            padding: 10px 16px;
+            font-size: 14px;
+            line-height: 1.3333333;
+            border-radius: 6px;
+        }
+
+        .main-header .navbar {
+            -webkit-transition: margin-left .3s ease-in-out;
+            -o-transition: margin-left .3s ease-in-out;
+            transition: margin-left .3s ease-in-out;
+            margin-bottom: 0;
+            margin-left: 0;
+            border: none;
+            min-height: 50px;
+            border-radius: 0;
+        }
     </style>
 
 </head>
@@ -79,31 +122,27 @@
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->
-            @Html.Partial("_Logo")
+            @*@Html.Partial("_LogoMobile")*@
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
+                <a class="header btn-primary btn-lg" href="@Url.Action("IndexMobile","Config", new { org = org })" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; font-size: 20px; text-align: center; width: 230px; background-color: #e08e0b;"><b>BAPTC</b></a>
+
                 <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
 
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        @*<li class="dropdown user user-menu">
+                        <li class="dropdown user user-menu">
                             <a href="@Url.Action("Index", "Config", new { org = org })">
                                 <i class="fa fa-laptop"></i>
                                 <span class="hidden-xs"><b>Desktop</b></span>
                             </a>
-                        </li>*@
-                        <li class="dropdown user user-menu">
-                            <a href="@Url.Action("IndexMobile", "Config", new { org = org })">
-                                <i class="fa fa-mobile-phone"></i>
-                                <span class="hidden-xs"><b>Mobile</b></span>
-                            </a>
                         </li>
+                        @*<li class="dropdown user user-menu">
+                    <a href="@Url.Action("IndexMobile", "Config", new { org = org })">
+                        <i class="fa fa-mobile-phone"></i>
+                        <span class="hidden-xs"><b>Mobile</b></span>
+                    </a>
+                </li>*@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-picture-o"></i>
@@ -136,15 +175,7 @@
         </header>
         <!-- =============================================== -->
         <!-- Left side column. contains the sidebar -->
-        <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">
-                <!-- Sidebar user panel -->
-                @Html.Partial("_UserPanel");
 
-            </section>
-            <!-- /.sidebar -->
-        </aside>
         <!-- =============================================== -->
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper" style="background-image: url(@wallpaperPicture); background-repeat: no-repeat; background-size: 100% 100%;">

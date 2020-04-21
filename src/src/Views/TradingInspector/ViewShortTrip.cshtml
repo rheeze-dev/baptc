@@ -1,0 +1,87 @@
+﻿@model src.Models.ShortTrip
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">View Data</h4>
+</div>
+
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ticketingId" />
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="TimeIn">Time in: </label>
+                <label class="text-warning">@Model.TimeIn.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="DateInspected">Time inspected: </label>
+                    <label class="text-warning">
+                        @if (Model.DateInspected.Equals(null))
+                        {
+                            ;
+                        }
+                        else if (!Model.DateInspected.Value.Equals(null))
+                        {
+                            @Model.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt");
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="PlateNumber">Plate number: </label>
+                <label class="text-warning">@Model.PlateNumber</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Commodity">Commodity: </label>
+                    <label class="text-warning">@Model.Commodity</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="EstimatedVolume">Estimated volume: </label>
+                    <label class="text-warning">@Model.EstimatedVolume</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Inspector">Inspector: </label>
+                    <label class="text-warning">@Model.Inspector</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+
+
+

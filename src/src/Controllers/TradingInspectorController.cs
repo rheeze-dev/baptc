@@ -160,7 +160,7 @@ namespace src.Controllers
 
         }
 
-        public IActionResult ViewTradersTruckMobile(Guid org, Guid id)
+        public IActionResult ViewTradersTruck(Guid org, Guid id)
         {
             if (id == Guid.Empty)
             {
@@ -190,7 +190,7 @@ namespace src.Controllers
 
         }
 
-        public IActionResult ViewFarmersTruckMobile(Guid org, Guid id)
+        public IActionResult ViewFarmersTruck(Guid org, Guid id)
         {
             if (id == Guid.Empty)
             {
@@ -219,7 +219,7 @@ namespace src.Controllers
             }
         }
 
-        public IActionResult ViewShortTripMobile(Guid org, Guid id)
+        public IActionResult ViewShortTrip(Guid org, Guid id)
         {
             if (id == Guid.Empty)
             {

@@ -42,7 +42,41 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> TicketingOutMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> TicketingIn(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> TicketingInMobile(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -76,7 +110,39 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> GatePassMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public IActionResult AddEditIn(Guid org, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                Ticketing ticketing = new Ticketing();
+                //ticketing.ticketingId = org;
+                return View(ticketing);
+            }
+            else
+            {
+                return View(_context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult ViewTicketingIn(Guid org, Guid id)
         {
             if (id == Guid.Empty)
             {
