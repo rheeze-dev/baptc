@@ -15,8 +15,6 @@
                         <div class="col-lg-12">
                             @*<input type="hidden" asp-for="@Model.UserId" />*@
                             <div class="col-md-6">
-                                <a class="btn btn-default btn-sm" style="margin-bottom:10px" href="@Url.Action("TradingAndIntertradingMobile","TradingAndIntertrading", new { org = Model.organizationId })">Inter-trading <i class="fa fa-mobile-phone"></i></a>
-                                <a class="btn btn-default btn-sm" style="margin-bottom:10px" href="@Url.Action("CarrotFacilityMobile","TradingAndIntertrading", new { org = Model.organizationId })">Carrot facility <i class="fa fa-mobile-phone"></i></a>
                                 <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditCarrotFacility","TradingAndIntertrading", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New carrot facility</a>
                             </div>
                             <table id="grid" name="grid" class="table table-striped table-bordered">

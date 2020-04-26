@@ -1533,10 +1533,11 @@ namespace src.Controllers.Api
                 amount = ticketing.amount.Value,
             };
             ticketing.receivingClerk = info.FullName;
+            var amount = ticketing.amount;
             _context.Total.Add(total);
             _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
-            return Json(new { success = true, message = "Successfully Saved!" });
+            return Json(new { success = true, message = "Your payment amount is " + amount });
         }
 
         // POST: api/Ticketing/ExtendGatePass

@@ -109,7 +109,7 @@ namespace src.Controllers
 
         }
 
-        public IActionResult ViewTradingAndIntertradingMobile(Guid org, int id)
+        public IActionResult ViewTradingAndIntertrading(Guid org, int id)
         {
             if (id == 0)
             {
@@ -139,7 +139,7 @@ namespace src.Controllers
 
         }
 
-        public IActionResult ViewCarrotFacilityMobile(Guid org, int id)
+        public IActionResult ViewCarrotFacility(Guid org, int id)
         {
             if (id == 0)
             {

@@ -1,7 +1,7 @@
 ﻿@model src.Models.Organization
 @{
-    ViewData["Title"] = "Inter Trading";
-    Layout = "_LayoutAdminlteTradingAndIntertradingMobile";
+    ViewData["Title"] = "Price Commodity";
+    Layout = "_LayoutAdminltePriceCommodityMobile";
 }
 
 <!-- Content Header (Page header) -->
@@ -14,16 +14,17 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="col-md-6">
-                                <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditCarrotFacility","TradingAndIntertrading", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New carrot facility</a>
+                                <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditPrice","PriceCommodity", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New price</a>
                             </div>
+                            <input type="hidden" asp-for="@Model.organizationId" />
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th class="col-md-1">Date</th>
-                                        <th class="col-md-1">Stall number</th>
-                                        <th class="col-md-1">Facilitator</th>
+                                        <th class="col-md-1">Class variety</th>
                                         <th class="col-md-1">Commodity</th>
-                                        <th class="col-md-1">Inspector</th>
+                                        <th class="col-md-1">Commodity remarks</th>
+                                        <th class="col-md-1">Price range</th>
                                         <th class="col-md-1">Action</th>
                                     </tr>
                                 </thead>
@@ -48,8 +49,10 @@
     </div>
 </div>
 
+
+
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/tradingInspector/carrotFacilityMobile.js"></script>
+    <script src="~/js/views/priceCommodity/indexMobile.js"></script>
 }
 

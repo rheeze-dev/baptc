@@ -14,6 +14,13 @@ namespace src.MVC
             public const string Action = "Index";
         }
 
+        public static class ConfigIndexMobile
+        {
+            public const string FullUrl = "/Config/IndexMobile";
+            public const string Controller = "Config";
+            public const string Action = "IndexMobile";
+        }
+
         public static class ConfigOrganization
         {
             public const string FullUrl = "/Config/Organization";

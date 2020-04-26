@@ -43,7 +43,38 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> SecurityInspectionReportMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Security"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public IActionResult AddEditSecurityInspectionReport(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                SecurityInspectionReport securityInspectionReport = new SecurityInspectionReport();
+                //ticketing.ticketingId = org;
+                return View(securityInspectionReport);
+            }
+            else
+            {
+                return View(_context.SecurityInspectionReport.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+        }
+
+        public IActionResult ViewSecurityInspectionReport(Guid org, int id)
         {
             if (id == 0)
             {

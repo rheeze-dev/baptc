@@ -54,6 +54,23 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> RolesMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> UserRoles(Guid org)
         {
             ApplicationUser appUser = await _userManager.GetUserAsync(User);
@@ -67,7 +84,37 @@ namespace src.Controllers
             return View(appUser);
         }
 
+        public async Task<IActionResult> UserRolesMobile(Guid org)
+        {
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(appUser);
+        }
+
         public async Task<IActionResult> TicketingPrice(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> TicketingPriceMobile(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -99,6 +146,21 @@ namespace src.Controllers
 
         }
 
+        public IActionResult ViewTicketingPrice(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                TicketingPrice ticketingPrice = new TicketingPrice();
+                //ticketing.ticketingId = org;
+                return View(ticketingPrice);
+            }
+            else
+            {
+                return View(_context.TicketingPrice.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
         public IActionResult AddEditRoles(Guid org, int id)
         {
             if (id == 0)
@@ -114,7 +176,37 @@ namespace src.Controllers
 
         }
 
+        public IActionResult ViewRoles(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Roles roles = new Roles();
+                //ticketing.ticketingId = org;
+                return View(roles);
+            }
+            else
+            {
+                return View(_context.Role.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
         public IActionResult ConfigRoles(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Roles roles = new Roles();
+                //ticketing.ticketingId = org;
+                return View(roles);
+            }
+            else
+            {
+                return View(_context.Role.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult ConfigRolesMobile(Guid org, int id)
         {
             if (id == 0)
             {
@@ -152,14 +244,28 @@ namespace src.Controllers
 
         }
 
-        //public IActionResult ConfigUserRoles(int userId)
-        //{
-        //    //ApplicationUser appUser = await _userManager.GetUserAsync(User);
-        //    //Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-        //    //ViewData["org"] = org;
-        //    //ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId == userId).FirstOrDefault();
-        //    return View(_context.ApplicationUser.Where(x => x.UserId == userId).FirstOrDefault());
-        //}
+        public IActionResult ConfigUserRolesMobile(Guid org, int userId)
+        {
+            if (userId == 0)
+            {
+                ApplicationUser userRoles = new ApplicationUser();
+                //ticketing.ticketingId = org;
+                return View(userRoles);
+            }
+            else
+            {
+                ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+                //UserRole userRole = new UserRole();
+                UserRole userRole = _context.UserRole.Where(x => x.UserId == userId).FirstOrDefault();
+                if (userRole == null)
+                {
+                    userRole = new UserRole();
+                }
+                var TubleList = new Tuple<ApplicationUser, UserRole>(applicationUser, userRole);
+                return View(TubleList);
+            }
+
+        }
 
     }
 }

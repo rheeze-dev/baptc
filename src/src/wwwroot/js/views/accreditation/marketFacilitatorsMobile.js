@@ -1,5 +1,5 @@
 ﻿var popup, dataTable;
-var entity = 'Inspector';
+var entity = 'Accreditation';
 var apiurl = '/api/' + entity;
 
 $(document).ready(function () {
@@ -7,7 +7,7 @@ $(document).ready(function () {
     //var organizationId = $('#organizationId').val();
     dataTable = $('#grid').DataTable({
         "ajax": {
-            "url": apiurl + '/GetInterTrading',
+            "url": apiurl + '/GetMarketFacilitators',
             "type": 'GET',
             "datatype": 'json'
         },
@@ -15,23 +15,21 @@ $(document).ready(function () {
         "columns": [
             {
                 "data": function (data) {
-                    var d = new Date(data["date"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-                    var spanData = "<span style = 'display:none;'> " + data["date"] + "</span>";
-                    return spanData + output;
+                    var d = new Date(data["dateOfApplication"]);
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    return output;
                 }
             },
-            { "data": "farmerName" },
-            { "data": "farmersOrganization" },
-            { "data": "commodity" },
-            { "data": "inspector" },
+            { "data": "businessName" },
+            { "data": "presentAddress" },
+            { "data": "contactNumber" },
+            { "data": "majorCommodity" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditTradingAndIntertrading?id=" + data["id"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/ViewTradingAndIntertrading?id=" + data["id"] + "')>View</a>";
-                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    var outPut = btnEdit + " " + btnView;
-                    return outPut;
+                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Accreditation/AddEditMarketFacilitators?id=" + data["id"] + "')>Edit</a>";
+                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/ViewMarketFacilitators?id=" + data["id"] + "')>View</a>";
+                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')>Delete</a>";
+                    return btnEdit + " " + btnView + btnDelete;
                 }
             }
         ],
@@ -42,7 +40,8 @@ $(document).ready(function () {
     });
 });
 const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
+    "July", "August", "September", "October", "November", "December"
+];
 function setClockTime(d) {
     var h = d.getHours();
     var m = d.getMinutes();
@@ -81,7 +80,7 @@ function SubmitAddEdit(form) {
         //return true;
         $.ajax({
             type: 'POST',
-            url: "/api/Inspector/PostInterTrading",
+            url: "/api/Accreditation/PostMarketFacilitators",
             //url: '/PriceCommodity/PostPriceCommodity',
             data: data,
             contentType: 'application/json',
@@ -112,7 +111,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/InterTrading/' + id,
+            url: apiurl + '/DeleteMarketFacilitators/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

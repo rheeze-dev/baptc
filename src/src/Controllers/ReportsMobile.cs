@@ -10,14 +10,14 @@ using src.Services;
 
 namespace src.Controllers
 {
-    public class AccreditationController : Controller
+    public class ReportsMobileController : Controller
     {
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ISecurityService _securityService;
 
-        public AccreditationController(ApplicationDbContext context,
+        public ReportsMobileController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             ISecurityService securityService)
         {
@@ -26,7 +26,194 @@ namespace src.Controllers
             _securityService = securityService;
         }
 
-        public async Task<IActionResult> InterTraders(Guid org)
+        public async Task<IActionResult> TicketingReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> TotalReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> StallLeaserReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> TradersTruckReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingInspector"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> FarmersTruckReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingInspector"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> ShortTripReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingInspector"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> InterTradingReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingAndInterTrading"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> CarrotFacilityReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("TradingAndInterTrading"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> SecurityReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Security"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> RepairReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Repair"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> PriceCommodityReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("PriceCommodities"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> AccreditationReports(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -43,7 +230,7 @@ namespace src.Controllers
             return View(organization);
         }
 
-        public async Task<IActionResult> InterTradersMobile(Guid org)
+        public async Task<IActionResult> SettingsReports(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -51,7 +238,7 @@ namespace src.Controllers
             }
             ApplicationUser appUser = await _userManager.GetUserAsync(User);
             var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
+            if (!listModule.Contains("Settings"))
             {
                 return NotFound();
             }
@@ -59,292 +246,5 @@ namespace src.Controllers
             ViewData["org"] = org;
             return View(organization);
         }
-
-        public async Task<IActionResult> PackersAndPorters(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public async Task<IActionResult> PackersAndPortersMobile(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public async Task<IActionResult> Buyers(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public async Task<IActionResult> BuyersMobile(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public async Task<IActionResult> MarketFacilitators(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public async Task<IActionResult> MarketFacilitatorsMobile(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public async Task<IActionResult> IndividualFarmers(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public async Task<IActionResult> IndividualFarmersMobile(Guid org)
-        {
-            if (org == Guid.Empty)
-            {
-                return NotFound();
-            }
-            ApplicationUser appUser = await _userManager.GetUserAsync(User);
-            var listModule = _securityService.ListModule(appUser);
-            if (!listModule.Contains("Accreditation"))
-            {
-                return NotFound();
-            }
-            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
-            ViewData["org"] = org;
-            return View(organization);
-        }
-
-        public IActionResult AddEditInterTraders(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                InterTraders interTraders = new InterTraders();
-                //ticketing.ticketingId = org;
-                return View(interTraders);
-            }
-            else
-            {
-                return View(_context.AccreditedInterTraders.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult ViewInterTraders(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                InterTraders interTraders = new InterTraders();
-                //ticketing.ticketingId = org;
-                return View(interTraders);
-            }
-            else
-            {
-                return View(_context.AccreditedInterTraders.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult AddEditPackersAndPorters(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                PackersAndPorters packersAndPorters = new PackersAndPorters();
-                //ticketing.ticketingId = org;
-                return View(packersAndPorters);
-            }
-            else
-            {
-                return View(_context.AccreditedPackersAndPorters.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult ViewPackersAndPorters(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                PackersAndPorters packersAndPorters = new PackersAndPorters();
-                //ticketing.ticketingId = org;
-                return View(packersAndPorters);
-            }
-            else
-            {
-                return View(_context.AccreditedPackersAndPorters.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult AddEditBuyers(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                Buyers buyers = new Buyers();
-                //ticketing.ticketingId = org;
-                return View(buyers);
-            }
-            else
-            {
-                return View(_context.AccreditedBuyers.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult ViewBuyers(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                Buyers buyers = new Buyers();
-                //ticketing.ticketingId = org;
-                return View(buyers);
-            }
-            else
-            {
-                return View(_context.AccreditedBuyers.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult AddEditMarketFacilitators(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                MarketFacilitators marketFacilitators = new MarketFacilitators();
-                //ticketing.ticketingId = org;
-                return View(marketFacilitators);
-            }
-            else
-            {
-                return View(_context.AccreditedMarketFacilitators.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult ViewMarketFacilitators(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                MarketFacilitators marketFacilitators = new MarketFacilitators();
-                //ticketing.ticketingId = org;
-                return View(marketFacilitators);
-            }
-            else
-            {
-                return View(_context.AccreditedMarketFacilitators.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult AddEditIndividualFarmers(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                IndividualFarmers individualFarmers = new IndividualFarmers();
-                //ticketing.ticketingId = org;
-                return View(individualFarmers);
-            }
-            else
-            {
-                return View(_context.AccreditedIndividualFarmers.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
-        public IActionResult ViewIndividualFarmers(Guid org, int id)
-        {
-            if (id == 0)
-            {
-                IndividualFarmers individualFarmers = new IndividualFarmers();
-                //ticketing.ticketingId = org;
-                return View(individualFarmers);
-            }
-            else
-            {
-                return View(_context.AccreditedIndividualFarmers.Where(x => x.Id.Equals(id)).FirstOrDefault());
-            }
-
-        }
-
     }
 }

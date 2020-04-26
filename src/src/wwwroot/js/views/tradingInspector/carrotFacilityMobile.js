@@ -21,12 +21,13 @@ $(document).ready(function () {
                 }
             },
             { "data": "stallNumber" },
+            { "data": "facilitator" },
             { "data": "commodity" },
             { "data": "inspector" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditCarrotFacility?id=" + data["id"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/ViewCarrotFacilityMobile?id=" + data["id"] + "')>View</a>";
+                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/ViewCarrotFacility?id=" + data["id"] + "')>View</a>";
                     var output = btnEdit + " " + btnView;
                     if (data["date"] != null) {
                         return output;

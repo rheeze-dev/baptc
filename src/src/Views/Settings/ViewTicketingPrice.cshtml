@@ -1,0 +1,115 @@
+﻿@model src.Models.TicketingPrice
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">View Data</h4>
+</div>
+
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-lg-12 form-group">
+                <label asp-for="DateAdded">Date added: </label>
+                <label class="text-warning">@Model.DateAdded.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="TradersTruckWithTransaction">Traders with transaction: </label>
+                <label class="text-warning">@Model.TradersTruckWithTransaction</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="TradersTruckWithoutTransaction">Traders without transaction: </label>
+                    <label class="text-warning">@Model.TradersTruckWithoutTransaction</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="FarmersTruckSingleTire">Farmers single tire: </label>
+                <label class="text-warning">@Model.FarmersTruckSingleTire</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="FarmersTruckDoubleTire">Farmers double tire: </label>
+                    <label class="text-warning">@Model.FarmersTruckDoubleTire</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="ShortTripPickUp">Short trip pick-up: </label>
+                    <label class="text-warning">@Model.ShortTripPickUp</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="ShortTripDelivery">Short trip delivery: </label>
+                    <label class="text-warning">@Model.ShortTripDelivery</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="PayParkingDaytime">Pay parking daytime: </label>
+                    <label class="text-warning">@Model.PayParkingDaytime</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="PayParkingOvernight">Pay parking overnight: </label>
+                    <label class="text-warning">@Model.PayParkingOvernight</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="StallLeasePrice">Gatepass: </label>
+                    <label class="text-warning">@Model.StallLeasePrice</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Editor">Editor: </label>
+                    <label class="text-warning">@Model.Editor</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+
+
+

@@ -1,0 +1,136 @@
+﻿@model src.Models.IndividualFarmers
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">View Data</h4>
+</div>
+
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="DateOfApplication">Date: </label>
+                <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Sitio">Sitio: </label>
+                <label class="text-warning">@Model.Sitio</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="Barangay">Barangay: </label>
+                <label class="text-warning">@Model.Barangay</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Municipality">Municipality: </label>
+                    <label class="text-warning">@Model.Municipality</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Province">Province: </label>
+                    <label class="text-warning">@Model.Province</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="ContactNumber">Contact number: </label>
+                    <label class="text-warning">@Model.ContactNumber</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="BirthDate">Birthdate: </label>
+                    <label class="text-warning">@Model.BirthDate</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="PlateNumber">Plate number: </label>
+                    <label class="text-warning">@Model.PlateNumber</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="EstimatedTotalLandArea">Estimated land: </label>
+                    <label class="text-warning">@Model.EstimatedTotalLandArea</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="MajorCrops">Major crops: </label>
+                    <label class="text-warning">@Model.MajorCrops</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="LandAreaPerCrop">Land area per crop: </label>
+                    <label class="text-warning">@Model.LandAreaPerCrop</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="EstimatedProduce">Estimated produce: </label>
+                    <label class="text-warning">@Model.EstimatedProduce</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Planting">Planting: </label>
+                    <label class="text-warning">@Model.Planting</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Harvesting">Harvesting: </label>
+                    <label class="text-warning">@Model.Harvesting</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+
+
+

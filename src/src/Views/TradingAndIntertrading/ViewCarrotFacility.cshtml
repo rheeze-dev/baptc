@@ -1,0 +1,91 @@
+﻿@model src.Models.CarrotFacility
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">View Data</h4>
+</div>
+
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="Date">Date: </label>
+                <label class="text-warning">@Model.Date.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="StallNumber">Stall number: </label>
+                <label class="text-warning">@Model.StallNumber</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="Facilitator">Facilitator: </label>
+                <label class="text-warning">@Model.Facilitator</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Commodity">Commodity: </label>
+                    <label class="text-warning">@Model.Commodity</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Volume">Volume: </label>
+                    <label class="text-warning">@Model.Volume</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Destination">Destination: </label>
+                    <label class="text-warning">@Model.Destination</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Inspector">Inspector: </label>
+                    <label class="text-warning">@Model.Inspector</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Code">Code: </label>
+                    <label class="text-warning">@Model.Code</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+
+
+

@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject src.Data.ApplicationDbContext Context
+@{
+    var org = ViewData["org"];
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
+    var fullName = appUser != null ? appUser.FullName : "Untitled";
+    var profilePicture = appUser != null ? appUser.ProfilePictureUrl : "#";
+    var organization = Context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+    var organizationName = organization != null ? organization.organizationName : "Undefined";
+    var customerName = "";
+    Guid cust;
+    if (appUser.IsCustomer)
+    {
+        cust = (Guid)ViewData["cust"];
+        var customer = Context.Customer.Where(x => x.customerId.Equals(cust)).FirstOrDefault();
+        customerName = (customer != null) ? customer.customerName : "Undefined";
+
+    }
+    var selectedRoles = Context.ApplicationUser.Where(x => x.UserId.Equals(appUser.UserId)).FirstOrDefault();
+    var selectedModules = Context.Role.Where(x => x.Name.Equals(selectedRoles.RoleId)).Select(m => m.Module).FirstOrDefault();
+    string[] listSelectedModule = selectedModules.Split(",");
+    //string[] addedModule = new string[] { };
+    string[] addedModule = string.IsNullOrEmpty(selectedRoles.Modules) ? new string[] { } : selectedRoles.Modules.Split(",");
+    //if (!string.IsNullOrEmpty(selectedRoles.Modules))
+    //{
+    //    addedModule = selectedRoles.Modules.Split(",");
+    //}
+    var listModule = listSelectedModule.Union(addedModule);
+
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BAPTC | @ViewData["Title"]</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+     
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <!--jqueryUI-->
+        <link rel="stylesheet" href="~/lib/jquery-ui-1.12.1/jquery-ui.min.css" />
+        <!--datatables.net-->
+        <link rel="stylesheet" href="~/lib/DataTables/datatables.min.css" />
+        <!--toastr-->
+        <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
+        <!--sweetalert-->
+        <link rel="stylesheet" href="~/lib/sweetalert/sweetalert.css" />
+        <!--fontawesome-->
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+
+
+    <!-- Ladda style -->
+    <link rel="stylesheet" href="~/lib/ladda/ladda-themeless.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/lib/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="~/adminlte/css/skins/_all-skins.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    @RenderSection("Styles", required: false)
+</head>
+<body class="hold-transition skin-blue fixed">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            @Html.Partial("_LogoMobile")
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        @*<li class="dropdown messages-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-building-o"></i>
+                                @if (appUser.IsCustomer)
+                                {
+
+                                    <span class="hidden-xs"><b>@customerName</b></span>
+                                }
+                                else
+                                {
+
+                                    <span class="hidden-xs"><b>@organizationName</b></span>
+                                }
+
+                            </a>
+                        </li>*@
+                        <!-- User Account: style can be found in dropdown.less -->
+                        @Html.Partial("_ProfileSignout")
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- =============================================== -->
+        <!-- Left side column. contains the sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                @Html.Partial("_UserPanel");
+
+                @if (appUser != null)
+                {
+                <ul class="sidebar-menu" data-widget="tree">
+                    @if (appUser.IsSuperAdmin)
+                    {
+                        <li class="header">MAIN NAVIGATION</li>
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"TicketingReports")">
+                                <a href="@Url.Action("TicketingReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Ticketing</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"StallLeaserReports")">
+                                <a href="@Url.Action("StallLeaserReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Stall leasers</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("TradingInspector"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"TradersTruckReports")">
+                                <a href="@Url.Action("TradersTruckReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Traders truck</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"FarmersTruckReports")">
+                                <a href="@Url.Action("FarmersTruckReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Farmers truck</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"ShortTripReports")">
+                                <a href="@Url.Action("ShortTripReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Short trip</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("TradingAndInterTrading"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"InterTradingReports")">
+                                <a href="@Url.Action("InterTradingReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Inter trading</span>
+                                </a>
+                            </li>
+
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"CarrotFacilityReports")">
+                                <a href="@Url.Action("CarrotFacilityReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Carrot facility</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Security"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"SecurityReports")">
+                                <a href="@Url.Action("SecurityReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Security</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Repair"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"RepairReports")">
+                                <a href="@Url.Action("RepairReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Repair</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("PriceCommodities"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"PriceCommodityReports")">
+                                <a href="@Url.Action("PriceCommodityReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Price commodity</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Accreditation"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"AccreditationReports")">
+                                <a href="@Url.Action("AccreditationReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Accreditation</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"TotalReports")">
+                                <a href="@Url.Action("TotalReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Total</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Settings"))
+                        {
+                            <li class="@Html.IsSelected(controller: "ReportsMobile",action:"SettingsReports")">
+                                <a href="@Url.Action("SettingsReports", "ReportsMobile", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>User roles</span>
+                                </a>
+                            </li>
+                        }
+
+                    }
+
+                    @*@if (appUser.IsCustomer)
+        {
+            <li class="header">CUSTOMER NAVIGATION</li>
+            <li class="@Html.IsSelected(controller: "Ticket")">
+                <a href="@Url.Action("Customer", "Ticket", new { cust = cust })">
+                    <i class="fa fa-th"></i> <span>Ticket</span>
+                </a>
+            </li>
+        }
+        @if (appUser.IsSupportAgent)
+        {
+            <li class="header">SUPPORT AGENT NAVIGATION</li>
+            <li class="@Html.IsSelected(controller: "Ticket")">
+                <a href="@Url.Action("Index", "Ticket", new { org = org })">
+                    <i class="fa fa-th"></i> <span>Ticket</span>
+                </a>
+            </li>
+        }
+        @if (appUser.IsSupportEngineer)
+        {
+            <li class="header">SUPPORT ENGINEER NAVIGATION</li>
+            <li class="@Html.IsSelected(controller: "Ticket")">
+                <a href="@Url.Action("Index", "Ticket", new { org = org })">
+                    <i class="fa fa-th"></i> <span>Ticket</span>
+                </a>
+            </li>
+        }*@
+
+                </ul>
+                }
+
+
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- =============================================== -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        @Html.Partial("_Footer")
+
+    </div>
+    <!-- ./wrapper -->
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <!--jqueryUI-->
+        <script src="~/lib/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+        <!--datatables.net-->
+        <script src="~/lib/DataTables/datatables.min.js"></script>
+        <!--serializeJSON-->
+        <script src="~/lib/marioizquierdo-jquery.serializeJSON/jquery.serializejson.min.js"></script>
+        <!--toastr-->
+        <script src="~/lib/toastr/toastr.min.js"></script>
+        <!--sweetalert-->
+        <script src="~/lib/sweetalert/sweetalert.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <!-- Ladda -->
+    <script src="~/lib/ladda/spin.min.js"></script>
+    <script src="~/lib/ladda/ladda.min.js"></script>
+    <script src="~/lib/ladda/ladda.jquery.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="~/lib/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/lib/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/js/adminlte.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.sidebar-menu').tree()
+        })
+    </script>
+</body>
+</html>
