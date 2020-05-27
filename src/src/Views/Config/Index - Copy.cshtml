@@ -28,6 +28,11 @@
     <div class="row">
         @foreach (var item in Model)
         {
+            if (listModule.Contains(""))
+            {
+
+            }
+
             if (listModule.Contains("Ticketing"))
             {
                 <div class="col-lg-4">
@@ -168,10 +173,10 @@
                 </div>
             }
 
-            @*if (listModule.Contains("HumanResource"))
+            if (listModule.Contains("HumanResource"))
             {
                 <div class="col-lg-4">
-                     small box 
+                    <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Human Resource</h4>
@@ -183,7 +188,7 @@
 
                         <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @if (appUser.IsSuperAdmin)
+                        @*@if (appUser.IsSuperAdmin)
                         {
                             <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                         }
@@ -196,11 +201,11 @@
                         {
                             <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        }
+                        }*@
 
                     </div>
                 </div>
-            }*@
+            }
 
             if (listModule.Contains("PriceCommodities"))
             {
@@ -303,10 +308,10 @@
                 </div>
             }
 
-            @*if (listModule.Contains("GovernanceAndPolicies"))
+            if (listModule.Contains("GovernanceAndPolicies"))
             {
                 <div class="col-lg-4">
-                     small box 
+                    <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Governance And Policies</h4>
@@ -318,7 +323,7 @@
 
                         <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @if (appUser.IsSuperAdmin)
+                        @*@if (appUser.IsSuperAdmin)
                         {
                             <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                         }
@@ -331,11 +336,11 @@
                         {
                             <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        }
+                        }*@
 
                     </div>
                 </div>
-            }*@
+            }
 
 
         }
@@ -345,10 +350,10 @@
         @*<div class="row">*@
         @foreach (var item in Model)
         {
-            @*if (listModule.Contains("InstitutionalDevelopmentAndExtensionServicesUnit"))
+            if (listModule.Contains("InstitutionalDevelopmentAndExtensionServicesUnit"))
             {
                 <div class="col-lg-4">
-                     small box 
+                    <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Institutional Development & Extension Services Unit</h4>
@@ -359,7 +364,7 @@
 
                         <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnit", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @if (appUser.IsSuperAdmin)
+                        @*@if (appUser.IsSuperAdmin)
                         {
                             <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnit", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                         }
@@ -372,16 +377,16 @@
                         {
                             <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        }
+                        }*@
 
                     </div>
                 </div>
-            }*@
+            }
 
-            @*if (listModule.Contains("ResearchDevelopmentAndExtension"))
+            if (listModule.Contains("ResearchDevelopmentAndExtension"))
             {
                 <div class="col-lg-4">
-                     small box 
+                    <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Research Development And Extension</h4>
@@ -393,7 +398,7 @@
 
                         <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @if (appUser.IsSuperAdmin)
+                        @*@if (appUser.IsSuperAdmin)
                         {
                             <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                         }
@@ -406,11 +411,11 @@
                         {
                             <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        }
+                        }*@
 
                     </div>
                 </div>
-            }*@
+            }
 
             @*if (listModule.Contains("Finance"))
             {
@@ -453,10 +458,10 @@
         <div class="row">*@
         @foreach (var item in Model)
         {
-            @*if (listModule.Contains("Admin"))
+            if (listModule.Contains("Admin"))
             {
                 <div class="col-lg-4">
-                     small box 
+                    <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Admin</h4>
@@ -468,7 +473,7 @@
 
                         <a href="@Url.Action("Admin", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @if (appUser.IsSuperAdmin)
+                        @*@if (appUser.IsSuperAdmin)
                         {
                             <a href="@Url.Action("Admin", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                         }
@@ -481,16 +486,16 @@
                         {
                             <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        }
+                        }*@
 
                     </div>
                 </div>
-            }*@
+            }
 
-            @*if (listModule.Contains("AssetsAndAmenitiesManagementUnit"))
+            if (listModule.Contains("AssetsAndAmenitiesManagementUnit"))
             {
                 <div class="col-lg-4">
-                     small box 
+                    <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Assets & Amenities Management Unit</h4>
@@ -501,7 +506,7 @@
 
                         <a href="@Url.Action("AssetsAmenitiesManagementUnit", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @if (appUser.IsSuperAdmin)
+                        @*@if (appUser.IsSuperAdmin)
                         {
                             <a href="@Url.Action("AssetsAmenitiesManagementUnit", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
                         }
@@ -514,11 +519,11 @@
                         {
                             <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        }
+                        }*@
 
                     </div>
                 </div>
-            }*@
+            }
 
             if (listModule.Contains("Reports"))
             {

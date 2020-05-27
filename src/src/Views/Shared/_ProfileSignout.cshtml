@@ -21,25 +21,65 @@
                 <img src="../@appUser.ProfilePictureUrl" class="profile-picture img-circle" alt="User Image">
                 <p>
                     <span class="profile-fullName">@appUser.FullName</span>
-                    @if (appUser.IsSuperAdmin)
+                    @if (appUser.RoleId == "COO")
                     {
-                        <small>Super Admin.</small>
+                        <small>Chief Operations Officer.</small>
 
                     }
-                    else if (appUser.IsCustomer)
+                    else if (appUser.RoleId == "SD")
                     {
-                        <small>Customer Contact.</small>
+                        <small>Security Division.</small>
 
                     }
-                    else if (appUser.IsSupportAgent)
+                    else if (appUser.RoleId == "AD")
                     {
 
-                        <small>Support Agent.</small>
+                        <small>Administrative Division.</small>
                     }
-                    else
+                    else if (appUser.RoleId == "HRMU")
                     {
-                        <small>Support Engineer.</small>
 
+                        <small>Human Resource Management Unit.</small>
+                    }
+                    else if (appUser.RoleId == "PRU")
+                    {
+
+                        <small>Public Relations Unit.</small>
+                    }
+                    else if (appUser.RoleId == "AAMD")
+                    {
+
+                        <small>Assets & Amenities Management Division.</small>
+                    }
+                    else if (appUser.RoleId == "FD")
+                    {
+
+                        <small>Finance Division.</small>
+                    }
+                    else if (appUser.RoleId == "TOD")
+                    {
+
+                        <small>Trading Operations Division.</small>
+                    }
+                    else if (appUser.RoleId == "ICT-MISU")
+                    {
+
+                        <small>Information And Communication Technology - Management Information System Unit.</small>
+                    }
+                    else if (appUser.RoleId == "IDESU")
+                    {
+
+                        <small>Institutional Development & Extension Services Unit.</small>
+                    }
+                    else if (appUser.RoleId == "GSU")
+                    {
+
+                        <small>General Service Unit.</small>
+                    }
+                    else if (appUser.RoleId == "Default")
+                    {
+
+                        <small>Guest.</small>
                     }
 
                 </p>

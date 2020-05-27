@@ -53,6 +53,8 @@ namespace src.Data
 
         public DbSet<src.Models.Module> Modules { get; set; }
 
+        public DbSet<src.Models.ParkingNumbers> ParkingNumbers { get; set; }
+
         public DbSet<src.Models.StallLease> StallLease { get; set; }
 
         public DbSet<src.Models.TradersTruck> TradersTruck { get; set; }

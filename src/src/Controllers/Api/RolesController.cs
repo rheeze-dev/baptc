@@ -40,8 +40,16 @@ namespace src.Controllers.Api
         [HttpGet("{organizationId}")]
         public IActionResult GetRoles([FromRoute]Guid organizationId)
         {
-            var roles = _context.Role.ToList();
+            var roles = _context.Role.OrderByDescending(x => x.DateAdded).ToList();
             return Json(new { data = roles });
+        }
+
+        // GET: api/Roles
+        [HttpGet("GetParkingNumbers")]
+        public IActionResult GetParkingNumbers([FromRoute]Guid organizationId)
+        {
+            var parkingNumbers = _context.ParkingNumbers.OrderByDescending(x => x.DateAdded).ToList();
+            return Json(new { data = parkingNumbers });
         }
 
         // POST: api/Roles/PostTicketingPrice
@@ -106,12 +114,48 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
+        // POST: api/Roles/PostParkingNumbers
+        [HttpPost("PostParkingNumbers")]
+        public async Task<IActionResult> PostParkingNumbers([FromBody] JObject model)
+        {
+            int id = 0;
+            id = Convert.ToInt32(model["Id"].ToString());
+            ParkingNumbers parkingNumbers = new ParkingNumbers
+            {
+                DateAdded = DateTime.Now,
+                FullName = model["FullName"].ToString(),
+                Remarks = model["Remarks"].ToString(),
+                Name = model["Name"].ToString()
+            };
+            if (id == 0)
+            {
+                _context.ParkingNumbers.Add(parkingNumbers);
+            }
+            else
+            {
+                parkingNumbers.Id = id;
+                _context.ParkingNumbers.Update(parkingNumbers);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
         // DELETE: api/Roles
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoles([FromRoute] int id)
         {
             Roles roles = _context.Role.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(roles);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete success." });
+        }
+
+        // DELETE: api/Roles/DeleteParkingNumbers
+        [HttpDelete("DeleteParkingNumbers/{id}")]
+        public async Task<IActionResult> DeleteParkingNumbers([FromRoute] int id)
+        {
+            ParkingNumbers parking = _context.ParkingNumbers.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(parking);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -232,13 +276,13 @@ namespace src.Controllers.Api
         {
             UserRole userRole = _context.UserRole.Where(x => x.UserId == id).FirstOrDefault();
             {
-                userRole.RoleId = "Default";
+                userRole.RoleId = "Deactivated";
                 userRole.Modules = null;
             }
 
             ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId == id).FirstOrDefault();
             {
-                applicationUser.RoleId = "Default";
+                applicationUser.RoleId = "Deactivated";
                 applicationUser.Modules = null;
             }
 

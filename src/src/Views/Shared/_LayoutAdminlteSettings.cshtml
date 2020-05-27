@@ -129,6 +129,12 @@
                             </a>
                         </li>
 
+                        <li class="@Html.IsSelected(controller: "Settings",action:"ParkingNumbers")">
+                            <a href="@Url.Action("ParkingNumbers", "Settings", new { org = org })">
+                                <i class="fa fa-th"></i> <span>Parking</span>
+                            </a>
+                        </li>
+
                         <li class="@Html.IsSelected(controller: "Settings",action:"TicketingPrice")">
                             <a href="@Url.Action("TicketingPrice", "Settings", new { org = org })">
                                 <i class="fa fa-th"></i> <span>Ticketing price</span>

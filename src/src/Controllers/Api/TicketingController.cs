@@ -1720,6 +1720,15 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
+        // GET: api/Ticketing/GetParkingNumber
+        [HttpGet("GetParkingNumber")]
+        public IActionResult GetParkingNumber([FromRoute]Guid organizationId)
+        {
+            var listParking = _context.ParkingNumbers.Where(x => x.Selected == false).ToList();
+
+            return Json(new { data = listParking });
+        }
+
         // DELETE: api/Ticketing/
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicketing([FromRoute] Guid id)
@@ -1762,7 +1771,5 @@ namespace src.Controllers.Api
 
     }
 
-    //internal class GetGatePass
-    //{
-    //}
+
 }

@@ -19,25 +19,53 @@
             <p>@appUser.FullName</p>
             <a href="#">
                 <i class="fa fa-circle text-success"></i>
-                @if (appUser.IsSuperAdmin)
+                @if (appUser.RoleId == "COO")
                 {
-                    <span>Online as Super Admin</span>
-
+                    <span>Online as COO</span>
                 }
-                else if (appUser.IsCustomer)
+                else if (appUser.RoleId == "GSU")
                 {
-                    <span>Online as Customer Contact</span>
-
+                    <span>Online as GSU</span>
                 }
-                else if (appUser.IsSupportAgent)
+                else if (appUser.RoleId == "IDESU")
                 {
-                    <span>Online as Support Agent</span>
-
+                    <span>Online as IDESU</span>
                 }
-                else if (appUser.IsSupportEngineer)
+                else if (appUser.RoleId == "ICT-MISU")
                 {
-                    <span>Online as Support Engineer</span>
-
+                    <span>Online as ICT-MISU</span>
+                }
+                else if (appUser.RoleId == "TOD")
+                {
+                    <span>Online as TOD</span>
+                }
+                else if (appUser.RoleId == "FD")
+                {
+                    <span>Online as FD</span>
+                }
+                else if (appUser.RoleId == "AAMD")
+                {
+                    <span>Online as AAMD</span>
+                }
+                else if (appUser.RoleId == "PRU")
+                {
+                    <span>Online as PRU</span>
+                }
+                else if (appUser.RoleId == "HRMU")
+                {
+                    <span>Online as HRMU</span>
+                }
+                else if (appUser.RoleId == "AD")
+                {
+                    <span>Online as AD</span>
+                }
+                else if (appUser.RoleId == "SD")
+                {
+                    <span>Online as SD</span>
+                }
+                else if (appUser.RoleId == "Default")
+                {
+                    <span>Online as Guest</span>
                 }
             </a>
         </div>

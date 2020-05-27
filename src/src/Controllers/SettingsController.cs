@@ -71,6 +71,40 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> ParkingNumbers(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> ParkingNumbersMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> UserRoles(Guid org)
         {
             ApplicationUser appUser = await _userManager.GetUserAsync(User);
@@ -202,6 +236,36 @@ namespace src.Controllers
             else
             {
                 return View(_context.Role.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult AddEditParkingNumbers(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                ParkingNumbers parkingNumbers = new ParkingNumbers();
+                //ticketing.ticketingId = org;
+                return View(parkingNumbers);
+            }
+            else
+            {
+                return View(_context.ParkingNumbers.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult ViewParkingNumbers(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                ParkingNumbers parkingNumbers = new ParkingNumbers();
+                //ticketing.ticketingId = org;
+                return View(parkingNumbers);
+            }
+            else
+            {
+                return View(_context.ParkingNumbers.Where(x => x.Id.Equals(id)).FirstOrDefault());
             }
 
         }

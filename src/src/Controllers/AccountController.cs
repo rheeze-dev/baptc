@@ -77,6 +77,20 @@ namespace src.Controllers
                     return View(model);
                 }
 
+                //next
+                ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.Email == model.Email).FirstOrDefault();
+                if (applicationUser.RoleId == null)
+                {
+                    ViewData["error"] = "Visit your administrator for account validation.";
+                    return View(model);
+                }
+                
+                else if (applicationUser.RoleId == "Deactivated")
+                {
+                    ViewData["error"] = "Your account has been deactivated";
+                    return View(model);
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
@@ -249,7 +263,7 @@ namespace src.Controllers
                 int getLastUserId = _context.ApplicationUser.OrderByDescending(u=>u.UserId).Select(x => x.UserId).FirstOrDefault();
                 int userId = getLastUserId + 1;
                 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, UserId=userId, RoleId = "Default" };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FullName = model.FullName, UserId=userId, RoleId = null };
                 //user registered using registration screen is SuperAdmin
                 user.IsSuperAdmin = true;
                 var result = await _userManager.CreateAsync(user, model.Password);

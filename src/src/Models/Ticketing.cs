@@ -45,5 +45,7 @@ namespace src.Models
 
         public string receivingClerk { get; set; }
 
+        public string parkingNumber { get; set; }
+
     }
 }

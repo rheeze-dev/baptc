@@ -43,14 +43,22 @@ $(document).ready(function () {
                 "data": function (data) {
                     //var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
                     var btnActive = "Deactivated";
+                    var btnNewUser = "Request";
                     var btnInActive = "<a class='btn btn-default btn-xs btnInActive' data-id='" + data["userId"] + "'>Deactivate</a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    if (data["roleId"] != "Default") {
-                        return btnInActive;
+                    if (data["roleId"] == null) {
+                        return btnNewUser;
                     }
-                    else if (data["roleId"] == "Default")
-                    {
-                        return btnActive;
+                    else if (data["roleId"] == "Deactivated") {
+                        if (data["modules"] != null) {
+                            return btnInActive;
+                        }
+                        else if (data["modules"] == null) {
+                            return btnActive;
+                        }
+                    }
+                    else if (data["roleId"] != "Deactivated" || data["roleId"] != null) {
+                        return btnInActive;
                     }
                 }
             }

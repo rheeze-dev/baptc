@@ -63,6 +63,17 @@
             <input asp-for="driverName" class="form-control" />
             <span asp-validation-for="driverName" class="text-danger"></span>
         </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="parking form-group">
+                    <label asp-for="parkingNumber" class="control-label">Parking number</label>
+                    <select style="display:none" name="" multiple>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label asp-for="remarks" class="control-label">Remarks</label>
             <input asp-for="remarks" class="form-control" placeholder="Optional" />
@@ -88,13 +99,88 @@
         showMeridian: 1
     });
 
+    jQuery(function ($) {
+        $.ajax({
+            type: 'GET',
+            url: "/api/Ticketing/GetParkingNumber",
+            @*data: {name:@Model.parkingNumber},*@
+            success: function (d) {
+                $('.parking').dropdown({
+                    data: d.data,
+                    limitCount: 40,
+                    multipleMode: 'label',
+                    choice: function () {
+                        // console.log(arguments,this);
+                    }
+                });
+            }
+        });
+        @*$("#SaveUserRoleConfig").on("click", function (e) {
+            //alert(@Model.Item2.Remarks);@Model.Item2.Id
+            var selectedRole = [];
+            var selectedModule = [];
+            $('.roles .dropdown-selected').each(function () {
+                var currentElement = $(this);
+                $(currentElement).find('i').remove();
+                var value = currentElement.html();
+                //console.log(value);
+                selectedRole.push(value);
+                // TODO: do something with the value
+            });
+
+            $('.modules .dropdown-selected').each(function () {
+                var currentElement = $(this);
+                $(currentElement).find('i').remove();
+                var value = currentElement.html();
+                selectedModule.push(value);
+            });
+            //console.log(selectedRole.join(", "));
+            var rolesSelected = selectedRole.join(",");
+            var modulesSelected = selectedModule.join(",");
+            var param = {
+                Id:@Model.Item2.Id,
+                UserId:@Model.Item1.UserId,
+                Remarks: $("#Item2_Remarks").val(),
+                RoleId: rolesSelected,
+                Modules: modulesSelected
+            };
+            $.ajax({
+                type: 'POST',
+                url: "/api/Roles/PostUserRole",
+                data: param,
+                success: function (d) {
+                    if (d.success) {
+                        popup.modal('hide');
+                        ShowMessage(d.message);
+                        dataTable.ajax.reload();
+                    } else {
+                        ShowMessageError(d.message);
+                    }
+                }
+            });
+        });
+        $.ajax({
+            type: 'POST',
+            url: "/api/ModuleConfig/GetUserModuleByUserID",
+            data: { userId: @Model.Item1.UserId},
+            success: function (d) {
+                $('.modules').dropdown({
+                    data: d.data,
+                    limitCount: 40,
+                    multipleMode: 'label',
+                    choice: function () {
+
+                    }
+                });
+            }
+        });*@
+    });
+
     $(document).ready(function () {
         $("select", "#typeOfTransaction").change(function () {
-            //$(".typeOfCar").select('refresh', true);
             var test = (this.value);
             //alert(test);
             if (test == "Trader truck") {
-                //$("#test *").attr("disabled", "disabled").off('click');
                 $(".typeOfCar").show();
                 $(".farmerTruck").hide();
                 $(".shortTrip").hide();
@@ -103,17 +189,12 @@
                 $(".traderTruck").show();
             }
             else if (test == "Farmer truck") {
-                
                 $(".typeOfCar").show();
                 $(".traderTruck").hide();
                 $(".shortTrip").hide();
                 $(".payParking").hide();
                 $(".driverName").hide();
                 $(".farmerTruck").show();
-                //$('.farmerTruck option[value=Single tire]').attr('selected','selected');
-                //$(".farmerTruck").select(".sT");
-                //<option class="farmerTruck default" value="Single tire" selected>Single tire</option>
-                //$(".farmerTruck").select();
             }
             else if (test == "Short trip") {
                 $(".typeOfCar").show();
@@ -132,7 +213,9 @@
                 $(".driverName").show();
             }
         });
+
     });
+
 </script>
 
 
