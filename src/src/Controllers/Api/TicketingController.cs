@@ -78,6 +78,15 @@ namespace src.Controllers.Api
                     amount = null
                 };
 
+                if (model["parkingNumber"].ToString() == "")
+                {
+                    return Json(new { success = false, message = "Parking number cannot be empty!" });
+                }
+                else
+                {
+                    ticketing.parkingNumber = model["parkingNumber"].ToString();
+                }
+
                 if (getLastControlNumber == null)
                 {
                     ticketing.controlNumber = 1;
@@ -145,6 +154,10 @@ namespace src.Controllers.Api
                     ticketing.typeOfCar = null;
                     _context.Ticketing.Add(ticketing);
                 }
+
+                ParkingNumbers parking = _context.ParkingNumbers.Where(x => x.Name == model["parkingNumber"].ToString()).FirstOrDefault();
+                parking.Selected = true;
+                _context.ParkingNumbers.Update(parking);
 
                 CurrentTicket currentTicket = new CurrentTicket
                 {
@@ -235,21 +248,89 @@ namespace src.Controllers.Api
             }
             else
             {
-                Ticketing ticketing = new Ticketing
-                {
-                    timeIn = DateTime.Now,
-                    plateNumber = model["plateNumber"].ToString(),
-                    typeOfTransaction = model["typeOfTransaction"].ToString(),
-                    typeOfCar = model["typeOfCar"].ToString(),
-                    driverName = model["driverName"].ToString(),
-                    remarks = model["remarks"].ToString(),
-                    amount = null
-                };
+                //Ticketing ticketing = new Ticketing
+                //{
+                //    timeIn = DateTime.Now,
+                //    plateNumber = model["plateNumber"].ToString(),
+                //    typeOfTransaction = model["typeOfTransaction"].ToString(),
+                //    typeOfCar = model["typeOfCar"].ToString(),
+                //    driverName = model["driverName"].ToString(),
+                //    remarks = model["remarks"].ToString(),
+                //    amount = null
+                //};
 
-                ticketing.ticketingId = objGuid;
-                ticketing.controlNumber = Convert.ToInt32(model["controlNumber"].ToString());
-                ticketing.issuingClerk = info.FullName;
-                _context.Ticketing.Update(ticketing);
+                Ticketing currentTicketingIn = _context.Ticketing.Where(x => x.ticketingId == objGuid).FirstOrDefault();
+                var currentParkingNumber = currentTicketingIn.parkingNumber;
+                currentTicketingIn.plateNumber = model["plateNumber"].ToString();
+                currentTicketingIn.typeOfTransaction = model["typeOfTransaction"].ToString();
+                currentTicketingIn.typeOfCar = model["typeOfCar"].ToString();
+                currentTicketingIn.driverName = model["driverName"].ToString();
+                currentTicketingIn.remarks = model["remarks"].ToString();
+                if (model["parkingNumber"].ToString() == "")
+                {
+                    currentTicketingIn.parkingNumber = currentParkingNumber;
+                }
+                else
+                {
+                    ParkingNumbers originalParking = _context.ParkingNumbers.Where(x => x.Name == currentParkingNumber).FirstOrDefault();
+                    originalParking.Selected = false;
+                    _context.ParkingNumbers.Update(originalParking);
+
+                    ParkingNumbers newParking = _context.ParkingNumbers.Where(x => x.Name == model["parkingNumber"].ToString()).FirstOrDefault();
+                    newParking.Selected = true;
+                    _context.ParkingNumbers.Update(newParking);
+
+                    currentTicketingIn.parkingNumber = model["parkingNumber"].ToString();
+                }
+
+                if (currentTicketingIn.typeOfTransaction == "Trader truck")
+                {
+                    if (currentTicketingIn.typeOfCar != "With transaction" && currentTicketingIn.typeOfCar != "Without transaction")
+                    {
+                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                    }
+                }
+
+                else if (currentTicketingIn.typeOfTransaction == "Farmer truck")
+                {
+                    if (currentTicketingIn.typeOfCar != "Single tire" && currentTicketingIn.typeOfCar != "Double tire")
+                    {
+                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                    }
+                }
+
+                else if (currentTicketingIn.typeOfTransaction == "Short trip")
+                {
+                    if (currentTicketingIn.typeOfCar != "Pick-up" && currentTicketingIn.typeOfCar != "Delivery")
+                    {
+                        return Json(new { success = false, message = "Type of transaction does not match with type of entry!" });
+                    }
+                }
+
+                else if (currentTicketingIn.typeOfTransaction == "Pay parking")
+                {
+                    if (currentTicketingIn.driverName == "")
+                    {
+                        return Json(new { success = false, message = "Drivers name cannot be empty!" });
+                    }
+                    currentTicketingIn.typeOfCar = "";
+                }
+                else if (currentTicketingIn.typeOfTransaction == "Gate pass")
+                {
+                    if (currentTicketingIn.driverName == "")
+                    {
+                        return Json(new { success = false, message = "Drivers name cannot be empty!" });
+                    }
+                    currentTicketingIn.typeOfCar = "";
+                }
+
+                _context.Ticketing.Update(currentTicketingIn);
+
+                //ticketing.ticketingId = objGuid;
+                //ticketing.controlNumber = Convert.ToInt32(model["controlNumber"].ToString());
+                //ticketing.issuingClerk = info.FullName;
+                //ticketing.parkingNumber = model["parkingNumber"].ToString();
+                //_context.Ticketing.Update(ticketing);
 
                 var currentTicketing = _context.CurrentTicket.Where(x=> x.ticketingId == objGuid).FirstOrDefault();
                 if (currentTicketing.typeOfTransaction != model["typeOfTransaction"].ToString())
@@ -258,9 +339,9 @@ namespace src.Controllers.Api
                     {
                         TradersTruck tradersTruck = new TradersTruck
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
+                            PlateNumber = currentTicketingIn.plateNumber,
                             TraderName = "",
                             Destination = ""
                         };
@@ -310,9 +391,9 @@ namespace src.Controllers.Api
                     {
                         FarmersTruck farmersTruck = new FarmersTruck
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
+                            PlateNumber = currentTicketingIn.plateNumber,
                             StallNumber = "",
                             FarmersName = "",
                             Organization = "",
@@ -366,9 +447,9 @@ namespace src.Controllers.Api
                     {
                         ShortTrip shortTrip = new ShortTrip
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
+                            PlateNumber = currentTicketingIn.plateNumber,
                             Commodity = ""
                         };
                         if (model["typeOfCar"].ToString() != "Pick-up" && model["typeOfCar"].ToString() != "Delivery")
@@ -418,10 +499,10 @@ namespace src.Controllers.Api
                     {
                         PayParking payParking = new PayParking
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
-                            DriverName = ticketing.driverName
+                            PlateNumber = currentTicketingIn.plateNumber,
+                            DriverName = currentTicketingIn.driverName
                         };
                         _context.PayParking.Add(payParking);
                         if (currentTicketing.typeOfTransaction == "Trader truck")
@@ -466,13 +547,13 @@ namespace src.Controllers.Api
                     {
                         GatePass gatePass = new GatePass
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
-                            DriverName = ticketing.driverName
+                            PlateNumber = currentTicketingIn.plateNumber,
+                            DriverName = currentTicketingIn.driverName
                         };
 
-                        StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
+                        StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == currentTicketingIn.plateNumber || x.PlateNumber2 == currentTicketingIn.plateNumber).FirstOrDefault();
 
                         if (stallLease != null)
                         {
@@ -534,13 +615,13 @@ namespace src.Controllers.Api
                 }
                 else
                 {
-                    if (ticketing.typeOfTransaction == "Trader truck")
+                    if (currentTicketingIn.typeOfTransaction == "Trader truck")
                     {
                         TradersTruck tradersTruck = new TradersTruck
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
+                            PlateNumber = currentTicketingIn.plateNumber,
                             TraderName = "",
                             Destination = ""
                         };
@@ -551,13 +632,13 @@ namespace src.Controllers.Api
                             return Json(new { success = false, message = "Edit limit is reached!" });
                         }
                     }
-                    else if (ticketing.typeOfTransaction == "Farmer truck")
+                    else if (currentTicketingIn.typeOfTransaction == "Farmer truck")
                     {
                         FarmersTruck farmersTruck = new FarmersTruck
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
+                            PlateNumber = currentTicketingIn.plateNumber,
                             StallNumber = "",
                             FarmersName = "",
                             Organization = "",
@@ -571,13 +652,13 @@ namespace src.Controllers.Api
                             return Json(new { success = false, message = "Edit limit is reached!" });
                         }
                     }
-                    else if (ticketing.typeOfTransaction == "Short trip")
+                    else if (currentTicketingIn.typeOfTransaction == "Short trip")
                     {
                         ShortTrip shortTrip = new ShortTrip
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
+                            PlateNumber = currentTicketingIn.plateNumber,
                             Commodity = ""
                         };
                         _context.ShortTrip.Update(shortTrip);
@@ -587,16 +668,16 @@ namespace src.Controllers.Api
                             return Json(new { success = false, message = "Edit limit is reached!" });
                         }
                     }
-                    else if (ticketing.typeOfTransaction == "Gate pass")
+                    else if (currentTicketingIn.typeOfTransaction == "Gate pass")
                     {
-                        StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == ticketing.plateNumber || x.PlateNumber2 == ticketing.plateNumber).FirstOrDefault();
+                        StallLease stallLease = _context.StallLease.Where(x => x.PlateNumber1 == currentTicketingIn.plateNumber || x.PlateNumber2 == currentTicketingIn.plateNumber).FirstOrDefault();
 
                         GatePass gatePass = new GatePass
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
-                            DriverName = ticketing.driverName
+                            PlateNumber = currentTicketingIn.plateNumber,
+                            DriverName = currentTicketingIn.driverName
                         };
 
                         if (stallLease != null)
@@ -624,10 +705,10 @@ namespace src.Controllers.Api
                     {
                         PayParking payParking = new PayParking
                         {
-                            ticketingId = ticketing.ticketingId,
+                            ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
-                            PlateNumber = ticketing.plateNumber,
-                            DriverName = ticketing.driverName
+                            PlateNumber = currentTicketingIn.plateNumber,
+                            DriverName = currentTicketingIn.driverName
                         };
                         _context.PayParking.Update(payParking);
                         PayParking checkPayParking = _context.PayParking.Where(x => x.ticketingId == objGuid).FirstOrDefault();
@@ -1532,6 +1613,12 @@ namespace src.Controllers.Api
                 date = DateTime.Now,
                 amount = ticketing.amount.Value,
             };
+
+            var currentParkingNumber = ticketing.parkingNumber;
+            ParkingNumbers parkingNumber = _context.ParkingNumbers.Where(x => x.Name == currentParkingNumber).FirstOrDefault();
+            parkingNumber.Selected = false;
+            _context.ParkingNumbers.Update(parkingNumber);
+
             ticketing.receivingClerk = info.FullName;
             var amount = ticketing.amount;
             _context.Total.Add(total);
@@ -1720,14 +1807,14 @@ namespace src.Controllers.Api
             return Json(new { success = true, message = "Successfully Saved!" });
         }
 
-        // GET: api/Ticketing/GetParkingNumber
-        [HttpGet("GetParkingNumber")]
-        public IActionResult GetParkingNumber([FromRoute]Guid organizationId)
-        {
-            var listParking = _context.ParkingNumbers.Where(x => x.Selected == false).ToList();
+        //// GET: api/Ticketing/GetParkingNumber
+        //[HttpGet("GetParkingNumber")]
+        //public IActionResult GetParkingNumber([FromRoute]Guid organizationId)
+        //{
+        //    var listParking = _context.ParkingNumbers.Where(x => x.Selected == false).ToList();
 
-            return Json(new { data = listParking });
-        }
+        //    return Json(new { data = listParking });
+        //}
 
         // DELETE: api/Ticketing/
         [HttpDelete("{id}")]

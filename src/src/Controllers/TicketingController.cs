@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using src.Data;
 using src.Models;
 using src.Services;
@@ -129,15 +130,33 @@ namespace src.Controllers
 
         public IActionResult AddEditIn(Guid org, Guid id)
         {
+            var listParking = _context.ParkingNumbers.Where(x => x.Selected == false).ToList();
+            var parkingNos = new List<SelectListItem>();
+            foreach (var item in listParking)
+            {
+                parkingNos.Add(new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.Name
+                });
+            }
+            parkingNos.Insert(0, new SelectListItem()
+            {
+                Text = "Please Select",
+                Value = ""
+            });
             if (id == Guid.Empty)
             {
                 Ticketing ticketing = new Ticketing();
+                ticketing.parkingList = parkingNos;
                 //ticketing.ticketingId = org;
                 return View(ticketing);
             }
             else
             {
-                return View(_context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+                Ticketing ticketingUpdate = _context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault();
+                ticketingUpdate.parkingList = parkingNos;
+                return View(ticketingUpdate);
             }
 
         }

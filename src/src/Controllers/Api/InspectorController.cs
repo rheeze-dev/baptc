@@ -144,6 +144,10 @@ namespace src.Controllers.Api
             {
                 return Json(new { success = false, message = "Volume cannot be empty!" });
             }
+            else if (Convert.ToInt32(model["Volume"].ToString()) == 0)
+            {
+                return Json(new { success = false, message = "Volume cannot be 0!" });
+            }
 
             farmersTruck.Volume = Convert.ToInt32(model["Volume"].ToString());
             farmersTruck.ticketingId = id;

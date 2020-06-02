@@ -57,6 +57,7 @@ $(document).ready(function () {
             { "data": "typeOfTransaction" },
             { "data": "typeOfCar" },
             { "data": "driverName" },
+            { "data": "parkingNumber" },
             { "data": "remarks" },
             { "data": "count" },
             { "data": "issuingClerk" },
