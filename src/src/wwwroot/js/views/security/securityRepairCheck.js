@@ -17,14 +17,7 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var d = new Date(data["date"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-                    return output;
-                }
-            },
-            {
-                "data": function (data) {
-                    var d = new Date(data["date"]);
-                    var output = setClockTime(d);
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
                     return output;
                 }
             },
@@ -40,8 +33,8 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Repair/AddEditVehicleRepair?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit + btnDelete;
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    return btnEdit;
                 }
             }
         ],

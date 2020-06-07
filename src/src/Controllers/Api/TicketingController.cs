@@ -78,6 +78,182 @@ namespace src.Controllers.Api
                     amount = null
                 };
 
+                Buyers buyers = _context.AccreditedBuyers.Where(x => x.VehiclePlateNumber == model["plateNumber"].ToString()).FirstOrDefault();
+                IndividualFarmers individualFarmers = _context.AccreditedIndividualFarmers.Where(x => x.PlateNumber == model["plateNumber"].ToString()).FirstOrDefault();
+                MarketFacilitators marketFacilitators = _context.AccreditedMarketFacilitators.Where(x => x.PlateNumber == model["plateNumber"].ToString()).FirstOrDefault();
+                if (buyers != null)
+                {
+                    ticketing.accreditation = "Buyer";
+                    var reset = _context.DailyBuyers.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
+                    var lastCount = _context.DailyBuyers.OrderByDescending(x => x.Count).Select(x => x.Count).FirstOrDefault();
+
+                    DailyBuyers dailyBuyers = new DailyBuyers
+                    {
+                        Date = DateTime.Now,
+                        PlateNumber = model["plateNumber"].ToString(),
+                    };
+                    if (DateTime.Now.Day == reset)
+                    {
+                        dailyBuyers.Count = lastCount + 1;
+                        _context.DailyBuyers.Add(dailyBuyers);
+
+                        TotalBuyers totalBuyers = new TotalBuyers
+                        {
+                            Date = dailyBuyers.Date,
+                            Total = dailyBuyers.Count
+                        };
+                        if (dailyBuyers.Count == 1)
+                        {
+                            _context.TotalBuyers.Add(totalBuyers);
+                        }
+                        else
+                        {
+                            TotalBuyers currentTotalBuyers = _context.TotalBuyers.Where(x => x.Date.Day == DateTime.Now.Day).FirstOrDefault();
+                            currentTotalBuyers.Total = dailyBuyers.Count;
+                            _context.TotalBuyers.Update(currentTotalBuyers);
+                        }
+
+                    }
+
+                    else if (DateTime.Now.Day != reset)
+                    {
+                        dailyBuyers.Count = 1;
+                        _context.DailyBuyers.Add(dailyBuyers);
+
+                        TotalBuyers totalBuyers = new TotalBuyers
+                        {
+                            Date = dailyBuyers.Date,
+                            Total = dailyBuyers.Count
+                        };
+                        if (dailyBuyers.Count == 1)
+                        {
+                            _context.TotalBuyers.Add(totalBuyers);
+                        }
+                        else
+                        {
+                            TotalBuyers currentTotalBuyers = _context.TotalBuyers.Where(x => x.Date.Day == DateTime.Now.Day).FirstOrDefault();
+                            currentTotalBuyers.Total = dailyBuyers.Count;
+                            _context.TotalBuyers.Update(currentTotalBuyers);
+                        }
+                    }
+                }
+                else if (individualFarmers != null)
+                {
+                    ticketing.accreditation = "Farmer";
+                    var reset = _context.DailyBuyers.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
+                    var lastCount = _context.DailyFarmers.OrderByDescending(x => x.Count).Select(x => x.Count).FirstOrDefault();
+
+                    DailyFarmers dailyFarmers = new DailyFarmers
+                    {
+                        Date = DateTime.Now,
+                        PlateNumber = model["plateNumber"].ToString(),
+                    };
+                    if (DateTime.Now.Day == reset)
+                    {
+                        dailyFarmers.Count = lastCount + 1;
+                        _context.DailyFarmers.Add(dailyFarmers);
+
+                        TotalFarmers totalFarmers = new TotalFarmers
+                        {
+                            Date = dailyFarmers.Date,
+                            Total = dailyFarmers.Count
+                        };
+                        if (dailyFarmers.Count == 1)
+                        {
+                            _context.TotalFarmers.Add(totalFarmers);
+                        }
+                        else
+                        {
+                            TotalFarmers currentTotalFarmers = _context.TotalFarmers.Where(x => x.Date.Day == DateTime.Now.Day).FirstOrDefault();
+                            currentTotalFarmers.Total = dailyFarmers.Count;
+                            _context.TotalFarmers.Update(currentTotalFarmers);
+                        }
+
+                    }
+
+                    else if (DateTime.Now.Day != reset)
+                    {
+                        dailyFarmers.Count = 1;
+                        _context.DailyFarmers.Add(dailyFarmers);
+
+                        TotalFarmers totalFarmers = new TotalFarmers
+                        {
+                            Date = dailyFarmers.Date,
+                            Total = dailyFarmers.Count
+                        };
+                        if (dailyFarmers.Count == 1)
+                        {
+                            _context.TotalFarmers.Add(totalFarmers);
+                        }
+                        else
+                        {
+                            TotalFarmers currentTotalFarmers = _context.TotalFarmers.Where(x => x.Date.Day == DateTime.Now.Day).FirstOrDefault();
+                            currentTotalFarmers.Total = dailyFarmers.Count;
+                            _context.TotalFarmers.Update(currentTotalFarmers);
+                        }
+                    }
+                }
+                else if (marketFacilitators != null)
+                {
+                    ticketing.accreditation = "Market facilitator";
+                    var reset = _context.DailyBuyers.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
+                    var lastCount = _context.DailyFacilitators.OrderByDescending(x => x.Date).Select(x => x.Count).FirstOrDefault();
+
+                    DailyFacilitators dailyFacilitators = new DailyFacilitators
+                    {
+                        Date = DateTime.Now,
+                        PlateNumber = model["plateNumber"].ToString()
+                    };
+                    if (dailyFacilitators.Date.Day == reset)
+                    {
+                        dailyFacilitators.Count = lastCount + 1;
+                        _context.DailyFacilitators.Add(dailyFacilitators);
+
+                        TotalFacilitators totalFacilitators = new TotalFacilitators
+                        {
+                            Date = dailyFacilitators.Date,
+                            Total = dailyFacilitators.Count
+                        };
+                        if (dailyFacilitators.Count == 1)
+                        {
+                            _context.TotalFacilitators.Add(totalFacilitators);
+                        }
+                        else
+                        {
+                            TotalFacilitators currentTotalFacilitators = _context.TotalFacilitators.Where(x => x.Date.Day == DateTime.Now.Day).FirstOrDefault();
+                            currentTotalFacilitators.Total = dailyFacilitators.Count;
+                            _context.TotalFacilitators.Update(currentTotalFacilitators);
+                        }
+
+                    }
+
+                    else if (dailyFacilitators.Date.Day != reset)
+                    {
+                        dailyFacilitators.Count = 1;
+                        _context.DailyFacilitators.Add(dailyFacilitators);
+
+                        TotalFacilitators totalFacilitators = new TotalFacilitators
+                        {
+                            Date = dailyFacilitators.Date,
+                            Total = dailyFacilitators.Count
+                        };
+                        if (dailyFacilitators.Count == 1)
+                        {
+                            _context.TotalFacilitators.Add(totalFacilitators);
+                        }
+                        else
+                        {
+                            TotalFacilitators currentTotalFacilitators = _context.TotalFacilitators.Where(x => x.Date.Day == DateTime.Now.Day).FirstOrDefault();
+                            currentTotalFacilitators.Total = dailyFacilitators.Count;
+                            _context.TotalFacilitators.Update(currentTotalFacilitators);
+                        }
+                    }
+                }
+                else
+                {
+                    ticketing.accreditation = "";
+                }
+
                 if (model["parkingNumber"].ToString() == "")
                 {
                     return Json(new { success = false, message = "Parking number cannot be empty!" });
@@ -1633,29 +1809,25 @@ namespace src.Controllers.Api
         {
             //Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
             StallLease stallLease = _context.StallLease.Where(x => x.ticketingId == id).FirstOrDefault();
-            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
 
             //ticketing.timeOut = DateTime.Now;
             DateTime currentDate = DateTime.Now;
             DateTime endDate = new DateTime(currentDate.Year, 12, 31);
 
             stallLease.EndDate = endDate;
-            ticketing.endDate = stallLease.EndDate;
             //gatePass.EndDate = gatePass.EndDate.Value.AddYears(1);
             stallLease.Amount = stallLease.Amount + 500;
-            ticketing.amount = ticketing.amount + 500;
 
             Total total = new Total
             {
-                ticketingId = ticketing.ticketingId,
+                ticketingId = stallLease.ticketingId,
                 origin = "Gate pass",
                 date = DateTime.Now,
-                amount = ticketing.amount.Value
+                amount = 500
             };
 
             _context.Total.Add(total);
             _context.StallLease.Update(stallLease);
-            _context.Ticketing.Update(ticketing);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -1720,10 +1892,12 @@ namespace src.Controllers.Api
             }
             else
             {
-                stallLease.ticketingId = Guid.NewGuid();
-                //ticketing.ticketingId = stallLease.ticketingId;
-                _context.StallLease.Add(stallLease);
-                //_context.Ticketing.Add(ticketing);
+                StallLease currentStallLease = _context.StallLease.Where(x => x.ticketingId == id).FirstOrDefault();
+                currentStallLease.DriverName = model["DriverName"].ToString();
+                currentStallLease.PlateNumber1 = model["PlateNumber1"].ToString();
+                currentStallLease.PlateNumber2 = model["PlateNumber2"].ToString();
+                currentStallLease.Remarks = model["Remarks"].ToString();
+                _context.StallLease.Update(currentStallLease);
             }
 
             Total total = new Total
@@ -1842,6 +2016,11 @@ namespace src.Controllers.Api
                 PayParking payParking = _context.PayParking.Where(x => x.ticketingId == id).FirstOrDefault();
                 _context.Remove(payParking);
             }
+
+            ParkingNumbers parkingNumbers = _context.ParkingNumbers.Where(x => x.Name == ticketing.parkingNumber).FirstOrDefault();
+            parkingNumbers.Selected = false;
+            _context.ParkingNumbers.Update(parkingNumbers);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -1850,8 +2029,8 @@ namespace src.Controllers.Api
         [HttpDelete("DeleteGatePass/{id}")]
         public async Task<IActionResult> DeleteGatePass([FromRoute] Guid id)
         {
-            GatePass gatePass = _context.GatePass.Where(x => x.ticketingId == id).FirstOrDefault();
-            _context.Remove(gatePass);
+            StallLease stallLease = _context.StallLease.Where(x => x.ticketingId == id).FirstOrDefault();
+            _context.Remove(stallLease);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

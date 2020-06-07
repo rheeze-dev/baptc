@@ -52,6 +52,22 @@ namespace src.Controllers.Api
             return Json(new { data = parkingNumbers });
         }
 
+        // GET: api/Roles/GetAddresses
+        [HttpGet("GetAddresses")]
+        public IActionResult GetAddresses([FromRoute]Guid organizationId)
+        {
+            var addresses = _context.Addresses.ToList();
+            return Json(new { data = addresses });
+        }
+
+        // GET: api/Roles/GetCommodities
+        [HttpGet("GetCommodities")]
+        public IActionResult GetCommodities([FromRoute]Guid organizationId)
+        {
+            var commodties = _context.Commodities.ToList();
+            return Json(new { data = commodties });
+        }
+
         // POST: api/Roles/PostTicketingPrice
         [HttpPost("PostTicketingPrice")]
         public async Task<IActionResult> PostTicketingPrice([FromBody] JObject model)
@@ -135,6 +151,56 @@ namespace src.Controllers.Api
             {
                 parkingNumbers.Id = id;
                 _context.ParkingNumbers.Update(parkingNumbers);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Roles/PostAddresses
+        [HttpPost("PostAddresses")]
+        public async Task<IActionResult> PostAddresses([FromBody] JObject model)
+        {
+            int id = 0;
+            id = Convert.ToInt32(model["Id"].ToString());
+            Addresses addresses = new Addresses
+            {
+                Barangay = model["Barangay"].ToString(),
+                Municipality = model["Municipality"].ToString(),
+                Province = model["Province"].ToString(),
+                Remarks = model["Remarks"].ToString()
+            };
+            if (id == 0)
+            {
+                _context.Addresses.Add(addresses);
+            }
+            else
+            {
+                addresses.Id = id;
+                _context.Addresses.Update(addresses);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Roles/PostCommodities
+        [HttpPost("PostCommodities")]
+        public async Task<IActionResult> PostCommodities([FromBody] JObject model)
+        {
+            int id = 0;
+            id = Convert.ToInt32(model["Id"].ToString());
+            Commodities commodities = new Commodities
+            {
+                Commodity = model["Commodity"].ToString(),
+                Remarks = model["Remarks"].ToString()
+            };
+            if (id == 0)
+            {
+                _context.Commodities.Add(commodities);
+            }
+            else
+            {
+                commodities.Id = id;
+                _context.Commodities.Update(commodities);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -290,6 +356,34 @@ namespace src.Controllers.Api
             _context.ApplicationUser.Update(applicationUser);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Account has been Deactivated!" });
+        }
+
+        // POST: api/Roles/DeleteAccess
+        [HttpPost("DeleteAccess")]
+        public async Task<IActionResult> DeleteAccess(int id)
+        {
+            ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId == id).FirstOrDefault();
+            {
+                applicationUser.isAdmin = true;
+            }
+
+            _context.ApplicationUser.Update(applicationUser);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Account has been given a delete access!" });
+        }
+
+        // POST: api/Roles/RemoveDeleteAccess
+        [HttpPost("RemoveDeleteAccess")]
+        public async Task<IActionResult> RemoveDeleteAccess(int id)
+        {
+            ApplicationUser applicationUser = _context.ApplicationUser.Where(x => x.UserId == id).FirstOrDefault();
+            {
+                applicationUser.isAdmin = false;
+            }
+
+            _context.ApplicationUser.Update(applicationUser);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Account delete access has been removed!" });
         }
 
     }

@@ -1,6 +1,8 @@
 ﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Trading Inspector";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
     Layout = "_LayoutAdminlteTradingInspector";
 }
 
@@ -17,15 +19,15 @@
                                 <thead>
                                     <tr>
                                         @*<th class="col-md-2">Date entered</th>*@
-                                        <th class="col-md-2">Time in</th>
-                                        <th class="col-md-2">Plate number</th>
+                                        <th class="col-md-1">Time in</th>
+                                        <th class="col-md-1">Plate number</th>
                                         @*<th class="col-md-2">Date inspected</th>*@
-                                        <th class="col-md-2">Time inspected</th>
-                                        <th class="col-md-2">Commodity</th>
-                                        <th class="col-md-2">Estimated volume (kg)</th>
-                                        <th class="col-md-2">Inspector</th>
-                                        <th class="col-md-2">Status</th>
-                                        <th class="col-md-2">Action</th>
+                                        <th class="col-md-1">Time inspected</th>
+                                        <th class="col-md-1">Commodity</th>
+                                        <th class="col-md-1">Estimated volume (kg)</th>
+                                        <th class="col-md-1">Inspector</th>
+                                        <th class="col-md-1">Status</th>
+                                        <th class="col-md-1">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -50,6 +52,13 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/tradingInspector/shortTrip.js"></script>
+    @if (appUser.isAdmin == false)
+    {
+        <script src="~/js/views/tradingInspector/shortTrip.js"></script>
+    }
+    else if (appUser.isAdmin == true)
+    {
+        <script src="~/js/views/tradingInspector/shortTripIsAdmin.js"></script>
+    }
 }
 

@@ -111,7 +111,7 @@
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <a class="header btn-primary btn-lg" href="@Url.Action("IndexMobile","Config", new { org = Model.organizationId })" style="font-size: 20px; text-align: center; width: 230px; font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; background-color: #367fa9;"><b>BAPTC</b></a>
-            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Accreditation", action: "InterTradersMobile")" href="@Url.Action("InterTradersMobile","Accreditation", new { org = Model.organizationId })">Traders</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Accreditation", action: "InterTradersMobile")" href="@Url.Action("InterTradersMobile","Accreditation", new { org = Model.organizationId })">Inter-traders</a>
             <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Accreditation", action: "PackersAndPortersMobile")" href="@Url.Action("PackersAndPortersMobile","Accreditation", new { org = Model.organizationId })">Packers</a>
             <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Accreditation", action: "BuyersMobile")" href="@Url.Action("BuyersMobile","Accreditation", new { org = Model.organizationId })">Buyers</a>
             <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Accreditation", action: "MarketFacilitatorsMobile")" href="@Url.Action("MarketFacilitatorsMobile","Accreditation", new { org = Model.organizationId })">Facilitators</a>

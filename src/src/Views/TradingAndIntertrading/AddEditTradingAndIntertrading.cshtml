@@ -30,12 +30,8 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="Commodity" class="control-label"></label>
-                    <select id="cars" asp-for="Commodity" class="form-control">
-                        <option value="Manila">Manila</option>
-                        <option value="Baguio">Baguio</option>
-                        @*<option value="Short trip">Short trip</option>
-                        <option value="Pay parking">Pay parking</option>*@
-                    </select>
+                    <input asp-for="Commodity" class="form-control" />
+                    <span asp-validation-for="Commodity" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-lg-6">

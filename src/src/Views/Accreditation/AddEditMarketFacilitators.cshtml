@@ -14,6 +14,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
+        <div class="form-group">
+            <label asp-for="PlateNumber" class="control-label">Plate number</label>
+            <input asp-for="PlateNumber" class="form-control" />
+            <span asp-validation-for="PlateNumber" class="text-danger"></span>
+        </div>
+
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NameOfAssociation" class="control-label">Name of association</label>
@@ -69,7 +75,7 @@
                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
             </div>
             <div class="col-lg-6 form-group">
-                <label asp-for="BirthDate" class="control-label">Birthdate</label>
+                <label asp-for="BirthDate" class="control-label">Birthdate(MM/DD/YYYY)</label>
                 <input asp-for="BirthDate" class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>

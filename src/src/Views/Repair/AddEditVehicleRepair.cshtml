@@ -31,8 +31,8 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="Destination" class="control-label">Destination</label>
-                <select id="cars" asp-for="Destination" class="form-control">
+                <label asp-for="Location" class="control-label">Location</label>
+                <select id="cars" asp-for="Location" class="form-control">
                     <option value="Spot 1">Spot 1</option>
                     <option value="Spot 2">Spot 2</option>
                     <option value="Spot 3">Spot 3</option>
@@ -45,12 +45,12 @@
                     <option value="UPLB cold storage back of guestel">UPLB cold storage back of guestel</option>
                     <option value="Sewarage treatment plant back of guestel">Sewarage treatment plant back of guestel</option>
                 </select>
-                <span asp-validation-for="Destination" class="text-danger"></span>
+                <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <div class="col-lg-6 form-group">
-                <label asp-for="Location" class="control-label">Location</label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+                <label asp-for="Destination" class="control-label">Destination</label>
+                <input asp-for="Destination" class="form-control" />
+                <span asp-validation-for="Destination" class="text-danger"></span>
             </div>
         </div>
                 <div class="form-group">
@@ -76,18 +76,7 @@
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
             </div>
 </form>
-<script>
-    Ladda.bind('.btn', { timeout: 1000 });
-    $('.form_datetime').datetimepicker({
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        forceParse: 0,
-        showMeridian: 1
-    });
-</script>
+
 
 
 

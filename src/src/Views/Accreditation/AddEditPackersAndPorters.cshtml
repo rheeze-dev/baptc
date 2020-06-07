@@ -20,10 +20,17 @@
                 <input asp-for="NameOfAssociation" class="form-control" />
                 <span asp-validation-for="NameOfAssociation" class="text-danger"></span>
             </div>
-            <div class="col-lg-6 form-group">
-                <label asp-for="PackerOrPorter" class="control-label">Packer or porter</label>
-                <input asp-for="PackerOrPorter" class="form-control" />
-                <span asp-validation-for="PackerOrPorter" class="text-danger"></span>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="PackerOrPorter" class="control-label">Type of work</label>
+                    <select asp-for="PackerOrPorter" class="form-control">
+                        <option value="Packer" selected>Packer</option>
+                        <option value="Porter">Porter</option>
+                        <option value="Packer and porter">Packer and porter</option>
+                        <option value="Washer">Washer</option>
+                        <option value="Driver">Driver</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -69,7 +76,7 @@
                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
             </div>
             <div class="col-lg-6 form-group">
-                <label asp-for="BirthDate" class="control-label">Birthdate</label>
+                <label asp-for="BirthDate" class="control-label">Birthdate(MM/DD/YYYY)</label>
                 <input asp-for="BirthDate" class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>

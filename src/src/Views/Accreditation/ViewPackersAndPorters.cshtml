@@ -18,10 +18,10 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="DateOfApplication">Date: </label>
-                <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+                <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
             </div>
             <div class="col-lg-6 form-group">
-                <label asp-for="NameOfAssociation">Name of association: </label>
+                <label asp-for="NameOfAssociation">Association: </label>
                 <label class="text-warning">@Model.NameOfAssociation</label>
             </div>
         </div>
@@ -128,18 +128,6 @@
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
     </div>
 </form>
-<script>
-    Ladda.bind('.btn', { timeout: 1000 });
-    $('.form_datetime').datetimepicker({
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        forceParse: 0,
-        showMeridian: 1
-    });
-</script>
 
 
 

@@ -35,6 +35,8 @@ namespace src.Models
 
         public DateTime? DateModified { get; set; }
 
+        public bool isAdmin { get; set; }
+
         public string Modifier { get; set; }
     }
 }

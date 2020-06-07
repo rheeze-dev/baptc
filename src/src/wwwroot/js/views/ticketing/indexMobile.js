@@ -43,7 +43,7 @@ $(document).ready(function () {
                 "data": function (data) {
                     //var empty = "";
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')>View</a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')>View</a>";
                     var btnCount = "<a class='btn btn-success btn-xs btnCount' data-id='" + data["ticketingId"] + "'>Count</a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     var outPut = btnEdit + " " + btnCount + " " + btnView;
@@ -56,7 +56,7 @@ $(document).ready(function () {
                             return outPut;
                         }
                         else {
-                            return btnEdit + " " + btnView;
+                            return btnEdit + btnView;
                         }
                     }
                 }
@@ -194,7 +194,7 @@ function SubmitAddEdit(form) {
             contentType: 'application/json',
             success: function (data) {
                 if (data.success) {
-                    //popup.modal('hide');
+                    popup.modal('hide');
                     ShowMessage(data.message);
                     dataTable.ajax.reload();
                 } else {

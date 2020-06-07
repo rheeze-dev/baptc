@@ -15,6 +15,11 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
+        <div class="form-group">
+            <label asp-for="DateOfApplication">Date: </label>
+            <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+        </div>
+
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="BusinessName">Business name: </label>
@@ -104,18 +109,6 @@
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
     </div>
 </form>
-<script>
-    Ladda.bind('.btn', { timeout: 1000 });
-    $('.form_datetime').datetimepicker({
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        forceParse: 0,
-        showMeridian: 1
-    });
-</script>
 
 
 

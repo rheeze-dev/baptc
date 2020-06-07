@@ -15,45 +15,68 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
+        <div class="form-group">
+            <label asp-for="DateOfApplication">Date: </label>
+            <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+        </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="DateOfApplication">Date: </label>
-                <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+                <label asp-for="Name">Name: </label>
+                <label class="text-warning">@Model.Name</label>
             </div>
             <div class="col-lg-6 form-group">
-                <label asp-for="Sitio">Sitio: </label>
-                <label class="text-warning">@Model.Sitio</label>
+                <label asp-for="PlateNumber">Plate number: </label>
+                <label class="text-warning">@Model.PlateNumber</label>
             </div>
         </div>
-
         <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="Association">Association: </label>
+                <label class="text-warning">@Model.Association</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="SpouseName">Spouse name: </label>
+                <label class="text-warning">@Model.SpouseName</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="Counter">Counter: </label>
+                <label class="text-warning">@Model.Counter</label>
+            </div>
             <div class="col-lg-6 form-group">
                 <label asp-for="Barangay">Barangay: </label>
                 <label class="text-warning">@Model.Barangay</label>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
                     <label asp-for="Municipality">Municipality: </label>
                     <label class="text-warning">@Model.Municipality</label>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
                     <label asp-for="Province">Province: </label>
                     <label class="text-warning">@Model.Province</label>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="ContactNumber">Contact number: </label>
-                    <label class="text-warning">@Model.ContactNumber</label>
+                    <label asp-for="IdNumber">Id number: </label>
+                    <label class="text-warning">@Model.IdNumber</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="ReferenceNumber">Reference number: </label>
+                    <label class="text-warning">@Model.ReferenceNumber</label>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
@@ -63,12 +86,11 @@
             </div>
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="PlateNumber">Plate number: </label>
-                    <label class="text-warning">@Model.PlateNumber</label>
+                    <label asp-for="ContactNumber">Contact number: </label>
+                    <label class="text-warning">@Model.ContactNumber</label>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
@@ -83,7 +105,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
@@ -98,7 +119,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
@@ -119,18 +139,3 @@
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
     </div>
 </form>
-<script>
-    Ladda.bind('.btn', { timeout: 1000 });
-    $('.form_datetime').datetimepicker({
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        forceParse: 0,
-        showMeridian: 1
-    });
-</script>
-
-
-

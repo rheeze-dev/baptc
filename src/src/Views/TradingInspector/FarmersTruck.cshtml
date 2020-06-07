@@ -1,6 +1,8 @@
 ﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Trading Inspector";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
     Layout = "_LayoutAdminlteTradingInspector";
 }
 
@@ -16,10 +18,8 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        @*<th class="col-md-1">Date entered</th>*@
                                         <th class="col-md-1">Time in</th>
                                         <th class="col-md-1">Plate number</th>
-                                        @*<th class="col-md-1">Date inspected</th>*@
                                         <th class="col-md-1">Time inspected</th>
                                         <th class="col-md-1">Stall number</th>
                                         <th class="col-md-1">Farmers name</th>
@@ -27,10 +27,12 @@
                                         <th class="col-md-1">Commodity</th>
                                         <th class="col-md-1">Volume</th>
                                         <th class="col-md-1">Barangay</th>
-                                        <th class="col-md-1">Province</th>
-                                        <th class="col-md-1">Facilitators name</th>
-                                        <th class="col-md-1">Inspector</th>
-                                        <th class="col-md-1">Status</th>
+                                        @*<th class="col-md-1">Municipality</th>
+                                        <th class="col-md-1">Province</th>*@
+                                        @*<th class="col-md-1">Facilitators name</th>
+                                        <th class="col-md-1">Facilitators status</th>
+                                        <th class="col-md-1">Inspector</th>*@
+                                        @*<th class="col-md-1">Status</th>*@
                                         <th class="col-md-1">Actions</th>
                                     </tr>
                                 </thead>
@@ -56,6 +58,13 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/tradingInspector/farmersTruck.js"></script>
+    @if (appUser.isAdmin == false)
+    {
+        <script src="~/js/views/tradingInspector/farmersTruck.js"></script>
+    }
+    else if (appUser.isAdmin == true)
+    {
+        <script src="~/js/views/tradingInspector/farmersTruckIsAdmin.js"></script>
+    }
 }
 

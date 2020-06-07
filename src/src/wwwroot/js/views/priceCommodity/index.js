@@ -13,31 +13,13 @@ $(document).ready(function () {
         },
         "order": [[0, 'desc']],
         "columns": [
-            //{ "data": "commodityDate" },
-            {
-                "data": function (data) {
-                    var d = new Date(data["commodityDate"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-                    return output;
-                }
-            },
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["commodityDate"]);
-            //        var output = setClockTime(d);
-            //        return output;
-            //    }
-            //},
-            { "data": "classVariety" },
+            //{ "data": "classVariety" },
             { "data": "commodity" },
-            { "data": "commodityRemarks" },
-            { "data": "priceRange" },
-            //{ "data": "time" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["priceCommodityId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit + btnDelete;
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditCommoditiesList?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["priceCommodityId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    return btnEdit;
                 }
             }
         ],

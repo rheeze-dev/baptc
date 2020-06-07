@@ -62,5 +62,8 @@ namespace src.Models
         [Required]
         public string MajorCommodity { get; set; }
 
+        [Required]
+        public string PlateNumber { get; set; }
+
     }
 }

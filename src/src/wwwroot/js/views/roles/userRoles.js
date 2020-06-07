@@ -33,10 +33,17 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
+                    var btnIsAdmin = "<a class='btn btn-default btn-xs btnIsAdmin' data-id='" + data["userId"] + "'><i class='fa fa-user-times' title='Delete priveledge'></i></a>";
+                    var btnIsAdminFalse = "<a class='btn btn-default btn-xs btnIsAdminFalse' data-id='" + data["userId"] + "'><i class='fa fa-remove' title='Remove delete priveledge'></i></a>";
                     //var btnIncative = "<a class='btn btn-default btn-xs btnInactive' data-id='" + data["userId"] + "'>Deactivate</a>";
                     //var btnActive = "<a class='btn btn-default btn-xs btnActive' data-id='" + data["userId"] + "'>Activate</a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnConfig;
+                    if (data["isAdmin"] == false) {
+                        return btnConfig + " " + btnIsAdmin;
+                    }
+                    else if (data["isAdmin"] == true) {
+                        return btnConfig + " " + btnIsAdminFalse;
+                    }
                 }
             },
             {
@@ -74,7 +81,7 @@ $("#grid").on("click", ".btnInActive", function (e) {
     var userId = $(this).attr("data-id");
     var param = { id: userId };
     swal({
-        title: "Are you sure want to deactivate this account?",
+        title: "Are you sure to deactivate this account?",
         //text: "You will not be able to restore the file!",
         type: "warning",
         showCancelButton: true,
@@ -85,6 +92,64 @@ $("#grid").on("click", ".btnInActive", function (e) {
         $.ajax({
             type: 'POST',
             url: apiurl + '/DeactivateUser',
+            data: param,
+            success: function (data) {
+                if (data.success) {
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+    });
+});
+
+$("#grid").on("click", ".btnIsAdmin", function (e) {
+    e.preventDefault();
+    var userId = $(this).attr("data-id");
+    var param = { id: userId };
+    swal({
+        title: "Are you sure you want to give delete access to this account?",
+        //text: "You will not be able to restore the file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dd4b39",
+        confirmButtonText: "Yes, I am sure!",
+        closeOnConfirm: true
+    }, function () {
+        $.ajax({
+            type: 'POST',
+            url: apiurl + '/DeleteAccess',
+            data: param,
+            success: function (data) {
+                if (data.success) {
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+    });
+});
+
+$("#grid").on("click", ".btnIsAdminFalse", function (e) {
+    e.preventDefault();
+    var userId = $(this).attr("data-id");
+    var param = { id: userId };
+    swal({
+        title: "Are you sure you want to remove delete access to this account?",
+        //text: "You will not be able to restore the file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#dd4b39",
+        confirmButtonText: "Yes, I am sure!",
+        closeOnConfirm: true
+    }, function () {
+        $.ajax({
+            type: 'POST',
+            url: apiurl + '/RemoveDeleteAccess',
             data: param,
             success: function (data) {
                 if (data.success) {

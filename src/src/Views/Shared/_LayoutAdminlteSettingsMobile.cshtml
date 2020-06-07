@@ -113,7 +113,10 @@
             <a class="header btn-primary btn-lg" href="@Url.Action("IndexMobile","Config", new { org = org })" style="font-size: 20px; text-align: center; width: 230px; font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; background-color: #367fa9;"><b>BAPTC</b></a>
             <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Settings", action: "UserRolesMobile")" href="@Url.Action("UserRolesMobile","Settings", new { org = org })">User roles</a>
             <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Settings", action: "RolesMobile")" href="@Url.Action("RolesMobile","Settings", new { org = org })">Roles</a>
-            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Settings", action: "TicketingPriceMobile")" href="@Url.Action("TicketingPriceMobile","Settings", new { org = org })">Ticketing price</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Settings", action: "AddressesMobile")" href="@Url.Action("AddressesMobile","Settings", new { org = org })">Addresses</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Settings", action: "CommoditiesMobile")" href="@Url.Action("CommoditiesMobile","Settings", new { org = org })">Commodities</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Settings", action: "ParkingNumbersMobile")" href="@Url.Action("ParkingNumbersMobile","Settings", new { org = org })">Parking</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "Settings", action: "TicketingPriceMobile")" href="@Url.Action("TicketingPriceMobile","Settings", new { org = org })">Ticketing</a>
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">

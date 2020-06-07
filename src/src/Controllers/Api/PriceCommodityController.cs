@@ -40,8 +40,16 @@ namespace src.Controllers.Api
         [HttpGet("{organizationId}")]
         public IActionResult GetPriceCommodity([FromRoute]Guid organizationId)
         {
-            var priceCommodity = _context.PriceCommodity.ToList();
-            return Json(new { data = priceCommodity });
+            var commodities = _context.Commodities.ToList();
+            return Json(new { data = commodities });
+        }
+
+        // GET: api/PriceCommodity
+        [HttpGet("GetPrice")]
+        public IActionResult GetPrice([FromRoute]Guid organizationId)
+        {
+            var price = _context.PriceCommodity.ToList();
+            return Json(new { data = price });
         }
 
 
@@ -49,27 +57,38 @@ namespace src.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> PostPriceCommodity([FromBody] JObject model)
         {
-            Guid objGuid = Guid.Empty;
-            objGuid = Guid.Parse(model["priceCommodityId"].ToString());
             PriceCommodity priceCommodity = new PriceCommodity
             {
                 //time = Convert.ToDateTime(model["time"].ToString()),
                 commodityDate = DateTime.Now,
-                commodity = model["commodity"].ToString(),
-                commodityRemarks = model["commodityRemarks"].ToString(),
-                priceRange = Convert.ToDouble(model["priceRange"].ToString()),
-                classVariety = model["classVariety"].ToString()
+                commodity = model["Commodity"].ToString(),
+                commodityRemarks = model["Remarks"].ToString(),
+                priceRange = Convert.ToDouble(model["Price"].ToString()),
+                classVariety = model["ClassVariety"].ToString()
             };
-            if (objGuid == Guid.Empty)
+            priceCommodity.priceCommodityId = Guid.NewGuid();
+            _context.PriceCommodity.Add(priceCommodity);
+
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/PriceCommodity/EditPrice
+        [HttpPost("EditPrice")]
+        public async Task<IActionResult> EditPrice([FromBody] JObject model)
+        {
+            PriceCommodity currentPriceCommodity = _context.PriceCommodity.Where(x => x.priceCommodityId == Guid.Parse(model["priceCommodityId"].ToString())).FirstOrDefault();
+            var today = currentPriceCommodity.commodityDate.Date;
+            var check = DateTime.Now.Date;
+            if (today != check)
             {
-                priceCommodity.priceCommodityId = Guid.NewGuid();
-                _context.PriceCommodity.Add(priceCommodity);
+                return Json(new { success = false, message = "Can only edit datas saved today!" });
             }
-            else
-            {
-                priceCommodity.priceCommodityId = objGuid;
-                _context.PriceCommodity.Update(priceCommodity);
-            }
+            currentPriceCommodity.commodityDate = DateTime.Now;
+            currentPriceCommodity.commodityRemarks = model["commodityRemarks"].ToString();
+            currentPriceCommodity.priceRange = Convert.ToDouble(model["priceRange"].ToString());
+            currentPriceCommodity.classVariety = model["classVariety"].ToString();
+            _context.PriceCommodity.Update(currentPriceCommodity);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }

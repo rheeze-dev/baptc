@@ -1,6 +1,8 @@
 ﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Inter Trading";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
     Layout = "_LayoutAdminlteTradingAndIntertrading";
 }
 
@@ -22,7 +24,8 @@
                                     <tr>
                                         <th class="col-md-1">Date</th>
                                         <th class="col-md-1">Stall number</th>
-                                        <th class="col-md-1">Facilitator</th>
+                                        <th class="col-md-1">Facilitators name</th>
+                                        <th class="col-md-1">Facilitators status</th>
                                         <th class="col-md-1">Commodity</th>
                                         <th class="col-md-1">Volume (kg)</th>
                                         <th class="col-md-1">Destination</th>
@@ -38,7 +41,7 @@
 
             </div>
         </div>
-  
+
     </div>
 
 </section>
@@ -54,6 +57,13 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/tradingInspector/carrotFacility.js"></script>
+    @if (appUser.isAdmin == false)
+    {
+        <script src="~/js/views/tradingInspector/carrotFacility.js"></script>
+    }
+    else if (appUser.isAdmin == true)
+    {
+        <script src="~/js/views/tradingInspector/carrotFacilityIsAdmin.js"></script>
+    }
 }
 

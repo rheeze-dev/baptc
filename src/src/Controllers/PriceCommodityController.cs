@@ -26,6 +26,40 @@ namespace src.Controllers
             _securityService = securityService;
         }
 
+        public async Task<IActionResult> CommoditiesList(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("PriceCommodities"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> CommoditiesListMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("PriceCommodities"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> Price(Guid org)
         {
             if (org == Guid.Empty)
@@ -210,6 +244,36 @@ namespace src.Controllers
         }
 
         public IActionResult ViewPrice(Guid org, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                PriceCommodity priceCommodity = new PriceCommodity();
+                //priceCommodity.organizationId = org;
+                return View(priceCommodity);
+            }
+            else
+            {
+                return View(_context.PriceCommodity.Where(x => x.priceCommodityId.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult AddEditCommoditiesList(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Commodities commodities = new Commodities();
+                //priceCommodity.organizationId = org;
+                return View(commodities);
+            }
+            else
+            {
+                return View(_context.Commodities.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult ViewCommoditiesList(Guid org, Guid id)
         {
             if (id == Guid.Empty)
             {

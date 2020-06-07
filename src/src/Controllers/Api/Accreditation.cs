@@ -45,7 +45,7 @@ namespace src.Controllers.Api
         [HttpGet("GetInterTraders")]
         public IActionResult GetInterTraders([FromRoute]Guid organizationId)
         {
-            var interTraders = _context.AccreditedInterTraders.ToList();
+            var interTraders = _context.AccreditedInterTraders.OrderByDescending(x => x.DateOfApplication).ToList();
             return Json(new { data = interTraders });
         }
 
@@ -53,7 +53,7 @@ namespace src.Controllers.Api
         [HttpGet("GetPackersAndPorters")]
         public IActionResult GetPackersAndPorters([FromRoute]Guid organizationId)
         {
-            var packersAndPorters = _context.AccreditedPackersAndPorters.ToList();
+            var packersAndPorters = _context.AccreditedPackersAndPorters.OrderByDescending(x => x.DateOfApplication).ToList();
             return Json(new { data = packersAndPorters });
         }
 
@@ -61,7 +61,7 @@ namespace src.Controllers.Api
         [HttpGet("GetBuyers")]
         public IActionResult GetBuyers([FromRoute]Guid organizationId)
         {
-            var buyers = _context.AccreditedBuyers.ToList();
+            var buyers = _context.AccreditedBuyers.OrderByDescending(x => x.DateOfApplication).ToList();
             return Json(new { data = buyers });
         }
 
@@ -69,7 +69,7 @@ namespace src.Controllers.Api
         [HttpGet("GetMarketFacilitators")]
         public IActionResult GetMarketFacilitators([FromRoute]Guid organizationId)
         {
-            var marketFacilitators = _context.AccreditedMarketFacilitators.ToList();
+            var marketFacilitators = _context.AccreditedMarketFacilitators.OrderByDescending(x => x.DateOfApplication).ToList();
             return Json(new { data = marketFacilitators });
         }
 
@@ -77,7 +77,7 @@ namespace src.Controllers.Api
         [HttpGet("GetIndividualFarmers")]
         public IActionResult GetIndividualFarmers([FromRoute]Guid organizationId)
         {
-            var individualFarmers = _context.AccreditedIndividualFarmers.ToList();
+            var individualFarmers = _context.AccreditedIndividualFarmers.OrderByDescending(x => x.DateOfApplication).ToList();
             return Json(new { data = individualFarmers });
         }
 
@@ -98,9 +98,6 @@ namespace src.Controllers.Api
                 Name = model["Name"].ToString(),
                 NameOfSpouse = model["NameOfSpouse"].ToString(),
                 PresentAddress = model["PresentAddress"].ToString(),
-                Barangay = model["Barangay"].ToString(),
-                Municipality = "",
-                Province = "",
                 ContactNumber = model["ContactNumber"].ToString(),
                 BusinessPermit = model["BusinessPermit"].ToString(),
                 Tin = Convert.ToInt32(model["Tin"].ToString()),
@@ -108,10 +105,16 @@ namespace src.Controllers.Api
             };
             if (id == 0)
             {
-                if (interTraders.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    interTraders.Municipality = "Lagawe";
-                    interTraders.Province = "Ifugao";
+                    interTraders.Barangay = addresses.Barangay;
+                    interTraders.Municipality = addresses.Municipality;
+                    interTraders.Province = addresses.Province;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 //securityInspectionReport.Inspector = info.FullName;
@@ -119,10 +122,16 @@ namespace src.Controllers.Api
             }
             else
             {
-                if (interTraders.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    interTraders.Municipality = "Lagawe";
-                    interTraders.Province = "Ifugao";
+                    interTraders.Barangay = addresses.Barangay;
+                    interTraders.Municipality = addresses.Municipality;
+                    interTraders.Province = addresses.Province;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 interTraders.Id = id;
@@ -150,9 +159,6 @@ namespace src.Controllers.Api
                 NickName = model["NickName"].ToString(),
                 NameOfSpouse = model["NameOfSpouse"].ToString(),
                 PresentAddress = model["PresentAddress"].ToString(),
-                Barangay = model["Barangay"].ToString(),
-                Municipality = "",
-                Province = "",
                 ContactNumber = model["ContactNumber"].ToString(),
                 BirthDate = model["BirthDate"].ToString(),
                 ProvincialAddress = model["ProvincialAddress"].ToString(),
@@ -160,10 +166,16 @@ namespace src.Controllers.Api
             };
             if (id == 0)
             {
-                if (packersAndPorters.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    packersAndPorters.Municipality = "Lagawe";
-                    packersAndPorters.Province = "Ifugao";
+                    packersAndPorters.Barangay = addresses.Barangay;
+                    packersAndPorters.Municipality = addresses.Municipality;
+                    packersAndPorters.Province = addresses.Province;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 //securityInspectionReport.Inspector = info.FullName;
@@ -171,10 +183,16 @@ namespace src.Controllers.Api
             }
             else
             {
-                if (packersAndPorters.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    packersAndPorters.Municipality = "Lagawe";
-                    packersAndPorters.Province = "Ifugao";
+                    packersAndPorters.Barangay = addresses.Barangay;
+                    packersAndPorters.Municipality = addresses.Municipality;
+                    packersAndPorters.Province = addresses.Province;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 packersAndPorters.Id = id;
@@ -197,23 +215,27 @@ namespace src.Controllers.Api
                 //DateOfApplication = DateTime.Now,
                 NameOfSpouse = model["NameOfSpouse"].ToString(),
                 PresentAddress = model["PresentAddress"].ToString(),
-                Barangay = model["Barangay"].ToString(),
-                Municipality = "",
-                Province = "",
                 ContactNumber = model["ContactNumber"].ToString(),
                 BirthDate = model["BirthDate"].ToString(),
                 Tin = Convert.ToInt32(model["Tin"].ToString()),
                 BusinessName = model["BusinessName"].ToString(),
                 BusinessAddress = model["BusinessAddress"].ToString(),
                 VehiclePlateNumber = model["VehiclePlateNumber"].ToString(),
-                ProductDestination = model["ProductDestination"].ToString()
+                ProductDestination = model["ProductDestination"].ToString(),
+                DateOfApplication = DateTime.Now
             };
             if (id == 0)
             {
-                if (buyers.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    buyers.Municipality = "Lagawe";
-                    buyers.Province = "Ifugao";
+                    buyers.Barangay = addresses.Barangay;
+                    buyers.Municipality = addresses.Municipality;
+                    buyers.Province = addresses.Province;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 //securityInspectionReport.Inspector = info.FullName;
@@ -221,10 +243,16 @@ namespace src.Controllers.Api
             }
             else
             {
-                if (buyers.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    buyers.Municipality = "Lagawe";
-                    buyers.Province = "Ifugao";
+                    buyers.Barangay = addresses.Barangay;
+                    buyers.Municipality = addresses.Municipality;
+                    buyers.Province = addresses.Province;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 buyers.Id = id;
@@ -252,37 +280,43 @@ namespace src.Controllers.Api
                 NickName = model["NickName"].ToString(),
                 NameOfSpouse = model["NameOfSpouse"].ToString(),
                 PresentAddress = model["PresentAddress"].ToString(),
-                Barangay = model["Barangay"].ToString(),
-                Municipality = "",
-                Province = "",
                 ContactNumber = model["ContactNumber"].ToString(),
                 BirthDate = model["BirthDate"].ToString(),
                 Tin = Convert.ToInt32(model["Tin"].ToString()),
                 BusinessName = model["BusinessName"].ToString(),
                 BusinessAddress = model["BusinessAddress"].ToString(),
-                MajorCommodity = model["MajorCommodity"].ToString()
+                PlateNumber = model["PlateNumber"].ToString()
             };
+
+            Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+            if (addresses != null)
+            {
+                marketFacilitators.Barangay = addresses.Barangay;
+                marketFacilitators.Municipality = addresses.Municipality;
+                marketFacilitators.Province = addresses.Province;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
+            }
+
+            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["MajorCommodity"].ToString()).FirstOrDefault();
+            if (commodities != null)
+            {
+                marketFacilitators.MajorCommodity = commodities.Commodity;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+            }
+
             if (id == 0)
             {
-                if (marketFacilitators.Barangay == "Poblacion East")
-                {
-                    marketFacilitators.Municipality = "Lagawe";
-                    marketFacilitators.Province = "Ifugao";
-                }
-
-                //securityInspectionReport.Inspector = info.FullName;
                 _context.AccreditedMarketFacilitators.Add(marketFacilitators);
             }
             else
             {
-                if (marketFacilitators.Barangay == "Poblacion East")
-                {
-                    marketFacilitators.Municipality = "Lagawe";
-                    marketFacilitators.Province = "Ifugao";
-                }
-
                 marketFacilitators.Id = id;
-                //securityInspectionReport.Inspector = info.FullName;
                 _context.AccreditedMarketFacilitators.Update(marketFacilitators);
             }
             await _context.SaveChangesAsync();
@@ -305,10 +339,6 @@ namespace src.Controllers.Api
                 IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
                 Name = model["Name"].ToString(),
                 SpouseName = model["SpouseName"].ToString(),
-                Sitio = model["Sitio"].ToString(),
-                Barangay = model["Barangay"].ToString(),
-                Municipality = "",
-                Province = "",
                 ContactNumber = model["ContactNumber"].ToString(),
                 BirthDate = model["BirthDate"].ToString(),
                 PlateNumber = model["PlateNumber"].ToString(),
@@ -321,10 +351,17 @@ namespace src.Controllers.Api
             };
             if (id == 0)
             {
-                if (individualFarmers.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    individualFarmers.Municipality = "Lagawe";
-                    individualFarmers.Province = "Ifugao";
+                    individualFarmers.Barangay = addresses.Barangay;
+                    individualFarmers.Municipality = addresses.Municipality;
+                    individualFarmers.Province = addresses.Province;
+                    individualFarmers.Sitio = "";
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 //securityInspectionReport.Inspector = info.FullName;
@@ -332,10 +369,17 @@ namespace src.Controllers.Api
             }
             else
             {
-                if (individualFarmers.Barangay == "Poblacion East")
+                Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+                if (addresses != null)
                 {
-                    individualFarmers.Municipality = "Lagawe";
-                    individualFarmers.Province = "Ifugao";
+                    individualFarmers.Barangay = addresses.Barangay;
+                    individualFarmers.Municipality = addresses.Municipality;
+                    individualFarmers.Province = addresses.Province;
+                    individualFarmers.Sitio = "";
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
                 }
 
                 individualFarmers.Id = id;

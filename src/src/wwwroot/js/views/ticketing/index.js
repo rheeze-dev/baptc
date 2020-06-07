@@ -58,45 +58,47 @@ $(document).ready(function () {
             { "data": "typeOfCar" },
             { "data": "driverName" },
             { "data": "parkingNumber" },
+            //{ "data": "accreditation" },
             { "data": "remarks" },
             { "data": "count" },
-            { "data": "issuingClerk" },
-            { "data": "receivingClerk" },
-            { "data": "controlNumber" },
+            //{ "data": "issuingClerk" },
+            //{ "data": "receivingClerk" },
+            //{ "data": "controlNumber" },
             //{ "data": "gatePassDate" },
             //{ "data": "priceRange" },
             //{ "data": "time" },
-            {
-                "data": function (data) {
-                    var valid = "<span class='txt-success'>Valid</span>";
-                    var expired = "<label class='txt-info'>Expired</label>";
-                    var completed = "Completed";
-                    var active = "Active";
-                    var endDate = data["endDate"];
-                    var currentDate = new Date();
-                    endDate = new Date(endDate);
+            //{
+            //    "data": function (data) {
+            //        var valid = "<span class='txt-success'>Valid</span>";
+            //        var expired = "<label class='txt-info'>Expired</label>";
+            //        var completed = "Completed";
+            //        var active = "Active";
+            //        var endDate = data["endDate"];
+            //        var currentDate = new Date();
+            //        endDate = new Date(endDate);
 
-                    if (data["timeIn"] != null && data["timeOut"] == null) {
-                        return active;
-                    }
-                    else if (data["timeOut"] != null) {
-                        return completed;
-                    }
+            //        if (data["timeIn"] != null && data["timeOut"] == null) {
+            //            return active;
+            //        }
+            //        else if (data["timeOut"] != null) {
+            //            return completed;
+            //        }
 
-                    else if (endDate >= currentDate) {
-                        return valid;
-                    } else {
-                        return expired;
-                    }
-                }
-            },
+            //        else if (endDate >= currentDate) {
+            //            return valid;
+            //        } else {
+            //            return expired;
+            //        }
+            //    }
+            //},
             {
                 "data": function (data) {
                     var empty = "";
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnCount = "<a class='btn btn-default btn-xs btnCount' data-id='" + data["ticketingId"] + "'><i class='fa fa-plus-circle' title='Count'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    var outPut = btnEdit + " " + btnCount;
+                    var outPut = btnEdit + " " + btnView + " " + btnCount;
 
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return empty;
@@ -106,7 +108,7 @@ $(document).ready(function () {
                             return outPut;
                         }
                         else {
-                            return btnEdit;
+                            return btnEdit + btnView;
                         }
                     }
                 }
@@ -227,7 +229,7 @@ function SubmitAddEdit(form) {
             contentType: 'application/json',
             success: function (data) {
                 if (data.success) {
-                    //popup.modal('hide');
+                    popup.modal('hide');
                     ShowMessage(data.message);
                     dataTable.ajax.reload();
                 } else {

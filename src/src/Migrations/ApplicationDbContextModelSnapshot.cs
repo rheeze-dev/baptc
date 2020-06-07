@@ -129,6 +129,24 @@ namespace src.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("src.Models.Addresses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Barangay");
+
+                    b.Property<string>("Municipality");
+
+                    b.Property<string>("Province");
+
+                    b.Property<string>("Remarks");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("src.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -194,6 +212,8 @@ namespace src.Migrations
                     b.Property<string>("WallpaperPictureUrl")
                         .HasMaxLength(250);
 
+                    b.Property<bool>("isAdmin");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -227,6 +247,8 @@ namespace src.Migrations
                     b.Property<string>("ContactNumber")
                         .IsRequired();
 
+                    b.Property<DateTime>("DateOfApplication");
+
                     b.Property<string>("Municipality")
                         .IsRequired();
 
@@ -258,6 +280,8 @@ namespace src.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AccreditationChecker");
+
                     b.Property<int?>("Code");
 
                     b.Property<string>("Commodity")
@@ -283,6 +307,24 @@ namespace src.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CarrotFacility");
+                });
+
+            modelBuilder.Entity("src.Models.Commodities", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ClassVariety");
+
+                    b.Property<string>("Commodity");
+
+                    b.Property<string>("Price");
+
+                    b.Property<string>("Remarks");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Commodities");
                 });
 
             modelBuilder.Entity("src.Models.Contact", b =>
@@ -392,10 +434,60 @@ namespace src.Migrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("src.Models.DailyBuyers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("PlateNumber");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DailyBuyers");
+                });
+
+            modelBuilder.Entity("src.Models.DailyFacilitators", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("PlateNumber");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DailyFacilitators");
+                });
+
+            modelBuilder.Entity("src.Models.DailyFarmers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("PlateNumber");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DailyFarmers");
+                });
+
             modelBuilder.Entity("src.Models.FarmersTruck", b =>
                 {
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccreditationChecker");
 
                     b.Property<string>("Barangay")
                         .IsRequired();
@@ -411,6 +503,8 @@ namespace src.Migrations
                         .IsRequired();
 
                     b.Property<string>("Inspector");
+
+                    b.Property<string>("Municipality");
 
                     b.Property<string>("Organization")
                         .IsRequired();
@@ -515,8 +609,7 @@ namespace src.Migrations
                     b.Property<int?>("ReferenceNumber")
                         .IsRequired();
 
-                    b.Property<string>("Sitio")
-                        .IsRequired();
+                    b.Property<string>("Sitio");
 
                     b.Property<string>("SpouseName")
                         .IsRequired();
@@ -653,6 +746,9 @@ namespace src.Migrations
                         .IsRequired();
 
                     b.Property<string>("NickName")
+                        .IsRequired();
+
+                    b.Property<string>("PlateNumber")
                         .IsRequired();
 
                     b.Property<string>("PresentAddress")
@@ -1101,6 +1197,8 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("accreditation");
+
                     b.Property<int?>("amount");
 
                     b.Property<int?>("controlNumber");
@@ -1178,7 +1276,7 @@ namespace src.Migrations
 
             modelBuilder.Entity("src.Models.Total", b =>
                 {
-                    b.Property<Guid>("ticketingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("amount");
@@ -1187,9 +1285,53 @@ namespace src.Migrations
 
                     b.Property<string>("origin");
 
-                    b.HasKey("ticketingId");
+                    b.Property<Guid>("ticketingId");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Total");
+                });
+
+            modelBuilder.Entity("src.Models.TotalBuyers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("Total");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TotalBuyers");
+                });
+
+            modelBuilder.Entity("src.Models.TotalFacilitators", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("Total");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TotalFacilitators");
+                });
+
+            modelBuilder.Entity("src.Models.TotalFarmers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("Total");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TotalFarmers");
                 });
 
             modelBuilder.Entity("src.Models.TradersTruck", b =>

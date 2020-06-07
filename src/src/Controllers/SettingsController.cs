@@ -105,6 +105,74 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> Addresses(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> AddressesMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> Commodities(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> CommoditiesMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> UserRoles(Guid org)
         {
             ApplicationUser appUser = await _userManager.GetUserAsync(User);
@@ -266,6 +334,66 @@ namespace src.Controllers
             else
             {
                 return View(_context.ParkingNumbers.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult AddEditAddresses(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Addresses addresses = new Addresses();
+                //ticketing.ticketingId = org;
+                return View(addresses);
+            }
+            else
+            {
+                return View(_context.Addresses.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult ViewAddresses(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Addresses addresses = new Addresses();
+                //ticketing.ticketingId = org;
+                return View(addresses);
+            }
+            else
+            {
+                return View(_context.Addresses.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult AddEditCommodities(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Commodities commodities = new Commodities();
+                //ticketing.ticketingId = org;
+                return View(commodities);
+            }
+            else
+            {
+                return View(_context.Commodities.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult ViewCommodities(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Commodities commodities = new Commodities();
+                //ticketing.ticketingId = org;
+                return View(commodities);
+            }
+            else
+            {
+                return View(_context.Commodities.Where(x => x.Id.Equals(id)).FirstOrDefault());
             }
 
         }

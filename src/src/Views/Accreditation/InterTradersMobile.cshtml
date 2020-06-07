@@ -1,6 +1,8 @@
 ﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Accreditation";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
     Layout = "_LayoutAdminlteAccreditationMobile";
 }
 
@@ -53,6 +55,13 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/accreditation/interTradersMobile.js"></script>
+    @if (appUser.isAdmin == false)
+    {
+        <script src="~/js/views/accreditation/interTradersMobile.js"></script>
+    }
+    else if (appUser.isAdmin == true)
+    {
+        <script src="~/js/views/accreditation/interTradersMobileIsAdmin.js"></script>
+    }
 }
 

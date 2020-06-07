@@ -46,5 +46,7 @@ namespace src.Models
 
         [Required]
         public string ProductDestination { get; set; }
+
+        public DateTime DateOfApplication { get; set; }
     }
 }

@@ -8,7 +8,8 @@ namespace src.Models
 {
     public class Total
     {
-        [Key]
+        public int Id { get; set; }
+
         public Guid ticketingId { get; set; }
 
         public string origin { get; set; }

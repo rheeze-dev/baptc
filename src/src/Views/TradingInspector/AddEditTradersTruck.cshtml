@@ -29,13 +29,9 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label asp-for="Destination" class="control-label"></label>
-                    <select id="cars" asp-for="Destination" class="form-control">
-                        <option value="Manila">Manila</option>
-                        <option value="Baguio">Baguio</option>
-                        @*<option value="Short trip">Short trip</option>
-                        <option value="Pay parking">Pay parking</option>*@
-                    </select>
+                    <label asp-for="Destination" class="control-label">Destination</label>
+                    <input asp-for="Destination" class="form-control" />
+                    <span asp-validation-for="Destination" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-lg-6">

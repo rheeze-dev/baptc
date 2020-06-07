@@ -57,31 +57,34 @@ $(document).ready(function () {
             { "data": "commodity" },
             { "data": "volume" },
             { "data": "barangay" },
-            { "data": "province" },
-            { "data": "facilitatorsName" },
-            { "data": "inspector" },
-            {
-                "data": function (data) {
-                    var status = "<span class='txt-success'>Completed</span>";
-                    if (data["dateInspected"] == null && data["timeOut"] == null) {
-                        status = "<label class='txt-info'>Active</label>";
-                    }
-                    else if (data["dateInspected"] == null && data["timeOut"] != null) {
-                        status = "<label class='txt-info'>Unchecked</label>";
-                    }
-                    return status;
-                }
-            },
+            //{ "data": "municipality" },
+            //{ "data": "province" },
+            //{ "data": "facilitatorsName" },
+            //{ "data": "accreditationChecker" },
+            //{ "data": "inspector" },
+            //{
+            //    "data": function (data) {
+            //        var status = "<span class='txt-success'>Completed</span>";
+            //        if (data["dateInspected"] == null && data["timeOut"] == null) {
+            //            status = "<label class='txt-info'>Active</label>";
+            //        }
+            //        else if (data["dateInspected"] == null && data["timeOut"] != null) {
+            //            status = "<label class='txt-info'>Unchecked</label>";
+            //        }
+            //        return status;
+            //    }
+            //},
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditFarmersTruck?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingInspector/ViewFarmersTruck?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     //return btnEdit;
                     var outPut = btnEdit;
                     if (data["dateInspected"] != null || data["timeOut"] != null) {
-                        outPut = "";
+                        outPut = "", btnView;
                     }
-                    return outPut;
+                    return outPut + btnView;
                 }
             }
         ],

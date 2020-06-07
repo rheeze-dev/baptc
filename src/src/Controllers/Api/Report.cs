@@ -140,7 +140,7 @@ namespace src.Controllers.Api
             // query data from database  
             await Task.Yield();
 
-            var ticketing = _context.Ticketing.Where(y => y.timeIn.Value.Year.Equals(Year) && y.timeIn.Value.Month.Equals(Month) && y.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+            var ticketing = _context.Ticketing.Where(y => y.timeIn.Value.Year.Equals(Year) && y.timeIn.Value.Month.Equals(Month) && y.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
 
             var stream = new MemoryStream();
 
@@ -168,7 +168,7 @@ namespace src.Controllers.Api
             if (Date == 1000000)
             {
                 {
-                    var all = _context.Ticketing.Where(x => x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                    var all = _context.Ticketing.Where(x => x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                     using (var package = new ExcelPackage(stream))
                     {
                         var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -180,7 +180,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -190,7 +190,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -200,7 +200,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -210,7 +210,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), ControlNumber = y.controlNumber, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, Remarks = y.remarks, DriversName = y.driverName, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk }).ToList();
+                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -221,6 +221,608 @@ namespace src.Controllers.Api
             
             stream.Position = 0;
             string excelName = $"Ticketing {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("DailyBuyersReport")]
+        public async Task<IActionResult> DailyBuyersReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var buyers = _context.DailyBuyers.Where(y => y.Date.Year.Equals(Year) && y.Date.Month.Equals(Month)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(buyers, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"DailyBuyers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("DailyBuyersReportDate")]
+        public async Task<IActionResult> DailyBuyersReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.DailyBuyers.Where(x => x.Date != null).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.DailyBuyers.Where(x => x.Date >= DateTime.Today).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.DailyBuyers.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.DailyBuyers.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.DailyBuyers.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"DailyBuyers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("DailyFarmersReport")]
+        public async Task<IActionResult> DailyFarmersReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var farmers = _context.DailyFarmers.Where(y => y.Date.Year.Equals(Year) && y.Date.Month.Equals(Month)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(farmers, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"DailyFarmers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("DailyFarmersReportDate")]
+        public async Task<IActionResult> DailyFarmersReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.DailyFarmers.Where(x => x.Date != null).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.DailyFarmers.Where(x => x.Date >= DateTime.Today).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.DailyFarmers.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.DailyFarmers.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.DailyFarmers.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"DailyFarmers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("DailyFacilitatorsReport")]
+        public async Task<IActionResult> DailyFacilitatorsReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var facilitators = _context.DailyFacilitators.Where(y => y.Date.Year.Equals(Year) && y.Date.Month.Equals(Month)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(facilitators, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"DailyFacilitators {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("DailyFacilitatorsReportDate")]
+        public async Task<IActionResult> DailyFacilitatorsReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.DailyFacilitators.Where(x => x.Date != null).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.DailyFacilitators.Where(x => x.Date >= DateTime.Today).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.DailyFacilitators.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.DailyFacilitators.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.DailyFacilitators.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.PlateNumber, Count = y.Count }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"DailyFacilitators {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalBuyersReport")]
+        public async Task<IActionResult> TotalBuyersReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var buyers = _context.TotalBuyers.Where(y => y.Date.Year.Equals(Year) && y.Date.Month.Equals(Month)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(buyers, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"TotalBuyers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalBuyersReportDate")]
+        public async Task<IActionResult> TotalBuyersReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.TotalBuyers.Where(x => x.Date != null).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.TotalBuyers.Where(x => x.Date >= DateTime.Today).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.TotalBuyers.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.TotalBuyers.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.TotalBuyers.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"TotalBuyers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalFarmersReport")]
+        public async Task<IActionResult> TotalFarmersReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var farmers = _context.TotalFarmers.Where(y => y.Date.Year.Equals(Year) && y.Date.Month.Equals(Month)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(farmers, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"TotalFarmers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalFarmersReportDate")]
+        public async Task<IActionResult> TotalFarmersReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.TotalFarmers.Where(x => x.Date != null).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.TotalFarmers.Where(x => x.Date >= DateTime.Today).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.TotalFarmers.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.TotalFarmers.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.TotalFarmers.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"TotalFarmers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalFacilitatorsReport")]
+        public async Task<IActionResult> TotalFacilitatorsReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var facilitators = _context.TotalFacilitators.Where(y => y.Date.Year.Equals(Year) && y.Date.Month.Equals(Month)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(facilitators, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"TotalFacilitators {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("TotalFacilitatorsReportDate")]
+        public async Task<IActionResult> TotalFacilitatorsReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.TotalFacilitators.Where(x => x.Date != null).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.TotalFacilitators.Where(x => x.Date >= DateTime.Today).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.TotalFacilitators.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.TotalFacilitators.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.TotalFacilitators.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(y => new { Date = y.Date.ToString("MMMM dd, yyyy"), Total = y.Total }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"TotalFacilitators {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("ParkingNumberReportDate")]
+        public async Task<IActionResult> ParkingNumberReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                {
+                    var all = _context.ParkingNumbers.Select(y => new { ParkingNumber = y.Name, Occupied = y.Selected }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+            }
+
+            else if (Date == 1)
+            {
+                var occupied = _context.ParkingNumbers.Where(x => x.Selected == true).Select(y => new { ParkingNumber = y.Name, Occupied = y.Selected }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(occupied, true);
+                    package.Save();
+                }
+            }
+
+            else if (Date == 7)
+            {
+                var vacant = _context.ParkingNumbers.Where(x => x.Selected == false).Select(y => new { ParkingNumber = y.Name, Occupied = y.Selected }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(vacant, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"ParkingNumbers {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);

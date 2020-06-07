@@ -43,6 +43,23 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> ParkingNumberReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> TotalReports(Guid org)
         {
             if (org == Guid.Empty)
@@ -246,5 +263,108 @@ namespace src.Controllers
             ViewData["org"] = org;
             return View(organization);
         }
+
+        public async Task<IActionResult> DailyBuyersReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> DailyFarmersReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> DailyFacilitatorsReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> TotalBuyersReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> TotalFarmersReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> TotalFacilitatorsReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Settings"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
     }
 }

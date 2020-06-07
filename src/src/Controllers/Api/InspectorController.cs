@@ -134,11 +134,30 @@ namespace src.Controllers.Api
                 PlateNumber = model["PlateNumber"].ToString(),
                 FarmersName = model["FarmersName"].ToString(),
                 Organization = model["Organization"].ToString(),
-                Commodity = model["Commodity"].ToString(),
-                Barangay = model["Barangay"].ToString(),
-                Province = model["Province"].ToString(),
                 FacilitatorsName = model["FacilitatorsName"].ToString()
-            };
+        };
+
+            Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+            if (addresses != null)
+            {
+                farmersTruck.Barangay = addresses.Barangay;
+                farmersTruck.Municipality = addresses.Municipality;
+                farmersTruck.Province = addresses.Province;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
+            }
+
+            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
+            if (commodities != null)
+            {
+                farmersTruck.Commodity = commodities.Commodity;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+            }
 
             if (model["Volume"].ToString() == "")
             {
@@ -152,6 +171,17 @@ namespace src.Controllers.Api
             farmersTruck.Volume = Convert.ToInt32(model["Volume"].ToString());
             farmersTruck.ticketingId = id;
             farmersTruck.Inspector = info.FullName;
+
+            MarketFacilitators marketFacilitators = _context.AccreditedMarketFacilitators.Where(x => x.Name == model["FacilitatorsName"].ToString()).FirstOrDefault();
+            if (marketFacilitators != null)
+            {
+                farmersTruck.AccreditationChecker = "Accredited";
+            }
+            else
+            {
+                farmersTruck.AccreditationChecker = "Not accredited";
+            }
+
             _context.FarmersTruck.Update(farmersTruck);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -169,9 +199,18 @@ namespace src.Controllers.Api
             {
                 DateInspected = DateTime.Now,
                 TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
-                PlateNumber = model["PlateNumber"].ToString(),
-                Commodity = model["Commodity"].ToString(),
+                PlateNumber = model["PlateNumber"].ToString()
             };
+
+            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
+            if (commodities != null)
+            {
+                shortTrip.Commodity = commodities.Commodity;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+            }
 
             if (model["EstimatedVolume"].ToString() == "")
             {
@@ -222,12 +261,21 @@ namespace src.Controllers.Api
                 Date = DateTime.Now,
                 FarmerName = model["FarmerName"].ToString(),
                 FarmersOrganization = model["FarmersOrganization"].ToString(),
-                Commodity = model["Commodity"].ToString(),
                 Volume = Convert.ToInt32(model["Volume"].ToString()),
                 ProductionArea = model["ProductionArea"].ToString()
 
             };
-            
+
+            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
+            if (commodities != null)
+            {
+                interTrading.Commodity = commodities.Commodity;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+            }
+
             if (id == 0)
             {
                 if (getLastCode == null)
@@ -266,12 +314,31 @@ namespace src.Controllers.Api
                 Date = DateTime.Now,
                 StallNumber = model["StallNumber"].ToString(),
                 Facilitator = model["Facilitator"].ToString(),
-                Commodity = model["Commodity"].ToString(),
                 Volume = Convert.ToInt32(model["Volume"].ToString()),
                 Destination = model["Destination"].ToString()
 
             };
-            
+
+            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
+            if (commodities != null)
+            {
+                carrotFacility.Commodity = commodities.Commodity;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+            }
+
+            MarketFacilitators marketFacilitators = _context.AccreditedMarketFacilitators.Where(x => x.Name == model["Facilitator"].ToString()).FirstOrDefault();
+            if (marketFacilitators != null)
+            {
+                carrotFacility.AccreditationChecker = "Accredited";
+            }
+            else
+            {
+                carrotFacility.AccreditationChecker = "Not accredited";
+            }
+
             if (id == 0)
             {
                 if (getLastCode == null)

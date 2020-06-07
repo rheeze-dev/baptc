@@ -32,7 +32,6 @@ namespace src.Models
         [Required]
         public string SpouseName { get; set; }
 
-        [Required]
         public string Sitio { get; set; }
 
         [Required]

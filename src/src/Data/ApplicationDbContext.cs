@@ -55,6 +55,10 @@ namespace src.Data
 
         public DbSet<src.Models.ParkingNumbers> ParkingNumbers { get; set; }
 
+        public DbSet<src.Models.Addresses> Addresses { get; set; }
+
+        public DbSet<src.Models.Commodities> Commodities { get; set; }
+
         public DbSet<src.Models.StallLease> StallLease { get; set; }
 
         public DbSet<src.Models.TradersTruck> TradersTruck { get; set; }
@@ -82,6 +86,18 @@ namespace src.Data
         public DbSet<src.Models.MarketFacilitators> AccreditedMarketFacilitators { get; set; }
 
         public DbSet<src.Models.PackersAndPorters> AccreditedPackersAndPorters { get; set; }
+
+        public DbSet<src.Models.DailyBuyers> DailyBuyers { get; set; }
+
+        public DbSet<src.Models.DailyFacilitators> DailyFacilitators { get; set; }
+
+        public DbSet<src.Models.DailyFarmers> DailyFarmers { get; set; }
+
+        public DbSet<src.Models.TotalBuyers> TotalBuyers { get; set; }
+
+        public DbSet<src.Models.TotalFarmers> TotalFarmers { get; set; }
+
+        public DbSet<src.Models.TotalFacilitators> TotalFacilitators { get; set; }
 
         public DbSet<src.Models.SecurityInspectionReport> SecurityInspectionReport { get; set; }
 

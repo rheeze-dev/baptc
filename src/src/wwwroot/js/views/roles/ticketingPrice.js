@@ -13,13 +13,6 @@ $(document).ready(function () {
         },
         "order": [[0, 'desc']],
         "columns": [
-            {
-                "data": function (data) {
-                    var d = new Date(data["dateAdded"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-                    return output;
-                }
-            },
             { "data": "tradersTruckWithTransaction" },
             { "data": "tradersTruckWithoutTransaction" },
             { "data": "farmersTruckSingleTire" },

@@ -13,21 +13,21 @@ $(document).ready(function () {
         },
         "order": [[0, 'desc']],
         "columns": [
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["dateOfApplication"]);
-            //        var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-            //        return output;
-            //    }
-            //},
-            { "data": "nameOfSpouse" },
+            {
+                "data": function (data) {
+                    var d = new Date(data["dateOfApplication"]);
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    return output;
+                }
+            },
+            //{ "data": "nameOfSpouse" },
             { "data": "presentAddress" },
             { "data": "barangay" },
-            { "data": "municipality" },
-            { "data": "province" },
+            //{ "data": "municipality" },
+            //{ "data": "province" },
             { "data": "contactNumber" },
             { "data": "birthDate" },
-            { "data": "tin" },
+            //{ "data": "tin" },
             { "data": "businessName" },
             { "data": "businessAddress" },
             { "data": "vehiclePlateNumber" },
@@ -35,8 +35,9 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditBuyers?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit + btnDelete;
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Accreditation/ViewBuyers?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    return btnEdit + btnView;
                 }
             }
         ],

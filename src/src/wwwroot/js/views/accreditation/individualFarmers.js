@@ -22,29 +22,30 @@ $(document).ready(function () {
                 }
             },
             //{ "data": "counter" },
-            //{ "data": "association" },
+            { "data": "association" },
             //{ "data": "referenceNumber" },
             //{ "data": "idNumber" },
-            //{ "data": "name" },
+            { "data": "name" },
             //{ "data": "spouseName" },
-            { "data": "sitio" },
+            //{ "data": "sitio" },
             { "data": "barangay" },
-            { "data": "municipality" },
-            { "data": "province" },
+            //{ "data": "municipality" },
+            //{ "data": "province" },
             { "data": "contactNumber" },
             { "data": "birthDate" },
             { "data": "plateNumber" },
             { "data": "estimatedTotalLandArea" },
             { "data": "majorCrops" },
-            { "data": "landAreaPerCrop" },
-            { "data": "estimatedProduce" },
-            { "data": "planting" },
-            { "data": "harvesting" },
+            //{ "data": "landAreaPerCrop" },
+            //{ "data": "estimatedProduce" },
+            //{ "data": "planting" },
+            //{ "data": "harvesting" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditIndividualFarmers?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit + btnDelete;
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Accreditation/ViewIndividualFarmers?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    return btnEdit + btnView;
                 }
             }
         ],

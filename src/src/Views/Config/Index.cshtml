@@ -171,7 +171,7 @@
             @*if (listModule.Contains("HumanResource"))
             {
                 <div class="col-lg-4">
-                     small box 
+                     small box
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Human Resource</h4>
@@ -215,7 +215,7 @@
                             <i class="ion ion-stats-bars"></i>
                         </div>
 
-                        <a href="@Url.Action("Price", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        <a href="@Url.Action("CommoditiesList", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
                         @*@if (appUser.IsSuperAdmin)
                         {
@@ -303,10 +303,43 @@
                 </div>
             }
 
+            if (listModule.Contains("Ticketing"))
+            {
+                <div class="col-lg-4">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h4>Stakeholders</h4>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+
+                        <a href="@Url.Action("Buyers", "Stakeholders", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        @*@if (appUser.IsSuperAdmin)
+                        {
+                            <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+                        }
+                        else if (appUser.IsCustomer)
+                        {
+                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        }*@
+
+                    </div>
+                </div>
+            }
+
             @*if (listModule.Contains("GovernanceAndPolicies"))
             {
                 <div class="col-lg-4">
-                     small box 
+                     small box
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Governance And Policies</h4>
@@ -348,7 +381,7 @@
             @*if (listModule.Contains("InstitutionalDevelopmentAndExtensionServicesUnit"))
             {
                 <div class="col-lg-4">
-                     small box 
+                     small box
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Institutional Development & Extension Services Unit</h4>
@@ -381,7 +414,7 @@
             @*if (listModule.Contains("ResearchDevelopmentAndExtension"))
             {
                 <div class="col-lg-4">
-                     small box 
+                     small box
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Research Development And Extension</h4>
@@ -415,7 +448,7 @@
             @*if (listModule.Contains("Finance"))
             {
                 <div class="col-lg-4">
-                     small box 
+                     small box
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Finance</h4>
@@ -456,7 +489,7 @@
             @*if (listModule.Contains("Admin"))
             {
                 <div class="col-lg-4">
-                     small box 
+                     small box
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Admin</h4>
@@ -490,7 +523,7 @@
             @*if (listModule.Contains("AssetsAndAmenitiesManagementUnit"))
             {
                 <div class="col-lg-4">
-                     small box 
+                     small box
                     <div class="small-box bg-green">
                         <div class="inner">
                             <h4>Assets & Amenities Management Unit</h4>

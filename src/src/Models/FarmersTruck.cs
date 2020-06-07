@@ -45,6 +45,9 @@ namespace src.Models
         [Display(Name = "Barangay")]
         public string Barangay { get; set; }
 
+        [Display(Name = "Municipality")]
+        public string Municipality { get; set; }
+
         [Display(Name = "Province")]
         public string Province { get; set; }
 
@@ -52,5 +55,7 @@ namespace src.Models
         public string FacilitatorsName { get; set; }
 
         public string Inspector { get; set; }
+
+        public string AccreditationChecker { get; set; }
     }
 }

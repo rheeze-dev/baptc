@@ -214,6 +214,69 @@
 
                         if (listModule.Contains("Ticketing"))
                         {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"DailyBuyersReports")">
+                                <a href="@Url.Action("DailyBuyersReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Daily buyers</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"DailyFarmersReports")">
+                                <a href="@Url.Action("DailyFarmersReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Daily farmers</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"DailyFacilitatorsReports")">
+                                <a href="@Url.Action("DailyFacilitatorsReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Daily facilitators</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"TotalBuyersReports")">
+                                <a href="@Url.Action("TotalBuyersReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Total buyers</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"TotalFarmersReports")">
+                                <a href="@Url.Action("TotalFarmersReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Total farmers</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"TotalFacilitatorsReports")">
+                                <a href="@Url.Action("TotalFacilitatorsReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Total facilitators</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"ParkingNumberReports")">
+                                <a href="@Url.Action("ParkingNumberReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Parking numbers</span>
+                                </a>
+                            </li>
+                        }
+
+                        if (listModule.Contains("Ticketing"))
+                        {
                             <li class="@Html.IsSelected(controller: "Reports",action:"TotalReports")">
                                 <a href="@Url.Action("TotalReports", "Reports", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Total</span>

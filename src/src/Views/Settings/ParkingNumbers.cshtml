@@ -1,6 +1,8 @@
 ﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Settings";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
     Layout = "_LayoutAdminlteSettings";
 }
 
@@ -13,17 +15,17 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-lg-12">
-                                <div class="col-md-6">
-                                    <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditParkingNumbers","Settings", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New parking number</a>
-                                </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("AddEditParkingNumbers","Settings", new { org = Model.organizationId })')"><i class="fa fa-plus"></i> New parking number</a>
+                            </div>
                             <input type="hidden" asp-for="@Model.organizationId" />
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="col-md-2">Date added</th>
-                                        <th class="col-md-2">Full name</th>
-                                        <th class="col-md-2">Remarks</th>
-                                        <th class="col-md-2">Short name</th>
+                                        <th class="col-md-1">Date added</th>
+                                        <th class="col-md-1">Full name</th>
+                                        <th class="col-md-1">Remarks</th>
+                                        <th class="col-md-1">Short name</th>
                                         <th class="col-md-1">Actions</th>
                                     </tr>
                                 </thead>
@@ -48,6 +50,13 @@
 
 @section Scripts{
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="~/js/views/roles/parkingNumbers.js"></script>
+    @if (appUser.isAdmin == false)
+    {
+        <script src="~/js/views/roles/parkingNumbers.js"></script>
+    }
+    else if (appUser.isAdmin == true)
+    {
+        <script src="~/js/views/roles/parkingNumbersIsAdmin.js"></script>
+    }
 }
 
