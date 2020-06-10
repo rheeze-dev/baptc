@@ -52,7 +52,6 @@ namespace src.Controllers.Api
             return Json(new { data = price });
         }
 
-
         // POST: api/SupportEngineer
         [HttpPost]
         public async Task<IActionResult> PostPriceCommodity([FromBody] JObject model)

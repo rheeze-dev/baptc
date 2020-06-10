@@ -1,0 +1,202 @@
+﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Institutional Development & Extension Services Unit";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
+    Layout = "_LayoutAdminlteInstitutionalDevelopmentExtensionServicesUnit";
+    var date = DateTime.Now;
+    string month = "";
+    if (date.Month == 1)
+    {
+        month = "January";
+    }
+    else if (date.Month == 2)
+    {
+        month = "February";
+    }
+    else if (date.Month == 3)
+    {
+        month = "March";
+    }
+    else if (date.Month == 4)
+    {
+        month = "April";
+    }
+    else if (date.Month == 5)
+    {
+        month = "May";
+    }
+    else if (date.Month == 6)
+    {
+        month = "June";
+    }
+    else if (date.Month == 7)
+    {
+        month = "July";
+    }
+    else if (date.Month == 8)
+    {
+        month = "August";
+    }
+    else if (date.Month == 9)
+    {
+        month = "September";
+    }
+    else if (date.Month == 10)
+    {
+        month = "October";
+    }
+    else if (date.Month == 11)
+    {
+        month = "November";
+    }
+    else if (date.Month == 12)
+    {
+        month = "December";
+    }
+    var checker = "";
+    if (date.Day <= 15)
+    {
+        checker = "1st-15th";
+    }
+    else if (date.Day >= 16)
+    {
+        checker = "16th-31st";
+    }
+}
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        table.fixed {
+            table-layout: fixed;
+        }
+
+            table.fixed td {
+                overflow: hidden;
+            }
+
+        .limit{
+            width: 40px;
+        }
+    </style>
+
+<!-- Content Header (Page header) -->
+<!-- Main content -->
+    <section class="content">
+
+        @*<div class="row">*@
+        <center>
+            <div>BENGUET AGRI-PINOY TRADING CENTER</div>
+            <div>Strawberry Fields, La Trinidad, Benguet</div>
+            <p style="border:10px">
+                Revised Form 1: Accomplishment Report for CoS/JOP
+            </p>
+        </center>
+        This Contract of Service/Job Order Personnel (CoS/JOP) Form 1 should be accomplished in DUPLICATE COPIES and must be submitted to the HRDD after the 15th and 31st of each month.
+        <br />
+        Name: <b>@appUser.FullName</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Position: <b>@appUser.RoleId</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Department: @appUser.RoleId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        For @checker of @month, @date.Year
+        <br />
+
+        Note: Half-day attendance should be indicated whether A.M or P.M.
+        <br />
+
+        <center><b>CERTIFICATION OF SERVICE RENDERED AND ACCOMPLISHEMENT REPORT</b></center>
+        <b>TO WHOM IT MAY CONCERN:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is to certify that I have accomplished the following on the date specified below.
+        <table class="fixed">
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+            <tr>
+                <td class="limit"><input style="border:none" type="text"></td>
+                <td class="limit"><input style="border:none" type="text" value="  "></td>
+                <td><textarea style="border:none"></textarea></td>
+            </tr>
+        </table>
+        <br />
+        <p class="pull-left"><b>Approved by:</b></p> <br />
+                                              <br />
+        <p class="pull-left"><b>Violeta B. Salda</b></p>                       <p class="pull-right"><b>@appUser.FullName</b></p> <br />
+        <br />
+        <p class="pull-left">Chief Operations Officer </p> <p class="pull-right">Signature over printed name</p> <br />
+
+
+        @*</div>*@
+
+    </section>
+<!-- /.content -->
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/views/supportengineer/index.js"></script>
+}
+

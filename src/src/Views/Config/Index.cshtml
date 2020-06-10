@@ -43,21 +43,6 @@
 
                         <a href="@Url.Action("TicketingIn", "Ticketing", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("TicketingIn", "Ticketing", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
-
                     </div>
                 </div>
             }
@@ -75,21 +60,6 @@
                             <i class="ion ion-stats-bars"></i>
                         </div>
                         <a href="@Url.Action("TradersTruck", "TradingInspector", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("TradersTruck", "TradingInspector", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
 
                     </div>
                 </div>
@@ -109,21 +79,6 @@
                         </div>
 
                         <a href="@Url.Action("SecurityInspectionReport", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("SecurityInspectionReport", "Security", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
 
                     </div>
                 </div>
@@ -149,58 +104,9 @@
 
                         <a href="@Url.Action("VehicleRepair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("VehicleRepair", "Repair", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
-
                     </div>
                 </div>
             }
-
-            @*if (listModule.Contains("HumanResource"))
-            {
-                <div class="col-lg-4">
-                     small box
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Human Resource</h4>
-
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("HumanResource", "HumanResource", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-
-                    </div>
-                </div>
-            }*@
 
             if (listModule.Contains("PriceCommodities"))
             {
@@ -216,21 +122,6 @@
                         </div>
 
                         <a href="@Url.Action("CommoditiesList", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("Price", "PriceCommodity", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
 
                     </div>
                 </div>
@@ -251,308 +142,72 @@
 
                         <a href="@Url.Action("InterTraders", "Accreditation", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
 
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("Accreditation", "Accreditation", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
-
                     </div>
                 </div>
             }
-
-            if (listModule.Contains("TradingAndInterTrading"))
-            {
-                <div class="col-lg-4">
-                    <!-- small box -->
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Trading And Inter-trading</h4>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
-
-                    </div>
-                </div>
-            }
-
-            if (listModule.Contains("Ticketing"))
-            {
-                <div class="col-lg-4">
-                    <!-- small box -->
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Stakeholders</h4>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("Buyers", "Stakeholders", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
-
-                    </div>
-                </div>
-            }
-
-            @*if (listModule.Contains("GovernanceAndPolicies"))
-            {
-                <div class="col-lg-4">
-                     small box
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Governance And Policies</h4>
-
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("GovernanceAndPolicies", "GovernanceAndPolicies", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-
-                    </div>
-                </div>
-            }*@
-
-
         }
-        @*</div>*@
 
+            @foreach (var item in Model)
+            {
 
-        @*<div class="row">*@
+                if (listModule.Contains("TradingAndInterTrading"))
+                {
+                    <div class="col-lg-4">
+                        <!-- small box -->
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Trading And Inter-trading</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+
+                            <a href="@Url.Action("TradingAndIntertrading", "TradingAndIntertrading", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        </div>
+                    </div>
+                }
+
+                if (listModule.Contains("Ticketing"))
+                {
+                    <div class="col-lg-4">
+                        <!-- small box -->
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Stakeholders</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+
+                            <a href="@Url.Action("Buyers", "Stakeholders", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        </div>
+                    </div>
+                }
+
+                if (listModule.Contains("InstitutionalDevelopmentAndExtensionServicesUnit"))
+                {
+                    <div class="col-lg-4">
+                        @*small box*@
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h4>Institutional Development & Extension Services Unit</h4>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+
+                            <a href="@Url.Action("MemorandumNumber", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
+
+                        </div>
+                    </div>
+                }
+            }
+
         @foreach (var item in Model)
         {
-            @*if (listModule.Contains("InstitutionalDevelopmentAndExtensionServicesUnit"))
-            {
-                <div class="col-lg-4">
-                     small box
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Institutional Development & Extension Services Unit</h4>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnit", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("InstitutionalDevelopmentExtensionServicesUnit", "InstitutionalDevelopmentExtensionServicesUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-
-                    </div>
-                </div>
-            }*@
-
-            @*if (listModule.Contains("ResearchDevelopmentAndExtension"))
-            {
-                <div class="col-lg-4">
-                     small box
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Research Development And Extension</h4>
-
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("ResearchDevelopmentAndExtension", "ResearchDevelopmentAndExtension", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-
-                    </div>
-                </div>
-            }*@
-
-            @*if (listModule.Contains("Finance"))
-            {
-                <div class="col-lg-4">
-                     small box
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Finance</h4>
-
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("Finance", "Finance", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-
-                    </div>
-                </div>
-            }*@
-
-
-        }
-        @*</div>
-
-        <div class="row">*@
-        @foreach (var item in Model)
-        {
-            @*if (listModule.Contains("Admin"))
-            {
-                <div class="col-lg-4">
-                     small box
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Admin</h4>
-
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("Admin", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("Admin", "Admin", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-
-                    </div>
-                </div>
-            }*@
-
-            @*if (listModule.Contains("AssetsAndAmenitiesManagementUnit"))
-            {
-                <div class="col-lg-4">
-                     small box
-                    <div class="small-box bg-green">
-                        <div class="inner">
-                            <h4>Assets & Amenities Management Unit</h4>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-
-                        <a href="@Url.Action("AssetsAmenitiesManagementUnit", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("AssetsAmenitiesManagementUnit", "AssetsAmenitiesManagementUnit", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-
-                    </div>
-                </div>
-            }*@
-
+          
             if (listModule.Contains("Reports"))
             {
                 if (listModule.Contains("Ticketing"))
@@ -697,21 +352,6 @@
                         </div>
 
                         <a href="@Url.Action("UserRoles", "Settings", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        @*@if (appUser.IsSuperAdmin)
-                        {
-                            <a href="@Url.Action("Roles", "Settings", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-                        }
-                        else if (appUser.IsCustomer)
-                        {
-                            <a href="@Url.Action("Customer", "Ticket", new { cust = cust })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Index", "Ticket", new { org = item.organizationId })" class="small-box-footer"><h3>Enter <i class="fa fa-arrow-circle-right"></i></h3></a>
-
-                        }*@
 
                     </div>
                 </div>

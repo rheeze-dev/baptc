@@ -1,0 +1,516 @@
+﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Institutional Development & Extension Services Unit";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
+    Layout = "_LayoutAdminlteInstitutionalDevelopmentExtensionServicesUnit";
+    var date = DateTime.Now;
+    string startingMonth = "";
+    var endMonth = "";
+    if (date.Month <= 6)
+    {
+        startingMonth = "January";
+        endMonth = "June";
+    }
+    else if (date.Month >= 7)
+    {
+        startingMonth = "July";
+        endMonth = "December";
+    }
+}
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        table.fixed { table-layout:fixed; }
+table.fixed td { overflow: hidden; }
+    </style>
+
+<!-- Content Header (Page header) -->
+<!-- Main content -->
+    <section class="content">
+
+        @*<div class="row">*@
+        <center>
+            <div><b>INDIVIDUAL PERFORMANCE COMMITMENT AND REVIEW (IPCR)</b></div>
+        </center>
+
+        <div>I, <b>@appUser.FullName</b>, <b>Unit Officer</b> of the <b>@appUser.RoleId</b> commit to deliver and agree to be rated on the attainment of the following targets in
+        accordance with theindicated measures for the period <b>@startingMonth</b> to <b>@endMonth @date.Year</b>.  I fully understand that poor performance executed shall
+        constitute the non-renewal of my contract of services for the next semester.</div>
+        <br />
+        <p class="pull-left"><b>@appUser.FullName</b></p><p class="pull-right"><b>VIOLETA B. SALDA, PhD</b></p> <br />
+                                                                                                  <br />
+        <p class="pull-left">Name of employee</p><p class="pull-right">Chief Operations Officer</p> <br />
+                                                                                                    <br />
+        <p class="pull-left"><font color="red">CORE FUNCTIONS (80%)   CRITICAL FACTORS (20%)</font></p> <p class="pull-right">[5 - Outstanding, 4 - Very Satisfying, 3 - Satisfactory, 2 - Unsatisfactory, 1 -Poor]</p>
+
+
+        @*<p style="border:10px">
+            Revised Form 1: Accomplishment Report for CoS/JOP
+        </p>
+        This Contract of Service/Job Order Personnel (CoS/JOP) Form 1 should be accomplished in DUPLICATE COPIES and must be submitted to the HRDD after the 15th and 31st of each month.
+        <br />
+        Name: @appUser.FullName &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Position: @appUser.RoleId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Department: @appUser.RoleId &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        For @checker of @month, @date.Year
+        <br />
+
+        Note: Half-day attendance should be indicated whether A.M or P.M.
+        <br />
+
+        <center>CERTIFICATION OF SERVICE RENDERED AND ACCOMPLISHEMENT REPORT</center>
+        TO WHOM IT MAY CONCERN:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is to certify that I have accomplished the following on the date specified below.*@
+    <table class="fixed">
+        <tr>
+            <td>CRITERIA</td>
+            <td>SUCCESS</td>
+            <td>TARGET</td>
+            <td>TIME FRAME</td>
+            <td>RESOURCES NEEDED</td>
+            <td>ACTUAL ACCOMPLISHMENT</td>
+            <td>RATING</td>
+            <td>REMARKS</td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+        <tr>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            @if (date.Month <= 6)
+            {
+                <td>
+                    <textarea style="border:none">
+JAN -   
+FEB -   
+MARCH -   
+APRIL -   
+MAY -   
+JUNE -   </textarea>
+                </td>
+            }
+            else if (date.Month >= 7)
+            {
+                <td>
+                    <textarea style="border:none">
+JULY -   
+AUG -   
+SEPT -   
+OCT -   
+NOV -   
+DEC -   </textarea>
+                </td>
+            }
+            <td><textarea style="border:none"></textarea></td>
+            <td><textarea style="border:none"></textarea></td>
+            <td>
+                <textarea style="border:none">
+Q -   
+E -   
+T -   
+A -   
+</textarea>
+            </td>
+            <td><textarea style="border:none"></textarea></td>
+        </tr>
+
+    </table>
+    <br />
+     
+    <p class="pull-left">Received by the HRMU on </p> <p class="pull-right">Received by the HRMU on</p> <br />
+                                                                                                        <br />
+                                                                                                        <br />
+    <p class="pull-left">(Targets accomplishment)</p> <p class="pull-right">(Rated accomplishments)</p> <br />
+
+    </section>
+<!-- /.content -->
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/views/supportengineer/index.js"></script>
+}
+

@@ -45,7 +45,7 @@ namespace src.Controllers.Api
         [HttpGet("GetBuyers")]
         public IActionResult GetBuyers([FromRoute]Guid organizationId)
         {
-            var dailyBuyers = _context.DailyBuyers.ToList();
+            var dailyBuyers = _context.DailyBuyers.OrderByDescending(x => x.Date).ToList();
             return Json(new { data = dailyBuyers });
         }
 
@@ -61,7 +61,7 @@ namespace src.Controllers.Api
         [HttpGet("GetFarmers")]
         public IActionResult GetFarmers([FromRoute]Guid organizationId)
         {
-            var dailyFarmers = _context.DailyFarmers.ToList();
+            var dailyFarmers = _context.DailyFarmers.OrderByDescending(x => x.Date).ToList();
             return Json(new { data = dailyFarmers });
         }
 
@@ -77,7 +77,7 @@ namespace src.Controllers.Api
         [HttpGet("GetFacilitators")]
         public IActionResult GetFacilitators([FromRoute]Guid organizationId)
         {
-            var dailyFacilitators = _context.DailyFacilitators.ToList();
+            var dailyFacilitators = _context.DailyFacilitators.OrderByDescending(x => x.Date).ToList();
             return Json(new { data = dailyFacilitators });
         }
 

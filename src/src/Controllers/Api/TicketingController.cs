@@ -85,7 +85,7 @@ namespace src.Controllers.Api
                 {
                     ticketing.accreditation = "Buyer";
                     var reset = _context.DailyBuyers.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
-                    var lastCount = _context.DailyBuyers.OrderByDescending(x => x.Count).Select(x => x.Count).FirstOrDefault();
+                    var lastCount = _context.DailyBuyers.OrderByDescending(x => x.Date).Select(x => x.Count).FirstOrDefault();
 
                     DailyBuyers dailyBuyers = new DailyBuyers
                     {
@@ -140,8 +140,8 @@ namespace src.Controllers.Api
                 else if (individualFarmers != null)
                 {
                     ticketing.accreditation = "Farmer";
-                    var reset = _context.DailyBuyers.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
-                    var lastCount = _context.DailyFarmers.OrderByDescending(x => x.Count).Select(x => x.Count).FirstOrDefault();
+                    var reset = _context.DailyFarmers.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
+                    var lastCount = _context.DailyFarmers.OrderByDescending(x => x.Date).Select(x => x.Count).FirstOrDefault();
 
                     DailyFarmers dailyFarmers = new DailyFarmers
                     {
@@ -196,7 +196,7 @@ namespace src.Controllers.Api
                 else if (marketFacilitators != null)
                 {
                     ticketing.accreditation = "Market facilitator";
-                    var reset = _context.DailyBuyers.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
+                    var reset = _context.DailyFacilitators.OrderByDescending(x => x.Date).Select(x => x.Date.Day).FirstOrDefault();
                     var lastCount = _context.DailyFacilitators.OrderByDescending(x => x.Date).Select(x => x.Count).FirstOrDefault();
 
                     DailyFacilitators dailyFacilitators = new DailyFacilitators
