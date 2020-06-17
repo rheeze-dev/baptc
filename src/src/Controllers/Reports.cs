@@ -230,6 +230,23 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> CommodityVolumeReports(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("PriceCommodities"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> AccreditationReports(Guid org)
         {
             if (org == Guid.Empty)

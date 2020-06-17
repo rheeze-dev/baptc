@@ -1,0 +1,98 @@
+﻿@model src.Models.Organization
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Deleted Datas";
+    ApplicationUser appUser = await UserManager.GetUserAsync(User);
+    Layout = "_LayoutAdminlteDeleted";
+}
+@if (appUser.RoleId == "COO" || appUser.RoleId == "ICT-MISU")
+{
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="@Model.organizationId" />
+                                <table id="grid" name="grid" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-1">Datetime deleted</th>
+                                            <th class="col-md-1">Plate number</th>
+                                            <th class="col-md-1">From</th>
+                                            <th class="col-md-1">Name</th>
+                                            <th class="col-md-1">Deleted by</th>
+                                            <th class="col-md-1">Amount</th>
+                                            <th class="col-md-1">Remarks</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+}
+else
+{
+    <!-- Content Header (Page header) -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="hidden" asp-for="@Model.organizationId" />
+                                <table id="grid" name="grid" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-1">Datetime deleted</th>
+                                            <th class="col-md-1">Plate number</th>
+                                            <th class="col-md-1">From</th>
+                                            <th class="col-md-1">Name</th>
+                                            <th class="col-md-1">Deleted by</th>
+                                            <th class="col-md-1">Amount</th>
+                                            <th class="col-md-1">Remarks</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+}
+
+<!-- /.content -->
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+       
+     <script src="~/js/views/reports/view.js"></script>
+}
+

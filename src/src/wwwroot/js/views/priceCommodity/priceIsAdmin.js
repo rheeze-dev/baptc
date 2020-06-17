@@ -27,7 +27,8 @@ $(document).ready(function () {
             },
             { "data": "commodity" },
             { "data": "classVariety" },
-            { "data": "priceRange" },
+            { "data": "priceLow" },
+            { "data": "priceHigh" },
             { "data": "commodityRemarks" },
             {
                 "data": function (data) {
@@ -84,7 +85,7 @@ function SubmitAddEdit(form) {
         //return true;
         $.ajax({
             type: 'POST',
-            url: "/api/PriceCommodity/EditPrice",
+            url: apiurl,
             //url: '/PriceCommodity/PostPriceCommodity',
             data: data,
             contentType: 'application/json',

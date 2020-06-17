@@ -21,9 +21,8 @@ $(document).ready(function () {
                 }
             },
             { "data": "stallNumber" },
-            { "data": "facilitator" },
             { "data": "commodity" },
-            { "data": "inspector" },
+            { "data": "volume" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditCarrotFacility?id=" + data["id"] + "')>Edit</a>";

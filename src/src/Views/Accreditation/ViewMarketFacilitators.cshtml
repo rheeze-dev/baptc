@@ -15,10 +15,16 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
+
+        <div class="form-group">
+            <label asp-for="DateOfApplication">Date: </label>
+            <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+        </div>
+
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="DateOfApplication">Date: </label>
-                <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+                <label asp-for="PlateNumber">Plate number: </label>
+                <label class="text-warning">@Model.PlateNumber</label>
             </div>
             <div class="col-lg-6 form-group">
                 <label asp-for="Name">Name: </label>
@@ -27,22 +33,12 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="PlateNumber">Plate number: </label>
-                <label class="text-warning">@Model.PlateNumber</label>
-            </div>
-            <div class="col-lg-6 form-group">
-                <label asp-for="NickName">Nickname: </label>
-                <label class="text-warning">@Model.NickName</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 form-group">
                 <label asp-for="IdNumber">Id number: </label>
                 <label class="text-warning">@Model.IdNumber</label>
             </div>
             <div class="col-lg-6 form-group">
-                <label asp-for="ReferenceNumber">Reference number: </label>
-                <label class="text-warning">@Model.ReferenceNumber</label>
+                <label asp-for="NickName">Nickname: </label>
+                <label class="text-warning">@Model.NickName</label>
             </div>
         </div>
         <div class="row">
@@ -124,6 +120,18 @@
                 <div class="form-group">
                     <label asp-for="MajorCommodity">Major commodity: </label>
                     <label class="text-warning">@Model.MajorCommodity</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="ReferenceNumber">Reference number: </label>
+                <label class="text-warning">@Model.ReferenceNumber</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Remarks">Remarks: </label>
+                    <label class="text-warning">@Model.Remarks</label>
                 </div>
             </div>
         </div>

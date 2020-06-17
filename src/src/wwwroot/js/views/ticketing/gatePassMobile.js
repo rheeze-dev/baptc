@@ -13,14 +13,6 @@ $(document).ready(function () {
         },
         "order": [[0, 'desc']],
         "columns": [
-            {
-                "data": function (data) {
-                    var d = new Date(data["startDate"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-                    var spanData = "<span style = 'display:none;'> " + data["startDate"] + "</span>";
-                    return spanData + output;
-                }
-            },
             { "data": "plateNumber1" },
             { "data": "plateNumber2" },
             { "data": "remarks" },
@@ -42,7 +34,7 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var btnExtend = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Extend</a>";
-                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Ticketing/AddEditGatePass?id=" + data["ticketingId"] + "')>Edit</a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditGatePass?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
 
                     var endDate = data["endDate"];
                     var currentDate = new Date();

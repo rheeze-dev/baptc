@@ -115,21 +115,16 @@
                     @if (appUser.IsSuperAdmin)
                     {
                         <li class="header">MAIN NAVIGATION</li>
-                        <li class="@Html.IsSelected(controller: "PriceCommodity",action:"CommoditiesList")">
-                            <a href="@Url.Action("CommoditiesList", "PriceCommodity", new { org = org })">
-                                <i class="fa fa-th"></i> <span>List of commodities</span>
-                            </a>
-                        </li>
                         <li class="@Html.IsSelected(controller: "PriceCommodity",action:"Price")">
                             <a href="@Url.Action("Price", "PriceCommodity", new { org = org })">
                                 <i class="fa fa-th"></i> <span>Price of commodities</span>
                             </a>
                         </li>
-                        <li class="@Html.IsSelected(controller: "PriceCommodity",action:"Graph")">
+                        @*<li class="@Html.IsSelected(controller: "PriceCommodity",action:"Graph")">
                             <a href="@Url.Action("Graph", "PriceCommodity", new { org = org })">
                                 <i class="fa fa-th"></i> <span>Graph</span>
                             </a>
-                        </li>
+                        </li>*@
                         @*<li class="@Html.IsSelected(controller: "SupportAgent")">
                 <a href="@Url.Action("Index", "SupportAgent", new { org = org })">
                     <i class="fa fa-th"></i> <span>Support Agents</span>

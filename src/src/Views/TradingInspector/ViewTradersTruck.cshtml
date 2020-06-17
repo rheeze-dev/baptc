@@ -15,10 +15,15 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ticketingId" />
 
+        <div class="form-group">
+            <label asp-for="TimeIn">Time in: </label>
+            <label class="text-warning">@Model.TimeIn.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+        </div>
+
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="TimeIn">Time in: </label>
-                <label class="text-warning">@Model.TimeIn.ToString("MMMM dd, yyyy / hh:mm tt")</label>
+                <label asp-for="PlateNumber">Plate number: </label>
+                <label class="text-warning">@Model.PlateNumber</label>
             </div>
             <div class="col-lg-6 form-group">
                 <div class="form-group">
@@ -32,49 +37,55 @@
                         {
                             @Model.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt");
                         }
-                     </label>
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <label asp-for="PlateNumber">Plate number: </label>
-            <label class="text-warning">@Model.PlateNumber</label>
-        </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="TraderName">Traders name: </label>
-                <label class="text-warning">@Model.TraderName</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="ParkingNumber">Parking number: </label>
+                <label class="text-warning">@Model.ParkingNumber</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="TraderName">Traders name: </label>
+                    <label class="text-warning">@Model.TraderName</label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="EstimatedVolume">Estimated volume: </label>
-                <label class="text-warning">@Model.EstimatedVolume</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="EstimatedVolume">Estimated volume: </label>
+                    <label class="text-warning">@Model.EstimatedVolume</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Destination">Destination: </label>
+                    <label class="text-warning">@Model.Destination</label>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="Destination">Destination: </label>
-                <label class="text-warning">@Model.Destination</label>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="Inspector">Inspector: </label>
-                <label class="text-warning">@Model.Inspector</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Inspector">Inspector: </label>
+                    <label class="text-warning">@Model.Inspector</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Remarks">Remarks: </label>
+                    <label class="text-warning">@Model.Remarks</label>
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 <div class="box-footer">
     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
 </div>

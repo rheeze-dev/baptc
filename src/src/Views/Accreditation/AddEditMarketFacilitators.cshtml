@@ -14,12 +14,18 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
-        <div class="form-group">
-            <label asp-for="PlateNumber" class="control-label">Plate number</label>
-            <input asp-for="PlateNumber" class="form-control" />
-            <span asp-validation-for="PlateNumber" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="PlateNumber" class="control-label">Plate number</label>
+                <input asp-for="PlateNumber" class="form-control" />
+                <span asp-validation-for="PlateNumber" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="IdNumber" class="control-label">Id number</label>
+                <input asp-for="IdNumber" class="form-control" />
+                <span asp-validation-for="IdNumber" class="text-danger"></span>
+            </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NameOfAssociation" class="control-label">Name of association</label>
@@ -34,26 +40,26 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="IdNumber" class="control-label">Id number</label>
-                <input asp-for="IdNumber" class="form-control" />
-                <span asp-validation-for="IdNumber" class="text-danger"></span>
-            </div>
-            <div class="col-lg-6 form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NickName" class="control-label">Nickname</label>
                 <input asp-for="NickName" class="form-control" />
                 <span asp-validation-for="NickName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NameOfSpouse" class="control-label">Name of spouse</label>
                 <input asp-for="NameOfSpouse" class="form-control" />
                 <span asp-validation-for="NameOfSpouse" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Tin" class="control-label">Tin</label>
+                <input asp-for="Tin" class="form-control" />
+                <span asp-validation-for="Tin" class="text-danger"></span>
             </div>
         </div>
         <div class="row">
@@ -82,26 +88,26 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="Tin" class="control-label">Tin</label>
-                <input asp-for="Tin" class="form-control" />
-                <span asp-validation-for="Tin" class="text-danger"></span>
-            </div>
-            <div class="col-lg-6 form-group">
                 <label asp-for="BusinessName" class="control-label">Business name</label>
                 <input asp-for="BusinessName" class="form-control" />
                 <span asp-validation-for="BusinessName" class="text-danger"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="BusinessAddress" class="control-label">Business address</label>
                 <input asp-for="BusinessAddress" class="form-control" />
                 <span asp-validation-for="BusinessAddress" class="text-danger"></span>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="MajorCommodity" class="control-label">Major commodity</label>
                 <input asp-for="MajorCommodity" class="form-control" />
                 <span asp-validation-for="MajorCommodity" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Remarks" class="control-label">Remarks</label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
         </div>
     </div>

@@ -17,18 +17,20 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th colspan="3"><center>Price commodity</center></th>
+                                        <th colspan="5"><center>Price commodity</center></th>
                                     </tr>
                                     <tr>
-                                        <th class="col-md-1">Year</th>
-                                        <th class="col-md-1">Month</th>
+                                        <th class="col-md-1"><font color="green">Year</font></th>
+                                        <th class="col-md-1"><font color="green">Month</font></th>
+                                        <th class="col-md-1"><font color="red">Commodity</font></th>
+                                        <th class="col-md-1"><font color="red">Class variety</font></th>
                                         <th class="col-md-1">Button</th>
                                     </tr>
                                     <tr>
                                         <th class="col-md-1">
                                             <select name="selectYearPriceCommodity" class="form-control" id="dropdownYearPriceCommodity"></select>
                                             @*style="width: 120px;"
-                                                onchange="getProjectReportFunc()"*@
+            onchange="getProjectReportFunc()"*@
                                         </th>
                                         <th class="col-md-1">
                                             <select class="form-control" id="dropdownMonthPriceCommodity">
@@ -46,12 +48,15 @@
                                                 <option value="12">December</option>
                                             </select>
                                         </th>
+                                        <th class="col-md-1"><input type="text" id="inputCommodity" style="border:none"></th>
+                                        <th class="col-md-1"><input type="text" id="inputClassVariety" style="border:none"></th>
                                         <th class="col-md-1">
                                             <a class="btn btn-success btn-xs exportPriceCommodity"><i class='fa fa-download'></i> Export</a>
+                                            <a class="btn btn-danger btn-xs exportWithParam"><i class='fa fa-download'></i> Special</a>
                                         </th>
                                     </tr>
                                     <tr>
-                                        <th class="col-md-1">
+                                        <th class="col-md-1" colspan="2">
                                             <select class="form-control" id="dropdownPriceCommodityDate">
                                                 <option value="1000000">All</option>
                                                 <option value="365">Last year</option>
@@ -60,10 +65,11 @@
                                                 <option value="1">Today</option>
                                             </select>
                                         </th>
-                                        <th class="col-md-1">
-                                        </th>
+                                        <th class="col-md-1"><input type="text" id="inputCommodity2" style="border:none"></th>
+                                        <th class="col-md-1"><input type="text" id="inputClassVariety2" style="border:none"></th>
                                         <th class="col-md-1">
                                             <a class="btn btn-success btn-xs exportPriceCommodityDate"><i class='fa fa-download'></i> Export</a>
+                                            <a class="btn btn-danger btn-xs exportWithParam2"><i class='fa fa-download'></i> Special</a>
                                         </th>
                                     </tr>
                                 </thead>
@@ -110,11 +116,26 @@
                 $(".exportPriceCommodity").attr("href", "/api/Report/PriceCommodityReport?Year=" + getSelectedYear + "&Month=" + getSelectedMonth);
             });
 
+            $(".exportWithParam").on("click", function (e) {
+                var getSelectedYear = $("#dropdownYearPriceCommodity").val();
+                var getSelectedMonth = $("#dropdownMonthPriceCommodity").val();
+                var getInputCommodity = $("#inputCommodity").val();
+                var getInputVariety = $("#inputClassVariety").val();
+                $(".exportWithParam").attr("href", "/api/Report/PriceWithParamReport?Year=" + getSelectedYear + "&Month=" + getSelectedMonth + "&Commodity=" + getInputCommodity + "&Variety=" + getInputVariety);
+            });
+
             $(".exportPriceCommodityDate").on("click", function (e) {
                 var getSelectedDate = $("#dropdownPriceCommodityDate").val();
                 $(".exportPriceCommodityDate").attr("href", "/api/Report/PriceCommodityReportDate?Date=" + getSelectedDate);
             });
 
+            $(".exportWithParam2").on("click", function (e) {
+                var getSelectedDate = $("#dropdownPriceCommodityDate").val();
+                var getInputCommodity2 = $("#inputCommodity2").val();
+                var getInputVariety2 = $("#inputClassVariety2").val();
+                //alert(getInputCommodity2 + getInputVariety2);
+                $(".exportWithParam2").attr("href", "/api/Report/PriceWithParamReport2?Date=" + getSelectedDate + "&Commodity=" + getInputCommodity2 + "&Variety=" + getInputVariety2);
+            });
         }
     </script>
 }

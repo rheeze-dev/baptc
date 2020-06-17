@@ -14,6 +14,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
+        <div class="form-group">
+            <label asp-for="IdNumber" class="control-label">Id number</label>
+            <input asp-for="IdNumber" class="form-control" />
+            <span asp-validation-for="IdNumber" class="text-danger"></span>
+        </div>
+
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NameOfAssociation" class="control-label">Name of association</label>
@@ -35,26 +41,26 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="IdNumber" class="control-label">Id number</label>
-                <input asp-for="IdNumber" class="form-control" />
-                <span asp-validation-for="IdNumber" class="text-danger"></span>
-            </div>
-            <div class="col-lg-6 form-group">
                 <label asp-for="Name" class="control-label">Name</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NickName" class="control-label">Nickname</label>
                 <input asp-for="NickName" class="form-control" />
                 <span asp-validation-for="NickName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NameOfSpouse" class="control-label">Name of spouse</label>
                 <input asp-for="NameOfSpouse" class="form-control" />
                 <span asp-validation-for="NameOfSpouse" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="ProvincialAddress" class="control-label">Provincial address</label>
+                <input asp-for="ProvincialAddress" class="form-control" />
+                <span asp-validation-for="ProvincialAddress" class="text-danger"></span>
             </div>
         </div>
         <div class="row">
@@ -83,14 +89,14 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="ProvincialAddress" class="control-label">Provincial address</label>
-                <input asp-for="ProvincialAddress" class="form-control" />
-                <span asp-validation-for="ProvincialAddress" class="text-danger"></span>
-            </div>
-            <div class="col-lg-6 form-group">
                 <label asp-for="Requirements" class="control-label"></label>
                 <input asp-for="Requirements" class="form-control" />
                 <span asp-validation-for="Requirements" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Remarks" class="control-label">Remarks</label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
         </div>
     </div>

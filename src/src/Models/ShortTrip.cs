@@ -8,7 +8,8 @@ namespace src.Models
 {
     public class ShortTrip
     {
-        [Key]
+        public int Id { get; set; }
+
         public Guid ticketingId { get; set; }
         //[Required]
         [Display(Name = "Time in")]
@@ -17,19 +18,37 @@ namespace src.Models
         [Display(Name = "Time out")]
         public DateTime? TimeOut { get; set; }
 
-        public DateTime? DateInspected { get; set; }
+        public DateTime? DateInspectedIn { get; set; }
+
+        public DateTime? DateInspectedOut { get; set; }
 
         //[Required]
         [Display(Name = "Estimated volume (kg)")]
-        public int? EstimatedVolume { get; set; }
+        public int? EstimatedVolumeIn { get; set; }
+
+        [Display(Name = "Estimated volume (kg)")]
+        public int? EstimatedVolumeOut { get; set; }
 
         [Display(Name = "Plate number")]
         public string PlateNumber { get; set; }
 
         [Required]
         [Display(Name = "Commodity")]
-        public string Commodity { get; set; }
+        public string CommodityIn { get; set; }
 
-        public string Inspector { get; set; }
+        [Required]
+        [Display(Name = "Commodity")]
+        public string CommodityOut { get; set; }
+
+        public string ParkingNumber { get; set; }
+
+        public string InspectorIn { get; set; }
+
+        public string InspectorOut { get; set; }
+
+        public string RemarksIn { get; set; }
+
+        public string RemarksOut { get; set; }
+
     }
 }

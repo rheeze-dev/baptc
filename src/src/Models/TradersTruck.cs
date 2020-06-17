@@ -34,6 +34,10 @@ namespace src.Models
 
         public string PlateNumber { get; set; }
 
+        public string ParkingNumber { get; set; }
+
         public string Inspector { get; set; }
+
+        public string Remarks { get; set; }
     }
 }

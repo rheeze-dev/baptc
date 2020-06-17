@@ -25,24 +25,25 @@ $(document).ready(function () {
                     return spanData + output;
                 }
             },
-            {
-                "data": function (data) {
-                    var d = new Date(data["timeOut"]);
-                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-                    var output = dateOut;
-                    if (data["timeOut"] == null) {
-                        output = "";
-                    }
-                    return output;
-                }
-            },
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
             { "data": "amount" },
             {
                 "data": function (data) {
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')>View</a>";
-                    var btnEdit = "<a class='btn btn-success btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Complete</a>";
+                    var completed = "Completed";
+                    var active = "Active";
+                    if (data["timeIn"] != null && data["timeOut"] == null) {
+                        return active;
+                    }
+                    else if (data["timeOut"] != null) {
+                        return completed;
+                    }
+                }
+            },
+            {
+                "data": function (data) {
+                    var btnEdit = "<a class='btn btn-success btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Finish</a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return btnView;
                     }

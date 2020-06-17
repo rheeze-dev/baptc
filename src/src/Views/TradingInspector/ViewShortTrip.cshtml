@@ -14,38 +14,74 @@
     <div class="box-body">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="ticketingId" />
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="TimeIn">Time in: </label>
                 <label class="text-warning">@Model.TimeIn.ToString("MMMM dd, yyyy / hh:mm tt")</label>
             </div>
-            <div class="col-lg-6 form-group">
-                <div class="form-group">
-                    <label asp-for="DateInspected">Time inspected: </label>
-                    <label class="text-warning">
-                        @if (Model.DateInspected.Equals(null))
-                        {
-                            ;
-                        }
-                        else if (!Model.DateInspected.Value.Equals(null))
-                        {
-                            @Model.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt");
-                        }
-                    </label>
+            @if (Model.TimeOut != null)
+            {
+                <div class="col-lg-6 form-group">
+                    <label asp-for="TimeOut">Time out: </label>
+                    <label class="text-warning">@Model.TimeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt")</label>
                 </div>
-            </div>
+            }
+            else
+            {
+                ;
+            }
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="PlateNumber">Plate number: </label>
                 <label class="text-warning">@Model.PlateNumber</label>
             </div>
             <div class="col-lg-6 form-group">
+                <label asp-for="ParkingNumber">Parking number: </label>
+                <label class="text-warning">@Model.ParkingNumber</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="Commodity">Commodity: </label>
-                    <label class="text-warning">@Model.Commodity</label>
+                    <label asp-for="DateInspectedIn">Time inspected(in): </label>
+                    <label class="text-warning">
+                        @if (Model.DateInspectedIn.Equals(null))
+                        {
+                            ;
+                        }
+                        else if (!Model.DateInspectedIn.Value.Equals(null))
+                        {
+                            @Model.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt");
+                        }
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="DateInspectedOut">Time inspected(out): </label>
+                    <label class="text-warning">
+                        @if (Model.DateInspectedOut.Equals(null))
+                        {
+                            ;
+                        }
+                        else if (!Model.DateInspectedOut.Value.Equals(null))
+                        {
+                            @Model.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt");
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="CommodityIn">Commodity(in): </label>
+                <label class="text-warning">@Model.CommodityIn</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="CommodityOut">Commodity(out): </label>
+                    <label class="text-warning">@Model.CommodityOut</label>
                 </div>
             </div>
         </div>
@@ -53,14 +89,42 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="EstimatedVolume">Estimated volume: </label>
-                    <label class="text-warning">@Model.EstimatedVolume</label>
+                    <label asp-for="EstimatedVolumeIn">Estimated volume(in): </label>
+                    <label class="text-warning">@Model.EstimatedVolumeIn</label>
                 </div>
             </div>
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="Inspector">Inspector: </label>
-                    <label class="text-warning">@Model.Inspector</label>
+                    <label asp-for="EstimatedVolumeOut">Estimated volume(out): </label>
+                    <label class="text-warning">@Model.EstimatedVolumeOut</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="InspectorIn">Inspector(in): </label>
+                    <label class="text-warning">@Model.InspectorIn</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="InspectorOut">Inspector(out): </label>
+                    <label class="text-warning">@Model.InspectorOut</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="RemarksIn">Remarks(in): </label>
+                    <label class="text-warning">@Model.RemarksIn</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="RemarksOut">Remarks(out): </label>
+                    <label class="text-warning">@Model.RemarksOut</label>
                 </div>
             </div>
         </div>

@@ -33,8 +33,8 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";
-                    var btnIsAdmin = "<a class='btn btn-default btn-xs btnIsAdmin' data-id='" + data["userId"] + "'><i class='fa fa-user-times' title='Delete priveledge'></i></a>";
-                    var btnIsAdminFalse = "<a class='btn btn-default btn-xs btnIsAdminFalse' data-id='" + data["userId"] + "'><i class='fa fa-remove' title='Remove delete priveledge'></i></a>";
+                    var btnIsAdmin = "<a class='btn btn-default btn-xs btnIsAdmin' data-id='" + data["userId"] + "'><i class='fa fa-user-times' title='Extra priveledge'></i></a>";
+                    var btnIsAdminFalse = "<a class='btn btn-default btn-xs btnIsAdminFalse' data-id='" + data["userId"] + "'><i class='fa fa-remove' title='Remove extra priveledge'></i></a>";
                     //var btnIncative = "<a class='btn btn-default btn-xs btnInactive' data-id='" + data["userId"] + "'>Deactivate</a>";
                     //var btnActive = "<a class='btn btn-default btn-xs btnActive' data-id='" + data["userId"] + "'>Activate</a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";

@@ -15,11 +15,18 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
-        <div class="form-group">
-            <label asp-for="DateOfApplication">Date: </label>
-            <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="DateOfApplication">Date: </label>
+                <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="VehiclePlateNumber">PlateNumber: </label>
+                    <label class="text-warning">@Model.VehiclePlateNumber</label>
+                </div>
+            </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="BusinessName">Business name: </label>
@@ -92,14 +99,14 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="VehiclePlateNumber">PlateNumber: </label>
-                    <label class="text-warning">@Model.VehiclePlateNumber</label>
+                    <label asp-for="ProductDestination">Product destination: </label>
+                    <label class="text-warning">@Model.ProductDestination</label>
                 </div>
             </div>
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="ProductDestination">Product destination: </label>
-                    <label class="text-warning">@Model.ProductDestination</label>
+                    <label asp-for="Remarks">Remarks: </label>
+                    <label class="text-warning">@Model.Remarks</label>
                 </div>
             </div>
         </div>

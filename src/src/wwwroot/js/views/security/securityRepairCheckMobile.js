@@ -22,9 +22,8 @@ $(document).ready(function () {
                 }
             },
             { "data": "plateNumber" },
-            { "data": "driverName" },
+            { "data": "location" },
             { "data": "repairDetails" },
-            { "data": "remarks" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Repair/AddEditVehicleRepair?id=" + data["id"] + "')>Edit</a>";

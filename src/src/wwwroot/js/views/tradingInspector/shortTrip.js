@@ -30,17 +30,29 @@ $(document).ready(function () {
             //    }
             //},
             { "data": "plateNumber" },
-            {
-                "data": function (data) {
-                    var d = new Date(data["dateInspected"]);
-                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-                    var output = dateOut;
-                    if (data["dateInspected"] == null) {
-                        output = "";
-                    }
-                    return output;
-                }
-            },
+            { "data": "parkingNumber" },
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["dateInspectedIn"]);
+            //        var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
+            //        var output = dateOut;
+            //        if (data["dateInspectedIn"] == null) {
+            //            output = "";
+            //        }
+            //        return output;
+            //    }
+            //},
+            //{
+            //    "data": function (data) {
+            //        var d = new Date(data["dateInspectedOut"]);
+            //        var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
+            //        var output = dateOut;
+            //        if (data["dateInspectedOut"] == null) {
+            //            output = "";
+            //        }
+            //        return output;
+            //    }
+            //},
             //{
             //    "data": function (data) {
             //        var d = new Date(data["date"]);
@@ -51,31 +63,43 @@ $(document).ready(function () {
             //        return output;
             //    }
             //},
-            { "data": "commodity" },
-            { "data": "estimatedVolume" },
-            { "data": "inspector" },
+            { "data": "commodityIn" },
+            { "data": "commodityOut" },
+            { "data": "remarksIn" },
+            { "data": "remarksOut" },
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";
-                    if (data["dateInspected"] == null && data["timeOut"] == null) {
+                    if (data["dateInspectedOut"] == null && data["timeOut"] == null) {
                         status = "<label class='txt-info'>Active</label>";
                     }
-                    else if (data["dateInspected"] == null && data["timeOut"] != null) {
+                    else if (data["dateInspectedIn"] == null && data["timeOut"] != null) {
                         status = "<label class='txt-info'>Unchecked</label>";
+                    }
+                    else if (data["dateInspectedOut"] == null && data["timeOut"] != null) {
+                        status = "<label class='txt-info'>Unchecked(Out)</label>";
                     }
                     return status;
                 }
             },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    //return btnEdit;
-                    var outPut = btnEdit;
-                    if (data["dateInspected"] != null || data["timeOut"] != null) {
-                        outPut = "";
+                    var btnEditIn = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit in'></i></a>";
+                    var btnEditOut = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTripOut?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit out'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
+                    var outPut = btnEditIn;
+                    if (data["timeOut"] != null) {
+                        return btnView;
                     }
-                    return outPut;
+                    else if (data["dateInspectedOut"] != null) {
+                        return btnView;
+                    }
+                    else if (data["dateInspectedIn"] == null && data["timeOut"] == null) {
+                        return outPut;
+                    }
+                    else if (data["dateInspectedIn"] != null && data["timeOut"] == null) {
+                        return btnEditOut + btnView;
+                    }
                 }
             }
         ],
@@ -126,6 +150,38 @@ function SubmitAddEdit(form) {
         $.ajax({
             type: 'POST',
             url: "/api/Inspector/PostShortTrip",
+            //url: '/PriceCommodity/PostPriceCommodity',
+            data: data,
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.success) {
+                    popup.modal('hide');
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+
+    }
+    return false;
+}
+
+function SubmitAddEditOut(form) {
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        var data = $(form).serializeJSON();
+        //data = { priceCommodity: data };
+        data = JSON.stringify(data);
+        //var data = {
+        //    priceCommodity: "petsay"
+        //};
+        //alert(data);
+        //return true;
+        $.ajax({
+            type: 'POST',
+            url: "/api/Inspector/PostShortTripOut",
             //url: '/PriceCommodity/PostPriceCommodity',
             data: data,
             contentType: 'application/json',

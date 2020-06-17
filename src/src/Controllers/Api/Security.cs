@@ -136,6 +136,20 @@ namespace src.Controllers.Api
         {
             Repair repair = _context.Repair.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(repair);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = repair.PlateNumber,
+                Origin = "Repair",
+                Name = repair.DriverName,
+                DeletedBy = info.FullName,
+                Remarks = repair.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -146,6 +160,20 @@ namespace src.Controllers.Api
         {
             SecurityInspectionReport securityInspectionReport = _context.SecurityInspectionReport.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(securityInspectionReport);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = "",
+                Origin = "Security",
+                Name = "",
+                DeletedBy = info.FullName,
+                Remarks = securityInspectionReport.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

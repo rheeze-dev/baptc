@@ -44,7 +44,7 @@ namespace src.Controllers.Api
         [HttpGet("GetTradersTruck")]
         public IActionResult GetTradersTruck([FromRoute]Guid organizationId)
         {
-            var tradersTruck = _context.TradersTruck.ToList();
+            var tradersTruck = _context.TradersTruck.OrderByDescending(x => x.TimeIn).ToList();
             return Json(new { data = tradersTruck });
         }
 
@@ -52,7 +52,7 @@ namespace src.Controllers.Api
         [HttpGet("GetFarmersTruck")]
         public IActionResult GetFarmersTruck([FromRoute]Guid organizationId)
         {
-            var farmersTruck = _context.FarmersTruck.ToList();
+            var farmersTruck = _context.FarmersTruck.OrderByDescending(x => x.TimeIn).ToList();
             return Json(new { data = farmersTruck });
         }
 
@@ -60,7 +60,7 @@ namespace src.Controllers.Api
         [HttpGet("GetShortTrip")]
         public IActionResult GetShortTrip([FromRoute]Guid organizationId)
         {
-            var shortTrip = _context.ShortTrip.ToList();
+            var shortTrip = _context.ShortTrip.OrderByDescending(x => x.TimeIn).ToList();
             return Json(new { data = shortTrip });
         }
 
@@ -96,22 +96,17 @@ namespace src.Controllers.Api
             id = Guid.Parse(model["ticketingId"].ToString());
             var info = await _userManager.GetUserAsync(User);
 
-            TradersTruck tradersTruck = new TradersTruck
-            {
-                DateInspected = DateTime.Now,
-                TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
-                TraderName = model["TraderName"].ToString(),
-                PlateNumber = model["PlateNumber"].ToString(),
-                Destination = model["Destination"].ToString()
-                //EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString())
-            };
-
+            TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+            tradersTruck.DateInspected = DateTime.Now;
+            tradersTruck.TraderName = model["TraderName"].ToString();
+            tradersTruck.PlateNumber = model["PlateNumber"].ToString();
+            tradersTruck.Destination = model["Destination"].ToString();
+            tradersTruck.Remarks = model["Remarks"].ToString();
             if (model["EstimatedVolume"].ToString() == "")
             {
                 return Json(new { success = false, message = "Estimated volume cannot be empty!" });
             }
             tradersTruck.EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString());
-            tradersTruck.ticketingId = id;
             tradersTruck.Inspector = info.FullName;
             _context.TradersTruck.Update(tradersTruck);
             await _context.SaveChangesAsync();
@@ -126,16 +121,14 @@ namespace src.Controllers.Api
             id = Guid.Parse(model["ticketingId"].ToString());
             var info = await _userManager.GetUserAsync(User);
 
-            FarmersTruck farmersTruck = new FarmersTruck
-            {
-                DateInspected = DateTime.Now,
-                TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
-                StallNumber = model["StallNumber"].ToString(),
-                PlateNumber = model["PlateNumber"].ToString(),
-                FarmersName = model["FarmersName"].ToString(),
-                Organization = model["Organization"].ToString(),
-                FacilitatorsName = model["FacilitatorsName"].ToString()
-        };
+            FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+            farmersTruck.DateInspected = DateTime.Now;
+            farmersTruck.StallNumber = model["StallNumber"].ToString();
+            farmersTruck.PlateNumber = model["PlateNumber"].ToString();
+            farmersTruck.FarmersName = model["FarmersName"].ToString();
+            farmersTruck.Organization = model["Organization"].ToString();
+            farmersTruck.FacilitatorsName = model["FacilitatorsName"].ToString();
+            farmersTruck.Remarks = model["Remarks"].ToString();
 
             Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
             if (addresses != null)
@@ -169,7 +162,6 @@ namespace src.Controllers.Api
             }
 
             farmersTruck.Volume = Convert.ToInt32(model["Volume"].ToString());
-            farmersTruck.ticketingId = id;
             farmersTruck.Inspector = info.FullName;
 
             MarketFacilitators marketFacilitators = _context.AccreditedMarketFacilitators.Where(x => x.Name == model["FacilitatorsName"].ToString()).FirstOrDefault();
@@ -191,35 +183,65 @@ namespace src.Controllers.Api
         [HttpPost("PostShortTrip")]
         public async Task<IActionResult> PostShortTrip([FromBody] JObject model)
         {
-            Guid id = Guid.Empty;
-            id = Guid.Parse(model["ticketingId"].ToString());
+            int id = 0;
+            id = Convert.ToInt32(model["Id"].ToString());
             var info = await _userManager.GetUserAsync(User);
 
-            ShortTrip shortTrip = new ShortTrip
-            {
-                DateInspected = DateTime.Now,
-                TimeIn = Convert.ToDateTime(model["TimeIn"].ToString()),
-                PlateNumber = model["PlateNumber"].ToString()
-            };
+            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.Id == id).FirstOrDefault();
+            shortTrip.DateInspectedIn = DateTime.Now;
+            shortTrip.RemarksIn = model["RemarksIn"].ToString();
 
-            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
+            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["CommodityIn"].ToString()).FirstOrDefault();
             if (commodities != null)
             {
-                shortTrip.Commodity = commodities.Commodity;
+                shortTrip.CommodityIn = commodities.Commodity;
             }
             else
             {
                 return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
             }
 
-            if (model["EstimatedVolume"].ToString() == "")
+            if (model["EstimatedVolumeIn"].ToString() == "")
             {
                 return Json(new { success = false, message = "Volume cannot be empty!" });
             }
 
-            shortTrip.EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString());
-            shortTrip.ticketingId = id;
-            shortTrip.Inspector = info.FullName;
+            shortTrip.EstimatedVolumeIn = Convert.ToInt32(model["EstimatedVolumeIn"].ToString());
+            shortTrip.InspectorIn = info.FullName;
+            _context.ShortTrip.Update(shortTrip);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Successfully Saved!" });
+        }
+
+        // POST: api/Inspector/PostShortTripOut
+        [HttpPost("PostShortTripOut")]
+        public async Task<IActionResult> PostShortTripOut([FromBody] JObject model)
+        {
+            int id = 0;
+            id = Convert.ToInt32(model["Id"].ToString());
+            var info = await _userManager.GetUserAsync(User);
+
+            ShortTrip shortTrip = _context.ShortTrip.Where(x => x.Id == id).FirstOrDefault();
+            shortTrip.DateInspectedOut = DateTime.Now;
+            shortTrip.RemarksOut = model["RemarksOut"].ToString();
+
+            Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["CommodityOut"].ToString()).FirstOrDefault();
+            if (commodities != null)
+            {
+                shortTrip.CommodityOut = commodities.Commodity;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+            }
+
+            if (model["EstimatedVolumeOut"].ToString() == "")
+            {
+                return Json(new { success = false, message = "Volume cannot be empty!" });
+            }
+
+            shortTrip.EstimatedVolumeOut = Convert.ToInt32(model["EstimatedVolumeOut"].ToString());
+            shortTrip.InspectorOut = info.FullName;
             _context.ShortTrip.Update(shortTrip);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -262,8 +284,8 @@ namespace src.Controllers.Api
                 FarmerName = model["FarmerName"].ToString(),
                 FarmersOrganization = model["FarmersOrganization"].ToString(),
                 Volume = Convert.ToInt32(model["Volume"].ToString()),
-                ProductionArea = model["ProductionArea"].ToString()
-
+                ProductionArea = model["ProductionArea"].ToString(),
+                Remarks = model["Remarks"].ToString()
             };
 
             Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
@@ -315,8 +337,8 @@ namespace src.Controllers.Api
                 StallNumber = model["StallNumber"].ToString(),
                 Facilitator = model["Facilitator"].ToString(),
                 Volume = Convert.ToInt32(model["Volume"].ToString()),
-                Destination = model["Destination"].ToString()
-
+                Destination = model["Destination"].ToString(),
+                Remarks = model["Remarks"].ToString()
             };
 
             Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
@@ -369,6 +391,20 @@ namespace src.Controllers.Api
         {
             TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(tradersTruck);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = tradersTruck.PlateNumber,
+                Origin = "Traders truck",
+                Name = tradersTruck.TraderName,
+                DeletedBy = info.FullName,
+                Remarks = tradersTruck.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -379,6 +415,20 @@ namespace src.Controllers.Api
         {
             FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(farmersTruck);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = farmersTruck.PlateNumber,
+                Origin = "Farmers truck",
+                Name = farmersTruck.FarmersName,
+                DeletedBy = info.FullName,
+                Remarks = farmersTruck.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -389,6 +439,20 @@ namespace src.Controllers.Api
         {
             ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(shortTrip);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = shortTrip.PlateNumber,
+                Origin = "Short trip",
+                Name = "",
+                DeletedBy = info.FullName,
+                Remarks = shortTrip.RemarksIn + shortTrip.RemarksOut
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -399,6 +463,20 @@ namespace src.Controllers.Api
         {
             InterTrading interTrading = _context.InterTrading.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(interTrading);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = "",
+                Origin = "Inter-trading",
+                Name = interTrading.FarmerName,
+                DeletedBy = info.FullName,
+                Remarks = interTrading.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -409,6 +487,20 @@ namespace src.Controllers.Api
         {
             CarrotFacility carrotFacility = _context.CarrotFacility.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(carrotFacility);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = "",
+                Origin = "Carrot facility",
+                Name = "",
+                DeletedBy = info.FullName,
+                Remarks = carrotFacility.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

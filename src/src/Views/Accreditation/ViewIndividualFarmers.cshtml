@@ -15,9 +15,17 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
-        <div class="form-group">
-            <label asp-for="DateOfApplication">Date: </label>
-            <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="DateOfApplication">Date: </label>
+                <label class="text-warning">@Model.DateOfApplication.ToString("MMMM dd, yyyy")</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="IdNumber">Id number: </label>
+                    <label class="text-warning">@Model.IdNumber</label>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
@@ -66,36 +74,22 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="IdNumber">Id number: </label>
-                    <label class="text-warning">@Model.IdNumber</label>
-                </div>
-            </div>
-            <div class="col-lg-6 form-group">
-                <div class="form-group">
                     <label asp-for="ReferenceNumber">Reference number: </label>
                     <label class="text-warning">@Model.ReferenceNumber</label>
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
                     <label asp-for="BirthDate">Birthdate: </label>
                     <label class="text-warning">@Model.BirthDate</label>
                 </div>
             </div>
-            <div class="col-lg-6 form-group">
-                <div class="form-group">
-                    <label asp-for="ContactNumber">Contact number: </label>
-                    <label class="text-warning">@Model.ContactNumber</label>
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="EstimatedTotalLandArea">Estimated land: </label>
-                    <label class="text-warning">@Model.EstimatedTotalLandArea</label>
+                    <label asp-for="ContactNumber">Contact number: </label>
+                    <label class="text-warning">@Model.ContactNumber</label>
                 </div>
             </div>
             <div class="col-lg-6 form-group">
@@ -108,14 +102,14 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="LandAreaPerCrop">Land area per crop: </label>
-                    <label class="text-warning">@Model.LandAreaPerCrop</label>
+                    <label asp-for="EstimatedTotalLandArea">Estimated land: </label>
+                    <label class="text-warning">@Model.EstimatedTotalLandArea</label>
                 </div>
             </div>
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="EstimatedProduce">Estimated produce: </label>
-                    <label class="text-warning">@Model.EstimatedProduce</label>
+                    <label asp-for="LandAreaPerCrop">Land area per crop: </label>
+                    <label class="text-warning">@Model.LandAreaPerCrop</label>
                 </div>
             </div>
         </div>
@@ -130,6 +124,20 @@
                 <div class="form-group">
                     <label asp-for="Harvesting">Harvesting: </label>
                     <label class="text-warning">@Model.Harvesting</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="EstimatedProduce">Estimated produce: </label>
+                    <label class="text-warning">@Model.EstimatedProduce</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Remarks">Remarks: </label>
+                    <label class="text-warning">@Model.Remarks</label>
                 </div>
             </div>
         </div>

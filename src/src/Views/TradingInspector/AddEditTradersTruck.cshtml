@@ -20,25 +20,31 @@
             <input asp-for="PlateNumber" class="form-control" readonly />
             <span asp-validation-for="PlateNumber" class="text-danger"></span>
         </div>
- 
-        <div class="form-group">
-            <label asp-for="TraderName" class="control-label">Trader name</label>
-            <input asp-for="TraderName" class="form-control" />
-            <span asp-validation-for="TraderName" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="TraderName" class="control-label">Trader name</label>
+                <input asp-for="TraderName" class="form-control" />
+                <span asp-validation-for="TraderName" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Destination" class="control-label">Destination</label>
+                <input asp-for="Destination" class="form-control" />
+                <span asp-validation-for="Destination" class="text-danger"></span>
+            </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label asp-for="Destination" class="control-label">Destination</label>
-                    <input asp-for="Destination" class="form-control" />
-                    <span asp-validation-for="Destination" class="text-danger"></span>
-                </div>
-            </div>
             <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="EstimatedVolume" class="control-label">Estimated volume (kg)</label>
                     <input asp-for="EstimatedVolume" class="form-control" />
                     <span asp-validation-for="EstimatedVolume" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="Remarks" class="control-label">Remarks</label>
+                    <input asp-for="Remarks" class="form-control" />
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
                 </div>
             </div>
         </div>

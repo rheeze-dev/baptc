@@ -36,20 +36,16 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="PlateNumber">Plate number: </label>
                 <label class="text-warning">@Model.PlateNumber</label>
             </div>
             <div class="col-lg-6 form-group">
-                <div class="form-group">
-                    <label asp-for="StallNumber">Stall number: </label>
-                    <label class="text-warning">@Model.StallNumber</label>
-                </div>
+                <label asp-for="ParkingNumber">Parking number: </label>
+                <label class="text-warning">@Model.ParkingNumber</label>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
@@ -98,14 +94,14 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="Barangay">Barangay: </label>
-                    <label class="text-warning">@Model.Barangay</label>
+                    <label asp-for="StallNumber">Stall number: </label>
+                    <label class="text-warning">@Model.StallNumber</label>
                 </div>
             </div>
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="Municipality">Municipality: </label>
-                    <label class="text-warning">@Model.Municipality</label>
+                    <label asp-for="Barangay">Barangay: </label>
+                    <label class="text-warning">@Model.Barangay</label>
                 </div>
             </div>
         </div>
@@ -113,15 +109,29 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
+                    <label asp-for="Municipality">Municipality: </label>
+                    <label class="text-warning">@Model.Municipality</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
                     <label asp-for="Province">Province: </label>
                     <label class="text-warning">@Model.Province</label>
                 </div>
             </div>
+        </div>
+
+        <div class="row">
+
             <div class="col-lg-6 form-group">
                 <div class="form-group">
                     <label asp-for="Inspector">Inspector: </label>
                     <label class="text-warning">@Model.Inspector</label>
                 </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Remarks">Remarks: </label>
+                <label class="text-warning">@Model.Remarks</label>
             </div>
         </div>
 

@@ -1,0 +1,70 @@
+﻿@model src.Models.ShortTrip
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Edit Out</h4>
+</div>
+<form onsubmit="return SubmitAddEditOut(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ticketingId" />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="TimeIn" />
+
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="PlateNumber" class="control-label">Plate number</label>
+                <input asp-for="PlateNumber" class="form-control" readonly />
+                <span asp-validation-for="PlateNumber" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="CommodityOut" class="control-label">Commodity (Out)</label>
+                    <input asp-for="CommodityOut" class="form-control" />
+                    <span asp-validation-for="CommodityOut" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="EstimatedVolumeOut" class="control-label">Estimated volume (Out)</label>
+                    <input asp-for="EstimatedVolumeOut" class="form-control" />
+                    <span asp-validation-for="EstimatedVolumeOut" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="RemarksOut" class="control-label">Remarks (Out)</label>
+                    <input asp-for="RemarksOut" class="form-control" />
+                    <span asp-validation-for="RemarksOut" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+
+
+

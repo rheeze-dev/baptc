@@ -205,9 +205,9 @@ namespace src.Controllers
 
         }
 
-        public IActionResult AddEditShortTrip(Guid org, Guid id)
+        public IActionResult AddEditShortTrip(Guid org, int id)
         {
-            if (id == Guid.Empty)
+            if (id == 0)
             {
                 ShortTrip shortTrip = new ShortTrip();
                 //ticketing.ticketingId = org;
@@ -215,13 +215,13 @@ namespace src.Controllers
             }
             else
             {
-                return View(_context.ShortTrip.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+                return View(_context.ShortTrip.Where(x => x.Id.Equals(id)).FirstOrDefault());
             }
         }
 
-        public IActionResult ViewShortTrip(Guid org, Guid id)
+        public IActionResult AddEditShortTripOut(Guid org, int id)
         {
-            if (id == Guid.Empty)
+            if (id == 0)
             {
                 ShortTrip shortTrip = new ShortTrip();
                 //ticketing.ticketingId = org;
@@ -229,7 +229,21 @@ namespace src.Controllers
             }
             else
             {
-                return View(_context.ShortTrip.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+                return View(_context.ShortTrip.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
+        }
+
+        public IActionResult ViewShortTrip(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                ShortTrip shortTrip = new ShortTrip();
+                //ticketing.ticketingId = org;
+                return View(shortTrip);
+            }
+            else
+            {
+                return View(_context.ShortTrip.Where(x => x.Id.Equals(id)).FirstOrDefault());
             }
         }
 

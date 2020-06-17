@@ -63,28 +63,28 @@ $(document).ready(function () {
             //{ "data": "issuingClerk" },
             //{ "data": "receivingClerk" },
             //{ "data": "controlNumber" },
-            //{
-            //    "data": function (data) {
-            //        var completed = "Completed";
-            //        var active = "Active";
-            //        var availedGatePass = "Gate pass";
-            //        if (data["timeIn"] != null && data["timeOut"] == null) {
-            //            return active;
-            //        }
-            //        else if (data["timeOut"] != null) {
-            //            return completed;
-            //        }
-            //        else {
-            //            return availedGatePass;
-            //        }
-            //    }
-            //},
+            {
+                "data": function (data) {
+                    var completed = "Completed";
+                    var active = "Active";
+                    var availedGatePass = "Gate pass";
+                    if (data["timeIn"] != null && data["timeOut"] == null) {
+                        return active;
+                    }
+                    else if (data["timeOut"] != null) {
+                        return completed;
+                    }
+                    else {
+                        return availedGatePass;
+                    }
+                }
+            },
             {
                 "data": function (data) {
                     //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-hourglass-end' title='Completed'></i></a>";
                     var availedGatePass = "Gate pass";
                     var empty = "";
-                    var btnEdit = "<a class='btn btn-success btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Complete</a>";
+                    var btnEdit = "<a class='btn btn-success btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Finish</a>";
                     var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return btnView;

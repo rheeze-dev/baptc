@@ -29,6 +29,7 @@ $(document).ready(function () {
             //    }
             //},
             { "data": "plateNumber" },
+            { "data": "parkingNumber" },
             {
                 "data": function (data) {
                     var d = new Date(data["dateInspected"]);
@@ -54,6 +55,7 @@ $(document).ready(function () {
             { "data": "estimatedVolume" },
             { "data": "destination" },
             { "data": "inspector" },
+            { "data": "remarks" },
             //{ "data": "priceRange" },
             //{ "data": "time" },
             {
@@ -71,13 +73,10 @@ $(document).ready(function () {
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditTradersTruck?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
                     //return btnEdit;
-                    var outPut = btnEdit + btnDelete;
-                    if (data["dateInspected"] != null || data["timeOut"] != null) {
-                        btnEdit = "", btnDelete;
-                    }
+                    var outPut = btnEdit;
+                  
                     return outPut;
                 }
             }

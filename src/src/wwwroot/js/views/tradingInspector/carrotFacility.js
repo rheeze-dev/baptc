@@ -36,6 +36,7 @@ $(document).ready(function () {
             { "data": "volume" },
             { "data": "destination" },
             { "data": "inspector" },
+            { "data": "remarks" },
             { "data": "code" },
             {
                 "data": function (data) {

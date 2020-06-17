@@ -14,16 +14,22 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
+        <div class="form-group">
+            <label asp-for="PlateNumber" class="control-label">Plate number</label>
+            <input asp-for="PlateNumber" class="form-control" />
+            <span asp-validation-for="PlateNumber" class="text-danger"></span>
+        </div>
+
         <div class="row">
-            <div class="col-lg-6 form-group">
-                <label asp-for="PlateNumber" class="control-label">Plate number</label>
-                <input asp-for="PlateNumber" class="form-control" />
-                <span asp-validation-for="PlateNumber" class="text-danger"></span>
-            </div>
             <div class="col-lg-6 form-group">
                 <label asp-for="Name" class="control-label">Name</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="IdNumber" class="control-label">Id number</label>
+                <input asp-for="IdNumber" class="form-control" />
+                <span asp-validation-for="IdNumber" class="text-danger"></span>
             </div>
         </div>
         <div class="row">
@@ -40,63 +46,50 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="IdNumber" class="control-label">Id number</label>
-                <input asp-for="IdNumber" class="form-control" />
-                <span asp-validation-for="IdNumber" class="text-danger"></span>
-            </div>
-            <div class="col-lg-6 form-group">
                 <label asp-for="Counter" class="control-label">Counter</label>
                 <input asp-for="Counter" class="form-control" />
                 <span asp-validation-for="Counter" class="text-danger"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="SpouseName" class="control-label">Spouse name</label>
                 <input asp-for="SpouseName" class="form-control" />
                 <span asp-validation-for="SpouseName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="Barangay" class="control-label">Barangay</label>
                 <input asp-for="Barangay" class="form-control" />
                 <span asp-validation-for="Barangay" class="text-danger"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="ContactNumber" class="control-label">Contact number</label>
                 <input asp-for="ContactNumber" class="form-control" />
                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="BirthDate" class="control-label">Birthdate(MM/DD/YYYY)</label>
                 <input asp-for="BirthDate" class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="EstimatedTotalLandArea" class="control-label">Estimated total land area</label>
                 <input asp-for="EstimatedTotalLandArea" class="form-control" />
                 <span asp-validation-for="EstimatedTotalLandArea" class="text-danger"></span>
             </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="MajorCrops" class="control-label">Major crops</label>
                 <input asp-for="MajorCrops" class="form-control" />
                 <span asp-validation-for="MajorCrops" class="text-danger"></span>
             </div>
-        </div>
-        <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="LandAreaPerCrop" class="control-label">Land area per crop</label>
                 <input asp-for="LandAreaPerCrop" class="form-control" />
                 <span asp-validation-for="LandAreaPerCrop" class="text-danger"></span>
-            </div>
-            <div class="col-lg-6 form-group">
-                <label asp-for="EstimatedProduce" class="control-label">Estimated produce</label>
-                <input asp-for="EstimatedProduce" class="form-control" />
-                <span asp-validation-for="EstimatedProduce" class="text-danger"></span>
             </div>
         </div>
         <div class="row">
@@ -109,6 +102,18 @@
                 <label asp-for="Harvesting" class="control-label">Harvesting</label>
                 <input asp-for="Harvesting" class="form-control" />
                 <span asp-validation-for="Harvesting" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="EstimatedProduce" class="control-label">Estimated produce</label>
+                <input asp-for="EstimatedProduce" class="form-control" />
+                <span asp-validation-for="EstimatedProduce" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Remarks" class="control-label">Remarks</label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
         </div>
     </div>

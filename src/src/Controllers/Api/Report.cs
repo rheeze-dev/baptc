@@ -158,17 +158,17 @@ namespace src.Controllers.Api
         }
 
         [HttpGet("TicketingReportDate")]
-        public async Task<IActionResult> TicketingReportDate(int Date)
+        public async Task<IActionResult> TicketingReportDate(int Date, string Type)
         {
             // query data from database  
             await Task.Yield();
 
             var stream = new MemoryStream();
 
-            if (Date == 1000000)
+            if (Date == 1000000 && Type == "Finished")
             {
                 {
-                    var all = _context.Ticketing.Where(x => x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                    var all = _context.Ticketing.Where(x => x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                     using (var package = new ExcelPackage(stream))
                     {
                         var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -176,11 +176,22 @@ namespace src.Controllers.Api
                         package.Save();
                     }
                 }
-                
             }
-            else if (Date == 1)
+            else if (Date == 1000000 && Type == "Unfinished")
             {
-                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                {
+                    var all = _context.Ticketing.Where(x => x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                        workSheet.Cells.LoadFromCollection(all, true);
+                        package.Save();
+                    }
+                }
+            }
+            else if (Date == 1 && Type == "Finished")
+            {
+                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -188,9 +199,19 @@ namespace src.Controllers.Api
                     package.Save();
                 }
             }
-            else if (Date == 7)
+            else if (Date == 1 && Type == "Unfinished")
             {
-                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7 && Type == "Finished")
+            {
+                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -198,9 +219,19 @@ namespace src.Controllers.Api
                     package.Save();
                 }
             }
-            else if (Date == 31)
+            else if (Date == 7 && Type == "Unfinished")
             {
-                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31 && Type == "Finished")
+            {
+                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -208,9 +239,19 @@ namespace src.Controllers.Api
                     package.Save();
                 }
             }
-            else if (Date == 365)
+            else if (Date == 31 && Type == "Unfinished")
             {
-                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365 && Type == "Finished")
+            {
+                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -218,13 +259,24 @@ namespace src.Controllers.Api
                     package.Save();
                 }
             }
-            
+            else if (Date == 365 && Type == "Unfinished")
+            {
+                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
             stream.Position = 0;
             string excelName = $"Ticketing {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
+
 
         [HttpGet("DailyBuyersReport")]
         public async Task<IActionResult> DailyBuyersReport(int Year, int Month)
@@ -966,6 +1018,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("TradersWithParam")]
+        public async Task<IActionResult> TradersWithParam(int Year, int Month, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var tradersTruck = _context.TradersTruck.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(tradersTruck, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Special traders truck {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("TradersReportDate")]
         public async Task<IActionResult> TradersReportDate(int Date)
         {
@@ -977,7 +1052,7 @@ namespace src.Controllers.Api
             if (Date == 1000000)
             {
                 //var all = _context.TradersTruck.Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
-                var all = _context.TradersTruck.Where(x => x.DateInspected != null).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                var all = _context.TradersTruck.Where(x => x.DateInspected != null).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -987,7 +1062,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -997,7 +1072,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1007,7 +1082,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1017,7 +1092,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1033,13 +1108,80 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("TradersWithParam2")]
+        public async Task<IActionResult> TradersWithParam2(int Date, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                //var all = _context.TradersTruck.Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                var all = _context.TradersTruck.Where(x => x.DateInspected != null && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.TradersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, TradersName = x.TraderName, EstimatedVolume = x.EstimatedVolume, Destination = x.Destination, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Special traders truck {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("FarmersReport")]
         public async Task<IActionResult> FarmersReport(int Year, int Month)
         {
             // query data from database  
             await Task.Yield();
 
-            var farmersTruck = _context.FarmersTruck.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province ,Inspector = x.Inspector }).ToList();
+            var farmersTruck = _context.FarmersTruck.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month)).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province ,Inspector = x.Inspector }).ToList();
 
             var stream = new MemoryStream();
 
@@ -1056,6 +1198,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("FarmersWithParam")]
+        public async Task<IActionResult> FarmersWithParam(int Year, int Month, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var farmersTruck = _context.FarmersTruck.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(farmersTruck, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Special farmers truck {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("FarmersReportDate")]
         public async Task<IActionResult> FarmersReportDate(int Date)
         {
@@ -1066,7 +1231,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.FarmersTruck.Where(x => x.DateInspected != null).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                var all = _context.FarmersTruck.Where(x => x.DateInspected != null).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1076,7 +1241,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1086,7 +1251,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1096,7 +1261,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1106,7 +1271,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1122,13 +1287,79 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("FarmersWithParam2")]
+        public async Task<IActionResult> FarmersWithParam2(int Date, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.FarmersTruck.Where(x => x.DateInspected != null && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365) && x.Inspector == Inspector).OrderByDescending(x => x.DateInspected).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, FarmersName = x.FarmersName, Organization = x.Organization, Volume = x.Volume, Commodity = x.Commodity, StallNumber = x.StallNumber, Barangay = x.Barangay, Province = x.Province, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Special farmers truck {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("ShortTripReport")]
         public async Task<IActionResult> ShortTripReport(int Year, int Month)
         {
             // query data from database  
             await Task.Yield();
 
-            var shortTrip = _context.ShortTrip.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+            var shortTrip = _context.ShortTrip.Where(x => x.DateInspectedOut.Value.Year.Equals(Year) && x.DateInspectedOut.Value.Month.Equals(Month)).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
 
             var stream = new MemoryStream();
 
@@ -1145,6 +1376,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("ShortTripWithParam")]
+        public async Task<IActionResult> ShortTripWithParam(int Year, int Month, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var shortTrip = _context.ShortTrip.Where(x => x.DateInspectedOut.Value.Year.Equals(Year) && x.DateInspectedOut.Value.Month.Equals(Month) && x.InspectorIn == Inspector || x.InspectorOut == Inspector).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(shortTrip, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Special short trip {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("ShortTripReportDate")]
         public async Task<IActionResult> ShortTripReportDate(int Date)
         {
@@ -1155,7 +1409,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.ShortTrip.Where(x => x.DateInspected != null).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var all = _context.ShortTrip.Where(x => x.DateInspectedOut != null).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1165,7 +1419,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1175,7 +1429,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today.AddDays(-7)).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1185,7 +1439,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today.AddDays(-31)).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1195,7 +1449,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.ShortTrip.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.DateInspected.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, Commodity = x.Commodity, EstimatedVolume = x.EstimatedVolume, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today.AddDays(-365)).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1211,13 +1465,79 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("ShortTripWithParam2")]
+        public async Task<IActionResult> ShortTripWithParam2(int Date, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.ShortTrip.Where(x => x.DateInspectedOut != null && x.InspectorIn == Inspector || x.InspectorOut == Inspector).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today && x.InspectorIn == Inspector || x.InspectorOut == Inspector).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today.AddDays(-7) && x.InspectorIn == Inspector || x.InspectorOut == Inspector).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today.AddDays(-31) && x.InspectorIn == Inspector || x.InspectorOut == Inspector).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.ShortTrip.Where(x => x.DateInspectedOut >= DateTime.Today.AddDays(-365) && x.InspectorIn == Inspector || x.InspectorOut == Inspector).OrderByDescending(x => x.DateInspectedOut).Select(x => new { DateInspectedIn = x.DateInspectedIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), DateInspectedOut = x.DateInspectedOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, CommodityIn = x.CommodityIn, EstimatedVolumeIn = x.EstimatedVolumeIn, InspectorIn = x.InspectorIn, CommodityOut = x.CommodityOut, EstimatedVolumeOut = x.EstimatedVolumeOut, InspectorOut = x.InspectorOut }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Special short trip {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("InterTradingReport")]
         public async Task<IActionResult> InterTradingReport(int Year, int Month)
         {
             // query data from database  
             await Task.Yield();
 
-            var interTrading = _context.InterTrading.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+            var interTrading = _context.InterTrading.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
 
             var stream = new MemoryStream();
 
@@ -1234,6 +1554,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("InterTradingWithParam")]
+        public async Task<IActionResult> InterTradingWithParam(int Year, int Month, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var interTrading = _context.InterTrading.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(interTrading, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Special inter trading {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("InterTradingReportDate")]
         public async Task<IActionResult> InterTradingReportDate(int Date)
         {
@@ -1244,7 +1587,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.InterTrading.Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var all = _context.InterTrading.OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1254,7 +1597,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.InterTrading.Where(x => x.Date >= DateTime.Today).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.InterTrading.Where(x => x.Date >= DateTime.Today).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1264,7 +1607,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-7)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1274,7 +1617,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-31)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1284,7 +1627,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-365)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1300,13 +1643,79 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("InterTradingWithParam2")]
+        public async Task<IActionResult> InterTradingWithParam2(int Date, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.InterTrading.Where(x => x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.InterTrading.Where(x => x.Date >= DateTime.Today && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-7) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-31) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.InterTrading.Where(x => x.Date >= DateTime.Today.AddDays(-365) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, FarmersName = x.FarmerName, FarmersOrganization = x.FarmersOrganization, Commodity = x.Commodity, Volume = x.Volume, ProductionAre = x.ProductionArea, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Special inter trading {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("CarrotFacilityReport")]
         public async Task<IActionResult> CarrotFacilityReport(int Year, int Month)
         {
             // query data from database  
             await Task.Yield();
 
-            var carrotFacility = _context.CarrotFacility.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+            var carrotFacility = _context.CarrotFacility.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
 
             var stream = new MemoryStream();
 
@@ -1323,6 +1732,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("CarrotFacilityWithParam")]
+        public async Task<IActionResult> CarrotFacilityWithParam(int Year, int Month, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var carrotFacility = _context.CarrotFacility.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(carrotFacility, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Special carrot facility {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("CarrotFacilityReportDate")]
         public async Task<IActionResult> CarrotFacilityReportDate(int Date)
         {
@@ -1333,7 +1765,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.CarrotFacility.Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var all = _context.CarrotFacility.OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1343,7 +1775,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1353,7 +1785,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-7)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1363,7 +1795,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-31)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1373,7 +1805,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-365)).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1384,6 +1816,72 @@ namespace src.Controllers.Api
 
             stream.Position = 0;
             string excelName = $"Carrot facility {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("CarrotFacilityWithParam2")]
+        public async Task<IActionResult> CarrotFacilityWithParam2(int Date, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.CarrotFacility.Where(x => x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-7) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-31) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.CarrotFacility.Where(x => x.Date >= DateTime.Today.AddDays(-365) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { DateInspected = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Code = x.Code, Commodity = x.Commodity, Volume = x.Volume, Destination = x.Destination, StallNumber = x.StallNumber, Facilitator = x.Facilitator, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Special carrot facility {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
@@ -1511,7 +2009,7 @@ namespace src.Controllers.Api
             // query data from database  
             await Task.Yield();
 
-            var security = _context.SecurityInspectionReport.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+            var security = _context.SecurityInspectionReport.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
 
             var stream = new MemoryStream();
 
@@ -1528,6 +2026,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("SecurityWithParam")]
+        public async Task<IActionResult> SecurityWithParam(int Year, int Month, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var security = _context.SecurityInspectionReport.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(security, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Special security {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("SecurityReportDate")]
         public async Task<IActionResult> SecurityReportDate(int Date)
         {
@@ -1538,7 +2059,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.SecurityInspectionReport.Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                var all = _context.SecurityInspectionReport.OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1548,7 +2069,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                var currentDate = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1558,7 +2079,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                var lastWeek = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-7)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1568,7 +2089,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                var lastMonth = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-31)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1578,7 +2099,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                var lastYear = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-365)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1594,13 +2115,79 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("SecurityWithParam2")]
+        public async Task<IActionResult> SecurityWithParam2(int Date, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.SecurityInspectionReport.Where(x => x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-7) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-31) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.SecurityInspectionReport.Where(x => x.Date >= DateTime.Today.AddDays(-365) && x.Inspector == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), Location = x.Location, Remarks = x.Remarks, Action = x.Action, Inspector = x.Inspector }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Special security {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("RepairReport")]
         public async Task<IActionResult> RepairReport(int Year, int Month)
         {
             // query data from database  
             await Task.Yield();
 
-            var repair = _context.Repair.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+            var repair = _context.Repair.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
 
             var stream = new MemoryStream();
 
@@ -1617,6 +2204,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("RepairWithParam")]
+        public async Task<IActionResult> RepairWithParam(int Year, int Month, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var repair = _context.Repair.Where(x => x.Date.Year.Equals(Year) && x.Date.Month.Equals(Month) && x.RequesterName == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(repair, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Special repair {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("RepairReportDate")]
         public async Task<IActionResult> RepairReportDate(int Date)
         {
@@ -1627,7 +2237,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.Repair.Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                var all = _context.Repair.OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1637,7 +2247,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.Repair.Where(x => x.Date >= DateTime.Today).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                var currentDate = _context.Repair.Where(x => x.Date >= DateTime.Today).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1647,7 +2257,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-7)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                var lastWeek = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-7)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1657,7 +2267,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-31)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                var lastMonth = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-31)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1667,7 +2277,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-365)).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                var lastYear = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-365)).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1683,13 +2293,79 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("RepairWithParam2")]
+        public async Task<IActionResult> RepairWithParam2(int Date, string Inspector)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.Repair.Where(x => x.RequesterName == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.Repair.Where(x => x.Date >= DateTime.Today && x.RequesterName == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-7) && x.RequesterName == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-31) && x.RequesterName == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.Repair.Where(x => x.Date >= DateTime.Today.AddDays(-365) && x.RequesterName == Inspector).OrderByDescending(x => x.Date).Select(x => new { Date = x.Date.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, RequestNumber = x.RequestNumber, DriversName = x.DriverName, Location = x.Location, Destination = x.Destination, RepairDetails = x.RepairDetails, Remarks = x.Remarks, RequesterName = x.RequesterName }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Special repair {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("PriceCommodityReport")]
         public async Task<IActionResult> PriceCommodityReport(int Year, int Month)
         {
             // query data from database  
             await Task.Yield();
 
-            var priceCommodity = _context.PriceCommodity.Where(x => x.commodityDate.Year.Equals(Year) && x.commodityDate.Month.Equals(Month)).Select(x => new { Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, Price = x.priceRange }).ToList();
+            var priceCommodity = _context.PriceCommodity.Where(x => x.commodityDate.Year.Equals(Year) && x.commodityDate.Month.Equals(Month)).OrderByDescending(x => x.commodityDate).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
 
             var stream = new MemoryStream();
 
@@ -1706,6 +2382,29 @@ namespace src.Controllers.Api
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
 
+        [HttpGet("PriceWithParamReport")]
+        public async Task<IActionResult> PriceWithParamReport(int Year, int Month, string Commodity, string Variety)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var priceCommodity = _context.PriceCommodity.Where(x => x.commodityDate.Year.Equals(Year) && x.commodityDate.Month.Equals(Month) && x.commodity == Commodity && x.classVariety == Variety).OrderByDescending(x => x.commodityDate).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM yyyy"), Commodity = x.commodity, ClassVariety = x.classVariety }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(priceCommodity, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"SelectedPriceCommodity {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
         [HttpGet("PriceCommodityReportDate")]
         public async Task<IActionResult> PriceCommodityReportDate(int Date)
         {
@@ -1716,7 +2415,7 @@ namespace src.Controllers.Api
 
             if (Date == 1000000)
             {
-                var all = _context.PriceCommodity.Select(x => new { Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, Price = x.priceRange }).ToList();
+                var all = _context.PriceCommodity.Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1726,7 +2425,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1)
             {
-                var currentDate = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today).Select(x => new { Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, Price = x.priceRange }).ToList();
+                var currentDate = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1736,7 +2435,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7)
             {
-                var lastWeek = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-7)).Select(x => new { Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, Price = x.priceRange }).ToList();
+                var lastWeek = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-7)).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1746,7 +2445,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31)
             {
-                var lastMonth = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-31)).Select(x => new { Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, Price = x.priceRange }).ToList();
+                var lastMonth = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-31)).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1756,7 +2455,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365)
             {
-                var lastYear = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-365)).Select(x => new { Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, Price = x.priceRange }).ToList();
+                var lastYear = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-365)).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -1767,6 +2466,250 @@ namespace src.Controllers.Api
 
             stream.Position = 0;
             string excelName = $"PriceCommodity {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("PriceWithParamReport2")]
+        public async Task<IActionResult> PriceWithParamReport2(int Date, string Commodity, string Variety)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.PriceCommodity.Where(x => x.commodity == Commodity && x.classVariety == Variety).OrderByDescending(x => x.commodityDate).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today && x.commodity == Commodity && x.classVariety == Variety).OrderByDescending(x => x.commodityDate).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-7) && x.commodity == Commodity && x.classVariety == Variety).OrderByDescending(x => x.commodityDate).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-31) && x.commodity == Commodity && x.classVariety == Variety).OrderByDescending(x => x.commodityDate).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.PriceCommodity.Where(x => x.commodityDate >= DateTime.Today.AddDays(-365) && x.commodity == Commodity && x.classVariety == Variety).OrderByDescending(x => x.commodityDate).Select(x => new { AverageLow = x.averageLow, AverageHigh = x.averageHigh, Date = x.commodityDate.ToString("MMMM dd, yyyy / hh:mm tt"), Commodity = x.commodity, ClassVariety = x.classVariety, CommodityRemarks = x.commodityRemarks, PriceLow = x.priceLow, PriceHigh = x.priceHigh }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"PriceCommodity {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("CommodityVolumeReport")]
+        public async Task<IActionResult> CommodityVolumeReport(int Year, int Month)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var priceCommodity = _context.FarmersTruck.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month)).OrderByDescending(x => x.DateInspected).Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(priceCommodity, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Commodity Volume {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("CommodityWithParamReport")]
+        public async Task<IActionResult> CommodityWithParamReport(int Year, int Month, string Commodity)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var priceCommodity = _context.FarmersTruck.Where(x => x.DateInspected.Value.Year.Equals(Year) && x.DateInspected.Value.Month.Equals(Month) && x.Commodity == Commodity).OrderByDescending(x => x.DateInspected).Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(priceCommodity, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Selected Commodity Volume {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("CommodityVolumeReportDate")]
+        public async Task<IActionResult> CommodityVolumeReportDate(int Date)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.FarmersTruck.Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today).Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7)).Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31)).Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365)).Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Commodity Volume {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        [HttpGet("CommodityWithParamReport2")]
+        public async Task<IActionResult> CommodityWithParamReport2(int Date, string Commodity)
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var stream = new MemoryStream();
+
+            if (Date == 1000000)
+            {
+                var all = _context.FarmersTruck.Where(x => x.Commodity == Commodity).OrderByDescending(x => x.DateInspected).Select(x => new { Date = x.DateInspected.Value.ToString("MMMM yyyy"), Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(all, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 1)
+            {
+                var currentDate = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today && x.Commodity == Commodity).OrderByDescending(x => x.DateInspected.Value.ToString("MMMM yyyy")).Select(x => new { Date = x.DateInspected, Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(currentDate, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 7)
+            {
+                var lastWeek = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-7) && x.Commodity == Commodity).OrderByDescending(x => x.DateInspected.Value.ToString("MMMM yyyy")).Select(x => new { Date = x.DateInspected, Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastWeek, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 31)
+            {
+                var lastMonth = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-31) && x.Commodity == Commodity).OrderByDescending(x => x.DateInspected.Value.ToString("MMMM yyyy")).Select(x => new { Date = x.DateInspected, Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastMonth, true);
+                    package.Save();
+                }
+            }
+            else if (Date == 365)
+            {
+                var lastYear = _context.FarmersTruck.Where(x => x.DateInspected >= DateTime.Today.AddDays(-365) && x.Commodity == Commodity).OrderByDescending(x => x.DateInspected.Value.ToString("MMMM yyyy")).Select(x => new { Date = x.DateInspected, Commodity = x.Commodity, Volume = x.Volume }).ToList();
+                using (var package = new ExcelPackage(stream))
+                {
+                    var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                    workSheet.Cells.LoadFromCollection(lastYear, true);
+                    package.Save();
+                }
+            }
+
+            stream.Position = 0;
+            string excelName = $"Selected Commodity Volume {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
@@ -1906,6 +2849,100 @@ namespace src.Controllers.Api
 
             //return File(stream, "application/octet-stream", excelName);  
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+
+
+
+        [HttpGet("DeletedDatas")]
+        public async Task<IActionResult> DeletedDatas()
+        {
+            // query data from database  
+            await Task.Yield();
+
+            var deleted = _context.DeletedDatas.Select(x => new { Id = x.Id ,DateDeleted = x.DateDeleted.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = x.PlateNumber, From = x.Origin, Name = x.Name, DeletedBy = x.DeletedBy, Remarks = x.Remarks, Amount = x.Amount }).ToList();
+
+            var stream = new MemoryStream();
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(deleted, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"Deleted datas {DateTime.Now.ToString("MMMM-dd-yyyy")}.xlsx";
+
+            //return File(stream, "application/octet-stream", excelName);  
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+        }
+
+        // DELETE: api/Security/DeleteSecurityInspectionReport
+        [HttpDelete("ResetDatabase")]
+        public async Task<IActionResult> ResetDatabase([FromRoute] int id)
+        {
+            var listTicketing = _context.Ticketing.Where(x => x.timeOut != null).ToList();
+            _context.RemoveRange(listTicketing);
+
+            var listTradersTruck = _context.TradersTruck.Where(x => x.DateInspected != null).ToList();
+            _context.RemoveRange(listTradersTruck);
+
+            var listFarmersTruck = _context.FarmersTruck.Where(x => x.DateInspected != null).ToList();
+            _context.RemoveRange(listFarmersTruck);
+
+            var listShortTrip = _context.ShortTrip.Where(x => x.DateInspectedOut != null).ToList();
+            _context.RemoveRange(listShortTrip);
+
+            var listIntertrading = _context.InterTrading.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listIntertrading);
+
+            var listSecurity = _context.SecurityInspectionReport.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listSecurity);
+
+            var listRepair = _context.Repair.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listRepair);
+
+            var listPriceCommodities = _context.PriceCommodity.Where(x => x.commodityDate != null).ToList();
+            _context.RemoveRange(listPriceCommodities);
+
+            var listDeletedDatas = _context.DeletedDatas.Where(x => x.DateDeleted != null).ToList();
+            _context.RemoveRange(listDeletedDatas);
+
+            var listCarrotFacility = _context.CarrotFacility.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listCarrotFacility);
+
+            var listCurrentTicket = _context.CurrentTicket.Where(x => x.plateNumber != null).ToList();
+            _context.RemoveRange(listCurrentTicket);
+
+            var listDailyBuyers = _context.DailyBuyers.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listDailyBuyers);
+
+            var listDailyFacilitators = _context.DailyFacilitators.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listDailyFacilitators);
+
+            var listDailyFarmers = _context.DailyFarmers.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listDailyFarmers);
+
+            var listGatepass = _context.GatePass.Where(x => x.PlateNumber != null).ToList();
+            _context.RemoveRange(listGatepass);
+
+            var listPayParking = _context.PayParking.Where(x => x.PlateNumber != null).ToList();
+            _context.RemoveRange(listPayParking);
+
+            var listTotal = _context.Total.Where(x => x.date != null).ToList();
+            _context.RemoveRange(listTotal);
+
+            var listTotalBuyers = _context.TotalBuyers.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listTotalBuyers);
+
+            var listTotalFacilitators = _context.TotalFacilitators.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listTotalFacilitators);
+
+            var listTotalFarmers = _context.TotalFarmers.Where(x => x.Date != null).ToList();
+            _context.RemoveRange(listTotalFarmers);
+
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "Delete success." });
         }
 
     }

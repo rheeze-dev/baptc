@@ -25,28 +25,17 @@ $(document).ready(function () {
                     return spanData + output;
                 }
             },
-            {
-                "data": function (data) {
-                    var d = new Date(data["timeOut"]);
-                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-                    var output = dateOut;
-                    if (data["timeOut"] == null) {
-                        output = "";
-                    }
-                    return output;
-                }
-            },
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
-            { "data": "count" },
+            { "data": "typeOfCar" },
             {
                 "data": function (data) {
                     //var empty = "";
-                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')>View</a>";
-                    var btnCount = "<a class='btn btn-success btn-xs btnCount' data-id='" + data["ticketingId"] + "'>Count</a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditIn?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnCount = "<a class='btn btn-default btn-xs btnCount' data-id='" + data["ticketingId"] + "'><i class='fa fa-plus-circle' title='Count'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    var outPut = btnEdit + " " + btnCount + " " + btnView;
+                    var outPut = btnEdit + " " + btnView + " " + btnCount;
 
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return btnView;

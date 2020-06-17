@@ -111,9 +111,7 @@
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <a class="header btn-primary btn-lg" href="@Url.Action("IndexMobile","Config", new { org = Model.organizationId })" style="font-size: 20px; text-align: center; width: 230px; font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; background-color: #367fa9;"><b>BAPTC</b></a>
-            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "PriceCommodity", action: "CommoditiesListMobile")" href="@Url.Action("CommoditiesListMobile","PriceCommodity", new { org = Model.organizationId })">List of commodities</a>
             <a class="header btn-primary btn-lg @Html.IsSelected(controller: "PriceCommodity", action: "PriceMobile")" href="@Url.Action("PriceMobile","PriceCommodity", new { org = Model.organizationId })">Price</a>
-            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "PriceCommodity", action: "GraphMobile")" href="@Url.Action("GraphMobile","PriceCommodity", new { org = Model.organizationId })">Graph</a>
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">

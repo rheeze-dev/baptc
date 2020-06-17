@@ -51,6 +51,8 @@ namespace src.Models
 
         public string accreditation { get; set; }
 
+        public string Transaction { get; set; }
+
         [NotMapped]
         public IList<SelectListItem> parkingList { get; set; }
 

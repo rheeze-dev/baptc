@@ -203,6 +203,15 @@
                             </li>
                         }
 
+                        if (listModule.Contains("PriceCommodities"))
+                        {
+                            <li class="@Html.IsSelected(controller: "Reports",action:"CommodityVolumeReports")">
+                                <a href="@Url.Action("CommodityVolumeReports", "Reports", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Commodity volume</span>
+                                </a>
+                            </li>
+                        }
+
                         if (listModule.Contains("Accreditation"))
                         {
                             <li class="@Html.IsSelected(controller: "Reports",action:"AccreditationReports")">

@@ -26,7 +26,7 @@ namespace src.Controllers
             _securityService = securityService;
         }
 
-        public async Task<IActionResult> HumanResource(Guid org)
+        public async Task<IActionResult> MemorandumNumber(Guid org)
         {
             if (org == Guid.Empty)
             {
@@ -41,6 +41,71 @@ namespace src.Controllers
             Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
             ViewData["org"] = org;
             return View(organization);
+        }
+
+        public async Task<IActionResult> AccomplishmentReport(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("HumanResource"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> IPCR(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("HumanResource"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> DPCR(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("HumanResource"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public IActionResult AddEditInstitutionalDevelopmentAndExtensionServicesUnit(Guid org, int id)
+        {
+            if (id == 0)
+            {
+                Repair repair = new Repair();
+                //ticketing.ticketingId = org;
+                return View(repair);
+            }
+            else
+            {
+                return View(_context.Repair.Where(x => x.Id.Equals(id)).FirstOrDefault());
+            }
         }
 
     }

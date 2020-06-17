@@ -93,15 +93,16 @@ namespace src.Controllers.Api
                 DateOfApplication = DateTime.Now,
                 Counter = model["Counter"].ToString(),
                 NameOfAssociation = model["NameOfAssociation"].ToString(),
-                ReferenceNumber = Convert.ToInt32(model["ReferenceNumber"].ToString()),
+                ReferenceNumber = model["ReferenceNumber"].ToString(),
                 IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
                 Name = model["Name"].ToString(),
                 NameOfSpouse = model["NameOfSpouse"].ToString(),
                 PresentAddress = model["PresentAddress"].ToString(),
                 ContactNumber = model["ContactNumber"].ToString(),
                 BusinessPermit = model["BusinessPermit"].ToString(),
-                Tin = Convert.ToInt32(model["Tin"].ToString()),
-                Destination = model["Destination"].ToString()
+                Tin = model["Tin"].ToString(),
+                Destination = model["Destination"].ToString(),
+                Remarks = model["Remarks"].ToString()
             };
             if (id == 0)
             {
@@ -162,7 +163,8 @@ namespace src.Controllers.Api
                 ContactNumber = model["ContactNumber"].ToString(),
                 BirthDate = model["BirthDate"].ToString(),
                 ProvincialAddress = model["ProvincialAddress"].ToString(),
-                Requirements = model["Requirements"].ToString()
+                Requirements = model["Requirements"].ToString(),
+                Remarks = model["Remarks"].ToString()
             };
             if (id == 0)
             {
@@ -217,12 +219,13 @@ namespace src.Controllers.Api
                 PresentAddress = model["PresentAddress"].ToString(),
                 ContactNumber = model["ContactNumber"].ToString(),
                 BirthDate = model["BirthDate"].ToString(),
-                Tin = Convert.ToInt32(model["Tin"].ToString()),
+                Tin = model["Tin"].ToString(),
                 BusinessName = model["BusinessName"].ToString(),
                 BusinessAddress = model["BusinessAddress"].ToString(),
                 VehiclePlateNumber = model["VehiclePlateNumber"].ToString(),
                 ProductDestination = model["ProductDestination"].ToString(),
-                DateOfApplication = DateTime.Now
+                DateOfApplication = DateTime.Now,
+                Remarks = model["Remarks"].ToString()
             };
             if (id == 0)
             {
@@ -274,7 +277,7 @@ namespace src.Controllers.Api
             {
                 DateOfApplication = DateTime.Now,
                 NameOfAssociation = model["NameOfAssociation"].ToString(),
-                ReferenceNumber = Convert.ToInt32(model["ReferenceNumber"].ToString()),
+                ReferenceNumber = model["ReferenceNumber"].ToString(),
                 IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
                 Name = model["Name"].ToString(),
                 NickName = model["NickName"].ToString(),
@@ -282,10 +285,11 @@ namespace src.Controllers.Api
                 PresentAddress = model["PresentAddress"].ToString(),
                 ContactNumber = model["ContactNumber"].ToString(),
                 BirthDate = model["BirthDate"].ToString(),
-                Tin = Convert.ToInt32(model["Tin"].ToString()),
+                Tin = model["Tin"].ToString(),
                 BusinessName = model["BusinessName"].ToString(),
                 BusinessAddress = model["BusinessAddress"].ToString(),
-                PlateNumber = model["PlateNumber"].ToString()
+                PlateNumber = model["PlateNumber"].ToString(),
+                Remarks = model["Remarks"].ToString()
             };
 
             Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
@@ -335,7 +339,7 @@ namespace src.Controllers.Api
                 DateOfApplication = DateTime.Now,
                 Counter = model["Counter"].ToString(),
                 Association = model["Association"].ToString(),
-                ReferenceNumber = Convert.ToInt32(model["ReferenceNumber"].ToString()),
+                ReferenceNumber = model["ReferenceNumber"].ToString(),
                 IdNumber = Convert.ToInt32(model["IdNumber"].ToString()),
                 Name = model["Name"].ToString(),
                 SpouseName = model["SpouseName"].ToString(),
@@ -345,9 +349,10 @@ namespace src.Controllers.Api
                 EstimatedTotalLandArea = model["EstimatedTotalLandArea"].ToString(),
                 MajorCrops = model["MajorCrops"].ToString(),
                 LandAreaPerCrop = model["LandAreaPerCrop"].ToString(),
-                EstimatedProduce = Convert.ToInt32(model["EstimatedProduce"].ToString()),
+                EstimatedProduce = model["EstimatedProduce"].ToString(),
                 Planting = model["Planting"].ToString(),
-                Harvesting = model["Harvesting"].ToString()
+                Harvesting = model["Harvesting"].ToString(),
+                Remarks = model["Remarks"].ToString()
             };
             if (id == 0)
             {
@@ -396,6 +401,20 @@ namespace src.Controllers.Api
         {
             InterTraders interTraders = _context.AccreditedInterTraders.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(interTraders);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = "",
+                Origin = "Inter-traders",
+                Name = interTraders.Name,
+                DeletedBy = info.FullName,
+                Remarks = interTraders.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -406,6 +425,20 @@ namespace src.Controllers.Api
         {
             PackersAndPorters packersAndPorters = _context.AccreditedPackersAndPorters.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(packersAndPorters);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = "",
+                Origin = "Packers and porters",
+                Name = packersAndPorters.Name,
+                DeletedBy = info.FullName,
+                Remarks = packersAndPorters.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -416,6 +449,20 @@ namespace src.Controllers.Api
         {
             Buyers buyers = _context.AccreditedBuyers.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(buyers);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = buyers.VehiclePlateNumber,
+                Origin = "Buyers",
+                Name = "",
+                DeletedBy = info.FullName,
+                Remarks = buyers.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -426,6 +473,20 @@ namespace src.Controllers.Api
         {
             MarketFacilitators marketFacilitators = _context.AccreditedMarketFacilitators.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(marketFacilitators);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = marketFacilitators.PlateNumber,
+                Origin = "Market facilitators",
+                Name = marketFacilitators.Name,
+                DeletedBy = info.FullName,
+                Remarks = marketFacilitators.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -436,6 +497,20 @@ namespace src.Controllers.Api
         {
             IndividualFarmers individualFarmers = _context.AccreditedIndividualFarmers.Where(x => x.Id == id).FirstOrDefault();
             _context.Remove(individualFarmers);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = individualFarmers.PlateNumber,
+                Origin = "Individual farmers",
+                Name = individualFarmers.Name,
+                DeletedBy = info.FullName,
+                Remarks = individualFarmers.Remarks
+            };
+
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

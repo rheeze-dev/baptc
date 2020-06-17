@@ -15,7 +15,7 @@
         <input type="hidden" asp-for="ticketingId" />
         <input type="hidden" asp-for="TimeIn" />
         <div class="form-group">
-            <label asp-for="PlateNumber" class="control-label"></label>
+            <label asp-for="PlateNumber" class="control-label">Plate number</label>
             <input asp-for="PlateNumber" class="form-control" readonly />
             <span asp-validation-for="PlateNumber" class="text-danger"></span>
         </div>
@@ -27,13 +27,13 @@
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label asp-for="FarmersName" class="control-label"></label>
+                    <label asp-for="FarmersName" class="control-label">Farmers name</label>
                     <input asp-for="FarmersName" class="form-control" />
                     <span asp-validation-for="FarmersName" class="text-danger"></span>
                 </div>
             </div>
         </div>
-      
+
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
@@ -61,17 +61,24 @@
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label asp-for="StallNumber" class="control-label"></label>
+                    <label asp-for="StallNumber" class="control-label">Stall number</label>
                     <input asp-for="StallNumber" class="form-control" />
                     <span asp-validation-for="StallNumber" class="text-danger"></span>
                 </div>
 
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="FacilitatorsName" class="control-label"></label>
-            <input asp-for="FacilitatorsName" class="form-control" />
-            <span asp-validation-for="FacilitatorsName" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="FacilitatorsName" class="control-label">Facilitators name</label>
+                <input asp-for="FacilitatorsName" class="form-control" />
+                <span asp-validation-for="FacilitatorsName" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
         </div>
     </div>
 

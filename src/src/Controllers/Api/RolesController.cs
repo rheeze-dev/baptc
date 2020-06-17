@@ -68,6 +68,14 @@ namespace src.Controllers.Api
             return Json(new { data = commodties });
         }
 
+        // GET: api/Roles
+        [HttpGet("GetDeletedDatas")]
+        public IActionResult GetDeletedDatas([FromRoute]Guid organizationId)
+        {
+            var deleted = _context.DeletedDatas.OrderByDescending(x => x.DateDeleted).ToList();
+            return Json(new { data = deleted });
+        }
+
         // POST: api/Roles/PostTicketingPrice
         [HttpPost("PostTicketingPrice")]
         public async Task<IActionResult> PostTicketingPrice([FromBody] JObject model)

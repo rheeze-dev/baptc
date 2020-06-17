@@ -35,5 +35,7 @@ namespace src.Models
 
         public string AccreditationChecker { get; set; }
 
+        public string Remarks { get; set; }
+
     }
 }

@@ -1,0 +1,89 @@
+﻿@model src.Models.Organization
+@{
+    ViewData["Title"] = "Deleted Datas";
+    Layout = "_LayoutAdminlteDeleted";
+}
+
+<!-- Content Header (Page header) -->
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="hidden" asp-for="@Model.organizationId" />
+                            <table id="grid" name="grid" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3"></th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3"><center><font color="red"><b>DELETE ALL DATAS</b></font></center></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="col-md-11">
+                                            <font color="red">PERMANENTLY DELETE ALL</font> UNDER TICKETING, TRADING INSPECTOR, TRADING AND INTER-TRADING, SECURITY, REPAIR, PRICE COMMODITIES, STAKEHOLDERS, AND DELETED DATAS!
+                                        </th>
+                                        <th class="col-md-1">
+                                            @*<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete("' + data["id"] + '")><i class='fa fa-trash' title='Delete'></i></a>*@
+                                            @*<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick='Delete'("id")><i class='fa fa-trash' title='Delete'></i></a>*@
+                                            <a class="btn btn-danger btn-xs reset"> RESET DATABASE</a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- /.content -->
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+
+    <script>
+        $(".reset").on("click", function (e) {
+                swal({
+                title: "Are you sure you want to RESET the database?",
+                text: "You will not be able to restore the files!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dd4b39",
+                confirmButtonText: "Yes, reset database!",
+                closeOnConfirm: true
+            }, function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/Report/ResetDatabase',
+                    success: function (data) {
+                        if (data.success) {
+                            ShowMessage(data.message);
+                            dataTable.ajax.reload();
+                        } else {
+                            ShowMessageError(data.message);
+                        }
+                    }
+                });
+            });
+            });
+
+    </script>
+}

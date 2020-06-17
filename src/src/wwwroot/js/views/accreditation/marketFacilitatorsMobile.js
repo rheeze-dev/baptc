@@ -20,10 +20,9 @@ $(document).ready(function () {
                     return output;
                 }
             },
-            { "data": "businessName" },
-            { "data": "presentAddress" },
-            { "data": "contactNumber" },
-            { "data": "majorCommodity" },
+            { "data": "name" },
+            { "data": "plateNumber" },
+            { "data": "barangay" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Accreditation/AddEditMarketFacilitators?id=" + data["id"] + "')>Edit</a>";

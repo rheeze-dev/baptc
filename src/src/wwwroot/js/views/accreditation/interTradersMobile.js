@@ -21,10 +21,9 @@ $(document).ready(function () {
                     return output;
                 }
             },
-            { "data": "nameOfAssociation" },
+            { "data": "idNumber" },
             { "data": "name" },
-            { "data": "presentAddress" },
-            { "data": "contactNumber" },
+            { "data": "barangay" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Accreditation/AddEditInterTraders?id=" + data["id"] + "')>Edit</a>";

@@ -26,6 +26,7 @@ namespace src.Models
         //public string ContactNumber { get; set; }
         //public string IdType { get; set; }
         //public int IdNumber { get; set; }
+        public string ParkingNumber { get; set; }
         public string Remarks { get; set; }
 
     }

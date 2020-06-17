@@ -14,6 +14,12 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
 
+        <div class="form-group">
+            <label asp-for="VehiclePlateNumber" class="control-label">Vehicle plate number</label>
+            <input asp-for="VehiclePlateNumber" class="form-control" />
+            <span asp-validation-for="VehiclePlateNumber" class="text-danger"></span>
+        </div>
+
         <div class="row">
             <div class="col-lg-6 form-group">
                 <label asp-for="NameOfSpouse" class="control-label">Name of spouse</label>
@@ -64,14 +70,14 @@
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="VehiclePlateNumber" class="control-label">Vehicle plate number</label>
-                <input asp-for="VehiclePlateNumber" class="form-control" />
-                <span asp-validation-for="VehiclePlateNumber" class="text-danger"></span>
-            </div>
-            <div class="col-lg-6 form-group">
                 <label asp-for="ProductDestination" class="control-label">Product destination</label>
                 <input asp-for="ProductDestination" class="form-control" />
                 <span asp-validation-for="ProductDestination" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="Remarks" class="control-label">Remarks</label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
         </div>
     </div>

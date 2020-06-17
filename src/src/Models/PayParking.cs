@@ -29,6 +29,8 @@ namespace src.Models
 
         public DateTime? TimeOut { get; set; }
 
+        public string ParkingNumber { get; set; }
+
         public string PlateNumber { get; set; }
     }
 }

@@ -35,6 +35,7 @@ $(document).ready(function () {
             { "data": "volume" },
             { "data": "productionArea" },
             { "data": "inspector" },
+            { "data": "remarks" },
             { "data": "code" },
             {
                 "data": function (data) {

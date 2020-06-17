@@ -30,6 +30,7 @@ $(document).ready(function () {
             //    }
             //},
             { "data": "plateNumber" },
+            { "data": "parkingNumber" },
             {
                 "data": function (data) {
                     var d = new Date(data["dateInspected"]);
@@ -51,29 +52,29 @@ $(document).ready(function () {
             //        return output;
             //    }
             //},
-            { "data": "stallNumber" },
             { "data": "farmersName" },
             { "data": "organization" },
             { "data": "commodity" },
             { "data": "volume" },
             { "data": "barangay" },
+            { "data": "remarks" },
             //{ "data": "municipality" },
             //{ "data": "province" },
             //{ "data": "facilitatorsName" },
             //{ "data": "accreditationChecker" },
             //{ "data": "inspector" },
-            //{
-            //    "data": function (data) {
-            //        var status = "<span class='txt-success'>Completed</span>";
-            //        if (data["dateInspected"] == null && data["timeOut"] == null) {
-            //            status = "<label class='txt-info'>Active</label>";
-            //        }
-            //        else if (data["dateInspected"] == null && data["timeOut"] != null) {
-            //            status = "<label class='txt-info'>Unchecked</label>";
-            //        }
-            //        return status;
-            //    }
-            //},
+            {
+                "data": function (data) {
+                    var status = "<span class='txt-success'>Completed</span>";
+                    if (data["dateInspected"] == null && data["timeOut"] == null) {
+                        status = "<label class='txt-info'>Active</label>";
+                    }
+                    else if (data["dateInspected"] == null && data["timeOut"] != null) {
+                        status = "<label class='txt-info'>Unchecked</label>";
+                    }
+                    return status;
+                }
+            },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditFarmersTruck?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

@@ -33,5 +33,7 @@ namespace src.Models
         [Required]
         public string Inspector { get; set; }
 
+        public string Remarks { get; set; }
+
     }
 }

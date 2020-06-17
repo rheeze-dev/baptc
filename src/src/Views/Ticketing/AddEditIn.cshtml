@@ -24,14 +24,14 @@
         <input type="hidden" asp-for="timeOut" />
 
         <div class="form-group">
-            <label asp-for="plateNumber" class="control-label"></label>
+            <label asp-for="plateNumber" class="control-label">Plate number</label>
             <input asp-for="plateNumber" class="form-control" />
             <span asp-validation-for="plateNumber" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group" id="typeOfTransaction">
-                    <label asp-for="typeOfTransaction" class="control-label"></label>
+                    <label asp-for="typeOfTransaction" class="control-label">Type of transaction</label>
                     <select asp-for="typeOfTransaction" class="form-control">
                         <option value="Trader truck" selected>Trader Truck</option>
                         <option value="Farmer truck">Farmer truck</option>

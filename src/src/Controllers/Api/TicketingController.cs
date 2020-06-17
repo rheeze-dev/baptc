@@ -77,6 +77,7 @@ namespace src.Controllers.Api
                     remarks = model["remarks"].ToString(),
                     amount = null
                 };
+                ticketing.Transaction = "Unfinished";
 
                 Buyers buyers = _context.AccreditedBuyers.Where(x => x.VehiclePlateNumber == model["plateNumber"].ToString()).FirstOrDefault();
                 IndividualFarmers individualFarmers = _context.AccreditedIndividualFarmers.Where(x => x.PlateNumber == model["plateNumber"].ToString()).FirstOrDefault();
@@ -352,6 +353,7 @@ namespace src.Controllers.Api
                         PlateNumber = ticketing.plateNumber,
                         TraderName = "",
                         Destination = "",
+                        ParkingNumber = ticketing.parkingNumber
                     };
 
                     _context.TradersTruck.Add(tradersTruck);
@@ -367,7 +369,8 @@ namespace src.Controllers.Api
                         FarmersName = "",
                         Organization = "",
                         Commodity = "",
-                        Barangay = ""
+                        Barangay = "",
+                        ParkingNumber = ticketing.parkingNumber
                     };
 
                     _context.FarmersTruck.Add(farmersTruck);
@@ -379,7 +382,9 @@ namespace src.Controllers.Api
                         ticketingId = ticketing.ticketingId,
                         TimeIn = DateTime.Now,
                         PlateNumber = ticketing.plateNumber,
-                        Commodity = ""
+                        CommodityIn = "",
+                        CommodityOut = "",
+                        ParkingNumber = ticketing.parkingNumber
                     };
 
                     _context.ShortTrip.Add(shortTrip);
@@ -395,7 +400,8 @@ namespace src.Controllers.Api
                             ticketingId = ticketing.ticketingId,
                             TimeIn = DateTime.Now,
                             PlateNumber = ticketing.plateNumber,
-                            DriverName = ticketing.driverName
+                            DriverName = ticketing.driverName,
+                            ParkingNumber = ticketing.parkingNumber
                         };
                         if (stallLease.EndDate > DateTime.Now) { 
                             _context.GatePass.Add(gatePass);
@@ -416,7 +422,8 @@ namespace src.Controllers.Api
                         ticketingId = ticketing.ticketingId,
                         TimeIn = DateTime.Now,
                         PlateNumber = ticketing.plateNumber,
-                        DriverName = ticketing.driverName
+                        DriverName = ticketing.driverName,
+                        ParkingNumber = ticketing.parkingNumber
                     };
 
                     _context.PayParking.Add(payParking);
@@ -626,7 +633,7 @@ namespace src.Controllers.Api
                             ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
                             PlateNumber = currentTicketingIn.plateNumber,
-                            Commodity = ""
+                            CommodityIn = ""
                         };
                         if (model["typeOfCar"].ToString() != "Pick-up" && model["typeOfCar"].ToString() != "Delivery")
                         {
@@ -835,7 +842,7 @@ namespace src.Controllers.Api
                             ticketingId = currentTicketingIn.ticketingId,
                             TimeIn = DateTime.Now,
                             PlateNumber = currentTicketingIn.plateNumber,
-                            Commodity = ""
+                            CommodityIn = ""
                         };
                         _context.ShortTrip.Update(shortTrip);
                         ShortTrip checkShortTrip = _context.ShortTrip.Where(x => x.ticketingId == objGuid).FirstOrDefault();
@@ -906,6 +913,7 @@ namespace src.Controllers.Api
             Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
             var ticketingPrice = _context.TicketingPrice.FirstOrDefault();
             ticketing.timeOut = DateTime.Now;
+            ticketing.Transaction = "Finished";
             var info = await _userManager.GetUserAsync(User);
 
             DateTime beforeMidnight = ticketing.timeIn.Value;
@@ -1341,7 +1349,7 @@ namespace src.Controllers.Api
             }
             else if (ticketing.typeOfTransaction == "Short trip")
             {
-                ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
+                ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).OrderByDescending(x => x.Id).FirstOrDefault();
                 shortTrip.TimeOut = ticketing.timeOut;
 
                 var AM = ticketing.timeIn.Value;
@@ -1846,9 +1854,23 @@ namespace src.Controllers.Api
             {
                 ticketing.count = ticketing.count.Value + 1;
             }
-
-
             _context.Ticketing.Update(ticketing);
+
+            var currentShortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).OrderByDescending(x => x.DateInspectedIn).FirstOrDefault();
+            currentShortTrip.TimeOut = DateTime.Now;
+            _context.ShortTrip.Update(currentShortTrip);
+
+            ShortTrip shortTrip = new ShortTrip 
+            { 
+                TimeIn = DateTime.Now,
+                PlateNumber = ticketing.plateNumber,
+                ParkingNumber = ticketing.parkingNumber,
+                ticketingId = ticketing.ticketingId
+            };
+            shortTrip.CommodityIn = "";
+            shortTrip.CommodityOut = "";
+            _context.ShortTrip.Add(shortTrip);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -2008,6 +2030,11 @@ namespace src.Controllers.Api
             }
             else if (ticketing.typeOfTransaction == "Short trip")
             {
+                var shortTripCheck = _context.ShortTrip.Where(x => x.ticketingId == id).Count();
+                if (shortTripCheck > 1)
+                {
+                    return Json(new { success = false, message = "Cannot delete multiple entries!" });
+                }
                 ShortTrip shortTrip = _context.ShortTrip.Where(x => x.ticketingId == id).FirstOrDefault();
                 _context.Remove(shortTrip);
             }
@@ -2021,6 +2048,36 @@ namespace src.Controllers.Api
             parkingNumbers.Selected = false;
             _context.ParkingNumbers.Update(parkingNumbers);
 
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = ticketing.plateNumber,
+                Origin = "Ticketing",
+                Name = ticketing.driverName,
+                DeletedBy = info.FullName,
+                Remarks = ticketing.remarks,
+                Amount = ticketing.amount
+            };
+            _context.DeletedDatas.Add(deleted);
+
+            DeletedDatas deleted2 = new DeletedDatas
+            {
+                DateDeleted = DateTime.Now,
+                PlateNumber = ticketing.plateNumber,
+                Origin = ticketing.typeOfTransaction,
+                Name = ticketing.driverName,
+                DeletedBy = info.FullName,
+                Remarks = ticketing.remarks
+            };
+            _context.DeletedDatas.Add(deleted2);
+
+            Total total = _context.Total.Where(x => x.ticketingId == id).FirstOrDefault();
+            if (total != null)
+            {
+                _context.Remove(total);
+            }
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }
@@ -2031,6 +2088,20 @@ namespace src.Controllers.Api
         {
             StallLease stallLease = _context.StallLease.Where(x => x.ticketingId == id).FirstOrDefault();
             _context.Remove(stallLease);
+
+            var info = await _userManager.GetUserAsync(User);
+            DeletedDatas deleted = new DeletedDatas
+            {
+               DateDeleted = DateTime.Now,
+               PlateNumber = stallLease.PlateNumber1 + " " + stallLease.PlateNumber2,
+               Origin = "Stall leasers",
+               Name = stallLease.DriverName,
+               DeletedBy = info.FullName,
+               Remarks = stallLease.Remarks,
+               Amount = stallLease.Amount
+            };
+            _context.DeletedDatas.Add(deleted);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Delete success." });
         }

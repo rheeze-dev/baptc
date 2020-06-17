@@ -13,11 +13,16 @@ $(document).ready(function () {
         },
         "order": [[0, 'desc']],
         "columns": [
+            {
+                "data": function (data) {
+                    var d = new Date(data["dateOfApplication"]);
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    return output;
+                }
+            },
             { "data": "businessName" },
-            { "data": "businessAddress" },
-            { "data": "presentAddress" },
             { "data": "vehiclePlateNumber" },
-            { "data": "contactNumber" },
+            { "data": "barangay" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Accreditation/AddEditBuyers?id=" + data["id"] + "')>Edit</a>";

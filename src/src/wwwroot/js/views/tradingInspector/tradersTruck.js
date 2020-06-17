@@ -29,6 +29,7 @@ $(document).ready(function () {
             //    }
             //},
             { "data": "plateNumber" },
+            { "data": "parkingNumber" },
             {
                 "data": function (data) {
                     var d = new Date(data["dateInspected"]);
@@ -54,6 +55,7 @@ $(document).ready(function () {
             { "data": "estimatedVolume" },
             { "data": "destination" },
             { "data": "inspector" },
+            { "data": "remarks" },
             //{ "data": "priceRange" },
             //{ "data": "time" },
             {

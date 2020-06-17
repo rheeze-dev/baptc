@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,11 +28,23 @@ namespace src.Models
         public string classVariety { get; set; }
 
         [Required]
-        [Display(Name = "Price Range")]
-        public double? priceRange { get; set; }
+        public double? priceLow { get; set; }
+
+        [Required]
+        public double? priceHigh { get; set; }
+
+        public double? averageLow { get; set; }
+
+        public double? averageHigh { get; set; }
+
+        [Required]
+        public int totalDays { get; set; }
 
         [Display(Name = "Commodity Remarks")]
         public string commodityRemarks { get; set; }
+
+        [NotMapped]
+        public IList<SelectListItem> commodityList { get; set; }
 
         //[Display(Name = "Ticket Type")]
         //public Enum.TicketType ticketType { get; set; }

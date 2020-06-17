@@ -101,6 +101,8 @@ namespace src.Data
 
         public DbSet<src.Models.SecurityInspectionReport> SecurityInspectionReport { get; set; }
 
+        public DbSet<src.Models.DeletedDatas> DeletedDatas { get; set; }
+
         public DbSet<src.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

@@ -1,0 +1,118 @@
+﻿@model src.Models.Organization
+@{
+    ViewData["Title"] = "Human Resources";
+    Layout = "_LayoutAdminlteHumanResource";
+    var date = DateTime.Now;
+}
+
+<style>
+    .logoHeader {
+  display: block;
+  margin-left: 135px;
+  margin-right: auto;
+}
+</style>
+<!-- Content Header (Page header) -->
+<!-- Main content -->
+<section class="content">
+
+    @*<div class="row">*@
+    <p>
+        <img class="logoHeader" src="~/images/logoBAPTC.jpg" alt="BAPTC logo" style="float:left;width:80px;height:110px;"> <br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size="3"><b>BENGUET AGRI-PINOY TRADING CENTER</b></font><br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Strawberry Fields, La Trinidad, Benguet <br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contact number: +63 908 781 0397 <br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>benguetaptc@yahoo.com.ph</u>
+    </p>
+    <br />
+    <br />
+    @*<center>
+            <div>BENGUET AGRI-PINOY TRADING CENTER</div>
+            <div>Strawberry Fields, La Trinidad, Benguet</div>
+            <div>Contact number: +639087810397</div>
+            <div>benguetaptc@yahoo.com.ph</div>
+        </center>*@
+<p>
+    <b>Memorandum number: <input style="border: none" type="text"></b>
+    <br />
+    <b>Series @date.Year</b>
+    <br />
+    To: &nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style="border: none" type="text" size="90"> <br />
+    <br />
+    From: <b>The Chief Operations Officer</b>
+    <br />
+    Date: @date.ToString("MMMM dd, yyyy")
+    <br />
+    <b>RE: <input style="border: none" type="text" size="90"></b>
+</p>
+    <p>
+        All concerned personnel are hereby requested to attend to provide inouts and/or technical, <br />
+        secretarial and logistics support during the BAPTC - Project Steering Board - Technical <br />
+        Working Group (BAPTC-PSB-TWG) Meeting on <b><input style="border:none" type="text"></b> at BAPTC <br />
+        Function Hall, Spot Trading Bay 1, Benguet Agri-Pinoy Trading Center, Strawberry Fields, <br />
+        La Trinidad, Benguet. <br />
+        Agenda of the meeting are as follows: <br />
+        1. <input style="border: none" type="text" size="90"> <br />
+        2. <input style="border: none" type="text" size="90"> <br />
+        <br />
+        For information and strict compliance. <br />
+        <br />
+        <br />
+        <br />
+        <b><input style="border:none" type="text"></b> <br />
+        <b>Chief Operations Officer</b>
+    </p>
+
+
+
+
+    @*<div class="col-lg-10">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="hidden" asp-for="@Model.organizationId" />
+                            <table id="grid" name="grid" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-11">Price</th>
+                                        <th class="col-md-1"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>*@
+
+    @*</div>*@
+
+</section>
+<!-- /.content -->
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/views/supportengineer/index.js"></script>
+}
+

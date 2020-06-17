@@ -11,18 +11,9 @@ $(document).ready(function () {
             "type": 'GET',
             "datatype": 'json'
         },
-        "order": [[0, 'desc']],
         "columns": [
-            //{ "data": "commodityDate" },
-            {
-                "data": function (data) {
-                    var d = new Date(data["timeIn"]);
-                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() + " - " + setClockTime(d);
-                    var spanData = "<span style = 'display:none;'> " + data["timeIn"] + "</span>";
-                    return spanData + output;
-                }
-            },
             { "data": "plateNumber" },
+            { "data": "parkingNumber" },
             {
                 "data": function (data) {
                     var d = new Date(data["dateInspected"]);
@@ -34,35 +25,30 @@ $(document).ready(function () {
                     return output;
                 }
             },
-            { "data": "inspector" },
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";
-                    if (data["dateInspected"] == null && data["timeOut"] == null) {
+                    if (data["dateInspectedOut"] == null && data["timeOut"] == null) {
                         status = "<label class='txt-info'>Active</label>";
                     }
-                    else if (data["dateInspected"] == null && data["timeOut"] != null) {
+                    else if (data["dateInspectedIn"] == null && data["timeOut"] != null) {
                         status = "<label class='txt-info'>Unchecked</label>";
+                    }
+                    else if (data["dateInspectedOut"] == null && data["timeOut"] != null) {
+                        status = "<label class='txt-info'>Unchecked(Out)</label>";
                     }
                     return status;
                 }
             },
             {
                 "data": function (data) {
-                    var unchecked = "";
-                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["ticketingId"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["ticketingId"] + "')>View</a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit in'></i></a>";
+                    var btnEditOut = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTripOut?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit out'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
+                    //return btnEdit;
+                    var outPut = btnEdit + " " + btnEditOut + btnView;
 
-                    if (data["dateInspected"] != null) {
-                        return btnView + btnDelete;
-                    }
-                    else if (data["dateInspected"] == null && data["timeOut"] == null) {
-                        return btnEdit + btnDelete;
-                    }
-                    else if (data["dateInspected"] == null && data["timeOut"] != null) {
-                        return unchecked + btnDelete;
-                    }
+                    return outPut;
                 }
             }
         ],

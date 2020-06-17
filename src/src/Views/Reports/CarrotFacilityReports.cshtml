@@ -17,14 +17,12 @@
                             <table id="grid" name="grid" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th colspan="3"></th>
+                                        <th colspan="4"><center>Carrot facility</center></th>
                                     </tr>
                                     <tr>
-                                        <th colspan="3"><center>Carrot facility</center></th>
-                                    </tr>
-                                    <tr>
-                                        <th class="col-md-1">Year</th>
-                                        <th class="col-md-1">Month</th>
+                                        <th class="col-md-1"><font color="green">Year</font></th>
+                                        <th class="col-md-1"><font color="green">Month</font></th>
+                                        <th class="col-md-1"><font color="red">Inspector</font></th>
                                         <th class="col-md-1">Button</th>
                                     </tr>
                                     <tr>
@@ -47,12 +45,14 @@
                                                 <option value="12">December</option>
                                             </select>
                                         </th>
+                                        <th class="col-md-1"><input type="text" id="inputInspector" style="border:none"></th>
                                         <th class="col-md-1">
                                             <a class="btn btn-success btn-xs exportCarrotFacility"><i class='fa fa-download'></i> Export</a>
+                                            <a class="btn btn-danger btn-xs exportWithParam"><i class='fa fa-download'></i> Special</a>
                                         </th>
                                     </tr>
                                     <tr>
-                                        <th class="col-md-1">
+                                        <th class="col-md-1" colspan="2">
                                             <select class="form-control" id="dropdownCarrotFacilityDate">
                                                 <option value="1000000">All</option>
                                                 <option value="365">Last year</option>
@@ -61,10 +61,10 @@
                                                 <option value="1">Today</option>
                                             </select>
                                         </th>
-                                        <th class="col-md-1">
-                                        </th>
+                                        <th class="col-md-1"><input type="text" id="inputInspector2" style="border:none"></th>
                                         <th class="col-md-1">
                                             <a class="btn btn-success btn-xs exportCarrotFacilityDate"><i class='fa fa-download'></i> Export</a>
+                                            <a class="btn btn-danger btn-xs exportWithParam2"><i class='fa fa-download'></i> Special</a>
                                         </th>
                                     </tr>
                                 </thead>
@@ -109,9 +109,22 @@
             $(".exportCarrotFacility").attr("href", "/api/Report/CarrotFacilityReport?Year=" + getSelectedYear + "&Month=" + getSelectedMonth);
         });
 
+        $(".exportWithParam").on("click", function (e) {
+            var getSelectedYear = $("#dropdownYearCarrotFacility").val();
+            var getSelectedMonth = $("#dropdownMonthCarrotFacility").val();
+            var getInputInspector = $("#inputInspector").val();
+            $(".exportWithParam").attr("href", "/api/Report/CarrotFacilityWithParam?Year=" + getSelectedYear + "&Month=" + getSelectedMonth + "&Inspector=" + getInputInspector);
+        });
+
         $(".exportCarrotFacilityDate").on("click", function (e) {
             var getSelectedDate = $("#dropdownCarrotFacilityDate").val();
             $(".exportCarrotFacilityDate").attr("href", "/api/Report/CarrotFacilityReportDate?Date=" + getSelectedDate);
+        });
+
+        $(".exportWithParam2").on("click", function (e) {
+            var getSelectedDate = $("#dropdownCarrotFacilityDate").val();
+            var getInputInspector2 = $("#inputInspector2").val();
+            $(".exportWithParam2").attr("href", "/api/Report/CarrotFacilityWithParam2?Date=" + getSelectedDate + "&Inspector=" + getInputInspector2);
         });
     </script>
 }
