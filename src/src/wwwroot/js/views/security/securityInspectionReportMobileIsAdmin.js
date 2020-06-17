@@ -23,7 +23,6 @@ $(document).ready(function () {
             },
             { "data": "location" },
             { "data": "action" },
-            { "data": "remarks" },
             { "data": "inspector" },
             {
                 "data": function (data) {

@@ -35,7 +35,7 @@ $(document).ready(function () {
                     var btnCount = "<a class='btn btn-default btn-xs btnCount' data-id='" + data["ticketingId"] + "'><i class='fa fa-plus-circle' title='Count'></i></a>";
                     var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    var outPut = btnEdit + " " + btnView + " " + btnCount;
+                    var outPut = btnEdit + btnView + " " + btnCount;
 
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return btnView;
