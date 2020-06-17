@@ -26,9 +26,9 @@ $(document).ready(function () {
             { "data": "repairDetails" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Repair/AddEditVehicleRepair?id=" + data["id"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Repair/ViewVehicleRepair?id=" + data["id"] + "')>View</a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')>Delete</a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Repair/AddEditVehicleRepair?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Repair/ViewVehicleRepair?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     return btnEdit + " " + btnView + btnDelete;
                 }
             }
