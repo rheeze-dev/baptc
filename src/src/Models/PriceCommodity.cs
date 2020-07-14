@@ -19,6 +19,8 @@ namespace src.Models
         [Display(Name = "Commodity Date")]
         public DateTime commodityDate { get; set; }
 
+        public string enteredBy { get; set; }
+
         [Required]
         [Display(Name = "Commodity")]
         public string commodity { get; set; }

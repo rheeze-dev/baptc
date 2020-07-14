@@ -30,6 +30,7 @@ $(document).ready(function () {
             { "data": "priceLow" },
             { "data": "priceHigh" },
             { "data": "commodityRemarks" },
+            { "data": "enteredBy" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

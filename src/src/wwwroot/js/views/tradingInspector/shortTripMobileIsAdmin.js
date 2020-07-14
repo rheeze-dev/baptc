@@ -47,8 +47,12 @@ $(document).ready(function () {
                     var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     //return btnEdit;
                     var outPut = btnEdit + " " + btnEditOut + btnView;
-
-                    return outPut;
+                    if (data["typeOfEntry"] == "Pick-up") {
+                        return btnEditOut + btnView;
+                    }
+                    else {
+                        return outPut;
+                    }
                 }
             }
         ],
@@ -99,6 +103,38 @@ function SubmitAddEdit(form) {
         $.ajax({
             type: 'POST',
             url: "/api/Inspector/PostShortTrip",
+            //url: '/PriceCommodity/PostPriceCommodity',
+            data: data,
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.success) {
+                    popup.modal('hide');
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+
+    }
+    return false;
+}
+
+function SubmitAddEditOut(form) {
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        var data = $(form).serializeJSON();
+        //data = { priceCommodity: data };
+        data = JSON.stringify(data);
+        //var data = {
+        //    priceCommodity: "petsay"
+        //};
+        //alert(data);
+        //return true;
+        $.ajax({
+            type: 'POST',
+            url: "/api/Inspector/PostShortTripOut",
             //url: '/PriceCommodity/PostPriceCommodity',
             data: data,
             contentType: 'application/json',

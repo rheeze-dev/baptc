@@ -30,13 +30,14 @@ $(document).ready(function () {
             { "data": "priceLow" },
             { "data": "priceHigh" },
             { "data": "commodityRemarks" },
-            {
-                "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["priceCommodityId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit;
-                }
-            }
+            { "data": "enteredBy" }
+            //{
+            //    "data": function (data) {
+            //        var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+            //        //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["priceCommodityId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+            //        return btnEdit;
+            //    }
+            //}
         ],
         "language": {
             "emptyTable": "no data found."

@@ -39,20 +39,13 @@ $(document).ready(function () {
             },
             {
                 "data": function (data) {
-                    var unchecked = "";
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditTradersTruck?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/ViewTradersTruck?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
-                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["ticketingId"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    //return btnEdit;
+                    var outPut = btnEdit + " " + btnView;
 
-                    if (data["dateInspected"] != null) {
-                        return btnView + btnDelete;
-                    }
-                    else if (data["dateInspected"] == null && data["timeOut"] == null) {
-                        return btnEdit + btnDelete;
-                    }
-                    else if (data["dateInspected"] == null && data["timeOut"] != null) {
-                        return unchecked + btnDelete;
-                    }
+                    return outPut;
                 }
             }
         ],

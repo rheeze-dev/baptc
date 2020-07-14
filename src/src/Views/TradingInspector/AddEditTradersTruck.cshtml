@@ -15,10 +15,17 @@
         <input type="hidden" asp-for="ticketingId" />
         <input type="hidden" asp-for="TimeIn" />
 
-        <div class="form-group">
-            <label asp-for="PlateNumber" class="control-label">Plate number</label>
-            <input asp-for="PlateNumber" class="form-control" readonly />
-            <span asp-validation-for="PlateNumber" class="text-danger"></span>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="PlateNumber" class="control-label">Plate number</label>
+                <input asp-for="PlateNumber" class="form-control" readonly />
+                <span asp-validation-for="PlateNumber" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="ParkingNumber" class="control-label">Parking numberr</label>
+                <input asp-for="ParkingNumber" class="form-control" readonly />
+                <span asp-validation-for="ParkingNumber" class="text-danger"></span>
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-6 form-group">

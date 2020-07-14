@@ -25,21 +25,16 @@ $(document).ready(function () {
             { "data": "packerOrPorter" },
             { "data": "idNumber" },
             { "data": "name" },
-            { "data": "nickName" },
-            { "data": "nameOfSpouse" },
             { "data": "presentAddress" },
             { "data": "barangay" },
-            { "data": "municipality" },
-            { "data": "province" },
             { "data": "contactNumber" },
             { "data": "birthDate" },
-            { "data": "provincialAddress" },
-            { "data": "requirements" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditPackersAndPorters?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Accreditation/ViewPackersAndPorters?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit;
+                    return btnEdit + btnView;
                 }
             }
         ],

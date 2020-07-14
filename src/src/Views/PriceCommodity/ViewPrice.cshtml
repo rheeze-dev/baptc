@@ -22,7 +22,7 @@
 
         <div class="row">
             <div class="col-lg-6 form-group">
-                <label asp-for="commodity">commodity: </label>
+                <label asp-for="commodity">Commodity: </label>
                 <label class="text-warning">@Model.commodity</label>
             </div>
             <div class="col-lg-6 form-group">
@@ -33,25 +33,31 @@
         <div class="row">
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="priceLow">price(Low): </label>
+                    <label asp-for="priceLow">Price (Low): </label>
                     <label class="text-warning">@Model.priceLow</label>
                 </div>
             </div>
             <div class="col-lg-6 form-group">
                 <div class="form-group">
-                    <label asp-for="priceHigh">price(High): </label>
+                    <label asp-for="priceHigh">Price (High): </label>
                     <label class="text-warning">@Model.priceHigh</label>
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="form-group">
-                <label asp-for="commodityRemarks">commodityRemarks: </label>
-                <label class="text-warning">@Model.commodityRemarks</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="commodityRemarks">Commodity remarks: </label>
+                    <label class="text-warning">@Model.commodityRemarks</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="enteredBy">Entered by: </label>
+                    <label class="text-warning">@Model.enteredBy</label>
+                </div>
             </div>
         </div>
-
     </div>
     <div class="box-footer">
         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>

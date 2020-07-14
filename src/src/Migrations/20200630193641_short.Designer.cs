@@ -12,9 +12,10 @@ using System;
 namespace src.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200630193641_short")]
+    partial class @short
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -911,8 +912,6 @@ namespace src.Migrations
                     b.Property<DateTime>("commodityDate");
 
                     b.Property<string>("commodityRemarks");
-
-                    b.Property<string>("enteredBy");
 
                     b.Property<double?>("priceHigh")
                         .IsRequired();

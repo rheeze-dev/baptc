@@ -23,8 +23,8 @@ $(document).ready(function () {
             { "data": "editor" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-success btn-xs' onclick=ShowPopup('/Settings/AddEditTicketingPrice?id=" + data["id"] + "')>Edit</a>";
-                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/ViewTicketingPrice?id=" + data["id"] + "')>View</a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/AddEditTicketingPrice?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/ViewTicketingPrice?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     return btnEdit + " " + btnView;
                 }
             }

@@ -26,10 +26,10 @@ $(document).ready(function () {
             { "data": "volume" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditTradingAndIntertrading?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditTradingAndIntertrading?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingAndIntertrading/ViewTradingAndIntertrading?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
-                    var outPut = btnEdit;
-                    var outPut = btnEdit + btnView;
+                    //var outPut = btnEdit;
+                    var outPut = btnView;
                     return outPut;
                 }
             }

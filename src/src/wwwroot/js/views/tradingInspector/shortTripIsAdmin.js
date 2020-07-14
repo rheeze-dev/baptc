@@ -64,8 +64,8 @@ $(document).ready(function () {
             //    }
             //},
             { "data": "commodityIn" },
-            { "data": "commodityOut" },
             { "data": "remarksIn" },
+            { "data": "commodityOut" },
             { "data": "remarksOut" },
             {
                 "data": function (data) {
@@ -73,11 +73,8 @@ $(document).ready(function () {
                     if (data["dateInspectedOut"] == null && data["timeOut"] == null) {
                         status = "<label class='txt-info'>Active</label>";
                     }
-                    else if (data["dateInspectedIn"] == null && data["timeOut"] != null) {
+                    else if (data["dateInspectedIn"] == null && data["dateInspectedOut"] == null && data["timeOut"] != null) {
                         status = "<label class='txt-info'>Unchecked</label>";
-                    }
-                    else if (data["dateInspectedOut"] == null && data["timeOut"] != null) {
-                        status = "<label class='txt-info'>Unchecked(Out)</label>";
                     }
                     return status;
                 }
@@ -89,8 +86,12 @@ $(document).ready(function () {
                     var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     //return btnEdit;
                     var outPut = btnEdit + " " + btnEditOut + btnView;
-                  
-                    return outPut;
+                    if (data["typeOfEntry"] == "Pick-up") {
+                        return btnEditOut + btnView;
+                    }
+                    else {
+                        return outPut;
+                    }
                 }
             }
         ],

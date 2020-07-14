@@ -25,12 +25,13 @@ $(document).ready(function () {
             { "data": "volume" },
             {
                 "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditCarrotFacility?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditCarrotFacility?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/ViewCarrotFacility?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
-                    var output = btnEdit + " " + btnView;
-                    if (data["date"] != null) {
-                        return output;
-                    }
+                    var output = btnView;
+                    return output;
+                    //if (data["date"] != null) {
+                    //    return output;
+                    //}
                     //else if (data["date"] == null) {
                     //    return btnEdit;
                     //}

@@ -42,6 +42,8 @@ namespace src.Models
 
         public string ParkingNumber { get; set; }
 
+        public string TypeOfEntry { get; set; }
+
         public string InspectorIn { get; set; }
 
         public string InspectorOut { get; set; }

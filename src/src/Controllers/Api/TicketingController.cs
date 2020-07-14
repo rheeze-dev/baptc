@@ -384,7 +384,8 @@ namespace src.Controllers.Api
                         PlateNumber = ticketing.plateNumber,
                         CommodityIn = "",
                         CommodityOut = "",
-                        ParkingNumber = ticketing.parkingNumber
+                        ParkingNumber = ticketing.parkingNumber,
+                        TypeOfEntry = ticketing.typeOfCar
                     };
 
                     _context.ShortTrip.Add(shortTrip);
@@ -1890,7 +1891,7 @@ namespace src.Controllers.Api
             {
                 StartDate = startDate,
                 EndDate = endDate,
-                DriverName = model["DriverName"].ToString(),
+                //DriverName = model["DriverName"].ToString(),
                 //LastName = model["LastName"].ToString(),
                 PlateNumber1 = model["PlateNumber1"].ToString(),
                 PlateNumber2 = model["PlateNumber2"].ToString(),
@@ -1915,7 +1916,7 @@ namespace src.Controllers.Api
             else
             {
                 StallLease currentStallLease = _context.StallLease.Where(x => x.ticketingId == id).FirstOrDefault();
-                currentStallLease.DriverName = model["DriverName"].ToString();
+                //currentStallLease.DriverName = model["DriverName"].ToString();
                 currentStallLease.PlateNumber1 = model["PlateNumber1"].ToString();
                 currentStallLease.PlateNumber2 = model["PlateNumber2"].ToString();
                 currentStallLease.Remarks = model["Remarks"].ToString();

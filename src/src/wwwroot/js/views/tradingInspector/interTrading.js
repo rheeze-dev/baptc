@@ -36,15 +36,7 @@ $(document).ready(function () {
             { "data": "productionArea" },
             { "data": "inspector" },
             { "data": "remarks" },
-            { "data": "code" },
-            {
-                "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditTradingAndIntertrading?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    var outPut = btnEdit;
-               
-                    return outPut;
-                }
-            }
+            { "data": "code" }
         ],
         "language": {
             "emptyTable": "no data found."

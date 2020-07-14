@@ -130,7 +130,7 @@
                                 <i class="fa fa-th"></i> <span>View deleted datas</span>
                             </a>
                         </li>
-                        if (appUser.RoleId == "COO" || appUser.RoleId == "ICT-MISU")
+                        if (appUser.RoleId == "COO")
                         {
                             <li class="@Html.IsSelected(controller: "DeletedDatas",action:"ExportDeletedDatas")">
                                 <a href="@Url.Action("ExportDeletedDatas", "DeletedDatas", new { org = org })">
@@ -140,6 +140,14 @@
                             <li class="@Html.IsSelected(controller: "DeletedDatas",action:"ResetDatas")">
                                 <a href="@Url.Action("ResetDatas", "DeletedDatas", new { org = org })">
                                     <i class="fa fa-th"></i> <span>Delete all datas</span>
+                                </a>
+                            </li>
+                        }
+                        else if (appUser.RoleId == "ICT-MISU")
+                        {
+                            <li class="@Html.IsSelected(controller: "DeletedDatas",action:"ExportDeletedDatas")">
+                                <a href="@Url.Action("ExportDeletedDatas", "DeletedDatas", new { org = org })">
+                                    <i class="fa fa-th"></i> <span>Export deleted datas</span>
                                 </a>
                             </li>
                         }

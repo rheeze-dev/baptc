@@ -24,14 +24,17 @@ $(document).ready(function () {
             { "data": "location" },
             { "data": "action" },
             { "data": "remarks" },
-            { "data": "inspector" },
-            {
-                "data": function (data) {
-                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Security/AddEditSecurityInspectionReport?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
-                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit;
-                }
-            }
+            { "data": "inspector" }
+            //{
+            //    "data": function (data) {
+            //        var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Security/AddEditSecurityInspectionReport?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+            //        //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+            //        //if (data["inspector"] == ) {
+
+            //        //}
+            //        return btnEdit;
+            //    }
+            //}
         ],
         "language": {
             "emptyTable": "no data found."

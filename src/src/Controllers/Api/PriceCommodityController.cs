@@ -57,6 +57,7 @@ namespace src.Controllers.Api
         public async Task<IActionResult> PostPriceCommodity([FromBody] JObject model)
         {
             Guid objGuid = Guid.Empty;
+            var info = await _userManager.GetUserAsync(User);
             var averageLow = _context.PriceCommodity.Where(x => x.commodityDate.Day == DateTime.Now.Day && x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Select(x => x.priceLow).Sum();
             var averageHigh = _context.PriceCommodity.Where(x => x.commodityDate.Day == DateTime.Now.Day && x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Select(x => x.priceHigh).Sum();
             objGuid = Guid.Parse(model["priceCommodityId"].ToString());
@@ -73,6 +74,7 @@ namespace src.Controllers.Api
                     priceHigh = Convert.ToDouble(model["priceHigh"].ToString()),
                     classVariety = model["classVariety"].ToString()
                 };
+                priceCommodity.enteredBy = info.FullName;
 
                 var currentTotalDays = _context.PriceCommodity.OrderByDescending(x => x.commodityDate).Where(x => x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Select(x => x.totalDays).FirstOrDefault();
                 var countDays = _context.PriceCommodity.Where(x => x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Count();
@@ -123,7 +125,7 @@ namespace src.Controllers.Api
                 currentPrice.commodityRemarks = model["commodityRemarks"].ToString();
                 currentPrice.averageLow = ((averageLow - oldLowPrice ) + currentPrice.priceLow) / currentPrice.totalDays;
                 currentPrice.averageHigh = ((averageHigh - oldHighPrice) + currentPrice.priceHigh) / currentPrice.totalDays;
-
+                currentPrice.enteredBy = info.FullName;
                 _context.PriceCommodity.Update(currentPrice);
             }
 

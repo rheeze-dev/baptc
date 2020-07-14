@@ -27,9 +27,9 @@ $(document).ready(function () {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/AddEditRoles?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
                     var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigRoles?id=" + data["id"] + "')><i class='fa fa-cog' title='Config'></i></a>";
-                    var btnReport = "<a class='btn btn-default btn-xs btnReport' href='/api/Report/roles?id=" + data["id"] + "'><i class='fa fa-download' title='Report'></i></a>";
+                    //var btnReport = "<a class='btn btn-default btn-xs btnReport' href='/api/Report/roles?id=" + data["id"] + "'><i class='fa fa-download' title='Report'></i></a>";
                     var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
-                    return btnEdit + btnConfig + btnReport + btnDelete;
+                    return btnEdit + btnConfig + btnDelete;
                 }
             }
         ],

@@ -64,8 +64,8 @@ $(document).ready(function () {
             //    }
             //},
             { "data": "commodityIn" },
-            { "data": "commodityOut" },
             { "data": "remarksIn" },
+            { "data": "commodityOut" },
             { "data": "remarksOut" },
             {
                 "data": function (data) {
@@ -73,35 +73,56 @@ $(document).ready(function () {
                     if (data["dateInspectedOut"] == null && data["timeOut"] == null) {
                         status = "<label class='txt-info'>Active</label>";
                     }
-                    else if (data["dateInspectedIn"] == null && data["timeOut"] != null) {
+                    else if (data["dateInspectedIn"] == null && data["dateInspectedOut"] == null && data["timeOut"] != null) {
                         status = "<label class='txt-info'>Unchecked</label>";
-                    }
-                    else if (data["dateInspectedOut"] == null && data["timeOut"] != null) {
-                        status = "<label class='txt-info'>Unchecked(Out)</label>";
                     }
                     return status;
                 }
             },
             {
                 "data": function (data) {
-                    var btnEditIn = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit in'></i></a>";
+                    var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit in'></i></a>";
                     var btnEditOut = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTripOut?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit out'></i></a>";
                     var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
-                    var outPut = btnEditIn;
+                    //return btnEdit;
+                    var outPut = btnEdit + " " + btnEditOut + btnView;
                     if (data["timeOut"] != null) {
                         return btnView;
                     }
                     else if (data["dateInspectedOut"] != null) {
                         return btnView;
                     }
-                    else if (data["dateInspectedIn"] == null && data["timeOut"] == null) {
-                        return outPut;
-                    }
-                    else if (data["dateInspectedIn"] != null && data["timeOut"] == null) {
+                    else if (data["dateInspectedIn"] != null) {
                         return btnEditOut + btnView;
+                    }
+                    else if (data["typeOfEntry"] == "Pick-up") {
+                        return btnEditOut + btnView;
+                    }
+                    else {
+                        return outPut;
                     }
                 }
             }
+            //{
+            //    "data": function (data) {
+            //        var btnEditIn = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTrip?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit in'></i></a>";
+            //        var btnEditOut = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingInspector/AddEditShortTripOut?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit out'></i></a>";
+            //        var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/TradingInspector/ViewShortTrip?id=" + data["id"] + "')><i class='fa fa-external-link' title='More'></i></a>";
+            //        var outPut = btnEditIn;
+            //        if (data["timeOut"] != null) {
+            //            return btnView;
+            //        }
+            //        else if (data["dateInspectedOut"] != null) {
+            //            return btnView;
+            //        }
+            //        else if (data["dateInspectedIn"] == null && data["timeOut"] == null) {
+            //            return outPut;
+            //        }
+            //        else if (data["dateInspectedIn"] != null && data["timeOut"] == null) {
+            //            return btnEditOut + btnView;
+            //        }
+            //    }
+            //}
         ],
         "language": {
             "emptyTable": "no data found."

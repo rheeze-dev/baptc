@@ -41,7 +41,7 @@ $(document).ready(function () {
             //        return output;
             //    }
             //},
-            { "data": "driverName" },
+            //{ "data": "driverName" },
             //{ "data": "lastName" },
             //{ "data": "birthDate" },
             //{ "data": "contactNumber" },
