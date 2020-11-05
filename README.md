@@ -17,5 +17,5 @@ Demonstration web app showing the capabilities of ASP.NET Core 2 MVC, EF (Entity
 # Screenshots
 
 ![demo1](src/src/wwwroot/images/login.jpg)
-![demo2](src/src/wwwroot/images/baptc2.jpg)
+![demo2](src/src/wwwroot/images/BAPTC2.jpg)
 ![demo3](src/src/wwwroot/images/wallpaper1.jpg)
