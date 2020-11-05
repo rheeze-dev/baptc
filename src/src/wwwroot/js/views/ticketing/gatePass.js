@@ -30,26 +30,27 @@ $(document).ready(function () {
             ////        return spanData + output;
             ////    }
             ////},
-            //{
-            //    "data": function (data) {
-            //        var d = new Date(data["endDate"]);
-            //        var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-            //        var output = dateOut;
-            //        if (data["endDate"] == null) {
-            //            output = "";
-            //        }
-            //        return output;
-            //    }
-            //},
+            {
+                "data": function (data) {
+                    var d = new Date(data["endDate"]);
+                    var dateOut = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var output = dateOut;
+                    if (data["endDate"] == null) {
+                        output = "";
+                    }
+                    return output;
+                }
+            },
             //{ "data": "driverName" },
             //{ "data": "lastName" },
             //{ "data": "birthDate" },
             //{ "data": "contactNumber" },
             { "data": "plateNumber1" },
             { "data": "plateNumber2" },
-            //{ "data": "idType" },
-            //{ "data": "idNumber" },
+            { "data": "contactNumber" },
+            { "data": "stallNumber" },
             { "data": "remarks" },
+            { "data": "controlNumber" },
             //{
             //    "data": function (data) {
             //        //var valid = "<span class='txt-success'>Valid</span>";

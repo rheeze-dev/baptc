@@ -41,30 +41,31 @@
                     </select>
                 </div>
             </div>
-
-            <div class="col-lg-6 typeOfCar">
-                <div class="form-group">
-                    <label asp-for="typeOfCar" class="control-label">Type of entry</label>
-                    <select asp-for="typeOfCar" class="form-control">
-                        @*<option selected disabled>make a selection...</option>*@
-                        <option class="traderTruck" value="With transaction">With transaction</option>
+            <div class="col-lg-6 typeOfEntry">
+                <div class="form-group" id="typeOfTransaction">
+                    <label asp-for="TypeOfEntry" class="control-label">Type of entry</label>
+                    <select asp-for="TypeOfEntry" class="form-control">
+                        <option class="traderTruck" value="With transaction" selected>With transaction</option>
                         <option class="traderTruck" value="Without transaction">Without transaction</option>
-                        <option class="farmerTruck default sT" value="Single tire">Single tire</option>
-                        <option class="farmerTruck default" value="Double tire">Double tire</option>
                         <option class="shortTrip default" value="Pick-up">Pick-up</option>
                         <option class="shortTrip default" value="Delivery">Delivery</option>
                     </select>
                 </div>
             </div>
-
-        </div>
-        <div class="form-group driverName default">
-            <label asp-for="driverName" class="control-label">Drivers name</label>
-            <input asp-for="driverName" class="form-control" />
-            <span asp-validation-for="driverName" class="text-danger"></span>
-        </div>
-
-        <div class="row">
+            </div>
+            <div class="row">
+                <div class="col-lg-6 typeOfCar">
+                    <div class="form-group">
+                        <label asp-for="typeOfCar" class="control-label">Type of car</label>
+                        <select asp-for="typeOfCar" class="form-control">
+                            @*<option selected disabled>make a selection...</option>*@
+                            <option value="Single tire">Single tire</option>
+                            <option value="Double tire">Double tire</option>
+                            <option class="traderTruck shortTrip" value="Forwarder">Forwarder</option>
+                            <option class="traderTruck shortTrip" value="10 wheeler">10 wheeler</option>
+                        </select>
+                    </div>
+                </div>
             <div class="col-lg-6">
                 <div class="parking form-group">
                     <label asp-for="parkingNumber" class="control-label">Parking number</label>
@@ -72,7 +73,34 @@
                 </div>
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-lg-6 form-group driverName">
+                <label asp-for="driverName" class="control-label">Drivers name</label>
+                <input asp-for="driverName" class="form-control" />
+                <span asp-validation-for="driverName" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6">
+                <div class="contactNumber form-group">
+                    <label asp-for="ContactNumber" class="control-label">Contact number</label>
+                    <input asp-for="ContactNumber" class="form-control" />
+                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="address form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="temperature col-lg-6 form-group">
+                <label asp-for="Temperature" class="control-label"></label>
+                <input asp-for="Temperature" class="form-control" />
+                <span asp-validation-for="Temperature" class="text-danger"></span>
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="remarks" class="control-label">Remarks</label>
             <input asp-for="remarks" class="form-control" placeholder="Optional" />
@@ -104,34 +132,41 @@
             //alert(test);
             if (test == "Trader truck") {
                 $(".typeOfCar").show();
+                $(".typeOfEntry").show();
                 $(".farmerTruck").hide();
                 $(".shortTrip").hide();
                 $(".payParking").hide();
-                $(".driverName").hide();
+                $(".driverName").show();
                 $(".traderTruck").show();
+                $(".name").show();
             }
             else if (test == "Farmer truck") {
                 $(".typeOfCar").show();
+                $(".typeOfEntry").hide();
                 $(".traderTruck").hide();
                 $(".shortTrip").hide();
                 $(".payParking").hide();
-                $(".driverName").hide();
+                $(".driverName").show();
                 $(".farmerTruck").show();
             }
             else if (test == "Short trip") {
                 $(".typeOfCar").show();
+                $(".typeOfEntry").show();
                 $(".traderTruck").hide();
                 $(".farmerTruck").hide();
                 $(".payParking").hide();
-                $(".driverName").hide();
+                $(".driverName").show();
                 $(".shortTrip").show();
             }
             else if (test == "Pay parking") {
                 $(".typeOfCar").hide();
+                $(".typeOfEntry").hide();
+                $(".name").hide();
                 $(".driverName").show();
             }
             else if (test == "Gate pass") {
                 $(".typeOfCar").hide();
+                $(".typeOfEntry").hide();
                 $(".driverName").show();
             }
         });

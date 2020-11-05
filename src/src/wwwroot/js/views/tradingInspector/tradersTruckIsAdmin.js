@@ -56,6 +56,7 @@ $(document).ready(function () {
             { "data": "destination" },
             { "data": "inspector" },
             { "data": "remarks" },
+            { "data": "controlNumber" },
             //{ "data": "priceRange" },
             //{ "data": "time" },
             {

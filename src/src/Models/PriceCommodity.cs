@@ -39,6 +39,8 @@ namespace src.Models
 
         public double? averageHigh { get; set; }
 
+        public double? average { get; set; }
+
         [Required]
         public int totalDays { get; set; }
 
@@ -47,6 +49,8 @@ namespace src.Models
 
         [NotMapped]
         public IList<SelectListItem> commodityList { get; set; }
+
+        public int? ControlNumber { get; set; }
 
         //[Display(Name = "Ticket Type")]
         //public Enum.TicketType ticketType { get; set; }

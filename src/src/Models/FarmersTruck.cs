@@ -18,18 +18,19 @@ namespace src.Models
 
         public DateTime? TimeOut { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Stall number")]
         public string StallNumber { get; set; }
 
+        [Required]
         [Display(Name = "Plate number")]
         public string PlateNumber { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Farmers name")]
         public string FarmersName { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Organization")]
         public string Organization { get; set; }
 
@@ -41,7 +42,7 @@ namespace src.Models
         [Display(Name = "Volume")]
         public int? Volume { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Barangay")]
         public string Barangay { get; set; }
 
@@ -61,6 +62,8 @@ namespace src.Models
         public string AccreditationChecker { get; set; }
 
         public string Remarks { get; set; }
+
+        public int? ControlNumber { get; set; }
 
     }
 }

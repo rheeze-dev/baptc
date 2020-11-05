@@ -23,6 +23,7 @@ $(document).ready(function () {
             { "data": "stallNumber" },
             { "data": "commodity" },
             { "data": "volume" },
+            { "data": "code" },
             {
                 "data": function (data) {
                     //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditCarrotFacility?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

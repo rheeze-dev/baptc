@@ -17,6 +17,7 @@ $(document).ready(function () {
             { "data": "municipality" },
             { "data": "province" },
             { "data": "remarks" },
+            { "data": "id" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/AddEditAddresses?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
@@ -105,7 +106,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/DeleteParkingNumbers/' + id,
+            url: apiurl + '/DeleteAddresses/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

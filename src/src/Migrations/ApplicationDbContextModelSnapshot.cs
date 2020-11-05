@@ -136,6 +136,10 @@ namespace src.Migrations
 
                     b.Property<string>("Barangay");
 
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Modifier");
+
                     b.Property<string>("Municipality");
 
                     b.Property<string>("Province");
@@ -246,6 +250,8 @@ namespace src.Migrations
 
                     b.Property<DateTime>("DateOfApplication");
 
+                    b.Property<string>("EnteredBy");
+
                     b.Property<string>("Municipality");
 
                     b.Property<string>("NameOfSpouse");
@@ -312,6 +318,10 @@ namespace src.Migrations
                     b.Property<string>("ClassVariety");
 
                     b.Property<string>("Commodity");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Modifier");
 
                     b.Property<string>("Price");
 
@@ -501,6 +511,28 @@ namespace src.Migrations
                     b.ToTable("DeletedDatas");
                 });
 
+            modelBuilder.Entity("src.Models.EditedDatas", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ControlNumber");
+
+                    b.Property<DateTime>("DateEdited");
+
+                    b.Property<string>("EditedBy");
+
+                    b.Property<string>("EditedData");
+
+                    b.Property<string>("Origin");
+
+                    b.Property<string>("Remarks");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EditedDatas");
+                });
+
             modelBuilder.Entity("src.Models.FarmersTruck", b =>
                 {
                     b.Property<Guid>("ticketingId")
@@ -508,36 +540,35 @@ namespace src.Migrations
 
                     b.Property<string>("AccreditationChecker");
 
-                    b.Property<string>("Barangay")
-                        .IsRequired();
+                    b.Property<string>("Barangay");
 
                     b.Property<string>("Commodity")
                         .IsRequired();
+
+                    b.Property<int?>("ControlNumber");
 
                     b.Property<DateTime?>("DateInspected");
 
                     b.Property<string>("FacilitatorsName");
 
-                    b.Property<string>("FarmersName")
-                        .IsRequired();
+                    b.Property<string>("FarmersName");
 
                     b.Property<string>("Inspector");
 
                     b.Property<string>("Municipality");
 
-                    b.Property<string>("Organization")
-                        .IsRequired();
+                    b.Property<string>("Organization");
 
                     b.Property<string>("ParkingNumber");
 
-                    b.Property<string>("PlateNumber");
+                    b.Property<string>("PlateNumber")
+                        .IsRequired();
 
                     b.Property<string>("Province");
 
                     b.Property<string>("Remarks");
 
-                    b.Property<string>("StallNumber")
-                        .IsRequired();
+                    b.Property<string>("StallNumber");
 
                     b.Property<DateTime>("TimeIn");
 
@@ -555,6 +586,10 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ContactNumber");
+
+                    b.Property<int?>("ControlNumber");
+
                     b.Property<string>("DriverName");
 
                     b.Property<DateTime?>("EndDate");
@@ -564,6 +599,8 @@ namespace src.Migrations
                     b.Property<string>("PlateNumber");
 
                     b.Property<string>("Remarks");
+
+                    b.Property<string>("StallNumber");
 
                     b.Property<DateTime>("StartDate");
 
@@ -593,6 +630,8 @@ namespace src.Migrations
                     b.Property<string>("Counter");
 
                     b.Property<DateTime>("DateOfApplication");
+
+                    b.Property<string>("EnteredBy");
 
                     b.Property<string>("EstimatedProduce");
 
@@ -649,6 +688,8 @@ namespace src.Migrations
                     b.Property<DateTime>("DateOfApplication");
 
                     b.Property<string>("Destination");
+
+                    b.Property<string>("EnteredBy");
 
                     b.Property<int?>("IdNumber")
                         .IsRequired();
@@ -728,6 +769,8 @@ namespace src.Migrations
                     b.Property<string>("ContactNumber");
 
                     b.Property<DateTime>("DateOfApplication");
+
+                    b.Property<string>("EnteredBy");
 
                     b.Property<int?>("IdNumber")
                         .IsRequired();
@@ -820,6 +863,8 @@ namespace src.Migrations
 
                     b.Property<DateTime>("DateOfApplication");
 
+                    b.Property<string>("EnteredBy");
+
                     b.Property<int?>("IdNumber")
                         .IsRequired();
 
@@ -860,6 +905,8 @@ namespace src.Migrations
 
                     b.Property<string>("FullName");
 
+                    b.Property<string>("Modifier");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Remarks");
@@ -897,6 +944,10 @@ namespace src.Migrations
                 {
                     b.Property<Guid>("priceCommodityId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ControlNumber");
+
+                    b.Property<double?>("average");
 
                     b.Property<double?>("averageHigh");
 
@@ -1002,6 +1053,8 @@ namespace src.Migrations
 
                     b.Property<string>("FullName");
 
+                    b.Property<string>("Modifier");
+
                     b.Property<string>("Module");
 
                     b.Property<string>("Name");
@@ -1024,6 +1077,8 @@ namespace src.Migrations
 
                     b.Property<string>("Action")
                         .IsRequired();
+
+                    b.Property<int?>("ControlNumber");
 
                     b.Property<DateTime>("Date");
 
@@ -1049,6 +1104,8 @@ namespace src.Migrations
                     b.Property<string>("CommodityOut")
                         .IsRequired();
 
+                    b.Property<int?>("ControlNumber");
+
                     b.Property<DateTime?>("DateInspectedIn");
 
                     b.Property<DateTime?>("DateInspectedOut");
@@ -1063,7 +1120,8 @@ namespace src.Migrations
 
                     b.Property<string>("ParkingNumber");
 
-                    b.Property<string>("PlateNumber");
+                    b.Property<string>("PlateNumber")
+                        .IsRequired();
 
                     b.Property<string>("RemarksIn");
 
@@ -1089,6 +1147,10 @@ namespace src.Migrations
 
                     b.Property<int>("Amount");
 
+                    b.Property<string>("ContactNumber");
+
+                    b.Property<int?>("ControlNumber");
+
                     b.Property<string>("DriverName");
 
                     b.Property<DateTime?>("EndDate");
@@ -1098,6 +1160,8 @@ namespace src.Migrations
                     b.Property<string>("PlateNumber2");
 
                     b.Property<string>("Remarks");
+
+                    b.Property<string>("StallNumber");
 
                     b.Property<DateTime>("StartDate");
 
@@ -1216,7 +1280,33 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Address");
+
+                    b.Property<string>("ContactNumber");
+
+                    b.Property<int>("Days");
+
+                    b.Property<int>("DebitAmount");
+
+                    b.Property<string>("DebitReceiver");
+
+                    b.Property<int>("Hours");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PullOut");
+
+                    b.Property<double>("Temperature");
+
+                    b.Property<string>("TimeSpan");
+
+                    b.Property<int>("TotalCredit");
+
                     b.Property<string>("Transaction");
+
+                    b.Property<string>("TypeOfEntry");
+
+                    b.Property<string>("TypeOfPayment");
 
                     b.Property<string>("accreditation");
 
@@ -1360,10 +1450,11 @@ namespace src.Migrations
                     b.Property<Guid>("ticketingId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("ControlNumber");
+
                     b.Property<DateTime?>("DateInspected");
 
-                    b.Property<string>("Destination")
-                        .IsRequired();
+                    b.Property<string>("Destination");
 
                     b.Property<int?>("EstimatedVolume");
 
@@ -1371,7 +1462,8 @@ namespace src.Migrations
 
                     b.Property<string>("ParkingNumber");
 
-                    b.Property<string>("PlateNumber");
+                    b.Property<string>("PlateNumber")
+                        .IsRequired();
 
                     b.Property<string>("Remarks");
 
@@ -1379,8 +1471,7 @@ namespace src.Migrations
 
                     b.Property<DateTime?>("TimeOut");
 
-                    b.Property<string>("TraderName")
-                        .IsRequired();
+                    b.Property<string>("TraderName");
 
                     b.HasKey("ticketingId");
 

@@ -14,6 +14,7 @@ $(document).ready(function () {
         "columns": [
             { "data": "fullName" },
             { "data": "email" },
+            { "data": "userId" },
             {
                 "data": function (data) {
                     var btnConfig = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Settings/ConfigUserRoles?userId=" + data["userId"] + "')><i class='fa fa-cog' title='Config'></i></a>";

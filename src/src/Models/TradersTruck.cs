@@ -16,7 +16,7 @@ namespace src.Models
         [Display(Name = "Date and time")]
         public DateTime? DateInspected { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Traders name")]
         public string TraderName { get; set; }
 
@@ -24,7 +24,7 @@ namespace src.Models
         [Display(Name = "Estimated volume (kg)")]
         public int? EstimatedVolume { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Destination")]
         public string Destination { get; set; }
 
@@ -32,6 +32,7 @@ namespace src.Models
 
         public DateTime? TimeOut { get; set; }
 
+        [Required]
         public string PlateNumber { get; set; }
 
         public string ParkingNumber { get; set; }
@@ -39,5 +40,7 @@ namespace src.Models
         public string Inspector { get; set; }
 
         public string Remarks { get; set; }
+
+        public int? ControlNumber { get; set; }
     }
 }

@@ -15,6 +15,7 @@ $(document).ready(function () {
         "columns": [
             { "data": "commodity" },
             { "data": "remarks" },
+            { "data": "id" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/AddEditCommodities?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

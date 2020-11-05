@@ -24,6 +24,7 @@ $(document).ready(function () {
             { "data": "location" },
             { "data": "action" },
             { "data": "remarks" },
+            { "data": "controlNumber" },
             { "data": "inspector" },
             {
                 "data": function (data) {

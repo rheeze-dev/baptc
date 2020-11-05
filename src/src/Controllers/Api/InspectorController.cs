@@ -97,6 +97,74 @@ namespace src.Controllers.Api
             var info = await _userManager.GetUserAsync(User);
 
             TradersTruck tradersTruck = _context.TradersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+
+            if (tradersTruck.EstimatedVolume == null)
+            {
+            }
+            else if (tradersTruck.EstimatedVolume != null)
+            {
+                var one = "";
+                var two = "";
+                var three = "";
+                var four = "";
+                var five = "";
+                if (tradersTruck.PlateNumber != model["PlateNumber"].ToString() || tradersTruck.TraderName != model["TraderName"].ToString() || tradersTruck.Destination != model["Destination"].ToString() || tradersTruck.EstimatedVolume != Convert.ToInt32(model["EstimatedVolume"].ToString()) || tradersTruck.Remarks != model["Remarks"].ToString())
+                {
+                    if (tradersTruck.PlateNumber != model["PlateNumber"].ToString())
+                    {
+                        one = "Plate number = " + tradersTruck.PlateNumber + " - " + model["PlateNumber"].ToString() + ";";
+                    }
+                    else
+                    {
+                        one = "";
+                    }
+                    if (tradersTruck.TraderName != model["TraderName"].ToString())
+                    {
+                        two = " Trader name = " + tradersTruck.TraderName + " - " + model["TraderName"].ToString() + ";";
+                    }
+                    else
+                    {
+                        two = "";
+                    }
+                    if (tradersTruck.Destination != model["Destination"].ToString())
+                    {
+                        three = " Destination = " + tradersTruck.Destination + " - " + model["Destination"].ToString() + ";";
+                    }
+                    else
+                    {
+                        three = "";
+                    }
+                    if (tradersTruck.EstimatedVolume != Convert.ToInt32(model["EstimatedVolume"].ToString()))
+                    {
+                        four = " Estimated volume = " + tradersTruck.EstimatedVolume + " - " + model["EstimatedVolume"].ToString() + ";";
+                    }
+                    else
+                    {
+                        four = "";
+                    }
+                    if (tradersTruck.Remarks != model["Remarks"].ToString())
+                    {
+                        five = " Remarks = " + tradersTruck.Remarks + " - " + model["Remarks"].ToString() + ";";
+                    }
+                    else
+                    {
+                        five = "";
+                    }
+                    var datas = one + two + three + four + five;
+
+                EditedDatas editedDatas = new EditedDatas
+                {
+                    DateEdited = DateTime.Now,
+                    Origin = "Traders truck",
+                    EditedBy = info.FullName,
+                    ControlNumber = tradersTruck.ControlNumber.Value
+                };
+                editedDatas.EditedData = datas;
+                editedDatas.Remarks = model["Remarks"].ToString();
+                _context.EditedDatas.Add(editedDatas);
+                }
+            }
+
             tradersTruck.DateInspected = DateTime.Now;
             tradersTruck.TraderName = model["TraderName"].ToString();
             tradersTruck.PlateNumber = model["PlateNumber"].ToString();
@@ -108,7 +176,11 @@ namespace src.Controllers.Api
             }
             tradersTruck.EstimatedVolume = Convert.ToInt32(model["EstimatedVolume"].ToString());
             tradersTruck.Inspector = info.FullName;
-            _context.TradersTruck.Update(tradersTruck);
+
+            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
+            ticketing.plateNumber = tradersTruck.PlateNumber;
+            _context.Ticketing.Update(ticketing);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -122,6 +194,118 @@ namespace src.Controllers.Api
             var info = await _userManager.GetUserAsync(User);
 
             FarmersTruck farmersTruck = _context.FarmersTruck.Where(x => x.ticketingId == id).FirstOrDefault();
+            Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
+
+            if (farmersTruck.Commodity == "")
+            {
+            }
+            else if (farmersTruck.Commodity != null)
+            {
+                var one = "";
+                var two = "";
+                var three = "";
+                var four = "";
+                var five = "";
+                var six = "";
+                var seven = "";
+                var eight = "";
+                var nine = "";
+                if (farmersTruck.PlateNumber != model["PlateNumber"].ToString() || farmersTruck.Barangay != model["Barangay"].ToString() || farmersTruck.FarmersName != model["FarmersName"].ToString() || farmersTruck.Organization != model["Organization"].ToString() || farmersTruck.Commodity != model["Commodity"].ToString() || farmersTruck.Volume != Convert.ToInt32(model["Volume"].ToString()) || farmersTruck.StallNumber != model["StallNumber"].ToString() || farmersTruck.FacilitatorsName != model["FacilitatorsName"].ToString() || farmersTruck.Remarks != model["Remarks"].ToString())
+                {
+                    if (farmersTruck.PlateNumber != model["PlateNumber"].ToString())
+                    {
+                        one = "Plate number = " + farmersTruck.PlateNumber + " - " + model["PlateNumber"].ToString() + ";";
+                    }
+                    else
+                    {
+                        one = "";
+                    }
+                    if (farmersTruck.Barangay != model["Barangay"].ToString())
+                    {
+                        if (addresses != null)
+                        {
+                            two = " Barangay = " + farmersTruck.Barangay + " - " + model["Barangay"].ToString() + ";";
+                        }
+                        if (addresses == null)
+                        {
+                            two = " Barangay = " + farmersTruck.Barangay + " - " + " ;";
+                        }
+                    }
+                    else
+                    {
+                        two = "";
+                    }
+                    if (farmersTruck.FarmersName != model["FarmersName"].ToString())
+                    {
+                        three = " Farmers name = " + farmersTruck.FarmersName + " - " + model["FarmersName"].ToString() + ";";
+                    }
+                    else
+                    {
+                        three = "";
+                    }
+                    if (farmersTruck.Organization != model["Organization"].ToString())
+                    {
+                        four = " Organization = " + farmersTruck.Organization + " - " + model["Organization"].ToString() + ";";
+                    }
+                    else
+                    {
+                        four = "";
+                    }
+                    if (farmersTruck.Commodity != model["Commodity"].ToString())
+                    {
+                        five = " Commodity = " + farmersTruck.Commodity + " - " + model["Commodity"].ToString() + ";";
+                    }
+                    else
+                    {
+                        five = "";
+                    }
+                    if (farmersTruck.Volume != Convert.ToInt32(model["Volume"].ToString()))
+                    {
+                        six = " Volume = " + farmersTruck.Volume + " - " + model["Volume"].ToString() + ";";
+                    }
+                    else
+                    {
+                        six = "";
+                    }
+                    if (farmersTruck.StallNumber != model["StallNumber"].ToString())
+                    {
+                        seven = " Stall number = " + farmersTruck.StallNumber + " - " + model["StallNumber"].ToString() + ";";
+                    }
+                    else
+                    {
+                        seven = "";
+                    }
+                    if (farmersTruck.FacilitatorsName != model["FacilitatorsName"].ToString())
+                    {
+                        eight = " Facilitators name = " + farmersTruck.FacilitatorsName + " - " + model["FacilitatorsName"].ToString() + ";";
+                    }
+                    else
+                    {
+                        eight = "";
+                    }
+                    if (farmersTruck.Remarks != model["Remarks"].ToString())
+                    {
+                        nine = " Remarks = " + farmersTruck.Remarks + " - " + model["Remarks"].ToString() + ";";
+                    }
+                    else
+                    {
+                        nine = "";
+                    }
+                    var datas = one + two + three + four + five + six + seven + eight + nine;
+
+                    EditedDatas editedDatas = new EditedDatas
+                    {
+                        DateEdited = DateTime.Now,
+                        Origin = "Farmers truck",
+                        EditedBy = info.FullName,
+                        ControlNumber = farmersTruck.ControlNumber.Value
+                    };
+                    editedDatas.EditedData = datas;
+                    editedDatas.Remarks = model["Remarks"].ToString();
+                    _context.EditedDatas.Add(editedDatas);
+                }
+            }
+
             farmersTruck.DateInspected = DateTime.Now;
             farmersTruck.StallNumber = model["StallNumber"].ToString();
             farmersTruck.PlateNumber = model["PlateNumber"].ToString();
@@ -130,17 +314,22 @@ namespace src.Controllers.Api
             farmersTruck.FacilitatorsName = model["FacilitatorsName"].ToString();
             farmersTruck.Remarks = model["Remarks"].ToString();
 
-            Addresses addresses = _context.Addresses.Where(x => x.Barangay == model["Barangay"].ToString()).FirstOrDefault();
             if (addresses != null)
             {
                 farmersTruck.Barangay = addresses.Barangay;
                 farmersTruck.Municipality = addresses.Municipality;
                 farmersTruck.Province = addresses.Province;
             }
-            else
+            else if (addresses == null)
             {
-                return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
+                farmersTruck.Barangay = "";
+                farmersTruck.Municipality = "";
+                farmersTruck.Province = "";
             }
+            //else
+            //{
+            //    return Json(new { success = false, message = "Add barangay to Settings/Addresses!" });
+            //}
 
             Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
             if (commodities != null)
@@ -175,6 +364,11 @@ namespace src.Controllers.Api
             }
 
             _context.FarmersTruck.Update(farmersTruck);
+
+            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == id).FirstOrDefault();
+            ticketing.plateNumber = farmersTruck.PlateNumber;
+            _context.Ticketing.Update(ticketing);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -185,11 +379,72 @@ namespace src.Controllers.Api
         {
             int id = 0;
             id = Convert.ToInt32(model["Id"].ToString());
+            Guid ticketingId = Guid.Empty;
+            ticketingId = Guid.Parse(model["ticketingId"].ToString());
             var info = await _userManager.GetUserAsync(User);
 
             ShortTrip shortTrip = _context.ShortTrip.Where(x => x.Id == id).FirstOrDefault();
+
+            if (shortTrip.CommodityIn == "")
+            {
+            }
+            else if (shortTrip.CommodityIn != null)
+            {
+                var one = "";
+                var two = "";
+                var three = "";
+                var four = "";
+                if (shortTrip.PlateNumber != model["PlateNumber"].ToString() || shortTrip.CommodityIn != model["CommodityIn"].ToString() || shortTrip.EstimatedVolumeIn != Convert.ToInt32(model["EstimatedVolumeIn"].ToString()) || shortTrip.RemarksIn != model["RemarksIn"].ToString())
+                {
+                    if (shortTrip.PlateNumber != model["PlateNumber"].ToString())
+                    {
+                        one = "Plate number = " + shortTrip.PlateNumber + " - " + model["PlateNumber"].ToString() + ";";
+                    }
+                    else
+                    {
+                        one = "";
+                    }
+                    if (shortTrip.CommodityIn != model["CommodityIn"].ToString())
+                    {
+                        two = " Commodity(in) = " + shortTrip.CommodityIn + " - " + model["CommodityIn"].ToString() + ";";
+                    }
+                    else
+                    {
+                        two = "";
+                    }
+                    if (shortTrip.EstimatedVolumeIn != Convert.ToInt32(model["EstimatedVolumeIn"].ToString()))
+                    {
+                        three = " Estimated volume(in) = " + shortTrip.EstimatedVolumeIn + " - " + model["EstimatedVolumeIn"].ToString() + ";";
+                    }
+                    else
+                    {
+                        three = "";
+                    }
+                    if (shortTrip.RemarksIn != model["RemarksIn"].ToString())
+                    {
+                        four = " Remarks(in) = " + shortTrip.RemarksIn + " - " + model["RemarksIn"].ToString() + ";";
+                    }
+                    else
+                    {
+                        four = "";
+                    }
+                    EditedDatas editedDatas = new EditedDatas
+                {
+                    DateEdited = DateTime.Now,
+                    Origin = "Short trip/Edit in",
+                    EditedBy = info.FullName,
+                    ControlNumber = shortTrip.ControlNumber.Value
+                };
+                    var datas = one + two + three + four;
+                    editedDatas.EditedData = datas;
+                editedDatas.Remarks = model["RemarksIn"].ToString();
+                _context.EditedDatas.Add(editedDatas);
+                }
+            }
+
             shortTrip.DateInspectedIn = DateTime.Now;
             shortTrip.RemarksIn = model["RemarksIn"].ToString();
+            shortTrip.PlateNumber = model["PlateNumber"].ToString();
 
             Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["CommodityIn"].ToString()).FirstOrDefault();
             if (commodities != null)
@@ -209,6 +464,11 @@ namespace src.Controllers.Api
             shortTrip.EstimatedVolumeIn = Convert.ToInt32(model["EstimatedVolumeIn"].ToString());
             shortTrip.InspectorIn = info.FullName;
             _context.ShortTrip.Update(shortTrip);
+
+            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == ticketingId).FirstOrDefault();
+            ticketing.plateNumber = shortTrip.PlateNumber;
+            _context.Ticketing.Update(ticketing);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -219,11 +479,72 @@ namespace src.Controllers.Api
         {
             int id = 0;
             id = Convert.ToInt32(model["Id"].ToString());
+            Guid ticketingId = Guid.Empty;
+            ticketingId = Guid.Parse(model["ticketingId"].ToString());
             var info = await _userManager.GetUserAsync(User);
 
             ShortTrip shortTrip = _context.ShortTrip.Where(x => x.Id == id).FirstOrDefault();
+
+            if (shortTrip.CommodityOut == "")
+            {
+            }
+            else if (shortTrip.CommodityOut != null)
+            {
+                var one = "";
+                var two = "";
+                var three = "";
+                var four = "";
+                if (shortTrip.PlateNumber != model["PlateNumber"].ToString() || shortTrip.CommodityOut != model["CommodityOut"].ToString() || shortTrip.EstimatedVolumeOut != Convert.ToInt32(model["EstimatedVolumeOut"].ToString()) || shortTrip.RemarksOut != model["RemarksOut"].ToString())
+                {
+                    if (shortTrip.PlateNumber != model["PlateNumber"].ToString())
+                    {
+                        one = "Plate number = " + shortTrip.PlateNumber + " - " + model["PlateNumber"].ToString() + ";";
+                    }
+                    else
+                    {
+                        one = "";
+                    }
+                    if (shortTrip.CommodityOut != model["CommodityOut"].ToString())
+                    {
+                        two = " Commodity(out) = " + shortTrip.CommodityOut + " - " + model["CommodityOut"].ToString() + ";";
+                    }
+                    else
+                    {
+                        two = "";
+                    }
+                    if (shortTrip.EstimatedVolumeOut != Convert.ToInt32(model["EstimatedVolumeOut"].ToString()))
+                    {
+                        three = " Estimated volume(out) = " + shortTrip.EstimatedVolumeOut + " - " + model["EstimatedVolumeOut"].ToString() + ";";
+                    }
+                    else
+                    {
+                        three = "";
+                    }
+                    if (shortTrip.RemarksOut != model["RemarksOut"].ToString())
+                    {
+                        four = " Remarks(out) = " + shortTrip.RemarksOut + " - " + model["RemarksOut"].ToString() + ";";
+                    }
+                    else
+                    {
+                        four = "";
+                    }
+                    EditedDatas editedDatas = new EditedDatas
+                    {
+                        DateEdited = DateTime.Now,
+                        Origin = "Short trip/Edit out",
+                        EditedBy = info.FullName,
+                        ControlNumber = shortTrip.ControlNumber.Value
+                    };
+                    var datas = one + two + three + four;
+                    editedDatas.EditedData = datas;
+                    editedDatas.Remarks = model["RemarksOut"].ToString();
+                    _context.EditedDatas.Add(editedDatas);
+                }
+            }
+
             shortTrip.DateInspectedOut = DateTime.Now;
             shortTrip.RemarksOut = model["RemarksOut"].ToString();
+            shortTrip.PlateNumber = model["PlateNumber"].ToString();
 
             Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["CommodityOut"].ToString()).FirstOrDefault();
             if (commodities != null)
@@ -243,6 +564,11 @@ namespace src.Controllers.Api
             shortTrip.EstimatedVolumeOut = Convert.ToInt32(model["EstimatedVolumeOut"].ToString());
             shortTrip.InspectorOut = info.FullName;
             _context.ShortTrip.Update(shortTrip);
+
+            Ticketing ticketing = _context.Ticketing.Where(x => x.ticketingId == ticketingId).FirstOrDefault();
+            ticketing.plateNumber = shortTrip.PlateNumber;
+            _context.Ticketing.Update(ticketing);
+
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }
@@ -277,29 +603,28 @@ namespace src.Controllers.Api
             var getLastCode = _context.InterTrading.OrderByDescending(x => x.Code).Select(x => x.Code).FirstOrDefault();
             var info = await _userManager.GetUserAsync(User);
             id = Convert.ToInt32(model["Id"].ToString());
-
-            InterTrading interTrading = new InterTrading
-            {
-                Date = DateTime.Now,
-                FarmerName = model["FarmerName"].ToString(),
-                FarmersOrganization = model["FarmersOrganization"].ToString(),
-                Volume = Convert.ToInt32(model["Volume"].ToString()),
-                ProductionArea = model["ProductionArea"].ToString(),
-                Remarks = model["Remarks"].ToString()
-            };
-
             Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
-            if (commodities != null)
-            {
-                interTrading.Commodity = commodities.Commodity;
-            }
-            else
-            {
-                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
-            }
 
             if (id == 0)
             {
+                InterTrading interTrading = new InterTrading
+                {
+                    Date = DateTime.Now,
+                    FarmerName = model["FarmerName"].ToString(),
+                    FarmersOrganization = model["FarmersOrganization"].ToString(),
+                    Volume = Convert.ToInt32(model["Volume"].ToString()),
+                    ProductionArea = model["ProductionArea"].ToString(),
+                    Remarks = model["Remarks"].ToString()
+                };
+
+                if (commodities != null)
+                {
+                    interTrading.Commodity = commodities.Commodity;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+                }
                 if (getLastCode == null)
                 {
                     interTrading.Code = 1;
@@ -313,10 +638,90 @@ namespace src.Controllers.Api
             }
             else
             {
-                interTrading.Id = id;
-                interTrading.Code = Convert.ToInt32(model["Code"].ToString());
-                interTrading.Inspector = info.FullName;
-                _context.InterTrading.Update(interTrading);
+                var currentInterTrading = _context.InterTrading.Where(x => x.Id == id).FirstOrDefault();
+                if (currentInterTrading.FarmerName != model["FarmerName"].ToString() || currentInterTrading.FarmersOrganization != model["FarmersOrganization"].ToString() || currentInterTrading.Commodity != model["Commodity"].ToString() || currentInterTrading.Volume != Convert.ToInt32(model["Volume"].ToString()) || currentInterTrading.ProductionArea != model["ProductionArea"].ToString() || currentInterTrading.Remarks != model["Remarks"].ToString())
+                {
+                    var one = "";
+                    var two = "";
+                    var three = "";
+                    var four = "";
+                    var five = "";
+                    var six = "";
+                    if (currentInterTrading.FarmerName != model["FarmerName"].ToString())
+                    {
+                        one = "Farmers name = " + currentInterTrading.FarmerName + " - " + model["FarmerName"].ToString() + ";";
+                    }
+                    else
+                    {
+                        one = "";
+                    }
+                    if (currentInterTrading.FarmersOrganization != model["FarmersOrganization"].ToString())
+                    {
+                        two = " Farmers organization = " + currentInterTrading.FarmersOrganization + " - " + model["FarmersOrganization"].ToString() + ";";
+                    }
+                    else
+                    {
+                        two = "";
+                    }
+                    if (currentInterTrading.Commodity != model["Commodity"].ToString())
+                    {
+                        three = " Commodity = " + currentInterTrading.Commodity + " - " + model["Commodity"].ToString() + ";";
+                    }
+                    else
+                    {
+                        three = "";
+                    }
+                    if (currentInterTrading.Volume != Convert.ToInt32(model["Volume"].ToString()))
+                    {
+                        four = " Volume = " + currentInterTrading.Volume + " - " + model["Volume"].ToString() + ";";
+                    }
+                    else
+                    {
+                        four = "";
+                    }
+                    if (currentInterTrading.ProductionArea != model["ProductionArea"].ToString())
+                    {
+                        five = " Production area = " + currentInterTrading.ProductionArea + " - " + model["ProductionArea"].ToString() + ";";
+                    }
+                    else
+                    {
+                        five = "";
+                    }
+                    if (currentInterTrading.Remarks != model["Remarks"].ToString())
+                    {
+                        six = " Remarks = " + currentInterTrading.Remarks + " - " + model["Remarks"].ToString() + ";";
+                    }
+                    else
+                    {
+                        six = "";
+                    }
+                    var datas = one + two + three + four + five + six;
+                    EditedDatas editedDatas = new EditedDatas
+                    {
+                        DateEdited = DateTime.Now,
+                        Origin = "Inter trading",
+                        EditedBy = info.FullName,
+                        ControlNumber = currentInterTrading.Code.Value
+                    };
+                    editedDatas.EditedData = datas;
+                    editedDatas.Remarks = model["Remarks"].ToString();
+                    _context.EditedDatas.Add(editedDatas);
+                }
+                currentInterTrading.FarmerName = model["FarmerName"].ToString();
+                currentInterTrading.FarmersOrganization = model["FarmersOrganization"].ToString();
+                currentInterTrading.Volume = Convert.ToInt32(model["Volume"].ToString());
+                currentInterTrading.ProductionArea = model["ProductionArea"].ToString();
+                currentInterTrading.Remarks = model["Remarks"].ToString();
+                if (commodities != null)
+                {
+                    currentInterTrading.Commodity = commodities.Commodity;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+                }
+                currentInterTrading.Inspector = info.FullName;
+                _context.InterTrading.Update(currentInterTrading);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
@@ -330,39 +735,38 @@ namespace src.Controllers.Api
             var getLastCode = _context.CarrotFacility.OrderByDescending(x => x.Code).Select(x => x.Code).FirstOrDefault();
             var info = await _userManager.GetUserAsync(User);
             id = Convert.ToInt32(model["Id"].ToString());
-
-            CarrotFacility carrotFacility = new CarrotFacility
-            {
-                Date = DateTime.Now,
-                StallNumber = model["StallNumber"].ToString(),
-                Facilitator = model["Facilitator"].ToString(),
-                Volume = Convert.ToInt32(model["Volume"].ToString()),
-                Destination = model["Destination"].ToString(),
-                Remarks = model["Remarks"].ToString()
-            };
-
             Commodities commodities = _context.Commodities.Where(x => x.Commodity == model["Commodity"].ToString()).FirstOrDefault();
-            if (commodities != null)
-            {
-                carrotFacility.Commodity = commodities.Commodity;
-            }
-            else
-            {
-                return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
-            }
-
             MarketFacilitators marketFacilitators = _context.AccreditedMarketFacilitators.Where(x => x.Name == model["Facilitator"].ToString()).FirstOrDefault();
-            if (marketFacilitators != null)
-            {
-                carrotFacility.AccreditationChecker = "Accredited";
-            }
-            else
-            {
-                carrotFacility.AccreditationChecker = "Not accredited";
-            }
 
             if (id == 0)
             {
+                CarrotFacility carrotFacility = new CarrotFacility
+                {
+                    Date = DateTime.Now,
+                    StallNumber = model["StallNumber"].ToString(),
+                    Facilitator = model["Facilitator"].ToString(),
+                    Volume = Convert.ToInt32(model["Volume"].ToString()),
+                    Destination = model["Destination"].ToString(),
+                    Remarks = model["Remarks"].ToString()
+                };
+
+                if (commodities != null)
+                {
+                    carrotFacility.Commodity = commodities.Commodity;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Add commodity to Settings/Commodities!" });
+                }
+
+                if (marketFacilitators != null)
+                {
+                    carrotFacility.AccreditationChecker = "Accredited";
+                }
+                else
+                {
+                    carrotFacility.AccreditationChecker = "Not accredited";
+                }
                 if (getLastCode == null)
                 {
                     carrotFacility.Code = 1;
@@ -376,10 +780,83 @@ namespace src.Controllers.Api
             }
             else
             {
-                carrotFacility.Id = id;
-                carrotFacility.Code = Convert.ToInt32(model["Code"].ToString());
-                carrotFacility.Inspector = info.FullName;
-                _context.CarrotFacility.Update(carrotFacility);
+                var currentCarrot = _context.CarrotFacility.Where(x => x.Id == id).FirstOrDefault();
+                if (currentCarrot.StallNumber != model["StallNumber"].ToString() || currentCarrot.Facilitator != model["Facilitator"].ToString() || currentCarrot.Commodity != model["Commodity"].ToString() || currentCarrot.Volume != Convert.ToInt32(model["Volume"].ToString()) || currentCarrot.Destination != model["Destination"].ToString() || currentCarrot.Remarks != model["Remarks"].ToString())
+                {
+                    var one = "";
+                    var two = "";
+                    var three = "";
+                    var four = "";
+                    var five = "";
+                    var six = "";
+                    if (currentCarrot.StallNumber != model["StallNumber"].ToString())
+                    {
+                        one = "Stall number = " + currentCarrot.StallNumber + " - " + model["StallNumber"].ToString() + ";";
+                    }
+                    else
+                    {
+                        one = "";
+                    }
+                    if (currentCarrot.Facilitator != model["Facilitator"].ToString())
+                    {
+                        two = " Facilitator = " + currentCarrot.Facilitator + " - " + model["Facilitator"].ToString() + ";";
+                    }
+                    else
+                    {
+                        two = "";
+                    }
+                    if (currentCarrot.Commodity != model["Commodity"].ToString())
+                    {
+                        three = " Commodity = " + currentCarrot.Commodity + " - " + model["Commodity"].ToString() + ";";
+                    }
+                    else
+                    {
+                        three = "";
+                    }
+                    if (currentCarrot.Volume != Convert.ToInt32(model["Volume"].ToString()))
+                    {
+                        four = " Volume = " + currentCarrot.Volume + " - " + model["Volume"].ToString() + ";";
+                    }
+                    else
+                    {
+                        four = "";
+                    }
+                    if (currentCarrot.Destination != model["Destination"].ToString())
+                    {
+                        five = " Destination = " + currentCarrot.Destination + " - " + model["Destination"].ToString() + ";";
+                    }
+                    else
+                    {
+                        five = "";
+                    }
+                    if (currentCarrot.Remarks != model["Remarks"].ToString())
+                    {
+                        six = " Remarks = " + currentCarrot.Remarks + " - " + model["Remarks"].ToString() + ";";
+                    }
+                    else
+                    {
+                        six = "";
+                    }
+                    var datas = one + two + three + four + five + six;
+                    EditedDatas editedDatas = new EditedDatas
+                    {
+                        DateEdited = DateTime.Now,
+                        Origin = "Carrot facility",
+                        EditedBy = info.FullName,
+                        ControlNumber = currentCarrot.Code.Value
+                    };
+                    editedDatas.EditedData = datas;
+                    editedDatas.Remarks = model["Remarks"].ToString();
+                    _context.EditedDatas.Add(editedDatas);
+                }
+                currentCarrot.StallNumber = model["StallNumber"].ToString();
+                currentCarrot.Facilitator = model["Facilitator"].ToString();
+                currentCarrot.Commodity = model["Commodity"].ToString();
+                currentCarrot.Volume = Convert.ToInt32(model["Volume"].ToString());
+                currentCarrot.Destination = model["Destination"].ToString();
+                currentCarrot.Remarks = model["Remarks"].ToString();
+                currentCarrot.Inspector = info.FullName;
+                _context.CarrotFacility.Update(currentCarrot);
             }
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });

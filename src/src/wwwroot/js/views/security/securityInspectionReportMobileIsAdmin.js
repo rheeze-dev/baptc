@@ -24,6 +24,7 @@ $(document).ready(function () {
             { "data": "location" },
             { "data": "action" },
             { "data": "inspector" },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Security/AddEditSecurityInspectionReport?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

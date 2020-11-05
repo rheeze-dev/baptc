@@ -67,6 +67,7 @@ $(document).ready(function () {
             { "data": "remarksIn" },
             { "data": "commodityOut" },
             { "data": "remarksOut" },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";

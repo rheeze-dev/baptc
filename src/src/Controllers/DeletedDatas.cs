@@ -77,6 +77,40 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> ViewEditedDatas(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("DeletedDatas"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
+        public async Task<IActionResult> ViewEditedDatasMobile(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("DeletedDatas"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> ViewDeletedDatasMobile(Guid org)
         {
             if (org == Guid.Empty)

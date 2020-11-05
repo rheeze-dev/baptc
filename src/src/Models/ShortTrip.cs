@@ -29,6 +29,7 @@ namespace src.Models
         [Display(Name = "Estimated volume (kg)")]
         public int? EstimatedVolumeOut { get; set; }
 
+        [Required]
         [Display(Name = "Plate number")]
         public string PlateNumber { get; set; }
 
@@ -51,6 +52,8 @@ namespace src.Models
         public string RemarksIn { get; set; }
 
         public string RemarksOut { get; set; }
+
+        public int? ControlNumber { get; set; }
 
     }
 }

@@ -19,11 +19,12 @@ namespace src.Models
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         //public DateTime? NewStartDate { get; set; }
-        //public string ContactNumber { get; set; }
-        //public string IdType { get; set; }
+        public string ContactNumber { get; set; }
+        public string StallNumber { get; set; }
         //public int IdNumber { get; set; }
         public string Remarks { get; set; }
         public int Amount { get; set; }
+        public int? ControlNumber { get; set; }
 
     }
 }

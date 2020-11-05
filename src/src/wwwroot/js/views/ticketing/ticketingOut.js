@@ -55,11 +55,39 @@ $(document).ready(function () {
             //},
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
+            { "data": "typeOfEntry" },
             { "data": "typeOfCar" },
-            { "data": "driverName" },
-            { "data": "parkingNumber" },
-            { "data": "remarks" },
+            {
+                "data": function updateClock(data) {
+
+                    var timeIn = new Date(data["timeIn"]);
+                    var currentDate = new Date();
+
+                    var seconds = Math.floor((currentDate - (timeIn)) / 1000);
+                    var minutes = Math.floor(seconds / 60);
+                    var hours = Math.floor(minutes / 60);
+                    var days = Math.floor(hours / 24);
+
+                    hours = hours - (days * 24);
+                    minutes = minutes - (days * 24 * 60) - (hours * 60);
+                    seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+
+                    //setTimeout(updateClock, 1000);
+                    //setInterval(updateClock, 1000);
+                    if (data["timeOut"] == null) {
+                        return days + "days " + hours + "hrs " + minutes + "mins";
+                    }
+                    else {
+                        return data["timeSpan"];
+                    }
+                    //return days + "days " + hours + "hrs " + minutes + "mins";
+                    //updateClock(); // initial call
+
+                }
+            },
+            { "data": "controlNumber" },
             { "data": "amount" },
+            { "data": "totalCredit" },
             //{ "data": "issuingClerk" },
             //{ "data": "receivingClerk" },
             //{ "data": "controlNumber" },
@@ -84,13 +112,17 @@ $(document).ready(function () {
                     //var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-hourglass-end' title='Completed'></i></a>";
                     var availedGatePass = "Gate pass";
                     var empty = "";
-                    var btnEdit = "<a class='btn btn-success btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Finish</a>";
+                    //var btnEdit = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/AddEditOut?id=" + data["ticketingId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
+                    var btnFinish = "<a class='btn btn-success btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/Finish?id=" + data["ticketingId"] + "')><i class='fa fa-check-circle' title='Finish'></i></a>";
+                    var btnDebit = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/Debit?id=" + data["ticketingId"] + "')><i class='fa fa-credit-card' title='Debit'></i></a>";
+                    //var btnFinish = "<a class='btn btn-success btn-xs btnComplete' data-id='" + data["ticketingId"] + "'><i class='fa fa-check-circle' title='Finish'></i></a>";
+
                     var btnView = "<a class='btn btn-default btn-xs' style='margin-left:5px' onclick=ShowPopup('/Ticketing/ViewTicketingIn?id=" + data["ticketingId"] + "')><i class='fa fa-external-link' title='More'></i></a>";
                     if (data["timeIn"] != null && data["timeOut"] != null) {
                         return btnView;
                     }
                     else if (data["timeIn"] != null && data["timeOut"] == null) {
-                        return btnEdit + btnView;
+                        return btnFinish + btnDebit + btnView;
                     }
                     else if (data["timeIn"] == null && data["timeOut"] == null) {
                         return availedGatePass;
@@ -132,6 +164,70 @@ $("#grid").on("click", ".btnComplete", function (e) {
         });
     });
 });
+
+function SubmitAddEdit(form) {
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        var data = $(form).serializeJSON();
+        //data = { priceCommodity: data };
+        data = JSON.stringify(data);
+        //var data = {
+        //    priceCommodity: "petsay"
+        //};
+        //alert(data);
+        //return true;
+        $.ajax({
+            type: 'POST',
+            url: apiurl + '/UpdateTicketOut',
+            //url: '/PriceCommodity/PostPriceCommodity',
+            data: data,
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.success) {
+                    popup.modal('hide');
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+
+    }
+    return false;
+}
+
+function SubmitAddEditDebit(form) {
+    $.validator.unobtrusive.parse(form);
+    if ($(form).valid()) {
+        var data = $(form).serializeJSON();
+        //data = { priceCommodity: data };
+        data = JSON.stringify(data);
+        //var data = {
+        //    priceCommodity: "petsay"
+        //};
+        //alert(data);
+        //return true;
+        $.ajax({
+            type: 'POST',
+            url: apiurl + '/PostDebit',
+            //url: '/PriceCommodity/PostPriceCommodity',
+            data: data,
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.success) {
+                    popup.modal('hide');
+                    ShowMessage(data.message);
+                    dataTable.ajax.reload();
+                } else {
+                    ShowMessageError(data.message);
+                }
+            }
+        });
+    }
+    return false;
+}
+
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];

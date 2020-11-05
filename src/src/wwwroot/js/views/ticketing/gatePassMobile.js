@@ -31,6 +31,7 @@ $(document).ready(function () {
                     }
                 }
             },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     var btnExtend = "<a class='btn btn-default btn-xs btnComplete' data-id='" + data["ticketingId"] + "'>Extend</a>";

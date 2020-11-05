@@ -37,12 +37,12 @@ $(document).ready(function () {
                     var btnIsAdminFalse = "<a class='btn btn-default btn-xs btnIsAdminFalse' data-id='" + data["userId"] + "'><i class='fa fa-remove' title='Remove extra priveledge'></i></a>";
                     //var btnIncative = "<a class='btn btn-default btn-xs btnInactive' data-id='" + data["userId"] + "'>Deactivate</a>";
                     //var btnActive = "<a class='btn btn-default btn-xs btnActive' data-id='" + data["userId"] + "'>Activate</a>";
-                    //var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["id"] + "')><i class='fa fa-trash' title='Delete'></i></a>";
+                    var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:5px' onclick=Delete('" + data["userId"] + "')><i class='fa fa-trash' title='Delete user'></i></a>";
                     if (data["isAdmin"] == false) {
-                        return btnConfig + " " + btnIsAdmin;
+                        return btnConfig + " " + btnIsAdmin + " " + btnDelete;
                     }
                     else if (data["isAdmin"] == true) {
-                        return btnConfig + " " + btnIsAdminFalse;
+                        return btnConfig + " " + btnIsAdminFalse + " " + btnDelete;
                     }
                 }
             },
@@ -226,12 +226,12 @@ function SubmitAddEdit(form) {
 
 function Delete(id) {
     swal({
-        title: "Are you sure want to Delete?",
+        title: "Are you sure want to Delete this user?",
         text: "You will not be able to restore the file!",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#dd4b39",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, delete user!",
         closeOnConfirm: true
     }, function () {
         $.ajax({

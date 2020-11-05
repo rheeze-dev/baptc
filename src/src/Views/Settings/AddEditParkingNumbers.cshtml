@@ -14,16 +14,16 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
         <div class="form-group">
-            <label asp-for="FullName" class="control-label">Full name</label>
-            <input asp-for="FullName" class="form-control" />
-            <span asp-validation-for="FullName" class="text-danger"></span>
+            <label asp-for="Name" class="control-label">Parking number</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Remarks" class="control-label">Remarks</label>
             <input asp-for="Remarks" class="form-control" />
             <span asp-validation-for="Remarks" class="text-danger"></span>
         </div>
-        <div class="row">
+        @*<div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="Name" class="control-label">Short name</label>
@@ -31,7 +31,7 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 
     <div class="box-footer">

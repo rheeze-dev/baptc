@@ -24,6 +24,7 @@ $(document).ready(function () {
             { "data": "plateNumber" },
             { "data": "location" },
             { "data": "repairDetails" },
+            { "data": "requestNumber" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Repair/AddEditVehicleRepair?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

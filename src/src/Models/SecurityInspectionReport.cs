@@ -25,5 +25,7 @@ namespace src.Models
 
         public string Inspector { get; set; }
 
+        public int? ControlNumber { get; set; }
+
     }
 }

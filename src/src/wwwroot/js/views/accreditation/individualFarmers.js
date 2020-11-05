@@ -36,6 +36,7 @@ $(document).ready(function () {
             { "data": "plateNumber" },
             { "data": "estimatedTotalLandArea" },
             { "data": "majorCrops" },
+            { "data": "id" },
             //{ "data": "landAreaPerCrop" },
             //{ "data": "estimatedProduce" },
             //{ "data": "planting" },

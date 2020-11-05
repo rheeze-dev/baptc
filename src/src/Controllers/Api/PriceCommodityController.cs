@@ -61,6 +61,7 @@ namespace src.Controllers.Api
             var averageLow = _context.PriceCommodity.Where(x => x.commodityDate.Day == DateTime.Now.Day && x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Select(x => x.priceLow).Sum();
             var averageHigh = _context.PriceCommodity.Where(x => x.commodityDate.Day == DateTime.Now.Day && x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Select(x => x.priceHigh).Sum();
             objGuid = Guid.Parse(model["priceCommodityId"].ToString());
+            var getLastControlNumber = _context.PriceCommodity.OrderByDescending(x => x.ControlNumber).Select(x => x.ControlNumber).FirstOrDefault();
 
             if (objGuid == Guid.Empty)
             {
@@ -75,6 +76,16 @@ namespace src.Controllers.Api
                     classVariety = model["classVariety"].ToString()
                 };
                 priceCommodity.enteredBy = info.FullName;
+                priceCommodity.average = (priceCommodity.priceLow + priceCommodity.priceHigh) / 2;
+
+                if (getLastControlNumber == null)
+                {
+                    priceCommodity.ControlNumber = 1;
+                }
+                else
+                {
+                    priceCommodity.ControlNumber = getLastControlNumber.Value + 1;
+                }
 
                 var currentTotalDays = _context.PriceCommodity.OrderByDescending(x => x.commodityDate).Where(x => x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Select(x => x.totalDays).FirstOrDefault();
                 var countDays = _context.PriceCommodity.Where(x => x.commodity == model["commodity"].ToString() && x.classVariety == model["classVariety"].ToString()).Count();
@@ -105,6 +116,47 @@ namespace src.Controllers.Api
             else
             {
                 var currentPrice = _context.PriceCommodity.Where(x => x.priceCommodityId == objGuid).FirstOrDefault();
+                if (currentPrice.priceLow != Convert.ToInt32(model["priceLow"].ToString()) || currentPrice.priceHigh != Convert.ToInt32(model["priceHigh"].ToString()) || currentPrice.commodityRemarks != model["commodityRemarks"].ToString())
+                {
+                    var one = "";
+                    var two = "";
+                    var three = "";
+                    if (currentPrice.priceLow != Convert.ToInt32(model["priceLow"].ToString()))
+                    {
+                        one = "Price (Low) = " + currentPrice.priceLow + " - " + model["priceLow"].ToString() + ";";
+                    }
+                    else
+                    {
+                        one = "";
+                    }
+                    if (currentPrice.priceHigh != Convert.ToInt32(model["priceHigh"].ToString()))
+                    {
+                        two = " Price (High) = " + currentPrice.priceHigh + " - " + model["priceHigh"].ToString() + ";";
+                    }
+                    else
+                    {
+                        two = "";
+                    }
+                    if (currentPrice.commodityRemarks != model["commodityRemarks"].ToString())
+                    {
+                        three = " Remarks = " + currentPrice.commodityRemarks + " - " + model["commodityRemarks"].ToString() + ";";
+                    }
+                    else
+                    {
+                        three = "";
+                    }
+                    var datas = one + two + three;
+                    EditedDatas editedDatas = new EditedDatas
+                    {
+                        DateEdited = DateTime.Now,
+                        Origin = "Price of commodities",
+                        EditedBy = info.FullName,
+                        ControlNumber = currentPrice.ControlNumber.Value
+                    };
+                    editedDatas.EditedData = datas;
+                    editedDatas.Remarks = model["commodityRemarks"].ToString();
+                    _context.EditedDatas.Add(editedDatas);
+                }
                 if (model["commodity"].ToString() != currentPrice.commodity)
                 {
                     return Json(new { success = false, message = "Commodity cannot be changed!" });

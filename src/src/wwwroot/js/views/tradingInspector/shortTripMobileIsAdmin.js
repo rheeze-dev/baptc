@@ -25,6 +25,7 @@ $(document).ready(function () {
                     return output;
                 }
             },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     var status = "<span class='txt-success'>Completed</span>";

@@ -26,8 +26,8 @@ $(document).ready(function () {
             },
             { "data": "commodity" },
             { "data": "classVariety" },
-            { "data": "priceLow" },
-            { "data": "priceHigh" },
+            { "data": "average" },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     var btnView = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/ViewPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-external-link' title='More'></i></a>";

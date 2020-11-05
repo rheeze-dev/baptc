@@ -12,5 +12,6 @@ namespace src.Models
         public string Module { get; set; }
         public bool Selected { get; set; }
         public string Name { get; set; }
+        public string Modifier { get; set; }
     }
 }

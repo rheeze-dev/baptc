@@ -38,6 +38,7 @@ $(document).ready(function () {
             { "data": "businessName" },
             { "data": "businessAddress" },
             { "data": "majorCommodity" },
+            { "data": "id" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditMarketFacilitators?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

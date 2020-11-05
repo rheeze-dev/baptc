@@ -140,7 +140,7 @@ namespace src.Controllers.Api
             // query data from database  
             await Task.Yield();
 
-            var ticketing = _context.Ticketing.Where(y => y.timeIn.Value.Year.Equals(Year) && y.timeIn.Value.Month.Equals(Month) && y.timeOut != null).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+            var ticketing = _context.Ticketing.Where(y => y.timeIn.Value.Year.Equals(Year) && y.timeIn.Value.Month.Equals(Month) && y.timeOut != null).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
 
             var stream = new MemoryStream();
 
@@ -168,7 +168,7 @@ namespace src.Controllers.Api
             if (Date == 1000000 && Type == "Finished")
             {
                 {
-                    var all = _context.Ticketing.Where(x => x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                    var all = _context.Ticketing.Where(x => x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                     using (var package = new ExcelPackage(stream))
                     {
                         var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -180,7 +180,7 @@ namespace src.Controllers.Api
             else if (Date == 1000000 && Type == "Unfinished")
             {
                 {
-                    var all = _context.Ticketing.Where(x => x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                    var all = _context.Ticketing.Where(x => x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                     using (var package = new ExcelPackage(stream))
                     {
                         var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -191,7 +191,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1 && Type == "Finished")
             {
-                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -201,7 +201,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 1 && Type == "Unfinished")
             {
-                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                var currentDate = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -211,7 +211,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7 && Type == "Finished")
             {
-                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -221,7 +221,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 7 && Type == "Unfinished")
             {
-                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastWeek = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-7) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -231,7 +231,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31 && Type == "Finished")
             {
-                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -241,7 +241,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 31 && Type == "Unfinished")
             {
-                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastMonth = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-31) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -251,7 +251,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365 && Type == "Finished")
             {
-                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.Transaction == "Finished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -261,7 +261,7 @@ namespace src.Controllers.Api
             }
             else if (Date == 365 && Type == "Unfinished")
             {
-                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut, PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, IssuingClerk = y.issuingClerk, ControlNumber = y.controlNumber }).ToList();
+                var lastYear = _context.Ticketing.Where(x => x.timeIn >= DateTime.Today.AddDays(-365) && x.Transaction == "Unfinished").OrderByDescending(x => x.timeIn).Select(y => new { Name = y.driverName, ContactNumber = y.ContactNumber, Address = y.Address, Temperature = y.Temperature, TimeIn = y.timeIn.Value.ToString("MMMM dd, yyyy / hh:mm tt"), TimeOut = y.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt"), PlateNumber = y.plateNumber, TypeOfTransaction = y.typeOfTransaction, TypeOfCar = y.typeOfCar, DriversName = y.driverName, ParkingNumber = y.parkingNumber, Accreditation = y.accreditation, Remarks = y.remarks, Count = y.count, Amount = y.amount, IssuingClerk = y.issuingClerk, ReceivingClerk = y.receivingClerk, ControlNumber = y.controlNumber }).ToList();
                 using (var package = new ExcelPackage(stream))
                 {
                     var workSheet = package.Workbook.Worksheets.Add("Sheet1");
@@ -2907,6 +2907,9 @@ namespace src.Controllers.Api
 
             var listDeletedDatas = _context.DeletedDatas.Where(x => x.DateDeleted != null).ToList();
             _context.RemoveRange(listDeletedDatas);
+
+            var listEditedDatas = _context.EditedDatas.Where(x => x.DateEdited != null).ToList();
+            _context.RemoveRange(listEditedDatas);
 
             var listCarrotFacility = _context.CarrotFacility.Where(x => x.Date != null).ToList();
             _context.RemoveRange(listCarrotFacility);

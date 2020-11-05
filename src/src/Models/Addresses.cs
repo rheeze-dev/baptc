@@ -9,5 +9,8 @@ namespace src.Models
         public string Municipality { get; set; }
         public string Province { get; set; }
         public string Remarks { get; set; }
+        public string Modifier { get; set; }
+        public DateTime Date { get; set; }
+
     }
 }

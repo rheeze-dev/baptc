@@ -55,12 +55,40 @@ $(document).ready(function () {
             //},
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
+            { "data": "typeOfEntry" },
             { "data": "typeOfCar" },
-            { "data": "driverName" },
+            //{ "data": "driverName" },
             { "data": "parkingNumber" },
             //{ "data": "accreditation" },
-            { "data": "remarks" },
-            { "data": "count" },
+            {
+                "data": function updateClock(data) {
+
+                    var timeIn = new Date(data["timeIn"]);
+                    var currentDate = new Date();
+
+                    var seconds = Math.floor((currentDate - (timeIn)) / 1000);
+                    var minutes = Math.floor(seconds / 60);
+                    var hours = Math.floor(minutes / 60);
+                    var days = Math.floor(hours / 24);
+
+                    hours = hours - (days * 24);
+                    minutes = minutes - (days * 24 * 60) - (hours * 60);
+                    seconds = seconds - (days * 24 * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
+
+                    //setTimeout(updateClock, 1000);
+                    //setInterval(updateClock, 1000);
+                    if (data["timeOut"] == null) {
+                        return days + "days " + hours + "hrs " + minutes + "mins";
+                    }
+                    else {
+                        return data["timeSpan"];
+                    }
+                    //return days + "days " + hours + "hrs " + minutes + "mins";
+                    //updateClock(); // initial call
+
+                }
+            },
+            { "data": "controlNumber" },
             //{ "data": "issuingClerk" },
             //{ "data": "receivingClerk" },
             //{ "data": "controlNumber" },

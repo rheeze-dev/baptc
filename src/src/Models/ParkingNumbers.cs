@@ -10,5 +10,7 @@ namespace src.Models
         public string Remarks { get; set; }
         public bool Selected { get; set; }
         public string Name { get; set; }
+        public string Modifier { get; set; }
+
     }
 }

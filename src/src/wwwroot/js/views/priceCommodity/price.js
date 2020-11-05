@@ -29,7 +29,9 @@ $(document).ready(function () {
             { "data": "classVariety" },
             { "data": "priceLow" },
             { "data": "priceHigh" },
+            { "data": "average" },
             { "data": "commodityRemarks" },
+            { "data": "controlNumber" },
             { "data": "enteredBy" }
             //{
             //    "data": function (data) {

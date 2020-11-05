@@ -99,10 +99,27 @@ namespace src.Controllers.Api
         [HttpPost("UpdateRoleModules")]
         public async Task<IActionResult> UpdateRoleModules(int roleId,string selectedModule)
         {
+            var info = await _userManager.GetUserAsync(User);
             Roles currentRole = _context.Role.Where(role => role.Id == roleId).FirstOrDefault();
+            if (currentRole.Module != selectedModule)
+            {
+                var module = "";
+                EditedDatas editedDatas = new EditedDatas
+                {
+                    DateEdited = DateTime.Now,
+                    Origin = "Roles/Config",
+                    EditedBy = info.FullName,
+                    ControlNumber = currentRole.Id
+                };
+                module = "Module = " + currentRole.Module + " - " + selectedModule + ";";
+                editedDatas.EditedData = module;
+                editedDatas.Remarks = currentRole.Remarks;
+                _context.EditedDatas.Add(editedDatas);
+            }
             currentRole.Module = selectedModule;
+            currentRole.Modifier = info.FullName;
             _context.Role.Update(currentRole);
-
+            
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Successfully Saved!" });
         }

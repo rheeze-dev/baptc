@@ -32,6 +32,7 @@ $(document).ready(function () {
             { "data": "businessAddress" },
             { "data": "vehiclePlateNumber" },
             { "data": "productDestination" },
+            { "data": "id" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditBuyers?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

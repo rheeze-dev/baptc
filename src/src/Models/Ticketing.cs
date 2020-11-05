@@ -56,6 +56,32 @@ namespace src.Models
         [NotMapped]
         public IList<SelectListItem> parkingList { get; set; }
 
+        public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public string ContactNumber { get; set; }
+
+        public double Temperature { get; set; }
+
+        public int Days { get; set; }
+
+        public int Hours { get; set; }
+
+        public string TypeOfPayment { get; set; }
+
+        public int TotalCredit { get; set; }
+
+        public int DebitAmount { get; set; }
+
+        public string DebitReceiver { get; set; }
+
+        public string TimeSpan { get; set; }
+
+        public string PullOut { get; set; }
+
+        public string TypeOfEntry { get; set; }
+
     }
-    
+
 }

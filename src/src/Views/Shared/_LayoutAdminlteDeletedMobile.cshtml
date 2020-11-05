@@ -126,8 +126,9 @@
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <a class="header btn-primary btn-lg" href="@Url.Action("IndexMobile","Config", new { org = Model.organizationId })" style="font-size: 20px; text-align: center; width: 230px; font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; background-color: #367fa9;"><b>BAPTC</b></a>
-            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "DeletedDatas", action: "ViewDeletedDatasMobile")" href="@Url.Action("ViewDeletedDatasMobile","DeletedDatas", new { org = Model.organizationId })">View deleted datas</a>
-            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "DeletedDatas", action: "ExportDeletedDatasMobile")" href="@Url.Action("ExportDeletedDatasMobile","DeletedDatas", new { org = Model.organizationId })">Export deleted datas</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "DeletedDatas", action: "ViewEditedDatasMobile")" href="@Url.Action("ViewEditedDatasMobile","DeletedDatas", new { org = Model.organizationId })">View edited</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "DeletedDatas", action: "ViewDeletedDatasMobile")" href="@Url.Action("ViewDeletedDatasMobile","DeletedDatas", new { org = Model.organizationId })">View deleted</a>
+            <a class="header btn-primary btn-lg @Html.IsSelected(controller: "DeletedDatas", action: "ExportDeletedDatasMobile")" href="@Url.Action("ExportDeletedDatasMobile","DeletedDatas", new { org = Model.organizationId })">Export deleted</a>
             <a class="header btn-primary btn-lg @Html.IsSelected(controller: "DeletedDatas", action: "ResetDatasMobile")" href="@Url.Action("ResetDatasMobile","DeletedDatas", new { org = Model.organizationId })">Reset database</a>
 
             <div class="navbar-custom-menu">

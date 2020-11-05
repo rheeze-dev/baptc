@@ -126,6 +126,11 @@
                                 <i class="fa fa-th"></i> <span>Ticketing out</span>
                             </a>
                         </li>
+                        <li class="@Html.IsSelected(controller: "Ticketing",action:"ViewAllTickets")">
+                            <a href="@Url.Action("ViewAllTickets", "Ticketing", new { org = org })">
+                                <i class="fa fa-th"></i> <span>View all tickets</span>
+                            </a>
+                        </li>
                         <li class="@Html.IsSelected(controller: "Ticketing",action:"GatePass")">
                             <a href="@Url.Action("GatePass", "Ticketing", new { org = org })">
                                 <i class="fa fa-th"></i> <span>Avail gate pass</span>

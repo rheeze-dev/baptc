@@ -46,5 +46,7 @@ namespace src.Models
 
         public string Remarks { get; set; }
 
+        public string EnteredBy { get; set; }
+
     }
 }

@@ -13,8 +13,21 @@ $(document).ready(function () {
         },
         "order": [[0, 'desc']],
         "columns": [
+            {
+                "data": function (data) {
+                    var d = new Date(data["date"]);
+                    var output = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+                    var spanData = "<span style = 'display:none;'> " + data["date"] + "</span>";
+                    if (data["date"] == null) {
+                        output = "";
+                    }
+                    return spanData + output;
+                }
+            },
             { "data": "commodity" },
             { "data": "remarks" },
+            { "data": "id" },
+            { "data": "modifier" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/AddEditCommodities?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
@@ -103,7 +116,7 @@ function Delete(id) {
     }, function () {
         $.ajax({
             type: 'DELETE',
-            url: apiurl + '/DeleteParkingNumbers/' + id,
+            url: apiurl + '/DeleteCommodities/' + id,
             success: function (data) {
                 if (data.success) {
                     ShowMessage(data.message);

@@ -28,6 +28,7 @@ $(document).ready(function () {
             { "data": "plateNumber" },
             { "data": "typeOfTransaction" },
             { "data": "typeOfCar" },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     //var empty = "";
@@ -151,7 +152,7 @@ function SubmitAddEditNewGatePass(form) {
             contentType: 'application/json',
             success: function (data) {
                 if (data.success) {
-                    popup.modal('hide');
+                    //popup.modal('hide');
                     ShowMessage(data.message);
                     dataTable.ajax.reload();
                 } else {

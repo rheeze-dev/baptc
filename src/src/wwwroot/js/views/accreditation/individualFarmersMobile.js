@@ -23,6 +23,7 @@ $(document).ready(function () {
             { "data": "name" },
             { "data": "plateNumber" },
             { "data": "barangay" },
+            { "data": "id" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Accreditation/AddEditIndividualFarmers?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

@@ -32,98 +32,140 @@
                         {
                             @Model.timeOut.Value.ToString("MMMM dd, yyyy / hh:mm tt");
                         }
-                </label>
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <label asp-for="plateNumber">Plate number: </label>
-            <label class="text-warning">@Model.plateNumber</label>
-        </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="driverName">Drivers name: </label>
-                <label class="text-warning">@Model.driverName</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="plateNumber">Plate number: </label>
+                <label class="text-warning">@Model.plateNumber</label>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="driverName">Drivers name: </label>
+                    <label class="text-warning">@Model.driverName</label>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="typeOfTransaction">Type of transaction: </label>
-                <label class="text-warning">@Model.typeOfTransaction</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="typeOfTransaction">Type of transaction: </label>
+                    <label class="text-warning">@Model.typeOfTransaction</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="typeOfCar">Type of entry: </label>
+                    <label class="text-warning">@Model.typeOfCar</label>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="typeOfCar">Type of entry: </label>
-                <label class="text-warning">@Model.typeOfCar</label>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="parkingNumber">Parking number: </label>
-                <label class="text-warning">@Model.parkingNumber</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="parkingNumber">Parking number: </label>
+                    <label class="text-warning">@Model.parkingNumber</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="controlNumber">Control number: </label>
+                    <label class="text-warning">@Model.controlNumber</label>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="controlNumber">Control number: </label>
-                <label class="text-warning">@Model.controlNumber</label>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="accreditation">Accreditation: </label>
-                <label class="text-warning">@Model.accreditation</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="accreditation">Accreditation: </label>
+                    <label class="text-warning">@Model.accreditation</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="ContactNumber">Contact number: </label>
+                    <label class="text-warning">@Model.ContactNumber</label>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="remarks">Remarks: </label>
-                <label class="text-warning">@Model.remarks</label>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="count">Count: </label>
-                <label class="text-warning">@Model.count</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Address">Address: </label>
+                    <label class="text-warning">@Model.Address</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="Temperature">Temperature: </label>
+                    <label class="text-warning">@Model.Temperature</label>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="amount">Amount: </label>
-                <label class="text-warning">@Model.amount</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="count">Count: </label>
+                    <label class="text-warning">@Model.count</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="amount">Amount: </label>
+                    <label class="text-warning">@Model.amount</label>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="TotalCredit"><font color="red">Total credit: </font></label>
+                    <label class="text-warning">@Model.TotalCredit</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="DebitAmount">Paid amount: </label>
+                    <label class="text-warning">@Model.DebitAmount</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="remarks">Remarks: </label>
+                    <label class="text-warning">@Model.remarks</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="DebitReceiver">Debit receiver: </label>
+                    <label class="text-warning">@Model.DebitReceiver</label>
+                </div>
+            </div>
+        </div>
 
-    <div class="row">
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="issuingClerk">Issuing clerk: </label>
-                <label class="text-warning">@Model.issuingClerk</label>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="issuingClerk">Issuing clerk: </label>
+                    <label class="text-warning">@Model.issuingClerk</label>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <div class="form-group">
+                    <label asp-for="receivingClerk">Receiving clerk: </label>
+                    <label class="text-warning">@Model.receivingClerk</label>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6 form-group">
-            <div class="form-group">
-                <label asp-for="receivingClerk">Receiving clerk: </label>
-                <label class="text-warning">@Model.receivingClerk</label>
-            </div>
-        </div>
-    </div>
 
     </div>
     <div class="box-footer">

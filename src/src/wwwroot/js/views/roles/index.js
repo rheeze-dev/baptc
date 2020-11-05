@@ -23,6 +23,8 @@ $(document).ready(function () {
             { "data": "fullName" },
             { "data": "remarks" },
             { "data": "shortName" },
+            { "data": "id" },
+            { "data": "modifier" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/Settings/AddEditRoles?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

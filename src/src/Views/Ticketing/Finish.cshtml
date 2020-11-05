@@ -1,0 +1,176 @@
+﻿@model src.Models.Ticketing
+@{
+    Layout = null;
+}
+<style>
+  
+.default {
+  display: none;
+}
+
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Complete transaction</h4>
+</div>
+
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ticketingId" />
+        <input type="hidden" asp-for="controlNumber" />
+        <input type="hidden" asp-for="timeOut" />
+        <div class="form-group">
+            <label asp-for="plateNumber" class="control-label">Plate number</label>
+            <input asp-for="plateNumber" class="form-control" />
+            <span asp-validation-for="plateNumber" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="typeOfTransaction" class="control-label">Type of transaction</label>
+                    <input asp-for="typeOfTransaction" class="form-control" readonly />
+                    <span asp-validation-for="typeOfTransaction" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6 typeOfEntry">
+                <div class="form-group" id="typeOfTransaction">
+                    @if (Model.typeOfTransaction != "Farmer truck")
+                    {
+                        <label asp-for="TypeOfEntry" class="control-label">Type of entry</label>
+                        @if (Model.typeOfTransaction == "Trader truck")
+                        {
+                            <select asp-for="TypeOfEntry" class="form-control">
+                                <option class="traderTruck" value="With transaction">With transaction</option>
+                                <option class="traderTruck" value="Without transaction">Without transaction</option>
+                            </select>
+                        }
+                        else if (Model.typeOfTransaction == "Short trip")
+                        {
+                            <select asp-for="TypeOfEntry" class="form-control">
+                                <option class="shortTrip" value="Pick-up">Pick-up</option>
+                                <option class="shortTrip" value="Delivery">Delivery</option>
+                            </select>
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 typeOfCar">
+                <div class="form-group">
+                    <label asp-for="typeOfCar" class="control-label">Type of car</label>
+                    <select asp-for="typeOfCar" class="form-control">
+                        @*<option selected disabled>make a selection...</option>*@
+                        <option value="Single tire">Single tire</option>
+                        <option value="Double tire">Double tire</option>
+                        <option class="traderTruck shortTrip" value="Forwarder">Forwarder</option>
+                        <option class="traderTruck shortTrip" value="10 wheeler">10 wheeler</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6 typeOfCar">
+                <div class="form-group">
+                    <label asp-for="PullOut" class="control-label">Pull out</label>
+                    <select asp-for="PullOut" class="form-control">
+                        @*<option selected disabled>make a selection...</option>*@
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 typeOfCar">
+                <div class="form-group">
+                    <label asp-for="TypeOfPayment" class="control-label">Type of payment</label>
+                    <select asp-for="TypeOfPayment" class="form-control">
+                        @*<option selected disabled>make a selection...</option>*@
+                        <option value="Cash">Cash</option>
+                        <option value="Credit">Credit</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="remarks" class="control-label">Remarks</label>
+                <input asp-for="remarks" class="form-control" placeholder="Optional" />
+                <span asp-validation-for="remarks" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+
+    //   $(document).ready(function () {
+    //    $("select", "#typeOfTransaction").change(function () {
+    //        var test = (this.value);
+    //        //alert(test);
+    //        if (test == "Trader truck") {
+    //            $(".typeOfCar").show();
+    //            $(".typeOfEntry").show();
+    //            $(".farmerTruck").hide();
+    //            $(".shortTrip").hide();
+    //            $(".payParking").hide();
+    //            $(".driverName").show();
+    //            $(".traderTruck").show();
+    //            $(".name").show();
+    //        }
+    //        else if (test == "Farmer truck") {
+    //            $(".typeOfCar").show();
+    //            $(".typeOfEntry").hide();
+    //            $(".traderTruck").hide();
+    //            $(".shortTrip").hide();
+    //            $(".payParking").hide();
+    //            $(".driverName").show();
+    //            $(".farmerTruck").show();
+    //        }
+    //        else if (test == "Short trip") {
+    //            $(".typeOfCar").show();
+    //            $(".typeOfEntry").show();
+    //            $(".traderTruck").hide();
+    //            $(".farmerTruck").hide();
+    //            $(".payParking").hide();
+    //            $(".driverName").show();
+    //            $(".shortTrip").show();
+    //        }
+    //        else if (test == "Pay parking") {
+    //            $(".typeOfCar").hide();
+    //            $(".typeOfEntry").hide();
+    //            $(".name").hide();
+    //            $(".driverName").show();
+    //        }
+    //        else if (test == "Gate pass") {
+    //            $(".typeOfCar").hide();
+    //            $(".typeOfEntry").hide();
+    //            $(".driverName").show();
+    //        }
+    //    });
+
+    //});
+
+</script>
+
+
+

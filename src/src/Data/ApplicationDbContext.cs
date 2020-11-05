@@ -103,6 +103,8 @@ namespace src.Data
 
         public DbSet<src.Models.DeletedDatas> DeletedDatas { get; set; }
 
+        public DbSet<src.Models.EditedDatas> EditedDatas { get; set; }
+
         public DbSet<src.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

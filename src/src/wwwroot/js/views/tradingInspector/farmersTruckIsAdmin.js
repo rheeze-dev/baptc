@@ -58,6 +58,7 @@ $(document).ready(function () {
             { "data": "volume" },
             { "data": "barangay" },
             { "data": "remarks" },
+            { "data": "controlNumber" },
             //{ "data": "municipality" },
             //{ "data": "province" },
             //{ "data": "facilitatorsName" },

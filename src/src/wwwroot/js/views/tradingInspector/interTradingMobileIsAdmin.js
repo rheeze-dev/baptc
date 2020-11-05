@@ -24,6 +24,7 @@ $(document).ready(function () {
             { "data": "farmerName" },
             { "data": "commodity" },
             { "data": "volume" },
+            { "data": "code" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/TradingAndIntertrading/AddEditTradingAndIntertrading?id=" + data["id"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";

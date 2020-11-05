@@ -34,7 +34,7 @@ $(document).ready(function () {
             { "data": "commodity" },
             { "data": "volume" },
             { "data": "productionArea" },
-            { "data": "inspector" },
+            //{ "data": "inspector" },
             { "data": "remarks" },
             { "data": "code" },
             {

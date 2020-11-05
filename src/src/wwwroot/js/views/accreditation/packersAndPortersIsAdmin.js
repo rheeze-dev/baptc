@@ -33,6 +33,7 @@ $(document).ready(function () {
             //{ "data": "province" },
             { "data": "contactNumber" },
             { "data": "birthDate" },
+            { "data": "id" },
             //{ "data": "provincialAddress" },
             //{ "data": "requirements" },
             {

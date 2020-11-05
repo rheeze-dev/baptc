@@ -60,6 +60,23 @@ namespace src.Controllers
             return View(organization);
         }
 
+        public async Task<IActionResult> ViewAllTickets(Guid org)
+        {
+            if (org == Guid.Empty)
+            {
+                return NotFound();
+            }
+            ApplicationUser appUser = await _userManager.GetUserAsync(User);
+            var listModule = _securityService.ListModule(appUser);
+            if (!listModule.Contains("Ticketing"))
+            {
+                return NotFound();
+            }
+            Organization organization = _context.Organization.Where(x => x.organizationId.Equals(org)).FirstOrDefault();
+            ViewData["org"] = org;
+            return View(organization);
+        }
+
         public async Task<IActionResult> TicketingIn(Guid org)
         {
             if (org == Guid.Empty)
@@ -177,6 +194,36 @@ namespace src.Controllers
         }
 
         public IActionResult AddEditOut(Guid org, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                Ticketing ticketing = new Ticketing();
+                //customer.organizationId = org;
+                return View(ticketing);
+            }
+            else
+            {
+                return View(_context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult Finish(Guid org, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                Ticketing ticketing = new Ticketing();
+                //customer.organizationId = org;
+                return View(ticketing);
+            }
+            else
+            {
+                return View(_context.Ticketing.Where(x => x.ticketingId.Equals(id)).FirstOrDefault());
+            }
+
+        }
+
+        public IActionResult Debit(Guid org, Guid id)
         {
             if (id == Guid.Empty)
             {

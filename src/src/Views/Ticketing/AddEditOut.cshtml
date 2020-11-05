@@ -1,0 +1,160 @@
+﻿@model src.Models.Ticketing
+@{
+    Layout = null;
+}
+<style>
+  
+.default {
+  display: none;
+}
+
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Add / Edit Data</h4>
+</div>
+
+<form onsubmit="return SubmitAddEdit(this)">
+    <div class="box-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ticketingId" />
+        <input type="hidden" asp-for="controlNumber" />
+        <input type="hidden" asp-for="timeOut" />
+
+        <div class="form-group">
+            <label asp-for="plateNumber" class="control-label">Plate number</label>
+            <input asp-for="plateNumber" class="form-control" />
+            <span asp-validation-for="plateNumber" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="typeOfTransaction" class="control-label">Type of transaction</label>
+                    <input asp-for="typeOfTransaction" class="form-control" readonly />
+                    <span asp-validation-for="typeOfTransaction" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-lg-6 typeOfCar">
+                <div class="form-group">
+                    <label asp-for="typeOfCar" class="control-label">Type of entry</label>
+                    <select asp-for="typeOfCar" class="form-control">
+                        @*<option selected disabled>make a selection...</option>*@
+                        <option value="With transaction">With transaction</option>
+                        <option value="Without transaction">Without transaction</option>
+                        <option value="Single tire">Single tire</option>
+                        <option value="Double tire">Double tire</option>
+                        <option value="Pick-up">Pick-up</option>
+                        <option value="Delivery">Delivery</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 form-group">
+                <label asp-for="parkingNumber" class="control-label">Parking number</label>
+                <input asp-for="parkingNumber" class="form-control" readonly />
+                <span asp-validation-for="parkingNumber" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group driverName">
+                <label asp-for="driverName" class="control-label">Drivers name</label>
+                <input asp-for="driverName" class="form-control" readonly />
+                <span asp-validation-for="driverName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="contactNumber form-group">
+                    <label asp-for="ContactNumber" class="control-label">Contact number</label>
+                    <input asp-for="ContactNumber" class="form-control" readonly />
+                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="address form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" readonly />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="temperature col-lg-6 form-group">
+                <label asp-for="Temperature" class="control-label"></label>
+                <input asp-for="Temperature" class="form-control" readonly />
+                <span asp-validation-for="Temperature" class="text-danger"></span>
+            </div>
+            <div class="col-lg-6 form-group">
+                <label asp-for="remarks" class="control-label">Remarks</label>
+                <input asp-for="remarks" class="form-control" placeholder="Optional" />
+                <span asp-validation-for="remarks" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Submit</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script>
+    Ladda.bind('.btn', { timeout: 1000 });
+    $('.form_datetime').datetimepicker({
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+
+    $(document).ready(function () {
+        $("select", "#typeOfTransaction").change(function () {
+            var test = (this.value);
+            //alert(test);
+            if (test == "Trader truck") {
+                $(".typeOfCar").show();
+                $(".farmerTruck").hide();
+                $(".shortTrip").hide();
+                $(".payParking").hide();
+                $(".driverName").show();
+                $(".traderTruck").show();
+                $(".name").show();
+            }
+            else if (test == "Farmer truck") {
+                $(".typeOfCar").show();
+                $(".traderTruck").hide();
+                $(".shortTrip").hide();
+                $(".payParking").hide();
+                $(".driverName").show();
+                $(".farmerTruck").show();
+            }
+            else if (test == "Short trip") {
+                $(".typeOfCar").show();
+                $(".traderTruck").hide();
+                $(".farmerTruck").hide();
+                $(".payParking").hide();
+                $(".driverName").show();
+                $(".shortTrip").show();
+            }
+            else if (test == "Pay parking") {
+                $(".typeOfCar").hide();
+                $(".name").hide();
+                $(".driverName").show();
+            }
+            else if (test == "Gate pass") {
+                $(".typeOfCar").hide();
+                $(".driverName").show();
+            }
+        });
+
+    });
+
+</script>
+
+
+

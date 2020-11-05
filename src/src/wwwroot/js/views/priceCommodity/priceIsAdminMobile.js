@@ -27,8 +27,8 @@ $(document).ready(function () {
             },
             { "data": "commodity" },
             { "data": "classVariety" },
-            { "data": "priceLow" },
-            { "data": "priceHigh" },
+            { "data": "average" },
+            { "data": "controlNumber" },
             {
                 "data": function (data) {
                     var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/PriceCommodity/AddEditPrice?id=" + data["priceCommodityId"] + "')><i class='fa fa-pencil' title='Edit'></i></a>";
